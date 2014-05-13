@@ -26,6 +26,11 @@ import org.jclouds.date.TimeStamp;
 import org.jclouds.glacier.GlacierAsyncClient;
 import org.jclouds.glacier.GlacierClient;
 import org.jclouds.glacier.filters.RequestAuthorizeSignature;
+import org.jclouds.glacier.handlers.ParseGlacierErrorFromJsonContent;
+import org.jclouds.http.HttpErrorHandler;
+import org.jclouds.http.annotation.ClientError;
+import org.jclouds.http.annotation.Redirection;
+import org.jclouds.http.annotation.ServerError;
 import org.jclouds.rest.ConfiguresRestClient;
 import org.jclouds.rest.config.RestClientModule;
 
@@ -34,6 +39,11 @@ import com.google.common.base.Suppliers;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 
+/**
+ * Configures the mappings. Installs the Object and Parser modules.
+ *
+ * @author Roman Coedo
+ */
 @ConfiguresRestClient
 public class GlacierRestClientModule extends RestClientModule<GlacierClient, GlacierAsyncClient> {
 
@@ -60,5 +70,12 @@ public class GlacierRestClientModule extends RestClientModule<GlacierClient, Gla
             return dateService.iso8601SecondsDateFormat().replaceAll("[-:]", "");
          }
       }, seconds, TimeUnit.SECONDS);
+   }
+
+   @Override
+   protected void bindErrorHandlers() {
+      bind(HttpErrorHandler.class).annotatedWith(Redirection.class).to(ParseGlacierErrorFromJsonContent.class);
+      bind(HttpErrorHandler.class).annotatedWith(ClientError.class).to(ParseGlacierErrorFromJsonContent.class);
+      bind(HttpErrorHandler.class).annotatedWith(ServerError.class).to(ParseGlacierErrorFromJsonContent.class);
    }
 }

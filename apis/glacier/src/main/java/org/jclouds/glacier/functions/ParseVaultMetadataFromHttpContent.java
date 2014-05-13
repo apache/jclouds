@@ -14,20 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.glacier.reference;
+package org.jclouds.glacier.functions;
+
+import org.jclouds.glacier.domain.VaultMetadata;
+import org.jclouds.http.functions.ParseJson;
+import org.jclouds.json.Json;
+
+import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 
 /**
- * Headers used by Amazon Glacier.
+ * Parses the JSON vault information from the HttpResponse.
  *
  * @author Roman Coedo
  */
-public final class GlacierHeaders {
+public class ParseVaultMetadataFromHttpContent extends ParseJson<VaultMetadata> {
 
-   public static final String DEFAULT_AMAZON_HEADERTAG = "amz";
-   public static final String HEADER_PREFIX = "x-" + DEFAULT_AMAZON_HEADERTAG + "-";
-   public static final String VERSION = HEADER_PREFIX + "glacier-version";
-   public static final String ALTERNATE_DATE = HEADER_PREFIX + "date";
-
-   private GlacierHeaders() {
+   @Inject
+   public ParseVaultMetadataFromHttpContent(Json json) {
+      super(json, TypeLiteral.get(VaultMetadata.class));
    }
 }

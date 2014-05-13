@@ -14,20 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.glacier.reference;
+package org.jclouds.glacier.config;
+
+import org.jclouds.json.config.GsonModule.DateAdapter;
+import org.jclouds.json.config.GsonModule.Iso8601DateAdapter;
+
+import com.google.inject.AbstractModule;
 
 /**
- * Headers used by Amazon Glacier.
+ * Configures the parser mappings.
  *
  * @author Roman Coedo
  */
-public final class GlacierHeaders {
+public class GlacierParserModule extends AbstractModule {
 
-   public static final String DEFAULT_AMAZON_HEADERTAG = "amz";
-   public static final String HEADER_PREFIX = "x-" + DEFAULT_AMAZON_HEADERTAG + "-";
-   public static final String VERSION = HEADER_PREFIX + "glacier-version";
-   public static final String ALTERNATE_DATE = HEADER_PREFIX + "date";
-
-   private GlacierHeaders() {
+   @Override
+   protected void configure() {
+      bind(DateAdapter.class).to(Iso8601DateAdapter.class);
    }
 }

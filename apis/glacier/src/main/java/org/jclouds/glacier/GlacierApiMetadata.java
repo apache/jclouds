@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.Properties;
 
 import org.jclouds.blobstore.BlobStoreContext;
+import org.jclouds.glacier.config.GlacierParserModule;
 import org.jclouds.glacier.config.GlacierRestClientModule;
 import org.jclouds.glacier.reference.GlacierHeaders;
 import org.jclouds.rest.internal.BaseRestApiMetadata;
@@ -82,7 +83,7 @@ public class GlacierApiMetadata extends BaseRestApiMetadata {
                .defaultProperties(GlacierApiMetadata.defaultProperties())
                .context(CONTEXT_TOKEN)
                .view(typeToken(BlobStoreContext.class))
-               .defaultModules(ImmutableSet.<Class<? extends Module>> of(GlacierRestClientModule.class));
+               .defaultModules(ImmutableSet.<Class<? extends Module>> of(GlacierRestClientModule.class, GlacierParserModule.class));
       }
 
       @Override

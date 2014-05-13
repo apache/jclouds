@@ -32,7 +32,7 @@
   <packaging>bundle</packaging>
 
   <properties>
-    <test.glacier.endpoint>https://glacier.eu-west-1.amazonaws.com</test.glacier.endpoint>
+    <test.glacier.endpoint>https://glacier.us-east-1.amazonaws.com</test.glacier.endpoint>
     <test.glacier.api-version>2012-06-01</test.glacier.api-version>
     <test.glacier.build-version />
     <test.glacier.identity>${test.aws.identity}</test.glacier.identity>
