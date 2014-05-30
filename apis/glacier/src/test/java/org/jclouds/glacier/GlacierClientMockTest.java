@@ -99,7 +99,7 @@ public class GlacierClientMockTest {
       // Send the request and check the response
       try {
          GlacierClient client = getGlacierClient(server.getUrl("/"));
-         assertTrue(client.deleteVaultIfEmpty(VAULT_NAME));
+         assertTrue(client.deleteVault(VAULT_NAME));
          RecordedRequest request = server.takeRequest();
          assertEquals(request.getRequestLine(), "DELETE /-/vaults/" + VAULT_NAME + " HTTP/1.1");
       } finally {

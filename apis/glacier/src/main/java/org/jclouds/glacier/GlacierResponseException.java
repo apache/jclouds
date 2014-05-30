@@ -40,9 +40,8 @@ public class GlacierResponseException extends HttpResponseException {
    }
 
    public GlacierResponseException(HttpCommand command, HttpResponse response, GlacierError error, Throwable cause) {
-      super("request " + command.getCurrentRequest().getRequestLine() + " failed with code " + response.getStatusCode()
-            + ", error: " + error.toString(), command, response, cause);
-      this.error = checkNotNull(error, "error");
+      this("request " + command.getCurrentRequest().getRequestLine() + " failed with code " + response.getStatusCode()
+            + ", error: " + error.toString(), command, response, error, cause);
    }
 
    public GlacierResponseException(HttpCommand command, HttpResponse response, GlacierError error) {

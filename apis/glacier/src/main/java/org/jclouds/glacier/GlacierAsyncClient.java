@@ -75,7 +75,7 @@ public interface GlacierAsyncClient extends Closeable {
    @DELETE
    @Path("/-/vaults/{vault}")
    @Fallback(FalseIfVaultNotEmpty.class)
-   ListenableFuture<Boolean> deleteVaultIfEmpty(@PathParam("vault") @ParamValidators(VaultNameValidator.class) String vaultName);
+   ListenableFuture<Boolean> deleteVault(@PathParam("vault") @ParamValidators(VaultNameValidator.class) String vaultName);
 
    /**
     * @see GlacierClient#describeVault

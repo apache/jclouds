@@ -32,22 +32,22 @@ public class VaultNameValidatorTest {
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void testValidateInvalidName() {
+   public void testEmptyName() {
       VALIDATOR.validate("");
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void testValidateInvalidName2() {
+   public void testIllegalCharacters() {
       VALIDATOR.validate("<InvalidName>");
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void testValidateInvalidName3() {
+   public void testIllegalCharacters2() {
       VALIDATOR.validate("INVALID,NAME");
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void testValidateInvalidName4() {
+   public void testNameTooLong() {
       VALIDATOR.validate("INVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVAL" +
             "IDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEI" +
             "NVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAME");

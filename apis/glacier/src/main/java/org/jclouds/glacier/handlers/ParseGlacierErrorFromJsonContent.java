@@ -59,8 +59,9 @@ public class ParseGlacierErrorFromJsonContent extends ParseJson<GlacierError> im
    @Override
    public void handleError(HttpCommand command, HttpResponse response) {
       GlacierError error = this.apply(response);
-      Exception exception = error.isValid() ? refineException(error, new GlacierResponseException(command, response,
-            error)) : new HttpResponseException(command, response);
+      Exception exception = error.isValid()
+            ? refineException(error, new GlacierResponseException(command, response, error))
+            : new HttpResponseException(command, response);
       command.setException(exception);
    }
 

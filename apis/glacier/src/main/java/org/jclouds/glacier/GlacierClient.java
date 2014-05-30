@@ -34,7 +34,7 @@ import org.jclouds.glacier.options.PaginationOptions;
 public interface GlacierClient extends Closeable {
 
    /**
-    * A PUT request operation with a vault name to create a new vault to store archives.
+    * Creates a new vault to store archives.
     *
     * @param vaultName
     *           A name for the Vault being created.
@@ -44,17 +44,17 @@ public interface GlacierClient extends Closeable {
    URI createVault(String vaultName);
 
    /**
-    * A DELETE request operation with a vault name to delete an existing vault. The vault must be empty.
+    * A DELETE request operation with a vault name to delete an existing vault.
     *
     * @param vaultName
     *           Name of the Vault being deleted.
     * @return False if the vault was not empty and therefore not deleted, true otherwise.
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-delete.html" />
     */
-   boolean deleteVaultIfEmpty(String vaultName);
+   boolean deleteVault(String vaultName);
 
    /**
-    * A GET request operation with a vault name to fetch the vault metadata.
+    * Retrieves the metadata for a vault.
     *
     * @param vaultName
     *           Name of the Vault being described.
@@ -64,7 +64,7 @@ public interface GlacierClient extends Closeable {
    VaultMetadata describeVault(String vaultName);
 
    /**
-    * A GET request operation to retrieve a vault listing.
+    * Lists vaults according to specified options.
     *
     * @param options
     *          Options used for pagination.
@@ -74,7 +74,7 @@ public interface GlacierClient extends Closeable {
    PaginatedVaultCollection listVaults(PaginationOptions options);
 
    /**
-    * A GET request operation to retrieve a vault listing.
+    * List vaults.
     *
     * @see GlacierClient#listVaults(PaginationOptions)
     */

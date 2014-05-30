@@ -16,6 +16,8 @@
  */
 package org.jclouds.glacier.predicates.validators;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import org.jclouds.predicates.Validator;
 
 import com.google.common.base.CharMatcher;
@@ -24,6 +26,7 @@ import com.google.inject.Singleton;
 /**
  * Validates Vault names according to Amazon Vault conventions.
  *
+ * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-put.html" />
  * @author Roman Coedo
  */
 @Singleton
@@ -34,7 +37,7 @@ public class VaultNameValidator extends Validator<String> {
 
    @Override
    public void validate(String vaultName) {
-      if (vaultName == null || vaultName.length() < MIN_LENGTH || vaultName.length() > MAX_LENGTH)
+      if (isNullOrEmpty(vaultName) || vaultName.length() > MAX_LENGTH)
          throw exception(vaultName, "Can't be null or empty. Length must be " + MIN_LENGTH + " to " + MAX_LENGTH
                + " symbols.");
       CharMatcher range = getAcceptableRange();
@@ -47,7 +50,7 @@ public class VaultNameValidator extends Validator<String> {
             .or(CharMatcher.anyOf("-_."));
    }
 
-   protected IllegalArgumentException exception(String vaultName, String reason) {
+   protected static IllegalArgumentException exception(String vaultName, String reason) {
       return new IllegalArgumentException(
             String.format(
                   "Object '%s' doesn't match AWS Vault naming convention. "

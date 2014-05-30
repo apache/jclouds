@@ -43,20 +43,20 @@ public class VaultMetadata implements Comparable<VaultMetadata> {
    @SerializedName("LastInventoryDate")
    private final Date lastInventoryDate;
    @SerializedName("NumberOfArchives")
-   private final Long numberOfArchives;
+   private final long numberOfArchives;
    @SerializedName("SizeInBytes")
-   private final Long sizeInBytes;
+   private final long sizeInBytes;
 
    @ConstructorProperties({ "VaultName", "VaultARN", "CreationDate", "LastInventoryDate", "NumberOfArchives",
          "SizeInBytes" })
    public VaultMetadata(String vaultName, String vaultARN, Date creationDate, @Nullable Date lastInventoryDate,
          long numberOfArchives, long sizeInBytes) {
-      this.vaultName = checkNotNull(vaultName);
-      this.vaultARN = checkNotNull(vaultARN);
-      this.creationDate = checkNotNull(creationDate);
+      this.vaultName = checkNotNull(vaultName, "vaultName");
+      this.vaultARN = checkNotNull(vaultARN, "vaultARN");
+      this.creationDate = checkNotNull(creationDate, "creationDate");
       this.lastInventoryDate = lastInventoryDate;
-      this.numberOfArchives = checkNotNull(numberOfArchives);
-      this.sizeInBytes = checkNotNull(sizeInBytes);
+      this.numberOfArchives = numberOfArchives;
+      this.sizeInBytes = sizeInBytes;
    }
 
    public String getVaultName() {

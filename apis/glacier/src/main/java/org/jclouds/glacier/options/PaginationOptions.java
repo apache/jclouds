@@ -24,6 +24,7 @@ import org.jclouds.http.options.BaseHttpRequestOptions;
 /**
  * Pagination options used to specify the collection responses.
  *
+ * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vaults-get.html" />
  * @author Roman Coedo
  */
 public class PaginationOptions extends BaseHttpRequestOptions {
@@ -37,8 +38,8 @@ public class PaginationOptions extends BaseHttpRequestOptions {
    }
 
    public PaginationOptions limit(int limit) {
-      checkArgument(limit >= MIN_LIMIT, "limit must be >= " + MIN_LIMIT);
-      checkArgument(limit <= MAX_LIMIT, "limit must be <= " + MAX_LIMIT);
+      checkArgument(limit >= MIN_LIMIT, "limit must be >= " + MIN_LIMIT + " but was " + limit);
+      checkArgument(limit <= MAX_LIMIT, "limit must be <= " + MAX_LIMIT + " but was " + limit);
       queryParameters.put("limit", Integer.toString(limit));
       return this;
    }
