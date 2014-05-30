@@ -33,23 +33,10 @@ public class GlacierResponseException extends HttpResponseException {
    private static final long serialVersionUID = 1L;
    private final GlacierError error;
 
-   public GlacierResponseException(String message, HttpCommand command, HttpResponse response, GlacierError error,
-         Throwable cause) {
-      super(message, command, response, cause);
-      this.error = checkNotNull(error, "error");
-   }
-
-   public GlacierResponseException(HttpCommand command, HttpResponse response, GlacierError error, Throwable cause) {
-      this("request " + command.getCurrentRequest().getRequestLine() + " failed with code " + response.getStatusCode()
-            + ", error: " + error.toString(), command, response, error, cause);
-   }
-
    public GlacierResponseException(HttpCommand command, HttpResponse response, GlacierError error) {
-      this(command, response, error, null);
-   }
-
-   public GlacierResponseException(String message, HttpCommand command, HttpResponse response, GlacierError error) {
-      this(message, command, response, error, null);
+      super("request " + command.getCurrentRequest().getRequestLine() + " failed with code " + response.getStatusCode()
+            + ", error: " + error.toString(), command, response);
+      this.error = checkNotNull(error, "error");
    }
 
    public GlacierError getError() {
