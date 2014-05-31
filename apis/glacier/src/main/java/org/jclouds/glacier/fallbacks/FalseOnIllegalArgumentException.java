@@ -26,9 +26,9 @@ import org.jclouds.Fallback;
 import com.google.common.util.concurrent.ListenableFuture;
 
 /**
- * Fallback used when deleting a vault.
+ * Returns false when encountering an IllegalArgumentException.
  */
-public class FalseIfVaultNotEmpty implements Fallback<Boolean> {
+public class FalseOnIllegalArgumentException implements Fallback<Boolean> {
 
    @Override
    public ListenableFuture<Boolean> create(Throwable t) throws Exception {

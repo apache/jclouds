@@ -43,7 +43,7 @@ public interface GlacierClient extends Closeable {
    URI createVault(String vaultName);
 
    /**
-    * A DELETE request operation with a vault name to delete an existing vault.
+    * Deletes a vault.
     *
     * @param vaultName
     *           Name of the Vault being deleted.
@@ -73,7 +73,7 @@ public interface GlacierClient extends Closeable {
    PaginatedVaultCollection listVaults(PaginationOptions options);
 
    /**
-    * List vaults.
+    * Lists vaults.
     *
     * @see GlacierClient#listVaults(PaginationOptions)
     */

@@ -35,6 +35,7 @@ import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
+import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
@@ -45,6 +46,7 @@ import com.google.mockwebserver.RecordedRequest;
 /**
  * Mock test for Glacier.
  */
+@Test
 public class GlacierClientMockTest {
 
    private static final String VAULT_NAME = "ConcreteVaultName";

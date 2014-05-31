@@ -57,10 +57,10 @@ public class RequestAuthorizeSignature implements HttpRequestFilter {
    @Inject
    public RequestAuthorizeSignature(@TimeStamp Provider<String> timeStampProvider,
          @org.jclouds.location.Provider Supplier<Credentials> creds, Crypto crypto, HttpUtils utils) {
-      checkNotNull(creds);
-      this.signer = new AWSRequestSignerV4(creds.get().identity, creds.get().credential, checkNotNull(crypto));
-      this.timeStampProvider = checkNotNull(timeStampProvider);
-      this.utils = checkNotNull(utils);
+      checkNotNull(creds, "creds");
+      this.signer = new AWSRequestSignerV4(creds.get().identity, creds.get().credential, checkNotNull(crypto, "crypto"));
+      this.timeStampProvider = checkNotNull(timeStampProvider, "timeStampProvider");
+      this.utils = checkNotNull(utils, "utils");
    }
 
    @Override

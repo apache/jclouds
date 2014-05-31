@@ -62,9 +62,9 @@ public class AWSRequestSignerV4 {
    private final String credential;
 
    public AWSRequestSignerV4(String identity, String credential, Crypto crypto) {
-      this.crypto = checkNotNull(crypto);
-      this.identity = checkNotNull(identity);
-      this.credential = checkNotNull(credential);
+      this.crypto = checkNotNull(crypto, "crypto");
+      this.identity = checkNotNull(identity, "identity");
+      this.credential = checkNotNull(credential, "credential");
    }
 
    private static String buildHashedCanonicalRequest(String method, String endpoint, String hashedPayload,
