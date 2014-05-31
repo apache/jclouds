@@ -22,6 +22,7 @@ import java.net.URI;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
+import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.io.Payload;
 
 /**
@@ -112,4 +113,40 @@ public interface GlacierClient extends Closeable {
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-archive-delete.html" />
     */
    boolean deleteArchive(String vaultName, String archiveId);
+
+   /**
+    * Starts a new multipart upload.
+    *
+    * @param vaultName
+    *           Name of the Vault where the archive is going to be stored.
+    * @param partSizeInMB
+    *           Content size for each part.
+    * @param description
+    *           The archive description.
+    * @return The Multipart Upload Id.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-initiate-upload.html" />
+    */
+   String initiateMultipartUpload(String vaultName, long partSizeInMB, String description);
+
+   /**
+    * Starts a new multipart upload.
+    */
+   String initiateMultipartUpload(String vaultName, long partSizeInMB);
+
+   /**
+    * Uploads one of the multipart upload parts.
+    *
+    * @param vaultName
+    *           Name of the Vault where the archive is going to be stored.
+    * @param uploadId
+    *           Multipart upload identifier.
+    * @param range
+    *           The content range that this part is uploading.
+    * @param payload
+    *           Content for this part.
+    * @return Tree-hash of the payload calculated by Amazon. This hash needs to be stored to complete the multipart
+    *         upload.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-upload-part.html" />
+    */
+   String uploadPart(String vaultName, String uploadId, ContentRange range, Payload payload);
 }

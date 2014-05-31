@@ -30,6 +30,8 @@ public final class GlacierHeaders {
    public static final String LINEAR_HASH = HEADER_PREFIX + "content-sha256";
    public static final String TREE_HASH = HEADER_PREFIX + "sha256-tree-hash";
    public static final String ARCHIVE_ID = HEADER_PREFIX + "archive-id";
+   public static final String MULTIPART_UPLOAD_ID = HEADER_PREFIX + "multipart-upload-id";
+   public static final String PART_SIZE = HEADER_PREFIX + "part-size";
 
    private GlacierHeaders() {
    }

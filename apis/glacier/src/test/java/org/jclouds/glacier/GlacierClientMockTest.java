@@ -20,6 +20,7 @@ import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 import static org.jclouds.Constants.PROPERTY_SO_TIMEOUT;
+import static org.jclouds.glacier.util.TestUtils.MiB;
 import static org.jclouds.glacier.util.TestUtils.buildPayload;
 import static org.jclouds.util.Strings2.urlEncode;
 import static org.testng.Assert.assertEquals;
@@ -40,6 +41,10 @@ import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
 import org.jclouds.glacier.reference.GlacierHeaders;
+import org.jclouds.glacier.util.ContentRange;
+import org.jclouds.http.HttpResponseException;
+import org.jclouds.io.Payload;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -76,6 +81,8 @@ public class GlacierClientMockTest {
    private static final String ARCHIVE_LOCATION = VAULT_LOCATION + "/archives/" + ARCHIVE_ID;
    private static final String TREEHASH = "beb0fe31a1c7ca8c6c04d574ea906e3f97b31fdca7571defb5b44dca89b5af60";
    private static final String DESCRIPTION = "test description";
+   private static final String MULTIPART_UPLOAD_LOCATION = VAULT_LOCATION + "/multipart-uploads/" + ARCHIVE_ID;
+   private static final String MULTIPART_UPLOAD_ID = "OW2fM5iVylEpFEMM9_HpKowRapC3vn5sSL39_396UW9zLFUWVrnRHaPjUJddQ5OxSHVXjYtrN47NBZ-khxOjyEXAMPLE";
    private static final Set<Module> modules = ImmutableSet.<Module> of(new ExecutorServiceModule(sameThreadExecutor(),
          sameThreadExecutor()));
 
@@ -106,6 +113,7 @@ public class GlacierClientMockTest {
    @BeforeTest
    private void initServer() throws IOException {
       server = new MockWebServer();
+      server.setBodyLimit(0);
       server.play();
       client = getGlacierClient(server.getUrl("/"));
    }
@@ -207,5 +215,60 @@ public class GlacierClientMockTest {
 
       assertTrue(client.deleteArchive(VAULT_NAME, ARCHIVE_ID));
       assertEquals(server.takeRequest().getRequestLine(), "DELETE /-/vaults/" + VAULT_NAME + "/archives/" + ARCHIVE_ID + " " + HTTP);
+   }
+
+   @Test
+   public void testInitiateMultipartUpload() throws InterruptedException {
+      MockResponse mr = buildBaseResponse(201);
+      mr.addHeader(HttpHeaders.LOCATION, MULTIPART_UPLOAD_LOCATION);
+      mr.addHeader(GlacierHeaders.MULTIPART_UPLOAD_ID, MULTIPART_UPLOAD_ID);
+      server.enqueue(mr);
+
+      assertEquals(client.initiateMultipartUpload(VAULT_NAME, 4, DESCRIPTION), MULTIPART_UPLOAD_ID);
+      RecordedRequest request = server.takeRequest();
+      assertEquals(request.getRequestLine(), "POST /-/vaults/" + VAULT_NAME + "/multipart-uploads " + HTTP);
+      assertEquals(request.getHeader(GlacierHeaders.PART_SIZE), "4194304");
+      assertEquals(request.getHeader(GlacierHeaders.ARCHIVE_DESCRIPTION), DESCRIPTION);
+   }
+
+   @Test
+   public void testUploadPart() throws InterruptedException {
+      MockResponse mr = buildBaseResponse(204);
+      mr.addHeader(GlacierHeaders.TREE_HASH, TREEHASH);
+      server.enqueue(mr);
+
+      assertEquals(
+            client.uploadPart(VAULT_NAME, MULTIPART_UPLOAD_ID, ContentRange.fromPartNumber(0, 4), buildPayload(4 * MiB)),
+            TREEHASH);
+      RecordedRequest request = server.takeRequest();
+      assertEquals(request.getRequestLine(),
+            "PUT /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
+      assertEquals(request.getHeader(HttpHeaders.CONTENT_RANGE), "bytes 0-4194303/*");
+      assertEquals(request.getHeader(HttpHeaders.CONTENT_LENGTH), "4194304");
+   }
+
+   // TODO: Change size to 4096 when moving to JDK 7
+   @Test
+   public void testUploadPartMaxSize() throws InterruptedException {
+      MockResponse mr = buildBaseResponse(204);
+      mr.addHeader(GlacierHeaders.TREE_HASH, TREEHASH);
+      server.enqueue(mr);
+
+      long size = 1024;
+      ContentRange range = ContentRange.fromPartNumber(0, size);
+      Payload payload = buildPayload(1);
+      payload.getContentMetadata().setContentLength(size * MiB);
+      try {
+         /* The client.uploadPart call should throw an HttpResponseException since the payload is smaller than expected.
+          * This trick makes the test way faster.
+          */
+         client.uploadPart(VAULT_NAME, MULTIPART_UPLOAD_ID, range, payload);
+         Assert.fail();
+      } catch (HttpResponseException e) {
+      }
+      RecordedRequest request = server.takeRequest();
+      assertEquals(request.getRequestLine(), "PUT /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
+      assertEquals(request.getHeader(HttpHeaders.CONTENT_RANGE), range.buildHeader());
+      assertEquals(request.getHeader(HttpHeaders.CONTENT_LENGTH), payload.getContentMetadata().getContentLength().toString());
    }
 }
