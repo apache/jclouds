@@ -32,6 +32,7 @@ public final class GlacierHeaders {
    public static final String ARCHIVE_ID = HEADER_PREFIX + "archive-id";
    public static final String MULTIPART_UPLOAD_ID = HEADER_PREFIX + "multipart-upload-id";
    public static final String PART_SIZE = HEADER_PREFIX + "part-size";
+   public static final String ARCHIVE_SIZE = HEADER_PREFIX + "archive-size";
 
    private GlacierHeaders() {
    }

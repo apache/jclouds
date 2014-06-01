@@ -18,12 +18,15 @@ package org.jclouds.glacier;
 
 import java.io.Closeable;
 import java.net.URI;
+import java.util.Map;
 
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
 import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.io.Payload;
+
+import com.google.common.hash.HashCode;
 
 /**
  * Provides access to Amazon Glacier resources via their REST API.
@@ -149,4 +152,32 @@ public interface GlacierClient extends Closeable {
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-upload-part.html" />
     */
    String uploadPart(String vaultName, String uploadId, ContentRange range, Payload payload);
+
+   /**
+    * Completes the multipart upload.
+    *
+    * @param vaultName
+    *           Name of the Vault where the archive is going to be stored.
+    * @param uploadId
+    *           Multipart upload identifier.
+    * @param hashes
+    *           Map containing the pairs partnumber-treehash of each uploaded part.
+    * @param archiveSizeInMB
+    *           Size of the complete archive.
+    * @return A String containing the Archive identifier in Amazon Glacier.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-complete-upload.html" />
+    */
+   String completeMultipartUpload(String vaultName, String uploadId, Map<Integer, HashCode> hashes, long archiveSizeInMB);
+
+   /**
+    * Aborts the multipart upload.
+    *
+    * @param vaultName
+    *           Name of the Vault where the archive was going to be stored.
+    * @param uploadId
+    *           Multipart upload identifier.
+    * @return True if the multipart upload was aborted, false otherwise.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-abort-upload.html" />
+    */
+   boolean abortMultipartUpload(String vaultName, String uploadId);
 }

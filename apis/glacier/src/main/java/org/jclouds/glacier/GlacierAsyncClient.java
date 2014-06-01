@@ -20,6 +20,7 @@ import static org.jclouds.blobstore.attr.BlobScopes.CONTAINER;
 
 import java.io.Closeable;
 import java.net.URI;
+import java.util.Map;
 
 import javax.inject.Named;
 import javax.ws.rs.DELETE;
@@ -31,9 +32,11 @@ import javax.ws.rs.PathParam;
 
 import org.jclouds.Fallbacks.NullOnNotFoundOr404;
 import org.jclouds.blobstore.attr.BlobScope;
+import org.jclouds.glacier.binders.BindArchiveSizeToHeaders;
 import org.jclouds.glacier.binders.BindContentRangeToHeaders;
 import org.jclouds.glacier.binders.BindDescriptionToHeaders;
 import org.jclouds.glacier.binders.BindHashesToHeaders;
+import org.jclouds.glacier.binders.BindMultipartTreeHashToHeaders;
 import org.jclouds.glacier.binders.BindPartSizeToHeaders;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
@@ -59,6 +62,7 @@ import org.jclouds.rest.annotations.ParamValidators;
 import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.ResponseParser;
 
+import com.google.common.hash.HashCode;
 import com.google.common.util.concurrent.ListenableFuture;
 
 /**
@@ -187,4 +191,27 @@ public interface GlacierAsyncClient extends Closeable {
          @PathParam("uploadId") String uploadId,
          @BinderParam(BindContentRangeToHeaders.class) ContentRange range,
          @ParamValidators(PayloadValidator.class) @BinderParam(BindHashesToHeaders.class) Payload payload);
+
+   /**
+    * @see GlacierClient#completeMultipartUpload
+    */
+   @Named("CompleteMultipartUpload")
+   @POST
+   @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
+   @ResponseParser(ParseArchiveIdHeader.class)
+   ListenableFuture<String> completeMultipartUpload(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("uploadId") String uploadId,
+         @BinderParam(BindMultipartTreeHashToHeaders.class) Map<Integer, HashCode> hashes,
+         @BinderParam(BindArchiveSizeToHeaders.class) long archiveSizeInMB);
+
+   /**
+    * @see GlacierClient#abortMultipartUpload
+    */
+   @Named("AbortMultipartUpload")
+   @DELETE
+   @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
+   ListenableFuture<Boolean> abortMultipartUpload(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("uploadId") String uploadId);
 }

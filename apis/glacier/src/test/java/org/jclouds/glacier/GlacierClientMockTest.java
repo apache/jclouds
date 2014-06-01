@@ -49,7 +49,9 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.hash.HashCode;
 import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
@@ -270,5 +272,37 @@ public class GlacierClientMockTest {
       assertEquals(request.getRequestLine(), "PUT /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
       assertEquals(request.getHeader(HttpHeaders.CONTENT_RANGE), range.buildHeader());
       assertEquals(request.getHeader(HttpHeaders.CONTENT_LENGTH), payload.getContentMetadata().getContentLength().toString());
+   }
+
+   @Test
+   public void testCompleteMultipartUpload() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(201);
+      mr.addHeader(HttpHeaders.LOCATION, ARCHIVE_LOCATION);
+      mr.addHeader(GlacierHeaders.ARCHIVE_ID, ARCHIVE_ID);
+      server.enqueue(mr);
+
+      HashCode partHashcode = HashCode.fromString("9bc1b2a288b26af7257a36277ae3816a7d4f16e89c1e7e77d0a5c48bad62b360");
+      ImmutableMap<Integer, HashCode> map = ImmutableMap.of(
+            1, partHashcode,
+            2, partHashcode,
+            3, partHashcode,
+            4, partHashcode);
+      assertEquals(client.completeMultipartUpload(VAULT_NAME, MULTIPART_UPLOAD_ID, map, 8L), ARCHIVE_ID);
+      RecordedRequest request = server.takeRequest();
+      assertEquals(request.getRequestLine(),
+            "POST /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
+      assertEquals(request.getHeader(GlacierHeaders.TREE_HASH),
+            "9491cb2ed1d4e7cd53215f4017c23ec4ad21d7050a1e6bb636c4f67e8cddb844");
+      assertEquals(request.getHeader(GlacierHeaders.ARCHIVE_SIZE), "8388608");
+   }
+
+   @Test
+   public void testAbortMultipartUpload() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(204);
+      server.enqueue(mr);
+
+      assertTrue(client.abortMultipartUpload(VAULT_NAME, MULTIPART_UPLOAD_ID));
+      assertEquals(server.takeRequest().getRequestLine(),
+            "DELETE /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
    }
 }
