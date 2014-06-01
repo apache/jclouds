@@ -38,12 +38,16 @@ import org.jclouds.glacier.binders.BindDescriptionToHeaders;
 import org.jclouds.glacier.binders.BindHashesToHeaders;
 import org.jclouds.glacier.binders.BindMultipartTreeHashToHeaders;
 import org.jclouds.glacier.binders.BindPartSizeToHeaders;
+import org.jclouds.glacier.domain.MultipartUploadMetadata;
+import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.fallbacks.FalseOnIllegalArgumentException;
 import org.jclouds.glacier.filters.RequestAuthorizeSignature;
 import org.jclouds.glacier.functions.ParseArchiveIdHeader;
 import org.jclouds.glacier.functions.ParseMultipartUploadIdHeader;
+import org.jclouds.glacier.functions.ParseMultipartUploadListFromHttpContent;
+import org.jclouds.glacier.functions.ParseMultipartUploadPartListFromHttpContent;
 import org.jclouds.glacier.functions.ParseMultipartUploadTreeHashHeader;
 import org.jclouds.glacier.functions.ParseVaultMetadataFromHttpContent;
 import org.jclouds.glacier.functions.ParseVaultMetadataListFromHttpContent;
@@ -214,4 +218,48 @@ public interface GlacierAsyncClient extends Closeable {
    ListenableFuture<Boolean> abortMultipartUpload(
          @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
          @PathParam("uploadId") String uploadId);
+
+   /**
+    * @see GlacierClient#listParts
+    */
+   @Named("ListParts")
+   @GET
+   @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
+   @ResponseParser(ParseMultipartUploadPartListFromHttpContent.class)
+   ListenableFuture<MultipartUploadMetadata> listParts(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("uploadId") String uploadId,
+         PaginationOptions options);
+
+   /**
+    * @see GlacierClient#listParts
+    */
+   @Named("ListParts")
+   @GET
+   @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
+   @ResponseParser(ParseMultipartUploadPartListFromHttpContent.class)
+   ListenableFuture<MultipartUploadMetadata> listParts(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("uploadId") String uploadId);
+
+   /**
+    * @see GlacierClient#listMultipartUploads
+    */
+   @Named("ListMultipartUploads")
+   @GET
+   @Path("/-/vaults/{vault}/multipart-uploads")
+   @ResponseParser(ParseMultipartUploadListFromHttpContent.class)
+   ListenableFuture<PaginatedMultipartUploadCollection> listMultipartUploads(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         PaginationOptions options);
+
+   /**
+    * @see GlacierClient#listMultipartUploads
+    */
+   @Named("ListMultipartUploads")
+   @GET
+   @Path("/-/vaults/{vault}/multipart-uploads")
+   @ResponseParser(ParseMultipartUploadListFromHttpContent.class)
+   ListenableFuture<PaginatedMultipartUploadCollection> listMultipartUploads(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 }

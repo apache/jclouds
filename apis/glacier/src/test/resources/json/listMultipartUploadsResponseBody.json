@@ -1,0 +1,12 @@
+{
+  "Marker": "qt-RBst_7yO8gVIonIBsAxr2t-db0pE4s8MNeGjKjGdNpuU-cdSAcqG62guwV9r5jh5mLyFPzFEitTpNE7iQfHiu1XoV",
+  "UploadsList" : [
+    {
+      "ArchiveDescription": "archive 2",
+      "CreationDate": "2012-04-01T15:00:00.000Z",
+      "MultipartUploadId": "nPyGOnyFcx67qqX7E-0tSGiRi88hHMOwOxR-_jNyM6RjVMFfV29lFqZ3rNsSaWBugg6OP92pRtufeHdQH7ClIpSF6uJc",
+      "PartSizeInBytes": 4194304,
+      "VaultARN": "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault"
+    }
+  ]
+}

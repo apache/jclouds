@@ -1,0 +1,13 @@
+{
+  "ArchiveDescription" : "archive description 1",
+  "CreationDate" : "2012-03-20T17:03:43.221Z",
+  "Marker": "MfgsKHVjbQ6EldVl72bn3_n5h2TaGZQUO-Qb3B9j3TITf7WajQ",
+  "MultipartUploadId" : "OW2fM5iVylEpFEMM9_HpKowRapC3vn5sSL39_396UW9zLFUWVrnRHaPjUJddQ5OxSHVXjYtrN47NBZ-khxOjyEXAMPLE",
+  "PartSizeInBytes" : 4194304,
+  "Parts" :
+  [ {
+    "RangeInBytes" : "4194304-8388607",
+    "SHA256TreeHash" : "01d34dabf7be316472c93b1ef80721f5d4"
+    }],
+  "VaultARN" : "arn:aws:glacier:us-east-1:012345678901:vaults/demo1-vault"
+}

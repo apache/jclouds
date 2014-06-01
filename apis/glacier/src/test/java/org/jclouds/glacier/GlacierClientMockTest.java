@@ -37,7 +37,10 @@ import java.util.Set;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
+import org.jclouds.glacier.domain.MultipartUploadMetadata;
+import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
+import org.jclouds.glacier.domain.PartMetadata;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
 import org.jclouds.glacier.reference.GlacierHeaders;
@@ -85,6 +88,7 @@ public class GlacierClientMockTest {
    private static final String DESCRIPTION = "test description";
    private static final String MULTIPART_UPLOAD_LOCATION = VAULT_LOCATION + "/multipart-uploads/" + ARCHIVE_ID;
    private static final String MULTIPART_UPLOAD_ID = "OW2fM5iVylEpFEMM9_HpKowRapC3vn5sSL39_396UW9zLFUWVrnRHaPjUJddQ5OxSHVXjYtrN47NBZ-khxOjyEXAMPLE";
+   private static final String MARKER = "xsQdFIRsfJr20CW2AbZBKpRZAFTZSJIMtL2hYf8mvp8dM0m4RUzlaqoEye6g3h3ecqB_zqwB7zLDMeSWhwo65re4C4Ev";
    private static final Set<Module> modules = ImmutableSet.<Module> of(new ExecutorServiceModule(sameThreadExecutor(),
          sameThreadExecutor()));
 
@@ -304,5 +308,59 @@ public class GlacierClientMockTest {
       assertTrue(client.abortMultipartUpload(VAULT_NAME, MULTIPART_UPLOAD_ID));
       assertEquals(server.takeRequest().getRequestLine(),
             "DELETE /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
+   }
+
+   @Test
+   public void testListParts() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/listPartsResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      MultipartUploadMetadata result = client.listParts(VAULT_NAME, MULTIPART_UPLOAD_ID,
+            PaginationOptions.Builder.limit(1).marker("1001"));
+      assertEquals(result.getArchiveDescription(), "archive description 1");
+      assertEquals(result.getMultipartUploadId(), MULTIPART_UPLOAD_ID);
+      assertEquals(result.getPartSizeInBytes(), 4194304);
+      PartMetadata part = result.iterator().next();
+      assertEquals(part.getTreeHash(), HashCode.fromString("01d34dabf7be316472c93b1ef80721f5d4"));
+      assertEquals("4194304-8388607", part.getRange().getFrom() + "-" + part.getRange().getTo());
+      assertEquals(server.takeRequest().getRequestLine(),
+            "GET /-/vaults/examplevault/multipart-uploads/" + MULTIPART_UPLOAD_ID + "?limit=1&marker=1001 " + HTTP);
+   }
+
+   @Test
+   public void testListMultipartUploads() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/listMultipartUploadsResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      PaginatedMultipartUploadCollection result = client.listMultipartUploads(
+            VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER));
+      MultipartUploadMetadata mum = result.iterator().next();
+      assertEquals(mum.getArchiveDescription(), "archive 2");
+      assertEquals(mum.getMultipartUploadId(),
+            "nPyGOnyFcx67qqX7E-0tSGiRi88hHMOwOxR-_jNyM6RjVMFfV29lFqZ3rNsSaWBugg6OP92pRtufeHdQH7ClIpSF6uJc");
+      assertEquals(mum.iterator(), null);
+      assertEquals(mum.getPartSizeInBytes(), 4194304);
+      assertEquals(mum.getVaultARN(), VAULT_ARN);
+      assertEquals(server.takeRequest().getRequestLine(),
+            "GET /-/vaults/examplevault/multipart-uploads?limit=1&marker=" + MARKER + " " + HTTP);
+   }
+
+   @Test
+   public void testListMultipartUploadsWithEmptyList() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/listMultipartUploadsWithEmptyListResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      assertEquals(client.listMultipartUploads(VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER)).size(), 0);
+      assertEquals(server.takeRequest().getRequestLine(),
+            "GET /-/vaults/examplevault/multipart-uploads?limit=1&marker=" + MARKER + " " + HTTP);
    }
 }

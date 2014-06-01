@@ -20,6 +20,8 @@ import java.io.Closeable;
 import java.net.URI;
 import java.util.Map;
 
+import org.jclouds.glacier.domain.MultipartUploadMetadata;
+import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
@@ -180,4 +182,40 @@ public interface GlacierClient extends Closeable {
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-abort-upload.html" />
     */
    boolean abortMultipartUpload(String vaultName, String uploadId);
+
+   /**
+    * Lists the multipart upload parts.
+    *
+    * @param vaultName
+    *           Name of the Vault where the archive is going to be stored.
+    * @param uploadId
+    *           Multipart upload identifier.
+    * @param options
+    *          Options used for pagination.
+    * @return A MultipartUploadMetadata, containing an iterable part list with a marker.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-list-parts.html" />
+    */
+   MultipartUploadMetadata listParts(String vaultName, String uploadId, PaginationOptions options);
+
+   /**
+    * Lists the multipart upload parts.
+    */
+   MultipartUploadMetadata listParts(String vaultName, String uploadId);
+
+   /**
+    * Lists the multipart uploads in a vault.
+    *
+    * @param vaultName
+    *           Name of the Vault where the archive is going to be stored.
+    * @param options
+    *          Options used for pagination.
+    * @return A PaginatedMultipartUploadCollection, containing an iterable multipart upload list with a marker.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-list-uploads.html" />
+    */
+   PaginatedMultipartUploadCollection listMultipartUploads(String vaultName, PaginationOptions options);
+
+   /**
+    * Lists the multipart uploads in a vault.
+    */
+   PaginatedMultipartUploadCollection listMultipartUploads(String vaultName);
 }
