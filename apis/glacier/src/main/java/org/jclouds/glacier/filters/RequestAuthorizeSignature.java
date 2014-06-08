@@ -41,8 +41,6 @@ import com.google.common.net.HttpHeaders;
 
 /**
  * Signs the request using the AWSRequestSignerV4.
- *
- * @author Roman Coedo
  */
 @Singleton
 public class RequestAuthorizeSignature implements HttpRequestFilter {

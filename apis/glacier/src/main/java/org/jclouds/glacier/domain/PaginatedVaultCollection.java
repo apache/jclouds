@@ -27,8 +27,6 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Paginated collection used to store Vault listing information.
- *
- * @author Roman Coedo
  */
 public class PaginatedVaultCollection extends IterableWithMarker<VaultMetadata> {
 

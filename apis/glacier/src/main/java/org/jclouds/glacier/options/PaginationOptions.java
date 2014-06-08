@@ -25,7 +25,6 @@ import org.jclouds.http.options.BaseHttpRequestOptions;
  * Pagination options used to specify the collection responses.
  *
  * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vaults-get.html" />
- * @author Roman Coedo
  */
 public class PaginationOptions extends BaseHttpRequestOptions {
 

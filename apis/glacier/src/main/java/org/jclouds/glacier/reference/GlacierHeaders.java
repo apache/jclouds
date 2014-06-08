@@ -18,8 +18,6 @@ package org.jclouds.glacier.reference;
 
 /**
  * Headers used by Amazon Glacier.
- *
- * @author Roman Coedo
  */
 public final class GlacierHeaders {
 

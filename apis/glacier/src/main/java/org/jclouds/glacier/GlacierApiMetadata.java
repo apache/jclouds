@@ -34,8 +34,6 @@ import com.google.inject.Module;
 
 /**
  * Implementation of ApiMetadata for Amazon Glacier API
- *
- * @author Roman Coedo
  */
 public class GlacierApiMetadata extends BaseRestApiMetadata {
 

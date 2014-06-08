@@ -29,7 +29,6 @@ import org.jclouds.glacier.options.PaginationOptions;
  *
  * @see GlacierAsyncClient
  * @see <a href="http://aws.amazon.com/documentation/glacier/" />
- * @author Roman Coedo
  */
 public interface GlacierClient extends Closeable {
 

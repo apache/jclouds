@@ -19,10 +19,6 @@ package org.jclouds.glacier;
 import org.jclouds.blobstore.internal.BaseBlobStoreApiMetadataTest;
 import org.testng.annotations.Test;
 
-/**
- *
- * @author Roman Coedo
- */
 @Test(groups = "unit", testName = "GlacierApiMetadataTest")
 public class GlacierApiMetadataTest extends BaseBlobStoreApiMetadataTest {
 

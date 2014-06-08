@@ -53,7 +53,6 @@ import com.google.common.util.concurrent.ListenableFuture;
  *
  * @see GlacierClient
  * @see <a href="http://aws.amazon.com/documentation/glacier/" />
- * @author Roman Coedo
  */
 @Headers(keys = GlacierHeaders.VERSION, values = "2012-06-01")
 @RequestFilters(RequestAuthorizeSignature.class)

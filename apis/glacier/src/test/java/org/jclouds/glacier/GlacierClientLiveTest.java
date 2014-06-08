@@ -28,8 +28,6 @@ import org.testng.annotations.Test;
 
 /**
  * Live test for Glacier.
- *
- * @author Roman Coedo
  */
 @Test(groups = { "integration", "live" })
 public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{

@@ -27,8 +27,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 /**
  * Fallback used when deleting a vault.
- *
- * @author Roman Coedo
  */
 public class FalseIfVaultNotEmpty implements Fallback<Boolean> {
 

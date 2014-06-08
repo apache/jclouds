@@ -24,8 +24,6 @@ import com.google.common.base.Objects;
 
 /**
  * Defines attributes to describe a GlacierError
- *
- * @author Roman Coedo
  */
 public class GlacierError {
 

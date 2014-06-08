@@ -33,8 +33,6 @@ import com.google.inject.TypeLiteral;
 
 /**
  * Parses a GlacierError from a Json response content.
- *
- * @author Roman Coedo
  */
 public class ParseGlacierErrorFromJsonContent extends ParseJson<GlacierError> implements HttpErrorHandler {
 

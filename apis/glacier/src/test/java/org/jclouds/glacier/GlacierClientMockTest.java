@@ -44,8 +44,6 @@ import com.google.mockwebserver.RecordedRequest;
 
 /**
  * Mock test for Glacier.
- *
- * @author Roman Coedo
  */
 public class GlacierClientMockTest {
 

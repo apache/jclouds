@@ -29,8 +29,6 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Defines the attributes needed to describe a vault.
- *
- * @author Roman Coedo
  */
 public class VaultMetadata implements Comparable<VaultMetadata> {
 

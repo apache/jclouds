@@ -25,8 +25,6 @@ import org.jclouds.http.HttpResponseException;
 
 /**
  * Encapsulates a GlacierError.
- *
- * @author Roman Coedo
  */
 public class GlacierResponseException extends HttpResponseException {
 

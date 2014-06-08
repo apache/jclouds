@@ -41,8 +41,6 @@ import com.google.inject.Scopes;
 
 /**
  * Configures the mappings. Installs the Object and Parser modules.
- *
- * @author Roman Coedo
  */
 @ConfiguresRestClient
 public class GlacierRestClientModule extends RestClientModule<GlacierClient, GlacierAsyncClient> {

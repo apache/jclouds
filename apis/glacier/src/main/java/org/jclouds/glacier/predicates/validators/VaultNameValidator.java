@@ -27,7 +27,6 @@ import com.google.inject.Singleton;
  * Validates Vault names according to Amazon Vault conventions.
  *
  * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-put.html" />
- * @author Roman Coedo
  */
 @Singleton
 public class VaultNameValidator extends Validator<String> {

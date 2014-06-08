@@ -47,7 +47,6 @@ import com.google.common.net.HttpHeaders;
  * Signs requests using the AWSv4 signing algorithm
  *
  * @see <a href="http://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html" />
- * @author Roman Coedo
  */
 public class AWSRequestSignerV4 {
 

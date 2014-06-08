@@ -23,8 +23,6 @@ import com.google.inject.AbstractModule;
 
 /**
  * Configures the parser mappings.
- *
- * @author Roman Coedo
  */
 public class GlacierParserModule extends AbstractModule {
 

@@ -25,8 +25,6 @@ import com.google.inject.TypeLiteral;
 
 /**
  * Parses the JSON vault list from the HttpResponse.
- *
- * @author Roman Coedo
  */
 public class ParseVaultMetadataListFromHttpContent extends ParseJson<PaginatedVaultCollection> {
 
