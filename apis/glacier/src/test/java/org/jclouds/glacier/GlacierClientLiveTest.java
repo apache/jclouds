@@ -36,9 +36,9 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
       this.provider = "glacier";
    }
 
-   private static final String VAULT_NAME1 = "testV1";
-   private static final String VAULT_NAME2 = "testV2";
-   private static final String VAULT_NAME3 = "testV3";
+   private final String VAULT_NAME1 = UUID.randomUUID().toString();
+   private final String VAULT_NAME2 = UUID.randomUUID().toString();
+   private final String VAULT_NAME3 = UUID.randomUUID().toString();
 
    @Test(groups = { "integration", "live" })
    public void testDeleteVaultIfEmptyOrNotFound() throws Exception {
@@ -70,8 +70,8 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
 
    @Test(groups = { "integration", "live" }, dependsOnMethods = { "testListAndDescribeVaults" })
    public void testDeleteVault() throws Exception {
-      api.deleteVault(VAULT_NAME1);
-      api.deleteVault(VAULT_NAME2);
-      api.deleteVault(VAULT_NAME3);
+      assertTrue(api.deleteVault(VAULT_NAME1));
+      assertTrue(api.deleteVault(VAULT_NAME2));
+      assertTrue(api.deleteVault(VAULT_NAME3));
    }
 }
