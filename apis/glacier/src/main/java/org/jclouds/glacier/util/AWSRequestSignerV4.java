@@ -37,8 +37,11 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
 import com.google.common.hash.Hashing;
+import com.google.common.hash.HashingInputStream;
 import com.google.common.io.BaseEncoding;
+import com.google.common.io.ByteSource;
 import com.google.common.io.ByteStreams;
+import com.google.common.io.Closeables;
 import com.google.common.net.HttpHeaders;
 
 // TODO: Query parameters, not necessary for Glacier
@@ -69,8 +72,18 @@ public class AWSRequestSignerV4 {
 
    private static String buildHashedCanonicalRequest(String method, String endpoint, String hashedPayload,
          String canonicalizedHeadersString, String signedHeaders) {
-      return sha256((method + "\n" + endpoint + "\n" + "" + "\n" + canonicalizedHeadersString + "\n" + signedHeaders
-            + "\n" + hashedPayload).getBytes());
+      return Hashing.sha256().newHasher()
+            .putString(method, UTF_8)
+            .putString("\n", UTF_8)
+            .putString(endpoint, UTF_8)
+            .putString("\n", UTF_8)
+            .putString("\n", UTF_8)
+            .putString(canonicalizedHeadersString, UTF_8)
+            .putString("\n", UTF_8)
+            .putString(signedHeaders, UTF_8)
+            .putString("\n", UTF_8)
+            .putString(hashedPayload, UTF_8)
+            .hash().toString();
    }
 
    private static String createStringToSign(String date, String credentialScope, String hashedCanonicalRequest) {
@@ -120,17 +133,17 @@ public class AWSRequestSignerV4 {
       }));
    }
 
-   private static String sha256(byte[] unhashedBytes) {
-      return Hashing.sha256().hashBytes(unhashedBytes).toString();
-   }
-
    private static String buildHashedPayload(HttpRequest request) {
+      HashingInputStream his = null;
       try {
-         byte[] unhashedBytes = request.getPayload() == null ? "".getBytes() : ByteStreams.toByteArray(request
-               .getPayload().getInput());
-         return sha256(unhashedBytes);
+         his = new HashingInputStream(Hashing.sha256(),
+               request.getPayload() == null ? ByteSource.empty().openStream() : request.getPayload().openStream());
+         ByteStreams.copy(his, ByteStreams.nullOutputStream());
+         return his.hash().toString();
       } catch (IOException e) {
          throw new HttpException("Error signing request", e);
+      } finally {
+         Closeables.closeQuietly(his);
       }
    }
 
