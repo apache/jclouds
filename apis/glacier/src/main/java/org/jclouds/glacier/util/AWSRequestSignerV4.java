@@ -36,6 +36,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
+import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 import com.google.common.io.BaseEncoding;
@@ -70,7 +71,7 @@ public final class AWSRequestSignerV4 {
       this.credential = checkNotNull(credential, "credential");
    }
 
-   private static String buildHashedCanonicalRequest(String method, String endpoint, String hashedPayload,
+   private static HashCode buildHashedCanonicalRequest(String method, String endpoint, HashCode hashedPayload,
          String canonicalizedHeadersString, String signedHeaders) {
       return Hashing.sha256().newHasher()
             .putString(method, UTF_8)
@@ -82,12 +83,12 @@ public final class AWSRequestSignerV4 {
             .putString("\n", UTF_8)
             .putString(signedHeaders, UTF_8)
             .putString("\n", UTF_8)
-            .putString(hashedPayload, UTF_8)
-            .hash().toString();
+            .putString(hashedPayload.toString(), UTF_8)
+            .hash();
    }
 
-   private static String createStringToSign(String date, String credentialScope, String hashedCanonicalRequest) {
-      return ALGORITHM + "\n" + date + "\n" + credentialScope + "\n" + hashedCanonicalRequest;
+   private static String createStringToSign(String date, String credentialScope, HashCode hashedCanonicalRequest) {
+      return ALGORITHM + "\n" + date + "\n" + credentialScope + "\n" + hashedCanonicalRequest.toString();
    }
 
    private static String formatDateWithoutTimestamp(String date) {
@@ -133,13 +134,13 @@ public final class AWSRequestSignerV4 {
       }));
    }
 
-   private static String buildHashedPayload(HttpRequest request) {
+   private static HashCode buildHashedPayload(HttpRequest request) {
       HashingInputStream his = null;
       try {
          his = new HashingInputStream(Hashing.sha256(),
                request.getPayload() == null ? ByteSource.empty().openStream() : request.getPayload().openStream());
          ByteStreams.copy(his, ByteStreams.nullOutputStream());
-         return his.hash().toString();
+         return his.hash();
       } catch (IOException e) {
          throw new HttpException("Error signing request", e);
       } finally {
@@ -181,10 +182,10 @@ public final class AWSRequestSignerV4 {
       String method = request.getMethod();
       String endpoint = request.getEndpoint().getRawPath();
       String credentialScope = buildCredentialScope(dateWithoutTimestamp);
-      String hashedPayload = buildHashedPayload(request);
+      HashCode hashedPayload = buildHashedPayload(request);
 
       // Task 1: Create a Canonical Request For Signature Version 4.
-      String hashedCanonicalRequest = buildHashedCanonicalRequest(method, endpoint, hashedPayload,
+      HashCode hashedCanonicalRequest = buildHashedCanonicalRequest(method, endpoint, hashedPayload,
             canonicalizedHeadersString, signedHeaders);
 
       // Task 2: Create a String to Sign for Signature Version 4.
