@@ -19,8 +19,10 @@ package org.jclouds.glacier;
 import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 import static org.jclouds.Constants.PROPERTY_SO_TIMEOUT;
+import static org.jclouds.glacier.util.TestUtils.buildPayload;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
+import org.jclouds.glacier.reference.GlacierHeaders;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
@@ -207,6 +210,60 @@ public class GlacierClientMockTest {
          RecordedRequest request = server.takeRequest();
          assertEquals(request.getRequestLine(), "GET /-/vaults?limit=2&"
                + "marker=arn%3Aaws%3Aglacier%3Aus-east-1%3A012345678901%3Avaults/examplevault1 HTTP/1.1");
+      } finally {
+         server.shutdown();
+      }
+   }
+
+   public void testUploadArchive() throws IOException, InterruptedException {
+      // Prepare the response
+      MockResponse mr = new MockResponse();
+      mr.setResponseCode(201);
+      String responseId = "NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId";
+      mr.addHeader("x-amzn-RequestId", "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
+      mr.addHeader("Date", "Sun, 25 Mar 2012 12:00:00 GMT");
+      mr.addHeader(GlacierHeaders.TREE_HASH, "beb0fe31a1c7ca8c6c04d574ea906e3f97b31fdca7571defb5b44dca89b5af60");
+      mr.addHeader(
+            "Location",
+            "/111122223333/vaults/examplevault/archives/NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId");
+      mr.addHeader(GlacierHeaders.ARCHIVE_ID, responseId);
+      MockWebServer server = new MockWebServer();
+      server.enqueue(mr);
+      server.play();
+
+      // Send the request and check the response
+      try {
+         GlacierClient client = getGlacierClient(server.getUrl("/"));
+         String id = client.uploadArchive("examplevault", buildPayload(10), "test description");
+         RecordedRequest request = server.takeRequest();
+         assertEquals(id, responseId);
+         assertEquals(request.getRequestLine(), "POST /-/vaults/examplevault/archives HTTP/1.1");
+         assertEquals(request.getHeader(GlacierHeaders.ARCHIVE_DESCRIPTION), "test description");
+         assertNotNull(request.getHeaders(GlacierHeaders.TREE_HASH));
+         assertNotNull(request.getHeaders(GlacierHeaders.LINEAR_HASH));
+      } finally {
+         server.shutdown();
+      }
+   }
+
+   public void testDeleteArchive() throws IOException, InterruptedException {
+      // Prepare the response
+      MockResponse mr = new MockResponse();
+      mr.setResponseCode(204);
+      mr.addHeader("x-amzn-RequestId", "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
+      mr.addHeader("Date", "Sun, 25 Mar 2012 12:00:00 GMT");
+      MockWebServer server = new MockWebServer();
+      server.enqueue(mr);
+      server.play();
+
+      // Send the request and check the response
+      try {
+         String id = "NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId";
+         GlacierClient client = getGlacierClient(server.getUrl("/"));
+         boolean result = client.deleteArchive("examplevault", id);
+         RecordedRequest request = server.takeRequest();
+         assertEquals(request.getRequestLine(), "DELETE /-/vaults/examplevault/archives/" + id + " HTTP/1.1");
+         assertTrue(result);
       } finally {
          server.shutdown();
       }

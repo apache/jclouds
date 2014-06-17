@@ -14,22 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.glacier.reference;
+package org.jclouds.glacier.functions;
+
+import org.jclouds.glacier.reference.GlacierHeaders;
+import org.jclouds.http.HttpException;
+import org.jclouds.http.HttpResponse;
+
+import com.google.common.base.Function;
 
 /**
- * Headers used by Amazon Glacier.
+ * Parses the archiveId from the HttpResponse.
  */
-public final class GlacierHeaders {
+public class ParseArchiveIdHeader implements Function<HttpResponse, String> {
 
-   public static final String DEFAULT_AMAZON_HEADERTAG = "amz";
-   public static final String HEADER_PREFIX = "x-" + DEFAULT_AMAZON_HEADERTAG + "-";
-   public static final String VERSION = HEADER_PREFIX + "glacier-version";
-   public static final String ALTERNATE_DATE = HEADER_PREFIX + "date";
-   public static final String ARCHIVE_DESCRIPTION = HEADER_PREFIX + "archive-description";
-   public static final String LINEAR_HASH = HEADER_PREFIX + "content-sha256";
-   public static final String TREE_HASH = HEADER_PREFIX + "sha256-tree-hash";
-   public static final String ARCHIVE_ID = HEADER_PREFIX + "archive-id";
-
-   private GlacierHeaders() {
+   @Override
+   public String apply(HttpResponse from) {
+      String id = from.getFirstHeaderOrNull(GlacierHeaders.ARCHIVE_ID);
+      if (id == null)
+         throw new HttpException("Did not receive ArchiveId");
+      return id;
    }
 }

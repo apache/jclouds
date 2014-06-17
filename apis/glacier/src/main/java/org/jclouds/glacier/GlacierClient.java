@@ -22,6 +22,7 @@ import java.net.URI;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
+import org.jclouds.io.Payload;
 
 /**
  * Provides access to Amazon Glacier resources via their REST API.
@@ -78,4 +79,37 @@ public interface GlacierClient extends Closeable {
     * @see GlacierClient#listVaults(PaginationOptions)
     */
    PaginatedVaultCollection listVaults();
+
+   /**
+    * Stores an archive in a vault.
+    *
+    * @param vaultName
+    *           Name of the Vault where the archive is being stored.
+    * @param payload
+    *           Payload to be uploaded.
+    * @param description
+    *           Description for the archive.
+    * @return A String containing the Archive identifier in Amazon Glacier.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-archive-post.html" />
+    */
+   String uploadArchive(String vaultName, Payload payload, String description);
+
+   /**
+    * Stores an archive in a vault.
+    *
+    * @see GlacierClient#uploadArchive
+    */
+   String uploadArchive(String vaultName, Payload payload);
+
+   /**
+    * Deletes an archive from a vault.
+    *
+    * @param vaultName
+    *           Name of the Vault where the archive is stored.
+    * @param archiveId
+    *           Amazon Glacier archive identifier.
+    * @return False if the archive was not deleted, true otherwise.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-archive-delete.html" />
+    */
+   boolean deleteArchive(String vaultName, String archiveId);
 }
