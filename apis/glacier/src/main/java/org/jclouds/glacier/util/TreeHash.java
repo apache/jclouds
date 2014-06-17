@@ -21,17 +21,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.jclouds.io.Payload;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.ImmutableSortedMap;
-import com.google.common.collect.Lists;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
@@ -79,7 +78,7 @@ public class TreeHash {
       private static final int CHUNK_SIZE = 1024 * 1024;
 
       private static HashCode hashList(Collection<HashCode> hashList) {
-         List<HashCode> result = Lists.newArrayList();
+         Builder<HashCode> result = ImmutableList.builder();
          while (hashList.size() > 1) {
             //Hash pairs of values and add them to the result list.
             for (Iterator<HashCode> it = hashList.iterator(); it.hasNext();) {
@@ -94,8 +93,8 @@ public class TreeHash {
                   result.add(hc1);
                }
             }
-            hashList = result;
-            result = Lists.newArrayList();
+            hashList = result.build();
+            result = ImmutableList.builder();
          }
          return hashList.iterator().next();
       }
@@ -110,7 +109,7 @@ public class TreeHash {
          InputStream is = null;
          try {
             is = checkNotNull(payload, "payload").openStream();
-            ArrayList<HashCode> list = Lists.newArrayList();
+            Builder<HashCode> list = ImmutableList.builder();
             HashingInputStream linearHis = new HashingInputStream(Hashing.sha256(), is);
             while (true) {
                 HashingInputStream chunkedHis = new HashingInputStream(
@@ -122,7 +121,7 @@ public class TreeHash {
                 list.add(chunkedHis.hash());
             }
             //The result list contains exactly one element now.
-            return new TreeHash(hashList(list), linearHis.hash());
+            return new TreeHash(hashList(list.build()), linearHis.hash());
          } finally {
             Closeables.closeQuietly(is);
          }
