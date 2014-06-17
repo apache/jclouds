@@ -23,6 +23,7 @@ public final class GlacierHeaders {
 
    public static final String DEFAULT_AMAZON_HEADERTAG = "amz";
    public static final String HEADER_PREFIX = "x-" + DEFAULT_AMAZON_HEADERTAG + "-";
+   public static final String REQUEST_ID = HEADER_PREFIX + "RequestId";
    public static final String VERSION = HEADER_PREFIX + "glacier-version";
    public static final String ALTERNATE_DATE = HEADER_PREFIX + "date";
    public static final String ARCHIVE_DESCRIPTION = HEADER_PREFIX + "archive-description";

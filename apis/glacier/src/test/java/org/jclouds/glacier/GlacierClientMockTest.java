@@ -41,6 +41,7 @@ import org.jclouds.glacier.reference.GlacierHeaders;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.net.HttpHeaders;
 import com.google.inject.Module;
 import com.google.mockwebserver.MockResponse;
 import com.google.mockwebserver.MockWebServer;
@@ -70,9 +71,9 @@ public class GlacierClientMockTest {
       // Prepare the response
       MockResponse mr = new MockResponse();
       mr.setResponseCode(201);
-      mr.addHeader("x-amzn-RequestId", "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader("Date", "Sun, 25 Mar 2012 12:02:00 GMT");
-      mr.addHeader("Location", "/111122223333/vaults/" + VAULT_NAME);
+      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
+      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
+      mr.addHeader(HttpHeaders.LOCATION, "/111122223333/vaults/" + VAULT_NAME);
       MockWebServer server = new MockWebServer();
       server.enqueue(mr);
       server.play();
@@ -93,8 +94,8 @@ public class GlacierClientMockTest {
       // Prepare the response
       MockResponse mr = new MockResponse();
       mr.setResponseCode(204);
-      mr.addHeader("x-amzn-RequestId", "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader("Date", "Sun, 25 Mar 2012 12:02:00 GMT");
+      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
+      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
       MockWebServer server = new MockWebServer();
       server.enqueue(mr);
       server.play();
@@ -114,10 +115,10 @@ public class GlacierClientMockTest {
       // Prepare the response
       MockResponse mr = new MockResponse();
       mr.setResponseCode(200);
-      mr.addHeader("x-amzn-RequestId", "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader("Date", "Sun, 25 Mar 2012 12:02:00 GMT");
-      mr.addHeader("Content-Type", "application/json");
-      mr.addHeader("Content-Length", "260");
+      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
+      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, "260");
       mr.setBody("{\"CreationDate\" : \"2012-02-20T17:01:45.198Z\",\"LastInventoryDate\" : "
             + "\"2012-03-20T17:03:43.221Z\",\"NumberOfArchives\" : 192,\"SizeInBytes\" : 78088912,\"VaultARN\" : "
             + "\"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault\",\"VaultName\" : \"examplevault\"}");
@@ -144,10 +145,10 @@ public class GlacierClientMockTest {
       // Prepare the response
       MockResponse mr = new MockResponse();
       mr.setResponseCode(200);
-      mr.addHeader("x-amzn-RequestId", "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader("Date", "Sun, 25 Mar 2012 12:02:00 GMT");
-      mr.addHeader("Content-Type", "application/json");
-      mr.addHeader("Content-Length", "497");
+      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
+      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, "497");
       mr.setBody("{" + "\"Marker\": null,\"VaultList\": [ {\"CreationDate\": \"2012-03-16T22:22:47.214Z\","
             + "\"LastInventoryDate\": \"2012-03-21T22:06:51.218Z\",\"NumberOfArchives\": 2,"
             + "\"SizeInBytes\": 12334,\"VaultARN\": \"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault1\","
@@ -181,10 +182,10 @@ public class GlacierClientMockTest {
       // Prepare the response
       MockResponse mr = new MockResponse();
       mr.setResponseCode(200);
-      mr.addHeader("x-amzn-RequestId", "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader("Date", "Sun, 25 Mar 2012 12:02:00 GMT");
-      mr.addHeader("Content-Type", "application/json");
-      mr.addHeader("Content-Length", "497");
+      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
+      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, "497");
       mr.setBody("{\"Marker\": \"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault3\","
             + "\"VaultList\": [{\"CreationDate\": \"2012-03-16T22:22:47.214Z\",\"LastInventoryDate\":"
             + "\"2012-03-21T22:06:51.218Z\",\"NumberOfArchives\": 2,\"SizeInBytes\": 12334,"
@@ -220,11 +221,11 @@ public class GlacierClientMockTest {
       MockResponse mr = new MockResponse();
       mr.setResponseCode(201);
       String responseId = "NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId";
-      mr.addHeader("x-amzn-RequestId", "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader("Date", "Sun, 25 Mar 2012 12:00:00 GMT");
+      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
+      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:00:00 GMT");
       mr.addHeader(GlacierHeaders.TREE_HASH, "beb0fe31a1c7ca8c6c04d574ea906e3f97b31fdca7571defb5b44dca89b5af60");
       mr.addHeader(
-            "Location",
+            HttpHeaders.LOCATION,
             "/111122223333/vaults/examplevault/archives/NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId");
       mr.addHeader(GlacierHeaders.ARCHIVE_ID, responseId);
       MockWebServer server = new MockWebServer();
@@ -250,8 +251,8 @@ public class GlacierClientMockTest {
       // Prepare the response
       MockResponse mr = new MockResponse();
       mr.setResponseCode(204);
-      mr.addHeader("x-amzn-RequestId", "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader("Date", "Sun, 25 Mar 2012 12:00:00 GMT");
+      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
+      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:00:00 GMT");
       MockWebServer server = new MockWebServer();
       server.enqueue(mr);
       server.play();

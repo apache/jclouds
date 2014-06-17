@@ -16,28 +16,25 @@
  */
 package org.jclouds.glacier.util;
 
+import static org.jclouds.glacier.util.TestUtils.MiB;
+import static org.jclouds.glacier.util.TestUtils.buildData;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
 
-import org.jclouds.io.ByteSources;
 import org.jclouds.io.payloads.ByteSourcePayload;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.hash.HashCode;
-import com.google.common.io.ByteSource;
 
 @Test(groups = "unit", testName = "TreeHasherTest")
 public class TreeHashTest {
 
-   private static final int MB = 1024 * 1024;
-
    @Test
    public void testTreeHasherWith1MBPayload() throws IOException {
-      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(getData(1 * MB)));
+      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(buildData(1 * MiB)));
       assertEquals(th.getLinearHash(),
             HashCode.fromString("9bc1b2a288b26af7257a36277ae3816a7d4f16e89c1e7e77d0a5c48bad62b360"));
       assertEquals(th.getTreeHash(),
@@ -46,7 +43,7 @@ public class TreeHashTest {
 
    @Test
    public void testTreeHasherWith2MBPayload() throws IOException {
-      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(getData(2 * MB)));
+      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(buildData(2 * MiB)));
       assertEquals(th.getLinearHash(),
             HashCode.fromString("5256ec18f11624025905d057d6befb03d77b243511ac5f77ed5e0221ce6d84b5"));
       assertEquals(th.getTreeHash(),
@@ -55,7 +52,7 @@ public class TreeHashTest {
 
    @Test
    public void testTreeHasherWith3MBPayload() throws IOException {
-      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(getData(3 * MB)));
+      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(buildData(3 * MiB)));
       assertEquals(th.getLinearHash(),
             HashCode.fromString("6f850bc94ae6f7de14297c01616c36d712d22864497b28a63b81d776b035e656"));
       assertEquals(th.getTreeHash(),
@@ -64,7 +61,7 @@ public class TreeHashTest {
 
    @Test
    public void testTreeHasherWithMoreThan3MBPayload() throws IOException {
-      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(getData(3 * MB + 512 * 1024)));
+      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(buildData(3 * MiB + 512 * 1024)));
       assertEquals(th.getLinearHash(),
             HashCode.fromString("34c8bdd269f89a091cf17d5d23503940e0abf61c4b6544e42854b9af437f31bb"));
       assertEquals(th.getTreeHash(),
@@ -73,16 +70,10 @@ public class TreeHashTest {
 
    @Test
    public void testBuildTreeHashFromMap() throws IOException {
-      Map<Integer, HashCode> map = Maps.newTreeMap();
+      Builder<Integer, HashCode> map = ImmutableMap.<Integer, HashCode>builder();
       map.put(2, HashCode.fromString("9bc1b2a288b26af7257a36277ae3816a7d4f16e89c1e7e77d0a5c48bad62b360"));
       map.put(1, HashCode.fromString("9bc1b2a288b26af7257a36277ae3816a7d4f16e89c1e7e77d0a5c48bad62b360"));
-      HashCode treehash = TreeHash.Hasher.buildTreeHashFromMap(map);
+      HashCode treehash = TreeHash.Hasher.buildTreeHashFromMap(map.build());
       assertEquals(treehash, HashCode.fromString("560c2c9333c719cb00cfdffee3ba293db17f58743cdd1f7e4055373ae6300afa"));
-   }
-
-   private ByteSource getData(int size) {
-      byte[] array = new byte[1024];
-      Arrays.fill(array, (byte) 'a');
-      return ByteSources.repeatingArrayByteSource(array).slice(0, size);
    }
 }

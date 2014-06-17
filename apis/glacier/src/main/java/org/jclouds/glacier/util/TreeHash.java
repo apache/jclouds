@@ -37,7 +37,7 @@ import com.google.common.hash.HashingInputStream;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
 
-public class TreeHash {
+public final class TreeHash {
    private final HashCode treeHash;
    private final HashCode linearHash;
 

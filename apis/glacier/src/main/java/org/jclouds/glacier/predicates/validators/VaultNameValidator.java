@@ -29,7 +29,7 @@ import com.google.inject.Singleton;
  * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-put.html" />
  */
 @Singleton
-public class VaultNameValidator extends Validator<String> {
+public final class VaultNameValidator extends Validator<String> {
 
    private static final int MIN_LENGTH = 1;
    private static final int MAX_LENGTH = 255;

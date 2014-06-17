@@ -51,7 +51,7 @@ import com.google.common.net.HttpHeaders;
  *
  * @see <a href="http://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html" />
  */
-public class AWSRequestSignerV4 {
+public final class AWSRequestSignerV4 {
 
    public static final String AUTH_TAG = "AWS4";
    public static final String HEADER_TAG = "x-amz-";

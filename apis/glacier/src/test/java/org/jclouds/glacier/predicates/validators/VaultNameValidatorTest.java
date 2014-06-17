@@ -16,6 +16,11 @@
  */
 package org.jclouds.glacier.predicates.validators;
 
+import static com.google.common.base.Charsets.UTF_8;
+import static org.jclouds.glacier.util.TestUtils.buildData;
+
+import java.io.IOException;
+
 import org.testng.annotations.Test;
 
 @Test(groups = "unit", testName = "VaultNameValidatorTest")
@@ -23,12 +28,13 @@ public class VaultNameValidatorTest {
 
    private static final VaultNameValidator VALIDATOR = new VaultNameValidator();
 
-   public void testValidate() {
+   public void testValidate() throws IOException {
       VALIDATOR.validate("VALID_NAME");
       VALIDATOR.validate("VALID-NAME");
       VALIDATOR.validate("VALID255NAME");
       VALIDATOR.validate("255VALID-NAME");
       VALIDATOR.validate("VALID.NAME");
+      VALIDATOR.validate(buildData(255).asCharSource(UTF_8).read());
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
@@ -47,9 +53,7 @@ public class VaultNameValidatorTest {
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
-   public void testNameTooLong() {
-      VALIDATOR.validate("INVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVAL" +
-            "IDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEI" +
-            "NVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAMEINVALIDNAME");
+   public void testNameTooLong() throws IOException {
+      VALIDATOR.validate(buildData(256).asCharSource(UTF_8).read());
    }
 }
