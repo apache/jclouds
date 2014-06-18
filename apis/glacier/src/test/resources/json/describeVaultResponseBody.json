@@ -1,0 +1,8 @@
+{
+  "CreationDate" : "2012-02-20T17:01:45.198Z",
+  "LastInventoryDate" : "2012-03-20T17:03:43.221Z",
+  "NumberOfArchives" : 192,
+  "SizeInBytes" : 78088912,
+  "VaultARN" : "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault",
+  "VaultName" : "examplevault"
+}

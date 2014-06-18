@@ -16,10 +16,12 @@
  */
 package org.jclouds.glacier;
 
+import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 import static org.jclouds.Constants.PROPERTY_SO_TIMEOUT;
 import static org.jclouds.glacier.util.TestUtils.buildPayload;
+import static org.jclouds.util.Strings2.urlEncode;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
@@ -38,10 +40,14 @@ import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
 import org.jclouds.glacier.reference.GlacierHeaders;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
+import com.google.common.net.MediaType;
 import com.google.inject.Module;
 import com.google.mockwebserver.MockResponse;
 import com.google.mockwebserver.MockWebServer;
@@ -50,15 +56,33 @@ import com.google.mockwebserver.RecordedRequest;
 /**
  * Mock test for Glacier.
  */
-@Test
+@Test(singleThreaded = true)
 public class GlacierClientMockTest {
 
-   private static final String VAULT_NAME = "ConcreteVaultName";
-
+   private static final String REQUEST_ID = "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q";
+   private static final String DATE = "Sun, 25 Mar 2012 12:00:00 GMT";
+   private static final String HTTP = "HTTP/1.1";
+   private static final String VAULT_NAME = "examplevault";
+   private static final String VAULT_NAME1 = "examplevault1";
+   private static final String VAULT_NAME2 = "examplevault2";
+   private static final String VAULT_NAME3 = "examplevault3";
+   private static final String LOCATION = "/111122223333/";
+   private static final String VAULT_LOCATION = LOCATION + "vaults/" + VAULT_NAME;
+   private static final String VAULT_ARN_PREFIX = "arn:aws:glacier:us-east-1:012345678901:vaults/";
+   private static final String VAULT_ARN = VAULT_ARN_PREFIX + VAULT_NAME;
+   private static final String VAULT_ARN1 = VAULT_ARN_PREFIX + VAULT_NAME1;
+   private static final String VAULT_ARN3 = VAULT_ARN_PREFIX + VAULT_NAME3;
+   private static final String ARCHIVE_ID = "NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId";
+   private static final String ARCHIVE_LOCATION = VAULT_LOCATION + "/archives/" + ARCHIVE_ID;
+   private static final String TREEHASH = "beb0fe31a1c7ca8c6c04d574ea906e3f97b31fdca7571defb5b44dca89b5af60";
+   private static final String DESCRIPTION = "test description";
    private static final Set<Module> modules = ImmutableSet.<Module> of(new ExecutorServiceModule(sameThreadExecutor(),
          sameThreadExecutor()));
 
-   static GlacierClient getGlacierClient(URL server) {
+   private MockWebServer server;
+   private GlacierClient client;
+
+   private static GlacierClient getGlacierClient(URL server) {
       Properties overrides = new Properties();
       // prevent expect-100 bug http://code.google.com/p/mockwebserver/issues/detail?id=6
       overrides.setProperty(PROPERTY_SO_TIMEOUT, "0");
@@ -67,206 +91,121 @@ public class GlacierClientMockTest {
             .modules(modules).overrides(overrides).buildApi(GlacierClient.class);
    }
 
-   public void testCreateVault() throws IOException, InterruptedException {
-      // Prepare the response
+   private static MockResponse buildBaseResponse(int responseCode) {
       MockResponse mr = new MockResponse();
-      mr.setResponseCode(201);
-      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
-      mr.addHeader(HttpHeaders.LOCATION, "/111122223333/vaults/" + VAULT_NAME);
-      MockWebServer server = new MockWebServer();
-      server.enqueue(mr);
-      server.play();
-
-      // Send the request and check the response
-      try {
-         GlacierClient client = getGlacierClient(server.getUrl("/"));
-         URI responseUri = client.createVault(VAULT_NAME);
-         assertEquals(responseUri.toString(), server.getUrl("/") + "111122223333/vaults/" + VAULT_NAME);
-         RecordedRequest request = server.takeRequest();
-         assertEquals(request.getRequestLine(), "PUT /-/vaults/" + VAULT_NAME + " HTTP/1.1");
-      } finally {
-         server.shutdown();
-      }
+      mr.setResponseCode(responseCode);
+      mr.addHeader(GlacierHeaders.REQUEST_ID, REQUEST_ID);
+      mr.addHeader(HttpHeaders.DATE, DATE);
+      return mr;
    }
 
-   public void testDeleteVault() throws IOException, InterruptedException {
-      // Prepare the response
-      MockResponse mr = new MockResponse();
-      mr.setResponseCode(204);
-      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
-      MockWebServer server = new MockWebServer();
-      server.enqueue(mr);
-      server.play();
-
-      // Send the request and check the response
-      try {
-         GlacierClient client = getGlacierClient(server.getUrl("/"));
-         assertTrue(client.deleteVault(VAULT_NAME));
-         RecordedRequest request = server.takeRequest();
-         assertEquals(request.getRequestLine(), "DELETE /-/vaults/" + VAULT_NAME + " HTTP/1.1");
-      } finally {
-         server.shutdown();
-      }
+   private static String getResponseBody(String path) throws IOException {
+      return Resources.toString(Resources.getResource(GlacierClientMockTest.class, path), UTF_8);
    }
 
-   public void testDescribeVault() throws IOException, InterruptedException {
-      // Prepare the response
-      MockResponse mr = new MockResponse();
-      mr.setResponseCode(200);
-      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
-      mr.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, "260");
-      mr.setBody("{\"CreationDate\" : \"2012-02-20T17:01:45.198Z\",\"LastInventoryDate\" : "
-            + "\"2012-03-20T17:03:43.221Z\",\"NumberOfArchives\" : 192,\"SizeInBytes\" : 78088912,\"VaultARN\" : "
-            + "\"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault\",\"VaultName\" : \"examplevault\"}");
-      MockWebServer server = new MockWebServer();
-      server.enqueue(mr);
+   @BeforeTest
+   private void initServer() throws IOException {
+      server = new MockWebServer();
       server.play();
-
-      // Send the request and check the response
-      try {
-         GlacierClient client = getGlacierClient(server.getUrl("/"));
-         VaultMetadata vm = client.describeVault(VAULT_NAME);
-         RecordedRequest request = server.takeRequest();
-         assertEquals(request.getRequestLine(), "GET /-/vaults/" + VAULT_NAME + " HTTP/1.1");
-         assertEquals(vm.getVaultName(), "examplevault");
-         assertEquals(vm.getVaultARN(), "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault");
-         assertEquals(vm.getSizeInBytes(), 78088912);
-         assertEquals(vm.getNumberOfArchives(), 192);
-      } finally {
-         server.shutdown();
-      }
+      client = getGlacierClient(server.getUrl("/"));
    }
 
-   public void testListVaults() throws IOException, InterruptedException {
-      // Prepare the response
-      MockResponse mr = new MockResponse();
-      mr.setResponseCode(200);
-      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
-      mr.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, "497");
-      mr.setBody("{" + "\"Marker\": null,\"VaultList\": [ {\"CreationDate\": \"2012-03-16T22:22:47.214Z\","
-            + "\"LastInventoryDate\": \"2012-03-21T22:06:51.218Z\",\"NumberOfArchives\": 2,"
-            + "\"SizeInBytes\": 12334,\"VaultARN\": \"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault1\","
-            + "\"VaultName\": \"examplevault1\"}, {\"CreationDate\": \"2012-03-19T22:06:51.218Z\","
-            + "\"LastInventoryDate\": \"2012-03-21T22:06:51.218Z\", \"NumberOfArchives\": 0,\"SizeInBytes\": 0,"
-            + "\"VaultARN\": \"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault2\","
-            + "\"VaultName\": \"examplevault2\"},{\"CreationDate\": \"2012-03-19T22:06:51.218Z\","
-            + "\"LastInventoryDate\": \"2012-03-25T12:14:31.121Z\",\"NumberOfArchives\": 0,\"SizeInBytes\": 0,"
-            + "\"VaultARN\": \"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault3\","
-            + "\"VaultName\": \"examplevault3\"}]}");
-      MockWebServer server = new MockWebServer();
-      server.enqueue(mr);
-      server.play();
-
-      // Send the request and check the response
-      try {
-         GlacierClient client = getGlacierClient(server.getUrl("/"));
-         PaginatedVaultCollection vc = client.listVaults();
-         Iterator<VaultMetadata> i = vc.iterator();
-         assertEquals(i.next().getVaultName(), "examplevault1");
-         assertEquals(i.next().getVaultName(), "examplevault2");
-         assertEquals(i.next().getVaultName(), "examplevault3");
-         RecordedRequest request = server.takeRequest();
-         assertEquals(request.getRequestLine(), "GET /-/vaults HTTP/1.1");
-      } finally {
-         server.shutdown();
-      }
+   @AfterTest
+   private void shutdownServer() throws IOException {
+      server.shutdown();
    }
 
-   public void testListVaultsWithQueryParams() throws IOException, InterruptedException {
-      // Prepare the response
-      MockResponse mr = new MockResponse();
-      mr.setResponseCode(200);
-      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:02:00 GMT");
-      mr.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, "497");
-      mr.setBody("{\"Marker\": \"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault3\","
-            + "\"VaultList\": [{\"CreationDate\": \"2012-03-16T22:22:47.214Z\",\"LastInventoryDate\":"
-            + "\"2012-03-21T22:06:51.218Z\",\"NumberOfArchives\": 2,\"SizeInBytes\": 12334,"
-            + "\"VaultARN\": \"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault1\","
-            + "\"VaultName\": \"examplevault1\"},{\"CreationDate\": \"2012-03-19T22:06:51.218Z\","
-            + "\"LastInventoryDate\": \"2012-03-21T22:06:51.218Z\",\"NumberOfArchives\": 0,"
-            + "\"SizeInBytes\": 0,\"VaultARN\": \"arn:aws:glacier:us-east-1:012345678901:vaults/examplevault2\","
-            + "\"VaultName\": \"examplevault2\"}]}");
-      MockWebServer server = new MockWebServer();
+   @Test
+   public void testCreateVault() throws InterruptedException {
+      MockResponse mr = buildBaseResponse(201);
+      mr.addHeader(HttpHeaders.LOCATION, VAULT_LOCATION);
       server.enqueue(mr);
-      server.play();
 
-      // Send the request and check the response
-      try {
-         GlacierClient client = getGlacierClient(server.getUrl("/"));
-         PaginatedVaultCollection vc = client.listVaults(PaginationOptions.Builder.limit(2).marker(
-               "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault1"));
-         Iterator<VaultMetadata> i = vc.iterator();
-         assertEquals(i.next().getVaultName(), "examplevault1");
-         assertEquals(i.next().getVaultName(), "examplevault2");
-         assertFalse(i.hasNext());
-         assertEquals(vc.nextMarker().get(), "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault3");
-         RecordedRequest request = server.takeRequest();
-         assertEquals(request.getRequestLine(), "GET /-/vaults?limit=2&"
-               + "marker=arn%3Aaws%3Aglacier%3Aus-east-1%3A012345678901%3Avaults/examplevault1 HTTP/1.1");
-      } finally {
-         server.shutdown();
-      }
+      URI responseUri = client.createVault(VAULT_NAME);
+      assertEquals(responseUri.toString(), server.getUrl("/") + VAULT_LOCATION.substring(1));
+      assertEquals(server.takeRequest().getRequestLine(), "PUT /-/vaults/" + VAULT_NAME + " " + HTTP);
    }
 
-   public void testUploadArchive() throws IOException, InterruptedException {
-      // Prepare the response
-      MockResponse mr = new MockResponse();
-      mr.setResponseCode(201);
-      String responseId = "NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId";
-      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:00:00 GMT");
-      mr.addHeader(GlacierHeaders.TREE_HASH, "beb0fe31a1c7ca8c6c04d574ea906e3f97b31fdca7571defb5b44dca89b5af60");
-      mr.addHeader(
-            HttpHeaders.LOCATION,
-            "/111122223333/vaults/examplevault/archives/NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId");
-      mr.addHeader(GlacierHeaders.ARCHIVE_ID, responseId);
-      MockWebServer server = new MockWebServer();
-      server.enqueue(mr);
-      server.play();
+   @Test
+   public void testDeleteVault() throws InterruptedException {
+      server.enqueue(buildBaseResponse(204));
 
-      // Send the request and check the response
-      try {
-         GlacierClient client = getGlacierClient(server.getUrl("/"));
-         String id = client.uploadArchive("examplevault", buildPayload(10), "test description");
-         RecordedRequest request = server.takeRequest();
-         assertEquals(id, responseId);
-         assertEquals(request.getRequestLine(), "POST /-/vaults/examplevault/archives HTTP/1.1");
-         assertEquals(request.getHeader(GlacierHeaders.ARCHIVE_DESCRIPTION), "test description");
-         assertNotNull(request.getHeaders(GlacierHeaders.TREE_HASH));
-         assertNotNull(request.getHeaders(GlacierHeaders.LINEAR_HASH));
-      } finally {
-         server.shutdown();
-      }
+      assertTrue(client.deleteVault(VAULT_NAME));
+      assertEquals(server.takeRequest().getRequestLine(), "DELETE /-/vaults/" + VAULT_NAME + " " + HTTP);
    }
 
-   public void testDeleteArchive() throws IOException, InterruptedException {
-      // Prepare the response
-      MockResponse mr = new MockResponse();
-      mr.setResponseCode(204);
-      mr.addHeader(GlacierHeaders.REQUEST_ID, "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q");
-      mr.addHeader(HttpHeaders.DATE, "Sun, 25 Mar 2012 12:00:00 GMT");
-      MockWebServer server = new MockWebServer();
+   @Test
+   public void testDescribeVault() throws InterruptedException, IOException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/describeVaultResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
       server.enqueue(mr);
-      server.play();
 
-      // Send the request and check the response
-      try {
-         String id = "NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId";
-         GlacierClient client = getGlacierClient(server.getUrl("/"));
-         boolean result = client.deleteArchive("examplevault", id);
-         RecordedRequest request = server.takeRequest();
-         assertEquals(request.getRequestLine(), "DELETE /-/vaults/examplevault/archives/" + id + " HTTP/1.1");
-         assertTrue(result);
-      } finally {
-         server.shutdown();
-      }
+      VaultMetadata vm = client.describeVault(VAULT_NAME);
+      assertEquals(server.takeRequest().getRequestLine(), "GET /-/vaults/" + VAULT_NAME + " " + HTTP);
+      assertEquals(vm.getVaultName(), VAULT_NAME);
+      assertEquals(vm.getVaultARN(), VAULT_ARN);
+      assertEquals(vm.getSizeInBytes(), 78088912);
+      assertEquals(vm.getNumberOfArchives(), 192);
+   }
+
+   @Test
+   public void testListVaults() throws InterruptedException, IOException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/listVaultsResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      PaginatedVaultCollection vc = client.listVaults();
+      Iterator<VaultMetadata> i = vc.iterator();
+      assertEquals(i.next().getVaultName(), VAULT_NAME1);
+      assertEquals(i.next().getVaultName(), VAULT_NAME2);
+      assertEquals(i.next().getVaultName(), VAULT_NAME3);
+      assertEquals(server.takeRequest().getRequestLine(), "GET /-/vaults " + HTTP);
+   }
+
+   @Test
+   public void testListVaultsWithQueryParams() throws InterruptedException, IOException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/listVaultsWithQueryParamsResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      PaginatedVaultCollection vc = client.listVaults(PaginationOptions.Builder.limit(2).marker(VAULT_ARN1));
+      Iterator<VaultMetadata> i = vc.iterator();
+      assertEquals(i.next().getVaultName(), VAULT_NAME1);
+      assertEquals(i.next().getVaultName(), VAULT_NAME2);
+      assertFalse(i.hasNext());
+      assertEquals(vc.nextMarker().get(), VAULT_ARN3);
+      assertEquals(server.takeRequest().getRequestLine(),
+            "GET /-/vaults?limit=2&marker=" + urlEncode(VAULT_ARN1, '/') + " " + HTTP);
+   }
+
+   @Test
+   public void testUploadArchive() throws InterruptedException {
+      MockResponse mr = buildBaseResponse(201);
+      mr.addHeader(GlacierHeaders.TREE_HASH, TREEHASH);
+      mr.addHeader(HttpHeaders.LOCATION, ARCHIVE_LOCATION);
+      mr.addHeader(GlacierHeaders.ARCHIVE_ID, ARCHIVE_ID);
+      server.enqueue(mr);
+
+      assertEquals(client.uploadArchive(VAULT_NAME, buildPayload(10), DESCRIPTION), ARCHIVE_ID);
+      RecordedRequest request = server.takeRequest();
+      assertEquals(request.getRequestLine(), "POST /-/vaults/" + VAULT_NAME + "/archives " + HTTP);
+      assertEquals(request.getHeader(GlacierHeaders.ARCHIVE_DESCRIPTION), DESCRIPTION);
+      assertNotNull(request.getHeaders(GlacierHeaders.TREE_HASH));
+      assertNotNull(request.getHeaders(GlacierHeaders.LINEAR_HASH));
+   }
+
+   @Test
+   public void testDeleteArchive() throws InterruptedException {
+      MockResponse mr = buildBaseResponse(204);
+      server.enqueue(mr);
+
+      assertTrue(client.deleteArchive(VAULT_NAME, ARCHIVE_ID));
+      assertEquals(server.takeRequest().getRequestLine(), "DELETE /-/vaults/" + VAULT_NAME + "/archives/" + ARCHIVE_ID + " " + HTTP);
    }
 }
