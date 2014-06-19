@@ -79,7 +79,7 @@ public interface GlacierAsyncClient extends Closeable {
    @Named("CreateVault")
    @PUT
    @Path("/-/vaults/{vault}")
-   ListenableFuture<URI> createVault(@PathParam("vault") @ParamValidators(VaultNameValidator.class) String vaultName);
+   ListenableFuture<URI> createVault(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 
    /**
     * @see GlacierClient#deleteVaultIfEmpty
@@ -88,7 +88,7 @@ public interface GlacierAsyncClient extends Closeable {
    @DELETE
    @Path("/-/vaults/{vault}")
    @Fallback(FalseOnIllegalArgumentException.class)
-   ListenableFuture<Boolean> deleteVault(@PathParam("vault") String vaultName);
+   ListenableFuture<Boolean> deleteVault(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 
    /**
     * @see GlacierClient#describeVault
@@ -99,7 +99,7 @@ public interface GlacierAsyncClient extends Closeable {
    @ResponseParser(ParseVaultMetadataFromHttpContent.class)
    @Fallback(NullOnNotFoundOr404.class)
    ListenableFuture<VaultMetadata> describeVault(
-         @PathParam("vault") @ParamValidators(VaultNameValidator.class) String vaultName);
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 
    /**
     * @see GlacierClient#listVaults(PaginationOptions)
@@ -127,7 +127,7 @@ public interface GlacierAsyncClient extends Closeable {
    @Path("/-/vaults/{vault}/archives")
    @ResponseParser(ParseArchiveIdHeader.class)
    ListenableFuture<String> uploadArchive(
-         @PathParam("vault") String vaultName,
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
          @ParamValidators(PayloadValidator.class) @BinderParam(BindHashesToHeaders.class) Payload payload,
          @ParamValidators(DescriptionValidator.class) @BinderParam(BindDescriptionToHeaders.class) String description);
 
@@ -139,7 +139,7 @@ public interface GlacierAsyncClient extends Closeable {
    @Path("/-/vaults/{vault}/archives")
    @ResponseParser(ParseArchiveIdHeader.class)
    ListenableFuture<String> uploadArchive(
-         @PathParam("vault") String vaultName,
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
          @ParamValidators(PayloadValidator.class) @BinderParam(BindHashesToHeaders.class) Payload payload);
 
    /**
@@ -149,7 +149,7 @@ public interface GlacierAsyncClient extends Closeable {
    @DELETE
    @Path("/-/vaults/{vault}/archives/{archive}")
    ListenableFuture<Boolean> deleteArchive(
-         @PathParam("vault") String vaultName,
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
          @PathParam("archive") String archiveId);
 
    /**
@@ -182,7 +182,8 @@ public interface GlacierAsyncClient extends Closeable {
    @PUT
    @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
    @ResponseParser(ParseMultipartUploadTreeHashHeader.class)
-   ListenableFuture<String> uploadPart(@PathParam("vault") String vaultName,
+   ListenableFuture<String> uploadPart(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
          @PathParam("uploadId") String uploadId,
          @BinderParam(BindContentRangeToHeaders.class) ContentRange range,
          @ParamValidators(PayloadValidator.class) @BinderParam(BindHashesToHeaders.class) Payload payload);

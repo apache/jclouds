@@ -16,6 +16,7 @@
  */
 package org.jclouds.glacier.predicates.validators;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import org.jclouds.predicates.Validator;
@@ -37,17 +38,10 @@ public final class DescriptionValidator extends Validator<String> {
    public void validate(String description) {
       if (isNullOrEmpty(description))
          return;
-      if (description.length() > MAX_DESC_LENGTH)
-         throw exception("Description can't be longer than " + MAX_DESC_LENGTH + " characters" + " but was " + description.length());
-      if (!DESCRIPTION_ACCEPTABLE_RANGE.matchesAllOf(description))
-         throw exception("Description should have ASCII values between 32 and 126.");
-   }
-
-   protected static IllegalArgumentException exception(String reason) {
-      return new IllegalArgumentException(
-            String.format(
-                  "Description doesn't match Glacier archive description rules. "
-                        + "Reason: %s. For more info, please refer to http://docs.aws.amazon.com/amazonglacier/latest/dev/api-archive-post.html.",
-                  reason));
+      checkArgument(description.length() <= MAX_DESC_LENGTH,
+            "Description can't be longer than %d characters but was %d",
+            MAX_DESC_LENGTH, description.length());
+      checkArgument(DESCRIPTION_ACCEPTABLE_RANGE.matchesAllOf(description),
+            "Description should have ASCII values between 32 and 126.");
    }
 }

@@ -34,7 +34,7 @@ public class TreeHashTest {
 
    @Test
    public void testTreeHasherWith1MBPayload() throws IOException {
-      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(buildData(1 * MiB)));
+      TreeHash th = TreeHash.buildTreeHashFromPayload(new ByteSourcePayload(buildData(1 * MiB)));
       assertEquals(th.getLinearHash(),
             HashCode.fromString("9bc1b2a288b26af7257a36277ae3816a7d4f16e89c1e7e77d0a5c48bad62b360"));
       assertEquals(th.getTreeHash(),
@@ -43,7 +43,7 @@ public class TreeHashTest {
 
    @Test
    public void testTreeHasherWith2MBPayload() throws IOException {
-      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(buildData(2 * MiB)));
+      TreeHash th = TreeHash.buildTreeHashFromPayload(new ByteSourcePayload(buildData(2 * MiB)));
       assertEquals(th.getLinearHash(),
             HashCode.fromString("5256ec18f11624025905d057d6befb03d77b243511ac5f77ed5e0221ce6d84b5"));
       assertEquals(th.getTreeHash(),
@@ -52,7 +52,7 @@ public class TreeHashTest {
 
    @Test
    public void testTreeHasherWith3MBPayload() throws IOException {
-      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(buildData(3 * MiB)));
+      TreeHash th = TreeHash.buildTreeHashFromPayload(new ByteSourcePayload(buildData(3 * MiB)));
       assertEquals(th.getLinearHash(),
             HashCode.fromString("6f850bc94ae6f7de14297c01616c36d712d22864497b28a63b81d776b035e656"));
       assertEquals(th.getTreeHash(),
@@ -61,7 +61,7 @@ public class TreeHashTest {
 
    @Test
    public void testTreeHasherWithMoreThan3MBPayload() throws IOException {
-      TreeHash th = TreeHash.Hasher.buildTreeHashFromPayload(new ByteSourcePayload(buildData(3 * MiB + 512 * 1024)));
+      TreeHash th = TreeHash.buildTreeHashFromPayload(new ByteSourcePayload(buildData(3 * MiB + 512 * 1024)));
       assertEquals(th.getLinearHash(),
             HashCode.fromString("34c8bdd269f89a091cf17d5d23503940e0abf61c4b6544e42854b9af437f31bb"));
       assertEquals(th.getTreeHash(),
@@ -73,7 +73,7 @@ public class TreeHashTest {
       Builder<Integer, HashCode> map = ImmutableMap.<Integer, HashCode>builder();
       map.put(2, HashCode.fromString("9bc1b2a288b26af7257a36277ae3816a7d4f16e89c1e7e77d0a5c48bad62b360"));
       map.put(1, HashCode.fromString("9bc1b2a288b26af7257a36277ae3816a7d4f16e89c1e7e77d0a5c48bad62b360"));
-      HashCode treehash = TreeHash.Hasher.buildTreeHashFromMap(map.build());
+      HashCode treehash = TreeHash.buildTreeHashFromMap(map.build());
       assertEquals(treehash, HashCode.fromString("560c2c9333c719cb00cfdffee3ba293db17f58743cdd1f7e4055373ae6300afa"));
    }
 }

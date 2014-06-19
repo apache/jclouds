@@ -31,14 +31,14 @@ public class PayloadValidatorTest {
       VALIDATOR.validate(buildPayload(10));
    }
 
-   @Test(expectedExceptions = IllegalArgumentException.class)
+   @Test(expectedExceptions = NullPointerException.class)
    public void testNoContentLength() {
       Payload payload = buildPayload(10);
       payload.getContentMetadata().setContentLength(null);
       VALIDATOR.validate(payload);
    }
 
-   @Test(expectedExceptions = IllegalArgumentException.class)
+   @Test(expectedExceptions = NullPointerException.class)
    public void testNullPayload() {
       VALIDATOR.validate(null);
    }

@@ -38,6 +38,8 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
 
 public final class TreeHash {
+   private static final int CHUNK_SIZE = 1024 * 1024;
+
    private final HashCode treeHash;
    private final HashCode linearHash;
 
@@ -74,68 +76,64 @@ public final class TreeHash {
       return "TreeHash [treeHash=" + treeHash + ", linearHash=" + linearHash + "]";
    }
 
-   public static class Hasher {
-      private static final int CHUNK_SIZE = 1024 * 1024;
-
-      private static HashCode hashList(Collection<HashCode> hashList) {
-         Builder<HashCode> result = ImmutableList.builder();
-         while (hashList.size() > 1) {
-            //Hash pairs of values and add them to the result list.
-            for (Iterator<HashCode> it = hashList.iterator(); it.hasNext();) {
-               HashCode hc1 = it.next();
-               if (it.hasNext()) {
-                   HashCode hc2 = it.next();
-                   result.add(Hashing.sha256().newHasher()
-                         .putBytes(hc1.asBytes())
-                         .putBytes(hc2.asBytes())
-                         .hash());
-               } else {
-                  result.add(hc1);
-               }
+   private static HashCode hashList(Collection<HashCode> hashList) {
+      Builder<HashCode> result = ImmutableList.builder();
+      while (hashList.size() > 1) {
+         //Hash pairs of values and add them to the result list.
+         for (Iterator<HashCode> it = hashList.iterator(); it.hasNext();) {
+            HashCode hc1 = it.next();
+            if (it.hasNext()) {
+                HashCode hc2 = it.next();
+                result.add(Hashing.sha256().newHasher()
+                      .putBytes(hc1.asBytes())
+                      .putBytes(hc2.asBytes())
+                      .hash());
+            } else {
+               result.add(hc1);
             }
-            hashList = result.build();
-            result = ImmutableList.builder();
          }
-         return hashList.iterator().next();
+         hashList = result.build();
+         result = ImmutableList.builder();
       }
+      return hashList.iterator().next();
+   }
 
-      /**
-       * Builds the Hash and the TreeHash values of the payload.
-       *
-       * @return The calculated TreeHash.
-       * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/checksum-calculations.html" />
-       */
-      public static TreeHash buildTreeHashFromPayload(Payload payload) throws IOException {
-         InputStream is = null;
-         try {
-            is = checkNotNull(payload, "payload").openStream();
-            Builder<HashCode> list = ImmutableList.builder();
-            HashingInputStream linearHis = new HashingInputStream(Hashing.sha256(), is);
-            while (true) {
-                HashingInputStream chunkedHis = new HashingInputStream(
-                        Hashing.sha256(), ByteStreams.limit(linearHis, CHUNK_SIZE));
-                long count = ByteStreams.copy(chunkedHis, ByteStreams.nullOutputStream());
-                if (count == 0) {
-                    break;
-                }
-                list.add(chunkedHis.hash());
-            }
-            //The result list contains exactly one element now.
-            return new TreeHash(hashList(list.build()), linearHis.hash());
-         } finally {
-            Closeables.closeQuietly(is);
+   /**
+    * Builds the Hash and the TreeHash values of the payload.
+    *
+    * @return The calculated TreeHash.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/checksum-calculations.html" />
+    */
+   public static TreeHash buildTreeHashFromPayload(Payload payload) throws IOException {
+      InputStream is = null;
+      try {
+         is = checkNotNull(payload, "payload").openStream();
+         Builder<HashCode> list = ImmutableList.builder();
+         HashingInputStream linearHis = new HashingInputStream(Hashing.sha256(), is);
+         while (true) {
+             HashingInputStream chunkedHis = new HashingInputStream(
+                     Hashing.sha256(), ByteStreams.limit(linearHis, CHUNK_SIZE));
+             long count = ByteStreams.copy(chunkedHis, ByteStreams.nullOutputStream());
+             if (count == 0) {
+                 break;
+             }
+             list.add(chunkedHis.hash());
          }
+         //The result list contains exactly one element now.
+         return new TreeHash(hashList(list.build()), linearHis.hash());
+      } finally {
+         Closeables.closeQuietly(is);
       }
+   }
 
-      /**
-       * Builds a TreeHash based on a map of hashed chunks.
-       *
-       * @return The calculated TreeHash.
-       * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/checksum-calculations.html" />
-       */
-      public static HashCode buildTreeHashFromMap(Map<Integer, HashCode> map) {
-         checkArgument(!map.isEmpty(), "The map cannot be empty.");
-         return hashList(ImmutableSortedMap.copyOf(map).values());
-      }
+   /**
+    * Builds a TreeHash based on a map of hashed chunks.
+    *
+    * @return The calculated TreeHash.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/checksum-calculations.html" />
+    */
+   public static HashCode buildTreeHashFromMap(Map<Integer, HashCode> map) {
+      checkArgument(!map.isEmpty(), "The map cannot be empty.");
+      return hashList(ImmutableSortedMap.copyOf(map).values());
    }
 }

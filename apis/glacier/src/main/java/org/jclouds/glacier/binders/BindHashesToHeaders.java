@@ -35,7 +35,7 @@ public class BindHashesToHeaders implements Binder {
 
    private HttpRequest addChecksumHeaders(HttpRequest request, Payload payload) {
       try {
-         TreeHash hash = TreeHash.Hasher.buildTreeHashFromPayload(payload);
+         TreeHash hash = TreeHash.buildTreeHashFromPayload(payload);
          request = request.toBuilder()
                .addHeader(GlacierHeaders.LINEAR_HASH, hash.getLinearHash().toString())
                .addHeader(GlacierHeaders.TREE_HASH, hash.getTreeHash().toString())

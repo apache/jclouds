@@ -16,13 +16,17 @@
  */
 package org.jclouds.glacier.predicates.validators;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.jclouds.predicates.Validator;
 
+import com.google.inject.Singleton;
+
 /**
  * Validates the part size parameter used when initiating multipart uploads.
  */
+@Singleton
 public final class PartSizeValidator extends Validator<Long> {
    private static final int MIN_PART_SIZE = 1;
    private static final int MAX_PART_SIZE = 4096;
@@ -30,15 +34,7 @@ public final class PartSizeValidator extends Validator<Long> {
    @Override
    public void validate(Long partSizeInMB) throws IllegalArgumentException {
       checkNotNull(partSizeInMB, "partSizeInMB");
-      if (partSizeInMB < MIN_PART_SIZE || partSizeInMB > MAX_PART_SIZE || (partSizeInMB & (partSizeInMB - 1)) != 0)
-         throw exception(partSizeInMB, "partSizeInMB must be a power of 2 between 1 and 4096.");
-   }
-
-   protected static IllegalArgumentException exception(Long size, String reason) {
-      return new IllegalArgumentException(
-            String.format(
-                  "Part size '%s' doesn't match Glacier Multipart upload rules. "
-                        + "Reason: %s. For more info, please refer to http://http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-initiate-upload.html.",
-                  size, reason));
+      checkArgument(!(partSizeInMB < MIN_PART_SIZE || partSizeInMB > MAX_PART_SIZE || Long.bitCount(partSizeInMB) != 1),
+            "partSizeInMB must be a power of 2 between 1 and 4096.");
    }
 }

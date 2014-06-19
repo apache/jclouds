@@ -16,6 +16,9 @@
  */
 package org.jclouds.glacier.predicates.validators;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.jclouds.io.Payload;
 import org.jclouds.predicates.Validator;
 
@@ -31,19 +34,9 @@ public final class PayloadValidator extends Validator<Payload> {
 
    @Override
    public void validate(Payload payload) {
-      if (payload == null)
-         throw exception(payload, "Archive must have a payload.");
-      if (payload.getContentMetadata().getContentLength() == null)
-         throw exception(payload, "Content length must be set.");
-      if (payload.getContentMetadata().getContentLength() > MAX_CONTENT_SIZE)
-         throw exception(payload, "Max content size is 4gb" + " but was " + payload.getContentMetadata().getContentLength());
-   }
-
-   protected static IllegalArgumentException exception(Payload payload, String reason) {
-      return new IllegalArgumentException(
-            String.format(
-                  "Payload '%s' doesn't match Glacier archive upload rules. "
-                        + "Reason: %s. For more info, please refer to http://docs.aws.amazon.com/amazonglacier/latest/dev/api-archive-post.html.",
-                  payload, reason));
+      checkNotNull(payload, "Archive must have a payload.");
+      checkNotNull(payload.getContentMetadata().getContentLength(), "Content length must be set.");
+      checkArgument(payload.getContentMetadata().getContentLength() <= MAX_CONTENT_SIZE,
+            "Max content size is 4gb but was %d", payload.getContentMetadata().getContentLength());
    }
 }

@@ -16,6 +16,7 @@
  */
 package org.jclouds.glacier.predicates.validators;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import org.jclouds.predicates.Validator;
@@ -34,26 +35,16 @@ public final class VaultNameValidator extends Validator<String> {
    private static final int MIN_LENGTH = 1;
    private static final int MAX_LENGTH = 255;
 
+   private static final CharMatcher VAULT_NAME_ACCEPTABLE_RANGE = CharMatcher.inRange('a', 'z')
+         .or(CharMatcher.inRange('A', 'Z'))
+         .or(CharMatcher.inRange('0', '9'))
+         .or(CharMatcher.anyOf("-_."));
+
    @Override
    public void validate(String vaultName) {
-      if (isNullOrEmpty(vaultName) || vaultName.length() > MAX_LENGTH)
-         throw exception(vaultName, "Can't be null or empty. Length must be " + MIN_LENGTH + " to " + MAX_LENGTH
-               + " symbols.");
-      CharMatcher range = getAcceptableRange();
-      if (!range.matchesAllOf(vaultName))
-         throw exception(vaultName, "Should have ASCII letters and numbers, underscores, hyphens, or periods.");
-   }
-
-   private static CharMatcher getAcceptableRange() {
-      return CharMatcher.inRange('a', 'z').or(CharMatcher.inRange('A', 'Z')).or(CharMatcher.inRange('0', '9'))
-            .or(CharMatcher.anyOf("-_."));
-   }
-
-   protected static IllegalArgumentException exception(String vaultName, String reason) {
-      return new IllegalArgumentException(
-            String.format(
-                  "Object '%s' doesn't match AWS Vault naming convention. "
-                        + "Reason: %s. For more info, please refer to http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-put.html.",
-                  vaultName, reason));
+      checkArgument(!isNullOrEmpty(vaultName) && vaultName.length() <= MAX_LENGTH,
+            "Can't be null or empty. Length must be %d to %d symbols.", MIN_LENGTH, MAX_LENGTH);
+      checkArgument(VAULT_NAME_ACCEPTABLE_RANGE.matchesAllOf(vaultName),
+            "Should contain only ASCII letters and numbers, underscores, hyphens, or periods.");
    }
 }
