@@ -45,8 +45,8 @@ import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.http.HttpResponseException;
 import org.jclouds.io.Payload;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMap;
@@ -112,7 +112,7 @@ public class GlacierClientMockTest {
       return Resources.toString(Resources.getResource(GlacierClientMockTest.class, path), UTF_8);
    }
 
-   @BeforeTest
+   @BeforeMethod
    private void initServer() throws IOException {
       server = new MockWebServer();
       server.setBodyLimit(0);
@@ -120,7 +120,7 @@ public class GlacierClientMockTest {
       client = getGlacierClient(server.getUrl("/"));
    }
 
-   @AfterTest
+   @AfterMethod
    private void shutdownServer() throws IOException {
       server.shutdown();
    }
