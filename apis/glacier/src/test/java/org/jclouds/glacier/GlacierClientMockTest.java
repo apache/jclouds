@@ -39,6 +39,7 @@ import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
 import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
+import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
@@ -436,5 +437,21 @@ public class GlacierClientMockTest {
       assertEquals(job.getParameters().getStartDate(), startDate);
       assertEquals(job.getParameters().getEndDate(), endDate);
       assertEquals(job.getType(), "inventory-retrieval");
+   }
+
+   @Test
+   public void testDescribeJob() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/describeJobResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      JobMetadata job = client.describeJob(VAULT_NAME, JOB_ID);
+      assertEquals(server.takeRequest().getRequestLine(), "GET /-/vaults/" + VAULT_NAME + "/jobs/" + JOB_ID + " " + HTTP);
+      assertEquals(job.getAction(), "ArchiveRetrieval");
+      assertEquals(job.getArchiveId(), ARCHIVE_ID);
+      assertEquals(ContentRange.fromString("0-16777215"), job.getRetrievalByteRange());
+      assertEquals(job.getVaultArn(), "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault");
    }
 }

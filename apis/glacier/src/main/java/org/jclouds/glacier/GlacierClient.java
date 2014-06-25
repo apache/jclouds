@@ -20,6 +20,7 @@ import java.io.Closeable;
 import java.net.URI;
 import java.util.Map;
 
+import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.JobRequest;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
@@ -231,4 +232,16 @@ public interface GlacierClient extends Closeable {
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-initiate-job-post.html" />
     */
    String initiateJob(String vaultName, JobRequest job);
+
+   /**
+    * Describes a job.
+    *
+    * @param vaultName
+    *           Name of the target Vault for the job.
+    * @param jobId
+    *          Job identifier.
+    * @return The job metadata.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-describe-job-get.html" />
+    */
+   JobMetadata describeJob(String vaultName, String jobId);
 }
