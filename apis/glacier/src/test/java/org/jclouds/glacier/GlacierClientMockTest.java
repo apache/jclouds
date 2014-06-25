@@ -37,6 +37,8 @@ import java.util.Set;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
+import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
+import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
@@ -47,6 +49,8 @@ import org.jclouds.glacier.reference.GlacierHeaders;
 import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.http.HttpResponseException;
 import org.jclouds.io.Payload;
+import org.jclouds.json.Json;
+import org.jclouds.json.internal.GsonWrapper;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -58,6 +62,7 @@ import com.google.common.hash.HashCode;
 import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
+import com.google.gson.Gson;
 import com.google.inject.Module;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
@@ -89,6 +94,7 @@ public class GlacierClientMockTest {
    private static final String MULTIPART_UPLOAD_LOCATION = VAULT_LOCATION + "/multipart-uploads/" + ARCHIVE_ID;
    private static final String MULTIPART_UPLOAD_ID = "OW2fM5iVylEpFEMM9_HpKowRapC3vn5sSL39_396UW9zLFUWVrnRHaPjUJddQ5OxSHVXjYtrN47NBZ-khxOjyEXAMPLE";
    private static final String MARKER = "xsQdFIRsfJr20CW2AbZBKpRZAFTZSJIMtL2hYf8mvp8dM0m4RUzlaqoEye6g3h3ecqB_zqwB7zLDMeSWhwo65re4C4Ev";
+   private static final String JOB_ID = "HkF9p6o7yjhFx-K3CGl6fuSm6VzW9T7esGQfco8nUXVYwS0jlb5gq1JZ55yHgt5vP54ZShjoQzQVVh7vEXAMPLEjobID";
    private static final Set<Module> modules = ImmutableSet.<Module> of(new ExecutorServiceModule(sameThreadExecutor(),
          sameThreadExecutor()));
 
@@ -363,5 +369,61 @@ public class GlacierClientMockTest {
       assertEquals(client.listMultipartUploads(VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER)).size(), 0);
       assertEquals(server.takeRequest().getRequestLine(),
             "GET /-/vaults/examplevault/multipart-uploads?limit=1&marker=" + MARKER + " " + HTTP);
+   }
+
+   @Test
+   public void testInitiateArchiveRetrievalJob() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(202);
+      mr.addHeader(HttpHeaders.LOCATION, VAULT_LOCATION + "/jobs/" + JOB_ID);
+      mr.addHeader(GlacierHeaders.JOB_ID, JOB_ID);
+      server.enqueue(mr);
+
+      ContentRange range = ContentRange.fromString("2097152-4194303");
+      ArchiveRetrievalJobRequest retrieval = ArchiveRetrievalJobRequest.builder()
+            .archiveId(ARCHIVE_ID)
+            .description(DESCRIPTION)
+            .range(range)
+            .build();
+      assertEquals(client.initiateJob(VAULT_NAME, retrieval), JOB_ID);
+      RecordedRequest request = server.takeRequest();
+      Json json = new GsonWrapper(new Gson());
+      ArchiveRetrievalJobRequest job = json.fromJson(new String(request.getBody()), ArchiveRetrievalJobRequest.class);
+      assertEquals(request.getRequestLine(), "POST /-/vaults/" + VAULT_NAME + "/jobs " + HTTP);
+      assertEquals(job.getDescription(), DESCRIPTION);
+      assertEquals(job.getRange(), range);
+      assertEquals(job.getArchiveId(), ARCHIVE_ID);
+      assertEquals(job.getType(), "archive-retrieval");
+   }
+
+   @Test
+   public void testInitiateInventoryRetrievalJob() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(202);
+      mr.addHeader(HttpHeaders.LOCATION, VAULT_LOCATION + "/jobs/" + JOB_ID);
+      mr.addHeader(GlacierHeaders.JOB_ID, JOB_ID);
+      server.enqueue(mr);
+
+      String marker = "vyS0t2jHQe5qbcDggIeD50chS1SXwYMrkVKo0KHiTUjEYxBGCqRLKaiySzdN7QXGVVV5XZpNVG67pCZ_uykQXFMLaxOSu2hO_-5C0AtWMDrfo7LgVOyfnveDRuOSecUo3Ueq7K0";
+      int limit = 10000;
+      String startDate = "2013-12-04T21:25:42Z";
+      String endDate = "2013-12-05T21:25:42Z";
+      String format = "CSV";
+      InventoryRetrievalJobRequest job = InventoryRetrievalJobRequest.builder()
+            .format(format)
+            .endDate(endDate)
+            .startDate(startDate)
+            .limit(limit)
+            .marker(marker)
+            .build();
+      assertEquals(client.initiateJob(VAULT_NAME, job), JOB_ID);
+      RecordedRequest request = server.takeRequest();
+      assertEquals(request.getRequestLine(), "POST /-/vaults/examplevault/jobs HTTP/1.1");
+      Json json = new GsonWrapper(new Gson());
+      job = json.fromJson(new String(request.getBody()), InventoryRetrievalJobRequest.class);
+      assertEquals(job.getFormat(), format);
+      assertEquals(job.getParameters().getMarker(), marker);
+      assertEquals(job.getParameters().getLimit(), new Integer(limit));
+      assertEquals(job.getParameters().getStartDate(), startDate);
+      assertEquals(job.getParameters().getEndDate(), endDate);
+      assertEquals(job.getType(), "inventory-retrieval");
    }
 }

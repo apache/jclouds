@@ -36,8 +36,10 @@ import org.jclouds.glacier.binders.BindArchiveSizeToHeaders;
 import org.jclouds.glacier.binders.BindContentRangeToHeaders;
 import org.jclouds.glacier.binders.BindDescriptionToHeaders;
 import org.jclouds.glacier.binders.BindHashesToHeaders;
+import org.jclouds.glacier.binders.BindJobRequestToJsonPayload;
 import org.jclouds.glacier.binders.BindMultipartTreeHashToHeaders;
 import org.jclouds.glacier.binders.BindPartSizeToHeaders;
+import org.jclouds.glacier.domain.JobRequest;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
@@ -45,6 +47,7 @@ import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.fallbacks.FalseOnIllegalArgumentException;
 import org.jclouds.glacier.filters.RequestAuthorizeSignature;
 import org.jclouds.glacier.functions.ParseArchiveIdHeader;
+import org.jclouds.glacier.functions.ParseJobIdHeader;
 import org.jclouds.glacier.functions.ParseMultipartUploadIdHeader;
 import org.jclouds.glacier.functions.ParseMultipartUploadListFromHttpContent;
 import org.jclouds.glacier.functions.ParseMultipartUploadPartListFromHttpContent;
@@ -262,4 +265,15 @@ public interface GlacierAsyncClient extends Closeable {
    @ResponseParser(ParseMultipartUploadListFromHttpContent.class)
    ListenableFuture<PaginatedMultipartUploadCollection> listMultipartUploads(
          @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
+
+   /**
+    * @see GlacierClient#initiateJob
+    */
+   @Named("InitiateJob")
+   @POST
+   @Path("/-/vaults/{vault}/jobs")
+   @ResponseParser(ParseJobIdHeader.class)
+   ListenableFuture<String> initiateJob(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @BinderParam(BindJobRequestToJsonPayload.class) JobRequest job);
 }

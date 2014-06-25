@@ -20,6 +20,7 @@ import java.io.Closeable;
 import java.net.URI;
 import java.util.Map;
 
+import org.jclouds.glacier.domain.JobRequest;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
@@ -218,4 +219,16 @@ public interface GlacierClient extends Closeable {
     * Lists the multipart uploads in a vault.
     */
    PaginatedMultipartUploadCollection listMultipartUploads(String vaultName);
+
+   /**
+    * Initiates a job.
+    *
+    * @param vaultName
+    *           Name of the target Vault for the job.
+    * @param job
+    *          JobRequest instance with the concrete request.
+    * @return The job identifier.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-initiate-job-post.html" />
+    */
+   String initiateJob(String vaultName, JobRequest job);
 }
