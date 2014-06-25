@@ -1,0 +1,41 @@
+{
+  "JobList": [
+    {
+      "Action": "ArchiveRetrieval",
+      "ArchiveId": "58-3KpZfcMPUznvMZNPaKyJx9wODCsWTnqcjtx2CjKZ6b-XgxEuA8yvZOYTPQfd7gWR4GRm2XR08gcnWbLV4VPV_kDWtZJKi0TFhKKVPzwrZnA4-FXuIBfViYUIVveeiBE51FO4bvg",
+      "ArchiveSizeInBytes": 8388608,
+      "ArchiveSHA256TreeHash": "106086b256ddf0fedf3d9e72f461d5983a2566247ebe7e1949246bc61359b4f4",
+      "Completed": true,
+      "CompletionDate": "2012-05-01T00:25:20.043Z",
+      "CreationDate": "2012-05-01T00:25:16.344Z",
+      "InventorySizeInBytes": null,
+      "JobDescription": "aaabbbccc",
+      "JobId": "s4MvaNHIh6mOa1f8iY4ioG2921SDPihXxh3Kv0FBX-JbNPctpRvE4c2_BifuhdGLqEhGBNGeB6Ub-JMunR9JoVa8y1hQ",
+      "RetrievalByteRange": "0-8388607",
+      "SHA256TreeHash": "106086b256ddf0fedf3d9e72f461d5983a2566247ebe7e1949246bc61359b4f4",
+      "SNSTopic": null,
+      "StatusCode": "Succeeded",
+      "StatusMessage": "Succeeded",
+      "VaultARN": "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault"
+    },
+    {
+      "Action": "ArchiveRetrieval",
+      "ArchiveId": "2NVGpf83U6qB9M2u-Ihh61yoFLRDEoh7YLZWKBn80A2i1xG8uieBwGjAr4RkzOHA0E07ZjtI267R03Z-6Hxd8pyGQkBdciCSH1-Lw63Kx9qKpZbPCdU0uTW_WAdwF6lR6w8iSyKdvw",
+      "ArchiveSizeInBytes": 1048576,
+      "ArchiveSHA256TreeHash": "3d2ae052b2978727e0c51c0a5e32961c6a56650d1f2e4ceccab6472a5ed4a0",
+      "Completed": true,
+      "CompletionDate": "2012-05-01T16:59:48.444Z",
+      "CreationDate": "2012-05-01T16:59:42.977Z",
+      "InventorySizeInBytes": null,
+      "JobDescription": "aaabbbccc",
+      "JobId": "CQ_tf6fOR4jrJCL61Mfk6VM03oY8lmnWK93KK4gLig1UPAbZiN3UV4G_5nq4AfmJHQ_dOMLOX5k8ItFv0wCPN0oaz5dG",
+      "RetrievalByteRange": "0-1048575",
+      "SHA256TreeHash": "3d2ae052b2978727e0c51c0a5e32961c6a56650d1f2e4ceccab6472a5ed4a0",
+      "SNSTopic": null,
+      "StatusCode": "Succeeded",
+      "StatusMessage": "Succeeded",
+      "VaultARN": "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault"
+    }
+  ],
+  "Marker": "CQ_tf6fOR4jrJCL61Mfk6VM03oY8lmnWK93KK4gLig1UPAbZiN3UV4G_5nq4AfmJHQ_dOMLOX5k8ItFv0wCPN0oaz5dG"
+}

@@ -41,6 +41,7 @@ import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
 import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
 import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
+import org.jclouds.glacier.domain.PaginatedJobCollection;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.PartMetadata;
@@ -453,5 +454,21 @@ public class GlacierClientMockTest {
       assertEquals(job.getArchiveId(), ARCHIVE_ID);
       assertEquals(ContentRange.fromString("0-16777215"), job.getRetrievalByteRange());
       assertEquals(job.getVaultArn(), "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault");
+   }
+
+   @Test
+   public void testListJobs() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/listJobsResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      PaginatedJobCollection jb = client.listJobs("examplevault");
+      Iterator<JobMetadata> i = jb.iterator();
+      assertEquals(i.next().getJobId(), "s4MvaNHIh6mOa1f8iY4ioG2921SDPihXxh3Kv0FBX-JbNPctpRvE4c2_BifuhdGLqEhGBNGeB6Ub-JMunR9JoVa8y1hQ");
+      assertEquals(i.next().getJobId(), "CQ_tf6fOR4jrJCL61Mfk6VM03oY8lmnWK93KK4gLig1UPAbZiN3UV4G_5nq4AfmJHQ_dOMLOX5k8ItFv0wCPN0oaz5dG");
+      assertFalse(i.hasNext());
+      assertEquals(server.takeRequest().getRequestLine(), "GET /-/vaults/examplevault/jobs HTTP/1.1");
    }
 }

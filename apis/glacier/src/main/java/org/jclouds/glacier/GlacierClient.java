@@ -23,6 +23,7 @@ import java.util.Map;
 import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.JobRequest;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
+import org.jclouds.glacier.domain.PaginatedJobCollection;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
@@ -244,4 +245,21 @@ public interface GlacierClient extends Closeable {
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-describe-job-get.html" />
     */
    JobMetadata describeJob(String vaultName, String jobId);
+
+   /**
+    * Lists jobs.
+    *
+    * @param vaultName
+    *           Name of the target Vault.
+    * @param options
+    *          Options used for pagination
+    * @return A PaginatedJobCollection, containing an iterable job list with a marker.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-jobs-get.html" />
+    */
+   PaginatedJobCollection listJobs(String vaultName, PaginationOptions options);
+
+   /**
+    * Lists jobs.
+    */
+   PaginatedJobCollection listJobs(String vaultName);
 }

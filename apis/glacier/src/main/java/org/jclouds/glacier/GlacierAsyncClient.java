@@ -42,6 +42,7 @@ import org.jclouds.glacier.binders.BindPartSizeToHeaders;
 import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.JobRequest;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
+import org.jclouds.glacier.domain.PaginatedJobCollection;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
@@ -50,6 +51,7 @@ import org.jclouds.glacier.filters.RequestAuthorizeSignature;
 import org.jclouds.glacier.functions.ParseArchiveIdHeader;
 import org.jclouds.glacier.functions.ParseJobIdHeader;
 import org.jclouds.glacier.functions.ParseJobMetadataFromHttpContent;
+import org.jclouds.glacier.functions.ParseJobMetadataListFromHttpContent;
 import org.jclouds.glacier.functions.ParseMultipartUploadIdHeader;
 import org.jclouds.glacier.functions.ParseMultipartUploadListFromHttpContent;
 import org.jclouds.glacier.functions.ParseMultipartUploadPartListFromHttpContent;
@@ -290,4 +292,25 @@ public interface GlacierAsyncClient extends Closeable {
    ListenableFuture<JobMetadata> describeJob(
          @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
          @PathParam("job") String jobId);
+
+   /**
+    * @see GlacierClient#listJobs(PaginationOptions)
+    */
+   @Named("ListJobs")
+   @GET
+   @Path("/-/vaults/{vault}/jobs")
+   @ResponseParser(ParseJobMetadataListFromHttpContent.class)
+   ListenableFuture<PaginatedJobCollection> listJobs(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         PaginationOptions options);
+
+   /**
+    * @see GlacierClient#listJobs
+    */
+   @Named("ListJobs")
+   @GET
+   @Path("/-/vaults/{vault}/jobs")
+   @ResponseParser(ParseJobMetadataListFromHttpContent.class)
+   ListenableFuture<PaginatedJobCollection> listJobs(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 }
