@@ -1,0 +1,20 @@
+{
+  "VaultARN": "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault",
+  "InventoryDate": "2011-12-12T14:19:01Z",
+  "ArchiveList": [
+    {
+      "ArchiveId": "DMTmICA2n5Tdqq5BV2z7og-A20xnpAPKt3UXwWxdWsn_D6auTUrW6kwy5Qyj9xd1MCE1mBYvMQ63LWaT8yTMzMaCxB_9VBWrW4Jw4zsvg5kehAPDVKcppUD1X7b24JukOr4mMAq-oA",
+      "ArchiveDescription": "my archive1",
+      "CreationDate": "2012-05-15T17:19:46.700Z",
+      "Size": 2140123,
+      "SHA256TreeHash": "6b9d4cf8697bd3af6aa1b590a0b27b337da5b18988dbcc619a3e608a554a1e62"
+    },
+    {
+      "ArchiveId": "2lHzwhKhgF2JHyvCS-ZRuF08IQLuyB4265Hs3AXj9MoAIhz7tbXAvcFeHusgU_hViO1WeCBe0N5lsYYHRyZ7rrmRkNRuYrXUs_sjl2K8ume_7mKO_0i7C-uHE1oHqaW9d37pabXrSA",
+      "ArchiveDescription": "my archive2",
+      "CreationDate": "2012-05-15T17:21:39.339Z",
+      "Size": 2140123,
+      "SHA256TreeHash": "7f2fe580edb35154041fa3d4b41dd6d3adaef0c85d2ff6309f1d4b520eeecda3"
+    }
+  ]
+}

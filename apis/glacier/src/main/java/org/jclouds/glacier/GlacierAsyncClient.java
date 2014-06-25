@@ -32,6 +32,7 @@ import javax.ws.rs.PathParam;
 
 import org.jclouds.Fallbacks.NullOnNotFoundOr404;
 import org.jclouds.blobstore.attr.BlobScope;
+import org.jclouds.glacier.binders.BindArchiveOutputRangeToHeaders;
 import org.jclouds.glacier.binders.BindArchiveSizeToHeaders;
 import org.jclouds.glacier.binders.BindContentRangeToHeaders;
 import org.jclouds.glacier.binders.BindDescriptionToHeaders;
@@ -39,6 +40,7 @@ import org.jclouds.glacier.binders.BindHashesToHeaders;
 import org.jclouds.glacier.binders.BindJobRequestToJsonPayload;
 import org.jclouds.glacier.binders.BindMultipartTreeHashToHeaders;
 import org.jclouds.glacier.binders.BindPartSizeToHeaders;
+import org.jclouds.glacier.domain.ArchiveMetadataCollection;
 import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.JobRequest;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
@@ -48,7 +50,9 @@ import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.fallbacks.FalseOnIllegalArgumentException;
 import org.jclouds.glacier.filters.RequestAuthorizeSignature;
+import org.jclouds.glacier.functions.GetPayloadFromHttpContent;
 import org.jclouds.glacier.functions.ParseArchiveIdHeader;
+import org.jclouds.glacier.functions.ParseArchiveMetadataCollectionFromHttpContent;
 import org.jclouds.glacier.functions.ParseJobIdHeader;
 import org.jclouds.glacier.functions.ParseJobMetadataFromHttpContent;
 import org.jclouds.glacier.functions.ParseJobMetadataListFromHttpContent;
@@ -313,4 +317,38 @@ public interface GlacierAsyncClient extends Closeable {
    @ResponseParser(ParseJobMetadataListFromHttpContent.class)
    ListenableFuture<PaginatedJobCollection> listJobs(
          @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
+
+   /**
+    * @see GlacierClient#getJobOutput
+    */
+   @Named("GetJobOutput")
+   @GET
+   @Path("/-/vaults/{vault}/jobs/{job}/output")
+   @ResponseParser(GetPayloadFromHttpContent.class)
+   ListenableFuture<Payload> getJobOutput(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("job") String jobId,
+         @BinderParam(BindArchiveOutputRangeToHeaders.class) ContentRange range);
+
+   /**
+    * @see GlacierClient#getJobOutput
+    */
+   @Named("GetJobOutput")
+   @GET
+   @Path("/-/vaults/{vault}/jobs/{job}/output")
+   @ResponseParser(GetPayloadFromHttpContent.class)
+   ListenableFuture<Payload> getJobOutput(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("job") String jobId);
+
+   /**
+    * @see GlacierClient#getInventoryRetrievalOutput
+    */
+   @Named("GetInventoryRetrievalOutput")
+   @GET
+   @Path("/-/vaults/{vault}/jobs/{job}/output")
+   @ResponseParser(ParseArchiveMetadataCollectionFromHttpContent.class)
+   ListenableFuture<ArchiveMetadataCollection> getInventoryRetrievalOutput(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("job") String jobId);
 }

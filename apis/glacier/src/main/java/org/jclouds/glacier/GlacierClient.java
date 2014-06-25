@@ -20,6 +20,7 @@ import java.io.Closeable;
 import java.net.URI;
 import java.util.Map;
 
+import org.jclouds.glacier.domain.ArchiveMetadataCollection;
 import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.JobRequest;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
@@ -262,4 +263,42 @@ public interface GlacierClient extends Closeable {
     * Lists jobs.
     */
    PaginatedJobCollection listJobs(String vaultName);
+
+   /**
+    * Downloads part of the output of an archive retrieval job.
+    *
+    * @param vaultName
+    *           Name of the target Vault for the job.
+    * @param jobId
+    *          Job identifier.
+    * @param range
+    *          The range of bytes to retrieve from the output.
+    * @return The content data.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-job-output-get.html" />
+    */
+   Payload getJobOutput(String vaultName, String jobId, ContentRange range);
+
+   /**
+    * Downloads the output of an archive retrieval job.
+    *
+    * @param vaultName
+    *           Name of the target Vault for the job.
+    * @param jobId
+    *          Job identifier.
+    * @return The content data.
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-job-output-get.html" />
+    */
+   Payload getJobOutput(String vaultName, String jobId);
+
+   /**
+    * Downloads the output of an inventory retrieval job.
+    *
+    * @param vaultName
+    *           Name of the target Vault for the job.
+    * @param jobId
+    *          Job identifier.
+    * @return The ArchiveMetadata collection
+    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-job-output-get.html" />
+    */
+   ArchiveMetadataCollection getInventoryRetrievalOutput(String vaultName, String jobId);
 }

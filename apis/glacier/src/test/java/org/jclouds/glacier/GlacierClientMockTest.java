@@ -37,6 +37,8 @@ import java.util.Set;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
+import org.jclouds.glacier.domain.ArchiveMetadata;
+import org.jclouds.glacier.domain.ArchiveMetadataCollection;
 import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
 import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
 import org.jclouds.glacier.domain.JobMetadata;
@@ -50,6 +52,7 @@ import org.jclouds.glacier.options.PaginationOptions;
 import org.jclouds.glacier.reference.GlacierHeaders;
 import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.http.HttpResponseException;
+import org.jclouds.io.ByteSources;
 import org.jclouds.io.Payload;
 import org.jclouds.json.Json;
 import org.jclouds.json.internal.GsonWrapper;
@@ -470,5 +473,60 @@ public class GlacierClientMockTest {
       assertEquals(i.next().getJobId(), "CQ_tf6fOR4jrJCL61Mfk6VM03oY8lmnWK93KK4gLig1UPAbZiN3UV4G_5nq4AfmJHQ_dOMLOX5k8ItFv0wCPN0oaz5dG");
       assertFalse(i.hasNext());
       assertEquals(server.takeRequest().getRequestLine(), "GET /-/vaults/examplevault/jobs HTTP/1.1");
+   }
+
+   @Test
+   public void testGetJobOutput() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/getJobOutputResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      Payload payload = client.getJobOutput(VAULT_NAME, JOB_ID);
+      assertEquals(payload.getContentMetadata().getContentType(), MediaType.JSON_UTF_8.toString());
+      assertEquals(payload.getContentMetadata().getContentLength(), new Long(mr.getBody().length));
+      assertEquals(ByteSources.asByteSource(payload.openStream()).size(), mr.getBody().length);
+      assertEquals(server.takeRequest().getRequestLine(),
+            "GET /-/vaults/" + VAULT_NAME + "/jobs/" + JOB_ID + "/output " + HTTP);
+   }
+
+   @Test
+   public void testGetJobOutputWithContentRange() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(206);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/getJobOutputResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      ContentRange range = ContentRange.fromString("16-32");
+      client.getJobOutput(VAULT_NAME, JOB_ID, range);
+      RecordedRequest request = server.takeRequest();
+      assertEquals(request.getHeader("Range"), "bytes=" + range.toString());
+      assertEquals(request.getRequestLine(),
+            "GET /-/vaults/" + VAULT_NAME + "/jobs/" + JOB_ID + "/output " + HTTP);
+   }
+
+   @Test
+   public void testGetInventoryRetrievalOutput() throws IOException, InterruptedException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/getJobOutputResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      ArchiveMetadataCollection archives = client.getInventoryRetrievalOutput(VAULT_NAME, JOB_ID);
+      assertEquals(archives.getVaultARN(), "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault");
+      Iterator<ArchiveMetadata> i = archives.iterator();
+      ArchiveMetadata archive = i.next();
+      assertEquals(archive.getArchiveId(),
+            "DMTmICA2n5Tdqq5BV2z7og-A20xnpAPKt3UXwWxdWsn_D6auTUrW6kwy5Qyj9xd1MCE1mBYvMQ63LWaT8yTMzMaCxB_9VBWrW4Jw4zsvg5kehAPDVKcppUD1X7b24JukOr4mMAq-oA");
+      assertEquals(archive.getDescription(), "my archive1");
+      assertEquals(archive.getSize(), 2140123);
+      assertEquals(archive.getTreeHash(),
+            HashCode.fromString("6b9d4cf8697bd3af6aa1b590a0b27b337da5b18988dbcc619a3e608a554a1e62"));
+      assertTrue(i.hasNext());
+      i.next();
+      assertFalse(i.hasNext());
    }
 }
