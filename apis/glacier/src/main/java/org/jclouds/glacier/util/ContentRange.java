@@ -80,7 +80,7 @@ public final class ContentRange {
       if (getClass() != obj.getClass())
          return false;
       ContentRange other = (ContentRange) obj;
-      return Objects.equal(this.from, other.to) && Objects.equal(this.from, other.to);
+      return Objects.equal(this.from, other.from) && Objects.equal(this.to, other.to);
    }
 
    @Override
