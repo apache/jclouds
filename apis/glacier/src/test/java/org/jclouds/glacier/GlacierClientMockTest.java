@@ -119,7 +119,6 @@ public class GlacierClientMockTest {
    @BeforeMethod
    private void initServer() throws IOException {
       server = new MockWebServer();
-      server.setBodyLimit(0);
       server.play();
       client = getGlacierClient(server.getUrl("/"));
    }
@@ -256,6 +255,8 @@ public class GlacierClientMockTest {
    // TODO: Change size to 4096 when moving to JDK 7
    @Test
    public void testUploadPartMaxSize() throws InterruptedException {
+      // force the server to discard the request body
+      server.setBodyLimit(0);
       MockResponse mr = buildBaseResponse(204);
       mr.addHeader(GlacierHeaders.TREE_HASH, TREEHASH);
       server.enqueue(mr);
