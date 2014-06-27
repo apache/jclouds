@@ -186,6 +186,17 @@ public class GlacierClientMockTest {
    }
 
    @Test
+   public void testListVaultsWithEmptyList() throws InterruptedException, IOException {
+      MockResponse mr = buildBaseResponse(200);
+      mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
+      mr.setBody(getResponseBody("/json/listVaultsWithEmptyListResponseBody.json"));
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      server.enqueue(mr);
+
+      assertTrue(client.listVaults().isEmpty());
+   }
+
+   @Test
    public void testListVaultsWithQueryParams() throws InterruptedException, IOException {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);

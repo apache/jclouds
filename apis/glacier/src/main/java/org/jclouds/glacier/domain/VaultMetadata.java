@@ -51,7 +51,7 @@ public class VaultMetadata implements Comparable<VaultMetadata> {
          long numberOfArchives, long sizeInBytes) {
       this.vaultName = checkNotNull(vaultName, "vaultName");
       this.vaultARN = checkNotNull(vaultARN, "vaultARN");
-      this.creationDate = checkNotNull(creationDate, "creationDate");
+      this.creationDate = (Date) checkNotNull(creationDate, "creationDate").clone();
       this.lastInventoryDate = lastInventoryDate;
       this.numberOfArchives = numberOfArchives;
       this.sizeInBytes = sizeInBytes;
@@ -66,7 +66,7 @@ public class VaultMetadata implements Comparable<VaultMetadata> {
    }
 
    public Date getCreationDate() {
-      return creationDate;
+      return (Date) creationDate.clone();
    }
 
    public Date getLastInventoryDate() {

@@ -16,6 +16,8 @@
  */
 package org.jclouds.glacier.domain;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.beans.ConstructorProperties;
 import java.util.Iterator;
 
@@ -37,7 +39,7 @@ public class PaginatedVaultCollection extends IterableWithMarker<VaultMetadata> 
 
    @ConstructorProperties({ "VaultList", "Marker" })
    public PaginatedVaultCollection(Iterable<VaultMetadata> vaults, String marker) {
-      this.vaults = vaults;
+      this.vaults = checkNotNull(vaults, "vaults");
       this.marker = marker;
    }
 
