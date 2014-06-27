@@ -32,7 +32,7 @@ public class BindJobRequestToJsonPayload implements Binder {
 
    @Override
    public <R extends HttpRequest> R bindToRequest(R request, Object input) {
-      checkArgument(checkNotNull(input, "input") instanceof JobRequest,
+      checkArgument(input instanceof JobRequest,
             "This binder is only valid for JobRequest");
       checkNotNull(request, "request");
       request.setPayload(json.toJson(input));

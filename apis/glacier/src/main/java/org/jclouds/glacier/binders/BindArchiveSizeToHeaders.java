@@ -30,7 +30,7 @@ public class BindArchiveSizeToHeaders implements Binder {
    @SuppressWarnings("unchecked")
    @Override
    public <R extends HttpRequest> R bindToRequest(R request, Object input) {
-      checkArgument(checkNotNull(input, "input") instanceof Long, "This binder is only valid for long");
+      checkArgument(input instanceof Long, "This binder is only valid for long");
       checkNotNull(request, "request");
       Long archiveSizeInMB = Long.class.cast(input);
       return (R) request.toBuilder()

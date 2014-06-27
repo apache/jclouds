@@ -35,7 +35,7 @@ public class BindMultipartTreeHashToHeaders implements Binder {
    @SuppressWarnings("unchecked")
    @Override
    public <R extends HttpRequest> R bindToRequest(R request, Object input) {
-      checkArgument(checkNotNull(input, "input") instanceof Map, "This binder is only valid for Map");
+      checkArgument(input instanceof Map, "This binder is only valid for Map");
       checkNotNull(request, "request");
       Map<Integer, HashCode> map = Map.class.cast(input);
       checkArgument(map.size() != 0, "The map cannot be empty");

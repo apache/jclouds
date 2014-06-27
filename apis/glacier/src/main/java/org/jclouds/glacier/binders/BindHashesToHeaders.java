@@ -49,7 +49,7 @@ public class BindHashesToHeaders implements Binder {
    @SuppressWarnings("unchecked")
    @Override
    public <R extends HttpRequest> R bindToRequest(R request, Object input) {
-      checkArgument(checkNotNull(input, "input") instanceof Payload, "This binder is only valid for Payload");
+      checkArgument(input instanceof Payload, "This binder is only valid for Payload");
       checkNotNull(request, "request");
       Payload payload = Payload.class.cast(input);
       return (R) addChecksumHeaders(request, payload);

@@ -32,7 +32,7 @@ public class BindContentRangeToHeaders implements Binder {
    @SuppressWarnings("unchecked")
    @Override
    public <R extends HttpRequest> R bindToRequest(R request, Object input) {
-      checkArgument(checkNotNull(input, "input") instanceof ContentRange, "This binder is only valid for Payload");
+      checkArgument(input instanceof ContentRange, "This binder is only valid for Payload");
       checkNotNull(request, "request");
       ContentRange range = ContentRange.class.cast(input);
       return (R) request.toBuilder().addHeader(HttpHeaders.CONTENT_RANGE, range.buildHeader()).build();
