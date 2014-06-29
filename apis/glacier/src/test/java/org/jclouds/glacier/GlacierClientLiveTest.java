@@ -16,9 +16,9 @@
  */
 package org.jclouds.glacier;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.jclouds.glacier.util.TestUtils.MiB;
 import static org.jclouds.glacier.util.TestUtils.buildPayload;
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
@@ -65,21 +65,23 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
       String path = api.createVault(VAULT_NAME1).toString();
       api.createVault(VAULT_NAME2);
       api.createVault(VAULT_NAME3);
-      assertTrue(path.contains("https://glacier.us-east-1.amazonaws.com/"));
-      assertTrue(path.contains("/vaults/" + VAULT_NAME1));
+      assertThat(path)
+            .contains("https://glacier.us-east-1.amazonaws.com/")
+            .contains("/vaults/" + VAULT_NAME1);
    }
 
    @Test(groups = { "integration", "live" }, dependsOnMethods = { "testCreateVault" })
    public void testListAndDescribeVaults() throws Exception {
       PaginatedVaultCollection vaults = api.listVaults();
-      assertTrue(vaults.contains(api.describeVault(VAULT_NAME1)));
-      assertTrue(vaults.contains(api.describeVault(VAULT_NAME2)));
-      assertTrue(vaults.contains(api.describeVault(VAULT_NAME3)));
+      assertThat(vaults).containsAll(ImmutableList.of(
+            api.describeVault(VAULT_NAME1),
+            api.describeVault(VAULT_NAME2),
+            api.describeVault(VAULT_NAME3)));
    }
 
    @Test(groups = { "integration", "live" }, dependsOnMethods = { "testCreateVault" })
    public void testListMultipartUploadsWithEmptyList() throws Exception {
-      assertEquals(api.listMultipartUploads(VAULT_NAME1).size(), 0);
+      assertThat(api.listMultipartUploads(VAULT_NAME1)).hasSize(0);
    }
 
    @Test(groups = { "integration", "live" }, dependsOnMethods = { "testListMultipartUploadsWithEmptyList" })
@@ -104,7 +106,7 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
          for (MultipartUploadMetadata upload : uploads) {
             list.add(upload.getMultipartUploadId());
          }
-         assertTrue(list.build().contains(uploadId));
+         assertThat(list.build()).contains(uploadId);
          assertTrue(api.abortMultipartUpload(VAULT_NAME1, uploadId));
       } finally {
          api.abortMultipartUpload(VAULT_NAME1, uploadId);

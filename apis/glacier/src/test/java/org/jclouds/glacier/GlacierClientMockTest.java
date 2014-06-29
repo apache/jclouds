@@ -18,6 +18,7 @@ package org.jclouds.glacier;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 import static org.jclouds.Constants.PROPERTY_SO_TIMEOUT;
 import static org.jclouds.glacier.util.TestUtils.MiB;
@@ -198,7 +199,7 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
       server.enqueue(mr);
 
-      assertTrue(client.listVaults().isEmpty());
+      assertThat(client.listVaults()).isEmpty();
    }
 
    @Test
@@ -382,7 +383,7 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
       server.enqueue(mr);
 
-      assertEquals(client.listMultipartUploads(VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER)).size(), 0);
+      assertThat(client.listMultipartUploads(VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER))).isEmpty();
       assertEquals(server.takeRequest().getRequestLine(),
             "GET /-/vaults/examplevault/multipart-uploads?limit=1&marker=" + MARKER + " " + HTTP);
    }
