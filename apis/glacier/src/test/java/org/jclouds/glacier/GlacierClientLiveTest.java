@@ -81,7 +81,7 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
 
    @Test(groups = { "integration", "live" }, dependsOnMethods = { "testCreateVault" })
    public void testListMultipartUploadsWithEmptyList() throws Exception {
-      assertThat(api.listMultipartUploads(VAULT_NAME1)).hasSize(0);
+      assertThat(api.listMultipartUploads(VAULT_NAME1)).isEmpty();
    }
 
    @Test(groups = { "integration", "live" }, dependsOnMethods = { "testListMultipartUploadsWithEmptyList" })
