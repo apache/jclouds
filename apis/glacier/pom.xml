@@ -32,6 +32,8 @@
   <packaging>bundle</packaging>
 
   <properties>
+    <test.aws.identity>FIXME_IDENTITY</test.aws.identity>
+    <test.aws.credential>FIXME_CREDENTIAL</test.aws.credential>
     <test.glacier.endpoint>https://glacier.us-east-1.amazonaws.com</test.glacier.endpoint>
     <test.glacier.api-version>2012-06-01</test.glacier.api-version>
     <test.glacier.build-version />
