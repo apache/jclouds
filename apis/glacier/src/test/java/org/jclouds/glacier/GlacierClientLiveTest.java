@@ -23,8 +23,6 @@ import static org.jclouds.glacier.util.TestUtils.buildPayload;
 import java.util.UUID;
 
 import org.jclouds.apis.BaseApiLiveTest;
-import org.jclouds.glacier.domain.MultipartUploadMetadata;
-import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.util.ContentRange;
 import org.testng.annotations.Test;
@@ -96,12 +94,7 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
       try {
          assertThat(api.uploadPart(VAULT_NAME1, uploadId,
                  ContentRange.fromPartNumber(0, partSizeInMb), buildPayload(partSizeInMb * MiB))).isNotNull();
-         PaginatedMultipartUploadCollection uploads = api.listMultipartUploads(VAULT_NAME1);
-         ImmutableList.Builder<String> list = ImmutableList.builder();
-         for (MultipartUploadMetadata upload : uploads) {
-            list.add(upload.getMultipartUploadId());
-         }
-         assertThat(list.build()).contains(uploadId);
+         assertThat(api.listMultipartUploads(VAULT_NAME1)).extracting("multipartUploadId").contains(uploadId);
          assertThat(api.abortMultipartUpload(VAULT_NAME1, uploadId)).isTrue();
       } finally {
          api.abortMultipartUpload(VAULT_NAME1, uploadId);
