@@ -16,7 +16,7 @@
  */
 package org.jclouds.glacier.util;
 
-import static org.testng.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.testng.annotations.Test;
 
@@ -25,11 +25,12 @@ public class ContentRangeTest {
    @Test
    public void testContentRangeFromString() {
       ContentRange range = ContentRange.fromString("0-10");
-      assertEquals(range.getFrom(), 0);
-      assertEquals(range.getTo(), 10);
+      assertThat(range.getFrom()).isEqualTo(0);
+      assertThat(range.getTo()).isEqualTo(10);
+
       range = ContentRange.fromString("1000-2000");
-      assertEquals(range.getFrom(), 1000);
-      assertEquals(range.getTo(), 2000);
+      assertThat(range.getFrom()).isEqualTo(1000);
+      assertThat(range.getTo()).isEqualTo(2000);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
@@ -55,14 +56,16 @@ public class ContentRangeTest {
    @Test
    public void testContentRangeFromPartNumber() {
       ContentRange range = ContentRange.fromPartNumber(0, 4096);
-      assertEquals(range.getFrom(), 0);
-      assertEquals(range.getTo(), (4096L << 20) - 1);
+      assertThat(range.getFrom()).isEqualTo(0);
+      assertThat(range.getTo()).isEqualTo((4096L << 20) - 1);
+
       range = ContentRange.fromPartNumber(1, 4096);
-      assertEquals(range.getFrom(), 4096L << 20);
-      assertEquals(range.getTo(), 2 * (4096L << 20) - 1);
+      assertThat(range.getFrom()).isEqualTo(4096L << 20);
+      assertThat(range.getTo()).isEqualTo(2 * (4096L << 20) - 1);
+
       range = ContentRange.fromPartNumber(2, 4096);
-      assertEquals(range.getFrom(), 2 * (4096L << 20));
-      assertEquals(range.getTo(), 3 * (4096L << 20) - 1);
+      assertThat(range.getFrom()).isEqualTo(2 * (4096L << 20));
+      assertThat(range.getTo()).isEqualTo(3 * (4096L << 20) - 1);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)
@@ -78,8 +81,8 @@ public class ContentRangeTest {
    @Test
    public void testBuildContentRange() {
       ContentRange range = ContentRange.build(0, 4096);
-      assertEquals(range.getFrom(), 0);
-      assertEquals(range.getTo(), 4096);
+      assertThat(range.getFrom()).isEqualTo(0);
+      assertThat(range.getTo()).isEqualTo(4096);
    }
 
    @Test(expectedExceptions = IllegalArgumentException.class)

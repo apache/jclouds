@@ -25,35 +25,29 @@ import static org.jclouds.glacier.util.TestUtils.MiB;
 import static org.jclouds.glacier.util.TestUtils.buildPayload;
 import static org.jclouds.util.Strings2.urlEncode;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
-import org.jclouds.glacier.domain.ArchiveMetadata;
 import org.jclouds.glacier.domain.ArchiveMetadataCollection;
 import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
 import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
 import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
-import org.jclouds.glacier.domain.PaginatedJobCollection;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
-import org.jclouds.glacier.domain.PartMetadata;
 import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.options.PaginationOptions;
 import org.jclouds.glacier.reference.GlacierHeaders;
 import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.http.HttpResponseException;
-import org.jclouds.io.ByteSources;
 import org.jclouds.io.Payload;
 import org.jclouds.json.Json;
 import org.jclouds.json.internal.GsonWrapper;
@@ -146,8 +140,8 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.LOCATION, VAULT_LOCATION);
       server.enqueue(mr);
 
-      URI responseUri = client.createVault(VAULT_NAME);
-      assertEquals(responseUri.toString(), server.getUrl("/") + VAULT_LOCATION.substring(1));
+      assertThat(client.createVault(VAULT_NAME)).isEqualTo(URI.create(server.getUrl("/") + VAULT_LOCATION.substring(1)));
+
       assertEquals(server.takeRequest().getRequestLine(), "PUT /-/vaults/" + VAULT_NAME + " " + HTTP);
    }
 
@@ -155,7 +149,8 @@ public class GlacierClientMockTest {
    public void testDeleteVault() throws InterruptedException {
       server.enqueue(buildBaseResponse(204));
 
-      assertTrue(client.deleteVault(VAULT_NAME));
+      assertThat(client.deleteVault(VAULT_NAME)).isTrue();
+
       assertEquals(server.takeRequest().getRequestLine(), "DELETE /-/vaults/" + VAULT_NAME + " " + HTTP);
    }
 
@@ -167,12 +162,13 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
       server.enqueue(mr);
 
-      VaultMetadata vm = client.describeVault(VAULT_NAME);
+      VaultMetadata vault = client.describeVault(VAULT_NAME);
+      assertThat(vault.getVaultName()).isEqualTo(VAULT_NAME);
+      assertThat(vault.getVaultARN()).isEqualTo(VAULT_ARN);
+      assertThat(vault.getSizeInBytes()).isEqualTo(78088912);
+      assertThat(vault.getNumberOfArchives()).isEqualTo(192);
+
       assertEquals(server.takeRequest().getRequestLine(), "GET /-/vaults/" + VAULT_NAME + " " + HTTP);
-      assertEquals(vm.getVaultName(), VAULT_NAME);
-      assertEquals(vm.getVaultARN(), VAULT_ARN);
-      assertEquals(vm.getSizeInBytes(), 78088912);
-      assertEquals(vm.getNumberOfArchives(), 192);
    }
 
    @Test
@@ -183,11 +179,8 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
       server.enqueue(mr);
 
-      PaginatedVaultCollection vc = client.listVaults();
-      Iterator<VaultMetadata> i = vc.iterator();
-      assertEquals(i.next().getVaultName(), VAULT_NAME1);
-      assertEquals(i.next().getVaultName(), VAULT_NAME2);
-      assertEquals(i.next().getVaultName(), VAULT_NAME3);
+      assertThat(client.listVaults()).extracting("vaultName").containsExactly(VAULT_NAME1, VAULT_NAME2, VAULT_NAME3);
+
       assertEquals(server.takeRequest().getRequestLine(), "GET /-/vaults " + HTTP);
    }
 
@@ -210,14 +203,12 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
       server.enqueue(mr);
 
-      PaginatedVaultCollection vc = client.listVaults(PaginationOptions.Builder.limit(2).marker(VAULT_ARN1));
-      Iterator<VaultMetadata> i = vc.iterator();
-      assertEquals(i.next().getVaultName(), VAULT_NAME1);
-      assertEquals(i.next().getVaultName(), VAULT_NAME2);
-      assertFalse(i.hasNext());
-      assertEquals(vc.nextMarker().get(), VAULT_ARN3);
+      PaginatedVaultCollection vaults = client.listVaults(PaginationOptions.Builder.limit(2).marker(VAULT_ARN1));
+      assertThat(vaults).extracting("vaultName").containsExactly(VAULT_NAME1, VAULT_NAME2);
+      assertThat(vaults.nextMarker().get()).isEqualTo(VAULT_ARN3);
+
       assertEquals(server.takeRequest().getRequestLine(),
-            "GET /-/vaults?limit=2&marker=" + urlEncode(VAULT_ARN1, '/') + " " + HTTP);
+              "GET /-/vaults?limit=2&marker=" + urlEncode(VAULT_ARN1, '/') + " " + HTTP);
    }
 
    @Test
@@ -228,7 +219,8 @@ public class GlacierClientMockTest {
       mr.addHeader(GlacierHeaders.ARCHIVE_ID, ARCHIVE_ID);
       server.enqueue(mr);
 
-      assertEquals(client.uploadArchive(VAULT_NAME, buildPayload(10), DESCRIPTION), ARCHIVE_ID);
+      assertThat(client.uploadArchive(VAULT_NAME, buildPayload(10), DESCRIPTION)).isEqualTo(ARCHIVE_ID);
+
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(), "POST /-/vaults/" + VAULT_NAME + "/archives " + HTTP);
       assertEquals(request.getHeader(GlacierHeaders.ARCHIVE_DESCRIPTION), DESCRIPTION);
@@ -241,7 +233,8 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(204);
       server.enqueue(mr);
 
-      assertTrue(client.deleteArchive(VAULT_NAME, ARCHIVE_ID));
+      assertThat(client.deleteArchive(VAULT_NAME, ARCHIVE_ID)).isTrue();
+
       assertEquals(server.takeRequest().getRequestLine(), "DELETE /-/vaults/" + VAULT_NAME + "/archives/" + ARCHIVE_ID + " " + HTTP);
    }
 
@@ -252,7 +245,8 @@ public class GlacierClientMockTest {
       mr.addHeader(GlacierHeaders.MULTIPART_UPLOAD_ID, MULTIPART_UPLOAD_ID);
       server.enqueue(mr);
 
-      assertEquals(client.initiateMultipartUpload(VAULT_NAME, 4, DESCRIPTION), MULTIPART_UPLOAD_ID);
+      assertThat(client.initiateMultipartUpload(VAULT_NAME, 4, DESCRIPTION)).isEqualTo(MULTIPART_UPLOAD_ID);
+
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(), "POST /-/vaults/" + VAULT_NAME + "/multipart-uploads " + HTTP);
       assertEquals(request.getHeader(GlacierHeaders.PART_SIZE), "4194304");
@@ -265,9 +259,9 @@ public class GlacierClientMockTest {
       mr.addHeader(GlacierHeaders.TREE_HASH, TREEHASH);
       server.enqueue(mr);
 
-      assertEquals(
-            client.uploadPart(VAULT_NAME, MULTIPART_UPLOAD_ID, ContentRange.fromPartNumber(0, 4), buildPayload(4 * MiB)),
-            TREEHASH);
+      assertThat(client.uploadPart(VAULT_NAME, MULTIPART_UPLOAD_ID, ContentRange.fromPartNumber(0, 4),
+              buildPayload(4 * MiB))).isEqualTo(TREEHASH);
+
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(),
             "PUT /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
@@ -296,6 +290,7 @@ public class GlacierClientMockTest {
          Assert.fail();
       } catch (HttpResponseException e) {
       }
+
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(), "PUT /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
       assertEquals(request.getHeader(HttpHeaders.CONTENT_RANGE), range.buildHeader());
@@ -315,7 +310,8 @@ public class GlacierClientMockTest {
             2, partHashcode,
             3, partHashcode,
             4, partHashcode);
-      assertEquals(client.completeMultipartUpload(VAULT_NAME, MULTIPART_UPLOAD_ID, map, 8L), ARCHIVE_ID);
+      assertThat(client.completeMultipartUpload(VAULT_NAME, MULTIPART_UPLOAD_ID, map, 8L)).isEqualTo(ARCHIVE_ID);
+
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(),
             "POST /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
@@ -330,8 +326,9 @@ public class GlacierClientMockTest {
       server.enqueue(mr);
 
       assertTrue(client.abortMultipartUpload(VAULT_NAME, MULTIPART_UPLOAD_ID));
+
       assertEquals(server.takeRequest().getRequestLine(),
-            "DELETE /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
+              "DELETE /-/vaults/" + VAULT_NAME + "/multipart-uploads/" + MULTIPART_UPLOAD_ID + " " + HTTP);
    }
 
    @Test
@@ -342,16 +339,15 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
       server.enqueue(mr);
 
-      MultipartUploadMetadata result = client.listParts(VAULT_NAME, MULTIPART_UPLOAD_ID,
-            PaginationOptions.Builder.limit(1).marker("1001"));
-      assertEquals(result.getArchiveDescription(), "archive description 1");
-      assertEquals(result.getMultipartUploadId(), MULTIPART_UPLOAD_ID);
-      assertEquals(result.getPartSizeInBytes(), 4194304);
-      PartMetadata part = result.iterator().next();
-      assertEquals(part.getTreeHash(), HashCode.fromString("01d34dabf7be316472c93b1ef80721f5d4"));
-      assertEquals("4194304-8388607", part.getRange().getFrom() + "-" + part.getRange().getTo());
+      MultipartUploadMetadata mpu = client.listParts(VAULT_NAME, MULTIPART_UPLOAD_ID, PaginationOptions.Builder.limit(1).marker("1001"));
+      assertThat(mpu.getArchiveDescription()).isEqualTo("archive description 1");
+      assertThat(mpu.getMultipartUploadId()).isEqualTo(MULTIPART_UPLOAD_ID);
+      assertThat(mpu.getPartSizeInBytes()).isEqualTo(4194304);
+      assertThat(mpu).extracting("treeHash").containsExactly(HashCode.fromString("01d34dabf7be316472c93b1ef80721f5d4"));
+      assertThat(mpu).extracting("range").containsExactly(ContentRange.fromString("4194304-8388607"));
+
       assertEquals(server.takeRequest().getRequestLine(),
-            "GET /-/vaults/examplevault/multipart-uploads/" + MULTIPART_UPLOAD_ID + "?limit=1&marker=1001 " + HTTP);
+              "GET /-/vaults/examplevault/multipart-uploads/" + MULTIPART_UPLOAD_ID + "?limit=1&marker=1001 " + HTTP);
    }
 
    @Test
@@ -362,17 +358,14 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
       server.enqueue(mr);
 
-      PaginatedMultipartUploadCollection result = client.listMultipartUploads(
-            VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER));
-      MultipartUploadMetadata mum = result.iterator().next();
-      assertEquals(mum.getArchiveDescription(), "archive 2");
-      assertEquals(mum.getMultipartUploadId(),
-            "nPyGOnyFcx67qqX7E-0tSGiRi88hHMOwOxR-_jNyM6RjVMFfV29lFqZ3rNsSaWBugg6OP92pRtufeHdQH7ClIpSF6uJc");
-      assertEquals(mum.iterator(), null);
-      assertEquals(mum.getPartSizeInBytes(), 4194304);
-      assertEquals(mum.getVaultARN(), VAULT_ARN);
+      PaginatedMultipartUploadCollection mpus = client.listMultipartUploads(VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER));
+      assertThat(mpus).extracting("archiveDescription").containsExactly("archive 2");
+      assertThat(mpus).extracting("multipartUploadId").containsExactly("nPyGOnyFcx67qqX7E-0tSGiRi88hHMOwOxR-_jNyM6RjVMFfV29lFqZ3rNsSaWBugg6OP92pRtufeHdQH7ClIpSF6uJc");
+      assertThat(mpus).extracting("partSizeInBytes").containsExactly(4194304L);
+      assertThat(mpus).extracting("vaultARN").containsExactly(VAULT_ARN);
+
       assertEquals(server.takeRequest().getRequestLine(),
-            "GET /-/vaults/examplevault/multipart-uploads?limit=1&marker=" + MARKER + " " + HTTP);
+              "GET /-/vaults/examplevault/multipart-uploads?limit=1&marker=" + MARKER + " " + HTTP);
    }
 
    @Test
@@ -384,8 +377,9 @@ public class GlacierClientMockTest {
       server.enqueue(mr);
 
       assertThat(client.listMultipartUploads(VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER))).isEmpty();
+
       assertEquals(server.takeRequest().getRequestLine(),
-            "GET /-/vaults/examplevault/multipart-uploads?limit=1&marker=" + MARKER + " " + HTTP);
+              "GET /-/vaults/examplevault/multipart-uploads?limit=1&marker=" + MARKER + " " + HTTP);
    }
 
    @Test
@@ -401,15 +395,17 @@ public class GlacierClientMockTest {
             .description(DESCRIPTION)
             .range(range)
             .build();
-      assertEquals(client.initiateJob(VAULT_NAME, retrieval), JOB_ID);
+      assertThat(client.initiateJob(VAULT_NAME, retrieval)).isEqualTo(JOB_ID);
+
       RecordedRequest request = server.takeRequest();
       Json json = new GsonWrapper(new Gson());
       ArchiveRetrievalJobRequest job = json.fromJson(new String(request.getBody()), ArchiveRetrievalJobRequest.class);
+      assertThat(job.getDescription()).isEqualTo(DESCRIPTION);
+      assertThat(job.getRange()).isEqualTo(range);
+      assertThat(job.getArchiveId()).isEqualTo(ARCHIVE_ID);
+      assertThat(job.getType()).isEqualTo("archive-retrieval");
+
       assertEquals(request.getRequestLine(), "POST /-/vaults/" + VAULT_NAME + "/jobs " + HTTP);
-      assertEquals(job.getDescription(), DESCRIPTION);
-      assertEquals(job.getRange(), range);
-      assertEquals(job.getArchiveId(), ARCHIVE_ID);
-      assertEquals(job.getType(), "archive-retrieval");
    }
 
    @Test
@@ -431,17 +427,19 @@ public class GlacierClientMockTest {
             .limit(limit)
             .marker(marker)
             .build();
-      assertEquals(client.initiateJob(VAULT_NAME, job), JOB_ID);
+      assertThat(client.initiateJob(VAULT_NAME, job)).isEqualTo(JOB_ID);
+
       RecordedRequest request = server.takeRequest();
-      assertEquals(request.getRequestLine(), "POST /-/vaults/examplevault/jobs HTTP/1.1");
       Json json = new GsonWrapper(new Gson());
       job = json.fromJson(new String(request.getBody()), InventoryRetrievalJobRequest.class);
-      assertEquals(job.getFormat(), format);
-      assertEquals(job.getParameters().getMarker(), marker);
-      assertEquals(job.getParameters().getLimit(), new Integer(limit));
-      assertEquals(job.getParameters().getStartDate(), startDate);
-      assertEquals(job.getParameters().getEndDate(), endDate);
-      assertEquals(job.getType(), "inventory-retrieval");
+      assertThat(job.getFormat()).isEqualTo(format);
+      assertThat(job.getParameters().getMarker()).isEqualTo(marker);
+      assertThat(job.getParameters().getLimit()).isEqualTo(limit);
+      assertThat(job.getParameters().getStartDate()).isEqualTo(startDate);
+      assertThat(job.getParameters().getEndDate()).isEqualTo(endDate);
+      assertThat(job.getType()).isEqualTo("inventory-retrieval");
+
+      assertEquals(request.getRequestLine(), "POST /-/vaults/examplevault/jobs HTTP/1.1");
    }
 
    @Test
@@ -453,11 +451,12 @@ public class GlacierClientMockTest {
       server.enqueue(mr);
 
       JobMetadata job = client.describeJob(VAULT_NAME, JOB_ID);
+      assertThat(job.getAction()).isEqualTo("ArchiveRetrieval");
+      assertThat(job.getArchiveId()).isEqualTo(ARCHIVE_ID);
+      assertThat(ContentRange.fromString("0-16777215")).isEqualTo(job.getRetrievalByteRange());
+      assertThat(job.getVaultArn()).isEqualTo("arn:aws:glacier:us-east-1:012345678901:vaults/examplevault");
+
       assertEquals(server.takeRequest().getRequestLine(), "GET /-/vaults/" + VAULT_NAME + "/jobs/" + JOB_ID + " " + HTTP);
-      assertEquals(job.getAction(), "ArchiveRetrieval");
-      assertEquals(job.getArchiveId(), ARCHIVE_ID);
-      assertEquals(ContentRange.fromString("0-16777215"), job.getRetrievalByteRange());
-      assertEquals(job.getVaultArn(), "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault");
    }
 
    @Test
@@ -468,11 +467,10 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
       server.enqueue(mr);
 
-      PaginatedJobCollection jb = client.listJobs("examplevault");
-      Iterator<JobMetadata> i = jb.iterator();
-      assertEquals(i.next().getJobId(), "s4MvaNHIh6mOa1f8iY4ioG2921SDPihXxh3Kv0FBX-JbNPctpRvE4c2_BifuhdGLqEhGBNGeB6Ub-JMunR9JoVa8y1hQ");
-      assertEquals(i.next().getJobId(), "CQ_tf6fOR4jrJCL61Mfk6VM03oY8lmnWK93KK4gLig1UPAbZiN3UV4G_5nq4AfmJHQ_dOMLOX5k8ItFv0wCPN0oaz5dG");
-      assertFalse(i.hasNext());
+      assertThat(client.listJobs(VAULT_NAME)).extracting("jobId").containsExactly(
+               "s4MvaNHIh6mOa1f8iY4ioG2921SDPihXxh3Kv0FBX-JbNPctpRvE4c2_BifuhdGLqEhGBNGeB6Ub-JMunR9JoVa8y1hQ",
+               "CQ_tf6fOR4jrJCL61Mfk6VM03oY8lmnWK93KK4gLig1UPAbZiN3UV4G_5nq4AfmJHQ_dOMLOX5k8ItFv0wCPN0oaz5dG");
+
       assertEquals(server.takeRequest().getRequestLine(), "GET /-/vaults/examplevault/jobs HTTP/1.1");
    }
 
@@ -485,11 +483,14 @@ public class GlacierClientMockTest {
       server.enqueue(mr);
 
       Payload payload = client.getJobOutput(VAULT_NAME, JOB_ID);
-      assertEquals(payload.getContentMetadata().getContentType(), MediaType.JSON_UTF_8.toString());
-      assertEquals(payload.getContentMetadata().getContentLength(), new Long(mr.getBody().length));
-      assertEquals(ByteSources.asByteSource(payload.openStream()).size(), mr.getBody().length);
+      assertThat(payload.getContentMetadata().getContentType()).isEqualTo(MediaType.JSON_UTF_8.toString());
+      assertThat(payload.getContentMetadata().getContentLength()).isEqualTo(mr.getBody().length);
+      assertThat(payload.openStream())
+              .hasContentEqualTo(Resources.getResource(GlacierClientMockTest.class,
+                      "/json/getJobOutputResponseBody.json").openStream());
+
       assertEquals(server.takeRequest().getRequestLine(),
-            "GET /-/vaults/" + VAULT_NAME + "/jobs/" + JOB_ID + "/output " + HTTP);
+              "GET /-/vaults/" + VAULT_NAME + "/jobs/" + JOB_ID + "/output " + HTTP);
    }
 
    @Test
@@ -502,10 +503,11 @@ public class GlacierClientMockTest {
 
       ContentRange range = ContentRange.fromString("16-32");
       client.getJobOutput(VAULT_NAME, JOB_ID, range);
+
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getHeader("Range"), "bytes=" + range.toString());
       assertEquals(request.getRequestLine(),
-            "GET /-/vaults/" + VAULT_NAME + "/jobs/" + JOB_ID + "/output " + HTTP);
+              "GET /-/vaults/" + VAULT_NAME + "/jobs/" + JOB_ID + "/output " + HTTP);
    }
 
    @Test
@@ -517,17 +519,14 @@ public class GlacierClientMockTest {
       server.enqueue(mr);
 
       ArchiveMetadataCollection archives = client.getInventoryRetrievalOutput(VAULT_NAME, JOB_ID);
-      assertEquals(archives.getVaultARN(), "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault");
-      Iterator<ArchiveMetadata> i = archives.iterator();
-      ArchiveMetadata archive = i.next();
-      assertEquals(archive.getArchiveId(),
-            "DMTmICA2n5Tdqq5BV2z7og-A20xnpAPKt3UXwWxdWsn_D6auTUrW6kwy5Qyj9xd1MCE1mBYvMQ63LWaT8yTMzMaCxB_9VBWrW4Jw4zsvg5kehAPDVKcppUD1X7b24JukOr4mMAq-oA");
-      assertEquals(archive.getDescription(), "my archive1");
-      assertEquals(archive.getSize(), 2140123);
-      assertEquals(archive.getTreeHash(),
-            HashCode.fromString("6b9d4cf8697bd3af6aa1b590a0b27b337da5b18988dbcc619a3e608a554a1e62"));
-      assertTrue(i.hasNext());
-      i.next();
-      assertFalse(i.hasNext());
+      assertThat(archives.getVaultARN()).isEqualTo("arn:aws:glacier:us-east-1:012345678901:vaults/examplevault");
+      assertThat(archives).extracting("archiveId").containsExactly(
+              "DMTmICA2n5Tdqq5BV2z7og-A20xnpAPKt3UXwWxdWsn_D6auTUrW6kwy5Qyj9xd1MCE1mBYvMQ63LWaT8yTMzMaCxB_9VBWrW4Jw4zsvg5kehAPDVKcppUD1X7b24JukOr4mMAq-oA",
+              "2lHzwhKhgF2JHyvCS-ZRuF08IQLuyB4265Hs3AXj9MoAIhz7tbXAvcFeHusgU_hViO1WeCBe0N5lsYYHRyZ7rrmRkNRuYrXUs_sjl2K8ume_7mKO_0i7C-uHE1oHqaW9d37pabXrSA");
+      assertThat(archives).extracting("description").containsExactly("my archive1", "my archive2");
+      assertThat(archives).extracting("size").containsExactly(2140123L, 2140123L);
+      assertThat(archives).extracting("treeHash").containsExactly(
+              HashCode.fromString("6b9d4cf8697bd3af6aa1b590a0b27b337da5b18988dbcc619a3e608a554a1e62"),
+              HashCode.fromString("7f2fe580edb35154041fa3d4b41dd6d3adaef0c85d2ff6309f1d4b520eeecda3"));
    }
 }

@@ -16,7 +16,7 @@
  */
 package org.jclouds.glacier.util;
 
-import static org.testng.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -40,7 +40,7 @@ public class AWSRequestSignerV4Test {
       String credential = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";
       AWSRequestSignerV4 signer = new AWSRequestSignerV4(identity, credential, new JCECrypto());
       HttpRequest request = signer.sign(createRequest());
-      assertEquals(request.getFirstHeaderOrNull("Authorization"), auth);
+      assertThat(request.getFirstHeaderOrNull("Authorization")).isEqualTo(auth);
    }
 
    private HttpRequest createRequest() {

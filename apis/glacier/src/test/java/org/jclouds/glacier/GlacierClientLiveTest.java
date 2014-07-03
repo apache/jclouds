@@ -19,9 +19,6 @@ package org.jclouds.glacier;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jclouds.glacier.util.TestUtils.MiB;
 import static org.jclouds.glacier.util.TestUtils.buildPayload;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
 
 import java.util.UUID;
 
@@ -29,7 +26,6 @@ import org.jclouds.apis.BaseApiLiveTest;
 import org.jclouds.glacier.domain.MultipartUploadMetadata;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
-import org.jclouds.glacier.domain.VaultMetadata;
 import org.jclouds.glacier.util.ContentRange;
 import org.testng.annotations.Test;
 
@@ -51,13 +47,12 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
 
    @Test(groups = { "integration", "live" })
    public void testDeleteVaultIfEmptyOrNotFound() throws Exception {
-      assertTrue(api.deleteVault(UUID.randomUUID().toString()));
+      assertThat(api.deleteVault(UUID.randomUUID().toString())).isTrue();
    }
 
    @Test(groups = { "integration", "live" })
    public void testDescribeNonExistentVault() throws Exception {
-      VaultMetadata vault = api.describeVault(UUID.randomUUID().toString());
-      assertNull(vault);
+      assertThat(api.describeVault(UUID.randomUUID().toString())).isNull();
    }
 
    @Test(groups = { "integration", "live" })
@@ -88,7 +83,7 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
    public void testInitiateAndAbortMultipartUpload() throws Exception {
       String uploadId = api.initiateMultipartUpload(VAULT_NAME1, 8);
       try {
-         assertNotNull(uploadId);
+         assertThat(uploadId).isNotNull();
       } finally {
          api.abortMultipartUpload(VAULT_NAME1, uploadId);
       }
@@ -99,15 +94,15 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
       long partSizeInMb = 1;
       String uploadId = api.initiateMultipartUpload(VAULT_NAME1, partSizeInMb);
       try {
-         assertNotNull(api.uploadPart(VAULT_NAME1, uploadId,
-               ContentRange.fromPartNumber(0, partSizeInMb), buildPayload(partSizeInMb * MiB)));
+         assertThat(api.uploadPart(VAULT_NAME1, uploadId,
+                 ContentRange.fromPartNumber(0, partSizeInMb), buildPayload(partSizeInMb * MiB))).isNotNull();
          PaginatedMultipartUploadCollection uploads = api.listMultipartUploads(VAULT_NAME1);
          ImmutableList.Builder<String> list = ImmutableList.builder();
          for (MultipartUploadMetadata upload : uploads) {
             list.add(upload.getMultipartUploadId());
          }
          assertThat(list.build()).contains(uploadId);
-         assertTrue(api.abortMultipartUpload(VAULT_NAME1, uploadId));
+         assertThat(api.abortMultipartUpload(VAULT_NAME1, uploadId)).isTrue();
       } finally {
          api.abortMultipartUpload(VAULT_NAME1, uploadId);
       }
@@ -117,8 +112,8 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
          dependsOnMethods = { "testListAndDescribeVaults", "testListMultipartUploadsWithEmptyList",
          "testInitiateAndAbortMultipartUpload", "testListMultipartUploads" })
    public void testDeleteVault() throws Exception {
-      assertTrue(api.deleteVault(VAULT_NAME1));
-      assertTrue(api.deleteVault(VAULT_NAME2));
-      assertTrue(api.deleteVault(VAULT_NAME3));
+      assertThat(api.deleteVault(VAULT_NAME1)).isTrue();
+      assertThat(api.deleteVault(VAULT_NAME2)).isTrue();
+      assertThat(api.deleteVault(VAULT_NAME3)).isTrue();
    }
 }
