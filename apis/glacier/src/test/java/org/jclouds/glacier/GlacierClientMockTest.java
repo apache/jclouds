@@ -89,7 +89,7 @@ public class GlacierClientMockTest {
    private static final String VAULT_ARN3 = VAULT_ARN_PREFIX + VAULT_NAME3;
    private static final String ARCHIVE_ID = "NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId";
    private static final String ARCHIVE_LOCATION = VAULT_LOCATION + "/archives/" + ARCHIVE_ID;
-   private static final String TREEHASH = "beb0fe31a1c7ca8c6c04d574ea906e3f97b31fdca7571defb5b44dca89b5af60";
+   private static final HashCode TREEHASH = HashCode.fromString("beb0fe31a1c7ca8c6c04d574ea906e3f97b31fdca7571defb5b44dca89b5af60");
    private static final String DESCRIPTION = "test description";
    private static final String MULTIPART_UPLOAD_LOCATION = VAULT_LOCATION + "/multipart-uploads/" + ARCHIVE_ID;
    private static final String MULTIPART_UPLOAD_ID = "OW2fM5iVylEpFEMM9_HpKowRapC3vn5sSL39_396UW9zLFUWVrnRHaPjUJddQ5OxSHVXjYtrN47NBZ-khxOjyEXAMPLE";

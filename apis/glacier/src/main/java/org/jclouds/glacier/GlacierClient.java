@@ -157,7 +157,7 @@ public interface GlacierClient extends Closeable {
     *         upload.
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-upload-part.html" />
     */
-   String uploadPart(String vaultName, String uploadId, ContentRange range, Payload payload);
+   HashCode uploadPart(String vaultName, String uploadId, ContentRange range, Payload payload);
 
    /**
     * Completes the multipart upload.

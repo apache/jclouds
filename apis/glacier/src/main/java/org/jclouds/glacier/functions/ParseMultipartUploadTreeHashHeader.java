@@ -23,16 +23,17 @@ import org.jclouds.http.HttpException;
 import org.jclouds.http.HttpResponse;
 
 import com.google.common.base.Function;
+import com.google.common.hash.HashCode;
 
 /**
  * Parses the tree hash header from the HttpResponse.
  */
-public class ParseMultipartUploadTreeHashHeader implements Function<HttpResponse, String> {
+public class ParseMultipartUploadTreeHashHeader implements Function<HttpResponse, HashCode> {
    @Override
-   public String apply(HttpResponse from) {
-      String id = from.getFirstHeaderOrNull(GlacierHeaders.TREE_HASH);
-      if (id == null)
+   public HashCode apply(HttpResponse from) {
+      String treehash = from.getFirstHeaderOrNull(GlacierHeaders.TREE_HASH);
+      if (treehash == null)
          throw new HttpException("Did not receive Tree hash");
-      return id;
+      return HashCode.fromString(treehash);
    }
 }

@@ -201,7 +201,7 @@ public interface GlacierAsyncClient extends Closeable {
    @PUT
    @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
    @ResponseParser(ParseMultipartUploadTreeHashHeader.class)
-   ListenableFuture<String> uploadPart(
+   ListenableFuture<HashCode> uploadPart(
          @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
          @PathParam("uploadId") String uploadId,
          @BinderParam(BindContentRangeToHeaders.class) ContentRange range,
