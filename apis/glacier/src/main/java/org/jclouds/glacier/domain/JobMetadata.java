@@ -70,7 +70,7 @@ public class JobMetadata {
          @Nullable String archiveSHA256TreeHash, boolean completed, @Nullable Date completionDate, Date creationDate,
          @Nullable Long inventorySizeInBytes, @Nullable String jobDescription, String jobId,
          @Nullable String retrievalByteRange, @Nullable String sha256TreeHash, @Nullable String snsTopic,
-         String statusCode, String statusMessage, String vaultArn,
+         String statusCode, @Nullable String statusMessage, String vaultArn,
          @Nullable InventoryRetrievalParameters parameters) {
       super();
       this.action = checkNotNull(action, "action");
@@ -87,7 +87,7 @@ public class JobMetadata {
       this.sha256TreeHash = sha256TreeHash;
       this.snsTopic = snsTopic;
       this.statusCode = JobStatus.fromString(checkNotNull(statusCode, "statusCode"));
-      this.statusMessage = checkNotNull(statusMessage, "statusMessage");
+      this.statusMessage = statusMessage;
       this.vaultArn = checkNotNull(vaultArn, "vaultArn");
       this.parameters = parameters;
    }
