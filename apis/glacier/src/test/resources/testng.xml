@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="tests">
+  <test name="livelong">
+    <groups>
+      <run>
+        <include name="livelong" />
+      </run>
+    </groups>
+    <classes>
+      <class name="org.jclouds.glacier.GlacierClientLongLiveTest" />
+    </classes>
+  </test>
+  <test name="mock">
+    <groups>
+      <run>
+        <include name="mock" />
+      </run>
+    </groups>
+    <classes>
+      <class name="org.jclouds.glacier.GlacierClientMockTest" />
+    </classes>
+  </test>
+  <test name="liveshort">
+    <groups>
+      <run>
+        <include name="liveshort" />
+      </run>
+    </groups>
+    <classes>
+      <class name="org.jclouds.glacier.GlacierClientLiveTest" />
+    </classes>
+  </test>
+</suite>

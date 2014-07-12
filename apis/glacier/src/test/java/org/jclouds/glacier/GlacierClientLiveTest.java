@@ -28,42 +28,42 @@ import org.jclouds.glacier.util.ContentRange;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.hash.HashCode;
 
 /**
  * Live test for Glacier.
  */
-@Test(groups = { "integration", "live" })
-public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
-
-   public GlacierClientLiveTest() {
-      this.provider = "glacier";
-   }
+@Test(groups = {"live", "liveshort"})
+public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient> {
 
    private final String VAULT_NAME1 = UUID.randomUUID().toString();
    private final String VAULT_NAME2 = UUID.randomUUID().toString();
    private final String VAULT_NAME3 = UUID.randomUUID().toString();
 
-   @Test(groups = { "integration", "live" })
+   public GlacierClientLiveTest() {
+      this.provider = "glacier";
+   }
+
+   @Test
    public void testDeleteVaultIfEmptyOrNotFound() throws Exception {
       assertThat(api.deleteVault(UUID.randomUUID().toString())).isTrue();
    }
 
-   @Test(groups = { "integration", "live" })
+   @Test
    public void testDescribeNonExistentVault() throws Exception {
       assertThat(api.describeVault(UUID.randomUUID().toString())).isNull();
    }
 
-   @Test(groups = { "integration", "live" })
+   @Test
    public void testCreateVault() throws Exception {
-      String path = api.createVault(VAULT_NAME1).toString();
-      api.createVault(VAULT_NAME2);
-      api.createVault(VAULT_NAME3);
-      assertThat(path)
+      assertThat(api.createVault(VAULT_NAME1).toString())
             .contains("https://glacier.us-east-1.amazonaws.com/")
             .contains("/vaults/" + VAULT_NAME1);
+      api.createVault(VAULT_NAME2);
+      api.createVault(VAULT_NAME3);
    }
 
-   @Test(groups = { "integration", "live" }, dependsOnMethods = { "testCreateVault" })
+   @Test(dependsOnMethods = {"testCreateVault"})
    public void testListAndDescribeVaults() throws Exception {
       PaginatedVaultCollection vaults = api.listVaults();
       assertThat(vaults).containsAll(ImmutableList.of(
@@ -72,39 +72,33 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient>{
             api.describeVault(VAULT_NAME3)));
    }
 
-   @Test(groups = { "integration", "live" }, dependsOnMethods = { "testCreateVault" })
-   public void testListMultipartUploadsWithEmptyList() throws Exception {
+   @Test(dependsOnMethods = {"testCreateVault"})
+   public void testListMultipartUploadWithEmptyList() throws Exception {
       assertThat(api.listMultipartUploads(VAULT_NAME1)).isEmpty();
    }
 
-   @Test(groups = { "integration", "live" }, dependsOnMethods = { "testListMultipartUploadsWithEmptyList" })
-   public void testInitiateAndAbortMultipartUpload() throws Exception {
-      String uploadId = api.initiateMultipartUpload(VAULT_NAME1, 8);
-      try {
-         assertThat(uploadId).isNotNull();
-      } finally {
-         api.abortMultipartUpload(VAULT_NAME1, uploadId);
-      }
-   }
-
-   @Test(groups = { "integration", "live" }, dependsOnMethods = { "testInitiateAndAbortMultipartUpload" })
-   public void testListMultipartUploads() throws Exception {
+   @Test(dependsOnMethods = {"testListMultipartUploadWithEmptyList"})
+   public void testInitiateListAndAbortMultipartUpload() throws Exception {
       long partSizeInMb = 1;
       String uploadId = api.initiateMultipartUpload(VAULT_NAME1, partSizeInMb);
       try {
-         assertThat(api.uploadPart(VAULT_NAME1, uploadId,
-                 ContentRange.fromPartNumber(0, partSizeInMb), buildPayload(partSizeInMb * MiB))).isNotNull();
          assertThat(api.listMultipartUploads(VAULT_NAME1)).extracting("multipartUploadId").contains(uploadId);
-         assertThat(api.abortMultipartUpload(VAULT_NAME1, uploadId)).isTrue();
+
+         HashCode part1 = api.uploadPart(VAULT_NAME1, uploadId,
+               ContentRange.fromPartNumber(0, partSizeInMb), buildPayload(partSizeInMb * MiB));
+         HashCode part2 = api.uploadPart(VAULT_NAME1, uploadId,
+               ContentRange.fromPartNumber(1, partSizeInMb), buildPayload(partSizeInMb * MiB));
+         assertThat(part1).isNotNull();
+         assertThat(part2).isNotNull();
+         assertThat(api.listParts(VAULT_NAME1, uploadId)).extracting("treeHash").containsExactly(part1, part2);
       } finally {
-         api.abortMultipartUpload(VAULT_NAME1, uploadId);
+         assertThat(api.abortMultipartUpload(VAULT_NAME1, uploadId)).isTrue();
       }
    }
 
-   @Test(groups = { "integration", "live" },
-         dependsOnMethods = { "testListAndDescribeVaults", "testListMultipartUploadsWithEmptyList",
-         "testInitiateAndAbortMultipartUpload", "testListMultipartUploads" })
-   public void testDeleteVault() throws Exception {
+   @Test(dependsOnMethods = {"testListAndDescribeVaults", "testListMultipartUploadWithEmptyList",
+         "testInitiateListAndAbortMultipartUpload"})
+   public void testDeleteVaultAndArchive() throws Exception {
       assertThat(api.deleteVault(VAULT_NAME1)).isTrue();
       assertThat(api.deleteVault(VAULT_NAME2)).isTrue();
       assertThat(api.deleteVault(VAULT_NAME3)).isTrue();
