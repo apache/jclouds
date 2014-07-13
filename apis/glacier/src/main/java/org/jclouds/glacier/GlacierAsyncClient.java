@@ -218,7 +218,7 @@ public interface GlacierAsyncClient extends Closeable {
          @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
          @PathParam("uploadId") String uploadId,
          @BinderParam(BindMultipartTreeHashToHeaders.class) Map<Integer, HashCode> hashes,
-         @BinderParam(BindArchiveSizeToHeaders.class) long archiveSizeInMB);
+         @BinderParam(BindArchiveSizeToHeaders.class) long archiveSize);
 
    /**
     * @see GlacierClient#abortMultipartUpload

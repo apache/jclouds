@@ -310,7 +310,7 @@ public class GlacierClientMockTest {
             2, partHashcode,
             3, partHashcode,
             4, partHashcode);
-      assertThat(client.completeMultipartUpload(VAULT_NAME, MULTIPART_UPLOAD_ID, map, 8L)).isEqualTo(ARCHIVE_ID);
+      assertThat(client.completeMultipartUpload(VAULT_NAME, MULTIPART_UPLOAD_ID, map, 8 * MiB)).isEqualTo(ARCHIVE_ID);
 
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(),

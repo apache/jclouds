@@ -168,12 +168,12 @@ public interface GlacierClient extends Closeable {
     *           Multipart upload identifier.
     * @param hashes
     *           Map containing the pairs partnumber-treehash of each uploaded part.
-    * @param archiveSizeInMB
+    * @param archiveSize
     *           Size of the complete archive.
     * @return A String containing the Archive identifier in Amazon Glacier.
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-complete-upload.html" />
     */
-   String completeMultipartUpload(String vaultName, String uploadId, Map<Integer, HashCode> hashes, long archiveSizeInMB);
+   String completeMultipartUpload(String vaultName, String uploadId, Map<Integer, HashCode> hashes, long archiveSize);
 
    /**
     * Aborts the multipart upload.

@@ -32,9 +32,9 @@ public class BindArchiveSizeToHeaders implements Binder {
    public <R extends HttpRequest> R bindToRequest(R request, Object input) {
       checkArgument(input instanceof Long, "This binder is only valid for long");
       checkNotNull(request, "request");
-      Long archiveSizeInMB = Long.class.cast(input);
+      Long archiveSize = Long.class.cast(input);
       return (R) request.toBuilder()
-            .replaceHeader(GlacierHeaders.ARCHIVE_SIZE, Long.toString(archiveSizeInMB << 20))
+            .replaceHeader(GlacierHeaders.ARCHIVE_SIZE, Long.toString(archiveSize))
             .build();
    }
 
