@@ -35,6 +35,7 @@ import org.jclouds.collect.Memoized;
 import org.jclouds.crypto.Crypto;
 import org.jclouds.domain.Location;
 import org.jclouds.glacier.GlacierClient;
+import org.jclouds.glacier.blobstore.functions.PaginatedVaultCollectionToStorageMetadata;
 import org.jclouds.glacier.blobstore.strategy.MultipartUploadStrategy;
 import org.jclouds.javax.annotation.Nullable;
 
@@ -46,12 +47,14 @@ public class GlacierBlobStore extends BaseBlobStore {
    private final GlacierClient sync;
    private final Crypto crypto;
    private final Provider<MultipartUploadStrategy> multipartUploadStrategy;
+   private final PaginatedVaultCollectionToStorageMetadata vaultsToContainers;
 
    @Inject
    GlacierBlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
                     @Memoized Supplier<Set<? extends Location>> locations, GlacierClient sync, Crypto crypto,
-                    Provider<MultipartUploadStrategy> multipartUploadStrategy) {
+                    Provider<MultipartUploadStrategy> multipartUploadStrategy, PaginatedVaultCollectionToStorageMetadata vaultsToContainers) {
       super(context, blobUtils, defaultLocation, locations);
+      this.vaultsToContainers = checkNotNull(vaultsToContainers, "vaultsToContainers");
       this.multipartUploadStrategy = checkNotNull(multipartUploadStrategy, "multipartUploadStrategy");
       this.sync = checkNotNull(sync, "sync");
       this.crypto = checkNotNull(crypto, "crypto");
@@ -64,7 +67,7 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Override
    public PageSet<? extends StorageMetadata> list() {
-      throw new UnsupportedOperationException();
+      return vaultsToContainers.apply(sync.listVaults());
    }
 
    @Override
@@ -118,6 +121,6 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Override
    public void removeBlob(String container, String key) {
-      throw new UnsupportedOperationException();
+      sync.deleteArchive(container, key);
    }
 }
