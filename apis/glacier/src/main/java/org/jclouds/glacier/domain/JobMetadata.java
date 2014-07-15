@@ -55,7 +55,7 @@ public class JobMetadata {
    @SerializedName("SNSTopic")
    private final String snsTopic;
    @SerializedName("StatusCode")
-   private final String statusCode;
+   private final JobStatus statusCode;
    @SerializedName("StatusMessage")
    private final String statusMessage;
    @SerializedName("VaultARN")
@@ -86,7 +86,7 @@ public class JobMetadata {
       this.retrievalByteRange = retrievalByteRange == null ? null : ContentRange.fromString(retrievalByteRange);
       this.sha256TreeHash = sha256TreeHash;
       this.snsTopic = snsTopic;
-      this.statusCode = checkNotNull(statusCode, "statusCode");
+      this.statusCode = JobStatus.fromString(checkNotNull(statusCode, "statusCode"));
       this.statusMessage = checkNotNull(statusMessage, "statusMessage");
       this.vaultArn = checkNotNull(vaultArn, "vaultArn");
       this.parameters = parameters;
@@ -144,7 +144,7 @@ public class JobMetadata {
       return snsTopic;
    }
 
-   public String getStatusCode() {
+   public JobStatus getStatusCode() {
       return statusCode;
    }
 
