@@ -21,6 +21,10 @@ import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.attr.ConsistencyModel;
 import org.jclouds.glacier.blobstore.GlacierAsyncBlobStore;
 import org.jclouds.glacier.blobstore.GlacierBlobStore;
+import org.jclouds.glacier.blobstore.strategy.MultipartUploadStrategy;
+import org.jclouds.glacier.blobstore.strategy.SlicingStrategy;
+import org.jclouds.glacier.blobstore.strategy.internal.BaseSlicingStrategy;
+import org.jclouds.glacier.blobstore.strategy.internal.SequentialMultipartUploadStrategy;
 
 import com.google.inject.AbstractModule;
 
@@ -30,5 +34,7 @@ public class GlacierBlobStoreContextModule extends AbstractModule {
       bind(ConsistencyModel.class).toInstance(ConsistencyModel.EVENTUAL);
       bind(BlobStore.class).to(GlacierBlobStore.class);
       bind(AsyncBlobStore.class).to(GlacierAsyncBlobStore.class);
+      bind(MultipartUploadStrategy.class).to(SequentialMultipartUploadStrategy.class);
+      bind(SlicingStrategy.class).to(BaseSlicingStrategy.class);
    }
 }

@@ -35,19 +35,24 @@ import org.jclouds.collect.Memoized;
 import org.jclouds.crypto.Crypto;
 import org.jclouds.domain.Location;
 import org.jclouds.glacier.GlacierClient;
+import org.jclouds.glacier.blobstore.strategy.MultipartUploadStrategy;
 import org.jclouds.javax.annotation.Nullable;
 
 import com.google.common.base.Supplier;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 public class GlacierBlobStore extends BaseBlobStore {
    private final GlacierClient sync;
    private final Crypto crypto;
+   private final Provider<MultipartUploadStrategy> multipartUploadStrategy;
 
    @Inject
    GlacierBlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
-                    @Memoized Supplier<Set<? extends Location>> locations, GlacierClient sync, Crypto crypto) {
+                    @Memoized Supplier<Set<? extends Location>> locations, GlacierClient sync, Crypto crypto,
+                    Provider<MultipartUploadStrategy> multipartUploadStrategy) {
       super(context, blobUtils, defaultLocation, locations);
+      this.multipartUploadStrategy = checkNotNull(multipartUploadStrategy, "multipartUploadStrategy");
       this.sync = checkNotNull(sync, "sync");
       this.crypto = checkNotNull(crypto, "crypto");
    }
@@ -95,7 +100,10 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Override
    public String putBlob(String container, Blob blob, PutOptions options) {
-      throw new UnsupportedOperationException();
+      if (options.isMultipart()) {
+         return multipartUploadStrategy.get().execute(container, blob);
+      }
+      return putBlob(container, blob);
    }
 
    @Override
