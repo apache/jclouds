@@ -24,7 +24,9 @@ import org.jclouds.glacier.blobstore.GlacierAsyncBlobStore;
 import org.jclouds.glacier.blobstore.GlacierBlobStore;
 import org.jclouds.glacier.blobstore.strategy.ClearVaultStrategy;
 import org.jclouds.glacier.blobstore.strategy.MultipartUploadStrategy;
+import org.jclouds.glacier.blobstore.strategy.PollingStrategy;
 import org.jclouds.glacier.blobstore.strategy.SlicingStrategy;
+import org.jclouds.glacier.blobstore.strategy.internal.BasePollingStrategy;
 import org.jclouds.glacier.blobstore.strategy.internal.BaseSlicingStrategy;
 import org.jclouds.glacier.blobstore.strategy.internal.SequentialMultipartUploadStrategy;
 
@@ -39,5 +41,6 @@ public class GlacierBlobStoreContextModule extends AbstractModule {
       bind(MultipartUploadStrategy.class).to(SequentialMultipartUploadStrategy.class);
       bind(SlicingStrategy.class).to(BaseSlicingStrategy.class);
       bind(ClearListStrategy.class).to(ClearVaultStrategy.class);
+      bind(PollingStrategy.class).to(BasePollingStrategy.class);
    }
 }

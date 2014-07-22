@@ -17,15 +17,16 @@
 package org.jclouds.glacier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.jclouds.glacier.blobstore.strategy.internal.BasePollingStrategy.DEFAULT_TIME_BETWEEN_POLLS;
 import static org.jclouds.glacier.util.TestUtils.MiB;
 import static org.jclouds.glacier.util.TestUtils.buildData;
 import static org.jclouds.glacier.util.TestUtils.buildPayload;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
 
 import org.jclouds.apis.BaseApiLiveTest;
+import org.jclouds.glacier.blobstore.strategy.internal.BasePollingStrategy;
 import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
 import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
 import org.jclouds.glacier.domain.JobMetadata;
@@ -44,8 +45,6 @@ import com.google.common.io.Closer;
 public class GlacierClientLongLiveTest extends BaseApiLiveTest<GlacierClient>{
 
    private static final long PART_SIZE = 1;
-   private static final long INITIAL_WAIT = TimeUnit.HOURS.toMillis(3);
-   private static final long TIME_BETWEEN_POLLS = TimeUnit.MINUTES.toMillis(15);
    private static final String VAULT_NAME = "JCLOUDS_LIVE_TESTS";
    private static final String ARCHIVE_DESCRIPTION = "test archive";
 
@@ -112,11 +111,8 @@ public class GlacierClientLongLiveTest extends BaseApiLiveTest<GlacierClient>{
 
    @Test(groups = {"live", "livelong", "longtest"}, dependsOnMethods = {"testInitiateJob", "testDescribeJob", "testListJobs"})
    public void testWaitForSucceed() throws InterruptedException {
-      Thread.sleep(INITIAL_WAIT);
-      while (api.describeJob(VAULT_NAME, archiveRetrievalJob).getStatusCode() == JobStatus.IN_PROGRESS ||
-            api.describeJob(VAULT_NAME, inventoryRetrievalJob).getStatusCode() == JobStatus.IN_PROGRESS) {
-         Thread.sleep(TIME_BETWEEN_POLLS);
-      }
+      new BasePollingStrategy(api).waitForSuccess(VAULT_NAME, archiveRetrievalJob);
+      new BasePollingStrategy(0, DEFAULT_TIME_BETWEEN_POLLS, api).waitForSuccess(VAULT_NAME, inventoryRetrievalJob);
       assertThat(api.describeJob(VAULT_NAME, archiveRetrievalJob).getStatusCode()).isEqualTo(JobStatus.SUCCEEDED);
       assertThat(api.describeJob(VAULT_NAME, inventoryRetrievalJob).getStatusCode()).isEqualTo(JobStatus.SUCCEEDED);
    }

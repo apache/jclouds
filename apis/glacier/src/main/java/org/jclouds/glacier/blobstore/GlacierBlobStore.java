@@ -37,6 +37,7 @@ import org.jclouds.domain.Location;
 import org.jclouds.glacier.GlacierClient;
 import org.jclouds.glacier.blobstore.functions.PaginatedVaultCollectionToStorageMetadata;
 import org.jclouds.glacier.blobstore.strategy.MultipartUploadStrategy;
+import org.jclouds.glacier.blobstore.strategy.PollingStrategy;
 import org.jclouds.javax.annotation.Nullable;
 
 import com.google.common.base.Supplier;
@@ -47,13 +48,17 @@ public class GlacierBlobStore extends BaseBlobStore {
    private final GlacierClient sync;
    private final Crypto crypto;
    private final Provider<MultipartUploadStrategy> multipartUploadStrategy;
+   private final Provider<PollingStrategy> pollingStrategy;
    private final PaginatedVaultCollectionToStorageMetadata vaultsToContainers;
 
    @Inject
    GlacierBlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
                     @Memoized Supplier<Set<? extends Location>> locations, GlacierClient sync, Crypto crypto,
-                    Provider<MultipartUploadStrategy> multipartUploadStrategy, PaginatedVaultCollectionToStorageMetadata vaultsToContainers) {
+                    Provider<MultipartUploadStrategy> multipartUploadStrategy,
+                    Provider<PollingStrategy> pollingStrategy,
+                    PaginatedVaultCollectionToStorageMetadata vaultsToContainers) {
       super(context, blobUtils, defaultLocation, locations);
+      this.pollingStrategy = checkNotNull(pollingStrategy, "pollingStrategy");
       this.vaultsToContainers = checkNotNull(vaultsToContainers, "vaultsToContainers");
       this.multipartUploadStrategy = checkNotNull(multipartUploadStrategy, "multipartUploadStrategy");
       this.sync = checkNotNull(sync, "sync");
