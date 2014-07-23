@@ -39,6 +39,8 @@ import org.jclouds.collect.Memoized;
 import org.jclouds.crypto.Crypto;
 import org.jclouds.domain.Location;
 import org.jclouds.glacier.GlacierClient;
+import org.jclouds.glacier.blobstore.functions.ArchiveMetadataCollectionToStorageMetadata;
+import org.jclouds.glacier.blobstore.functions.ListContainerOptionsToInventoryRetrievalJobRequest;
 import org.jclouds.glacier.blobstore.functions.PaginatedVaultCollectionToStorageMetadata;
 import org.jclouds.glacier.blobstore.strategy.MultipartUploadStrategy;
 import org.jclouds.glacier.blobstore.strategy.PollingStrategy;
@@ -56,14 +58,20 @@ public class GlacierBlobStore extends BaseBlobStore {
    private final Provider<MultipartUploadStrategy> multipartUploadStrategy;
    private final Provider<PollingStrategy> pollingStrategy;
    private final PaginatedVaultCollectionToStorageMetadata vaultsToContainers;
+   private final ArchiveMetadataCollectionToStorageMetadata archivesToBlobs;
+   private final ListContainerOptionsToInventoryRetrievalJobRequest containerOptionsToInventoryRetrieval;
 
    @Inject
    GlacierBlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
                     @Memoized Supplier<Set<? extends Location>> locations, GlacierClient sync, Crypto crypto,
                     Provider<MultipartUploadStrategy> multipartUploadStrategy,
                     Provider<PollingStrategy> pollingStrategy,
-                    PaginatedVaultCollectionToStorageMetadata vaultsToContainers) {
+                    PaginatedVaultCollectionToStorageMetadata vaultsToContainers,
+                    ArchiveMetadataCollectionToStorageMetadata archivesToBlobs, ListContainerOptionsToInventoryRetrievalJobRequest containerOptionsToInventoryRetrieval) {
       super(context, blobUtils, defaultLocation, locations);
+      this.containerOptionsToInventoryRetrieval = checkNotNull(containerOptionsToInventoryRetrieval,
+            "containerOptionsToInventoryRetrieval");
+      this.archivesToBlobs = checkNotNull(archivesToBlobs, "archivesToBlobs");
       this.pollingStrategy = checkNotNull(pollingStrategy, "pollingStrategy");
       this.vaultsToContainers = checkNotNull(vaultsToContainers, "vaultsToContainers");
       this.multipartUploadStrategy = checkNotNull(multipartUploadStrategy, "multipartUploadStrategy");
@@ -99,7 +107,15 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Override
    public PageSet<? extends StorageMetadata> list(String container, ListContainerOptions listContainerOptions) {
-      throw new UnsupportedOperationException();
+      String jobId = sync.initiateJob(container, containerOptionsToInventoryRetrieval.apply(listContainerOptions));
+      try {
+         if (pollingStrategy.get().waitForSuccess(container, jobId)) {
+            return archivesToBlobs.apply(sync.getInventoryRetrievalOutput(container, jobId));
+         }
+         return null;
+      } catch (InterruptedException e) {
+         throw new RuntimeException(e);
+      }
    }
 
    @Override
@@ -109,7 +125,7 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Override
    public String putBlob(String container, Blob blob) {
-      return sync.uploadArchive(container, blob.getPayload(), blob.getMetadata().getName());
+      return sync.uploadArchive(container, blob.getPayload());
    }
 
    @Override
