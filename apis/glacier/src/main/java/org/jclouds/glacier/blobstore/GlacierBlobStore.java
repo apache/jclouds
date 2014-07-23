@@ -120,7 +120,7 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Override
    public boolean blobExists(String container, String key) {
-      throw new UnsupportedOperationException();
+      return this.blobMetadata(container, key) != null;
    }
 
    @Override
@@ -138,7 +138,13 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Override
    public BlobMetadata blobMetadata(String container, String key) {
-      throw new UnsupportedOperationException();
+      PageSet<? extends StorageMetadata> blobs = this.list(container, null);
+      for (StorageMetadata blob : blobs) {
+         if (blob.getName().equals(key)) {
+            return (BlobMetadata) blob;
+         }
+      }
+      return null;
    }
 
    private ArchiveRetrievalJobRequest buildArchiveRetrievalRequest(String key, GetOptions getOptions) {
