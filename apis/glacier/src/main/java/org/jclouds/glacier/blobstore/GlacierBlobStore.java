@@ -16,6 +16,7 @@
  */
 package org.jclouds.glacier.blobstore;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
@@ -23,8 +24,11 @@ import java.util.Set;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.blobstore.domain.Blob;
 import org.jclouds.blobstore.domain.BlobMetadata;
+import org.jclouds.blobstore.domain.MutableBlobMetadata;
 import org.jclouds.blobstore.domain.PageSet;
 import org.jclouds.blobstore.domain.StorageMetadata;
+import org.jclouds.blobstore.domain.internal.BlobImpl;
+import org.jclouds.blobstore.domain.internal.MutableBlobMetadataImpl;
 import org.jclouds.blobstore.internal.BaseBlobStore;
 import org.jclouds.blobstore.options.CreateContainerOptions;
 import org.jclouds.blobstore.options.GetOptions;
@@ -38,6 +42,8 @@ import org.jclouds.glacier.GlacierClient;
 import org.jclouds.glacier.blobstore.functions.PaginatedVaultCollectionToStorageMetadata;
 import org.jclouds.glacier.blobstore.strategy.MultipartUploadStrategy;
 import org.jclouds.glacier.blobstore.strategy.PollingStrategy;
+import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
+import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.javax.annotation.Nullable;
 
 import com.google.common.base.Supplier;
@@ -119,9 +125,34 @@ public class GlacierBlobStore extends BaseBlobStore {
       throw new UnsupportedOperationException();
    }
 
+   private ArchiveRetrievalJobRequest buildArchiveRetrievalRequest(String key, GetOptions getOptions) {
+      ArchiveRetrievalJobRequest.Builder requestBuilder = ArchiveRetrievalJobRequest.builder().archiveId(key);
+      if (getOptions != null) {
+         checkArgument(getOptions.getRanges().size() <= 1);
+         if (getOptions.getRanges().size() == 1) {
+            requestBuilder.range(ContentRange.fromString(getOptions.getRanges().get(0)));
+         }
+      }
+      return requestBuilder.build();
+   }
+
    @Override
    public Blob getBlob(String container, String key, GetOptions getOptions) {
-      throw new UnsupportedOperationException();
+      String jobId = sync.initiateJob(container, buildArchiveRetrievalRequest(key, getOptions));
+      try {
+         if (pollingStrategy.get().waitForSuccess(container, jobId)) {
+            MutableBlobMetadata blobMetadata = new MutableBlobMetadataImpl();
+            blobMetadata.setContainer(container);
+            blobMetadata.setName(key);
+
+            Blob blob = new BlobImpl(blobMetadata);
+            blob.setPayload(sync.getJobOutput(container, jobId));
+            return blob;
+         }
+         return null;
+      } catch (InterruptedException e) {
+         throw new RuntimeException(e);
+      }
    }
 
    @Override
