@@ -16,15 +16,41 @@
  */
 package org.jclouds.glacier.blobstore.strategy;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.jclouds.blobstore.options.ListContainerOptions;
 import org.jclouds.blobstore.strategy.ClearListStrategy;
+import org.jclouds.glacier.GlacierClient;
+import org.jclouds.glacier.domain.ArchiveMetadata;
+import org.jclouds.glacier.domain.ArchiveMetadataCollection;
+import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class ClearVaultStrategy implements ClearListStrategy {
+   private final GlacierClient sync;
+   private final PollingStrategy pollingStrategy;
+
+   @Inject
+   public ClearVaultStrategy(GlacierClient sync, PollingStrategy pollingStrategy) {
+      this.pollingStrategy = checkNotNull(pollingStrategy, "pollingStrategy");
+      this.sync = checkNotNull(sync, "sync");
+   }
+
    @Override
-   public void execute(String s, ListContainerOptions listContainerOptions) {
-      return;
+   public void execute(String container, ListContainerOptions listContainerOptions) {
+      String jobId = sync.initiateJob(container, InventoryRetrievalJobRequest.builder().build());
+      try {
+         if (pollingStrategy.waitForSuccess(container, jobId)) {
+            ArchiveMetadataCollection archives = sync.getInventoryRetrievalOutput(container, jobId);
+            for(ArchiveMetadata archive : archives) {
+               sync.deleteArchive(container, archive.getArchiveId());
+            }
+         }
+      } catch (InterruptedException e) {
+         throw new RuntimeException(e);
+      }
    }
 }
