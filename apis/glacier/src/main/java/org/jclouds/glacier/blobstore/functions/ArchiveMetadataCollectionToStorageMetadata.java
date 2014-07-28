@@ -24,6 +24,9 @@ import org.jclouds.glacier.domain.ArchiveMetadataCollection;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
+/**
+ * Converts ArchiveMetadataCollection into PageSet<StorageMetadata>
+ */
 public class ArchiveMetadataCollectionToStorageMetadata implements Function<ArchiveMetadataCollection,
       PageSet<? extends StorageMetadata>>  {
    @Override

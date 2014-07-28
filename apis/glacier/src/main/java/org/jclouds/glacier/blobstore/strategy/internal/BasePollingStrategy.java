@@ -26,7 +26,13 @@ import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.JobStatus;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+/**
+ * Base implementation of PollingStrategy.
+ * This implementation waits a fixed amount of time before start polling.
+ */
+@Singleton
 public class BasePollingStrategy implements PollingStrategy {
    public static final long DEFAULT_INITIAL_WAIT = TimeUnit.HOURS.toMillis(3);
    public static final long DEFAULT_TIME_BETWEEN_POLLS = TimeUnit.MINUTES.toMillis(15);

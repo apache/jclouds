@@ -18,6 +18,9 @@ package org.jclouds.glacier.blobstore.strategy;
 
 import org.jclouds.io.Payload;
 
+/**
+ * Strategy for payload slicing
+ */
 public interface SlicingStrategy {
    public static final int MAX_LIST_PARTS_RETURNED = 1000;
    public static final int MAX_LIST_MPU_RETURNED = 1000;

@@ -19,6 +19,8 @@ package org.jclouds.glacier.blobstore.strategy.internal;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Math.sqrt;
 
+import javax.inject.Singleton;
+
 import org.jclouds.glacier.blobstore.strategy.PayloadSlice;
 import org.jclouds.glacier.blobstore.strategy.SlicingStrategy;
 import org.jclouds.glacier.util.ContentRange;
@@ -28,6 +30,11 @@ import org.jclouds.io.PayloadSlicer;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+/**
+ * Base implementation of SlicingStrategy.
+ * This implementation slice a payload based on the (part size)/(number of parts) ratio. This ratio may be overriden.
+ */
+@Singleton
 public class BaseSlicingStrategy implements SlicingStrategy {
 
    public static final double DEFAULT_RATIO = 0.32; // (part size/number of parts) ratio

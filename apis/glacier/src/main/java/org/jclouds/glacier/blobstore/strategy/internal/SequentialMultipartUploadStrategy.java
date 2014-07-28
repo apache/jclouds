@@ -27,7 +27,13 @@ import org.jclouds.glacier.blobstore.strategy.SlicingStrategy;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.hash.HashCode;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+/**
+ * Base implementation of MultipartUploadStrategy.
+ * This implementation uploads the parts sequentially.
+ */
+@Singleton
 public class SequentialMultipartUploadStrategy implements MultipartUploadStrategy {
    private final GlacierClient client;
    private final SlicingStrategy slicer;

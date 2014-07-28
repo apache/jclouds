@@ -14,13 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.glacier.blobstore.strategy;
+package org.jclouds.glacier.blobstore.strategy.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.jclouds.blobstore.options.ListContainerOptions;
 import org.jclouds.blobstore.strategy.ClearListStrategy;
 import org.jclouds.glacier.GlacierClient;
+import org.jclouds.glacier.blobstore.strategy.PollingStrategy;
 import org.jclouds.glacier.domain.ArchiveMetadata;
 import org.jclouds.glacier.domain.ArchiveMetadataCollection;
 import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
@@ -29,6 +30,10 @@ import org.jclouds.rest.ResourceNotFoundException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+/**
+ * Implementation of ClearListStrategy.
+ * This is a long duration operation.
+ */
 @Singleton
 public class ClearVaultStrategy implements ClearListStrategy {
    private final GlacierClient sync;

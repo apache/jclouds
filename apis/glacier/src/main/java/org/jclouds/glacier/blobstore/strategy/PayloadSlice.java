@@ -22,6 +22,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.io.Payload;
 
+/**
+ * Represents an ordered part of data from a payload
+ */
 public class PayloadSlice {
    private final Payload payload;
    private final ContentRange range;

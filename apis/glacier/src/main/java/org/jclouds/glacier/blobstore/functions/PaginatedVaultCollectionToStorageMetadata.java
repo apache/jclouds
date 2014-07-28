@@ -24,6 +24,9 @@ import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
+/**
+ * Converts PaginatedVaultCollection into PageSet<StorageMetadata>
+ */
 public class PaginatedVaultCollectionToStorageMetadata implements Function<PaginatedVaultCollection,
       PageSet<? extends StorageMetadata>>  {
    @Override

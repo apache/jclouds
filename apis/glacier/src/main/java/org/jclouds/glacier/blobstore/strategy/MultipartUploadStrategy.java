@@ -18,6 +18,9 @@ package org.jclouds.glacier.blobstore.strategy;
 
 import org.jclouds.blobstore.domain.Blob;
 
+/**
+ * Strategy for Multipart Uploads
+ */
 public interface MultipartUploadStrategy {
    String execute(String container, Blob blob);
 }

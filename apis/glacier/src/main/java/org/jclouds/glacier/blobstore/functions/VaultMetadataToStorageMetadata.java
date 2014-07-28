@@ -24,6 +24,9 @@ import org.jclouds.glacier.domain.VaultMetadata;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 
+/**
+ * Converts VaultMetadata into StorageMetadata
+ */
 public class VaultMetadataToStorageMetadata implements Function<VaultMetadata, StorageMetadata> {
    @Override
    public StorageMetadata apply(VaultMetadata vault) {

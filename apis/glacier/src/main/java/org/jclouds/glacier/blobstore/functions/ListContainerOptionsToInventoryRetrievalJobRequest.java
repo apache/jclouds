@@ -21,6 +21,9 @@ import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
 
 import com.google.common.base.Function;
 
+/**
+ * Converts ListContainerOptions into InventoryRetrievalJobRequest
+ */
 public class ListContainerOptionsToInventoryRetrievalJobRequest implements Function<ListContainerOptions,
       InventoryRetrievalJobRequest>  {
    @Override
