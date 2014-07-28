@@ -30,7 +30,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 /**
- * Base implementation of MultipartUploadStrategy.
  * This implementation uploads the parts sequentially.
  */
 @Singleton

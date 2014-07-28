@@ -25,9 +25,6 @@ import org.jclouds.io.payloads.BaseMutableContentMetadata;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 
-/**
- * Converts ArchiveMetadata into BlobMetadata
- */
 public class ArchiveMetadataToBlobMetadata implements Function<ArchiveMetadata, MutableBlobMetadata> {
    @Override
    public MutableBlobMetadata apply(ArchiveMetadata from) {

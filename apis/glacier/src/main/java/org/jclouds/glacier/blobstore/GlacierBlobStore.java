@@ -62,7 +62,7 @@ public class GlacierBlobStore extends BaseBlobStore {
    public static final long DEFAULT_INVENTORY_UPDATE_TIME = TimeUnit.HOURS.toMillis(24);
 
    @Inject(optional = true)
-   @Named("jclouds.inventory.update.time")
+   @Named("jclouds.glacier.inventory.update.time")
    private final long inventoryUpdateTime = DEFAULT_INVENTORY_UPDATE_TIME;
 
    private final GlacierClient sync;
@@ -90,11 +90,13 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    /**
-    * Delete the container and all its blobs.
-    * This may be a VERY long duration method.
+    * Deletes the container and all its blobs.
+    * Inventories will be retrieved until the container is gone. Since inventories need 24 hours to be updated this
+    * operation may take days.
     *
     * @param container
     *          container name
+    * @see <a href="http://aws.amazon.com/glacier/faqs/#data-inventories" />
     */
    @Override
    public void deleteContainer(String container) {
@@ -114,23 +116,15 @@ public class GlacierBlobStore extends BaseBlobStore {
        }, inventoryUpdateTime).apply(container), "%s still exists after deleting!", container);
    }
 
-   /**
-    * Delete the container if empty.
-    * This method is idempotent.
-    *
-    * @param container
-    *          container name
-    * @return false if the container still exists, true otherwise
-    */
    @Override
    protected boolean deleteAndVerifyContainerGone(String container) {
       return sync.deleteVault(container);
    }
 
    /**
-    * Lists the containers
+    * Lists the containers.
     *
-    * @return the container list
+    * @return a PageSet of StorageMetadata
     */
    @Override
    public PageSet<? extends StorageMetadata> list() {
@@ -138,7 +132,8 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    /**
-    * This implementation invokes {@link GlacierClient#describeVault(String)}
+    * Checks if the container exists.
+    * This implementation invokes {@link GlacierClient#describeVault(String)}.
     *
     * @param container
     *          container name
@@ -150,7 +145,8 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    /**
-    * Creates a container
+    * Creates a container.
+    * Location is currently ignored.
     *
     * @param location
     *          currently ignored
@@ -164,7 +160,8 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    /**
-    * Creates a container
+    * Creates a container.
+    * Location and options are currently ignored.
     *
     * @param location
     *          currently ignored
@@ -181,14 +178,16 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    /**
-    * Lists the blobs in the container
-    * This is a long duration method. The result may be inaccurate since it depends on the Glacier Inventory status.
+    * Lists the blobs in the container.
+    * An inventory will be retrieved to obtain the list. Note that this will take hours and the result may be
+    * inaccurate (Inventories are updated every 24 hours).
     *
     * @param container
     *          container name
     * @param listContainerOptions
     *          list options
     * @return the blob list
+    * @see <a href="http://aws.amazon.com/glacier/faqs/#data-inventories" />
     */
    @Override
    public PageSet<? extends StorageMetadata> list(String container, ListContainerOptions listContainerOptions) {
@@ -204,14 +203,16 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    /**
-    * This implementation invokes {@link GlacierBlobStore#blobMetadata}
-    * This is a long duration method. The result may be inaccurate since it depends on the Glacier Inventory status.
+    * Checks if the blob exists in the container.
+    * An inventory will be retrieved to obtain the blob list and the method will iterate through it. This operation
+    * will take several hours and the result may be inaccurate (Inventories are updated every 24 hours).
     *
     * @param container
     *          container name
     * @param key
     *          blob key
     * @return true if the blob exists, false otherwise
+    * @see <a href="http://aws.amazon.com/glacier/faqs/#data-inventories" />
     */
    @Override
    public boolean blobExists(String container, String key) {
@@ -219,7 +220,7 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    /**
-    * This implementation invokes {@link GlacierClient#uploadArchive}
+    * Stores a blob in a container.
     *
     * @param container
     *          container name
@@ -233,14 +234,14 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    /**
-    * Puts the blob in the container.
+    * Stores the blob in a container.
     *
     * @param container
     *          container name
     * @param blob
     *          blob to upload
     * @param options
-    *          upload options. If multipart is set, multiple rpcs will be issued.
+    *          upload options.
     * @return the blob name
     */
    @Override
@@ -253,13 +254,15 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    /**
     * Retrieves the blob metadata.
-    * This is a long duration method. The result may be inaccurate since it depends on the Glacier Inventory status.
+    * An inventory will be retrieved to obtain the blob list and the method will iterate through it. This operation
+    * will take several hours and the result may be inaccurate (Inventories are updated every 24 hours).
     *
     * @param container
     *          container name
     * @param key
     *          blob name
     * @return null if the blob doesn't exist, the blob metadata otherwise
+    * @see <a href="http://aws.amazon.com/glacier/faqs/#data-inventories" />
     */
    @Override
    public BlobMetadata blobMetadata(String container, String key) {
@@ -285,14 +288,12 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    /**
     * Retrieves the blob
-    * This is a long duration method.
+    * This operation will take several hours.
     *
     * @param container
     *          container name
     * @param key
     *          blob name
-    * @param getOptions
-    *          getOptions
     * @return null if the blob doesn't exist or the archive retrieval fails, the blob otherwise
     */
    @Override
@@ -315,7 +316,7 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    /**
-    * This implementation invokes {@link GlacierClient#deleteArchive(String, String)}
+    * Deletes the blob.
     *
     * @param container
     *          container name

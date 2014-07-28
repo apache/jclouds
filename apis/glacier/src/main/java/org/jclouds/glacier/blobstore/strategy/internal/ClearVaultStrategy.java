@@ -27,39 +27,40 @@ import org.jclouds.glacier.domain.ArchiveMetadataCollection;
 import org.jclouds.glacier.domain.InventoryRetrievalJobRequest;
 import org.jclouds.rest.ResourceNotFoundException;
 
+import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 /**
- * Implementation of ClearListStrategy.
- * This is a long duration operation.
+ * An inventory will be retrieved to obtain the blob list and the method will iterate through it deleting the blobs.
+ * This operation will take several hours and the result may be inaccurate (Inventories are updated every 24 hours).
  */
 @Singleton
 public class ClearVaultStrategy implements ClearListStrategy {
-   private final GlacierClient sync;
+   private final GlacierClient client;
    private final PollingStrategy pollingStrategy;
 
    @Inject
-   public ClearVaultStrategy(GlacierClient sync, PollingStrategy pollingStrategy) {
+   public ClearVaultStrategy(GlacierClient client, PollingStrategy pollingStrategy) {
+      this.client = checkNotNull(client, "client");
       this.pollingStrategy = checkNotNull(pollingStrategy, "pollingStrategy");
-      this.sync = checkNotNull(sync, "sync");
    }
 
    @Override
    public void execute(String container, ListContainerOptions listContainerOptions) {
-      String jobId = sync.initiateJob(container, InventoryRetrievalJobRequest.builder().build());
+      String jobId = client.initiateJob(container, InventoryRetrievalJobRequest.builder().build());
       try {
          if (pollingStrategy.waitForSuccess(container, jobId)) {
-            ArchiveMetadataCollection archives = sync.getInventoryRetrievalOutput(container, jobId);
+            ArchiveMetadataCollection archives = client.getInventoryRetrievalOutput(container, jobId);
             for (ArchiveMetadata archive : archives) {
                try {
-                  sync.deleteArchive(container, archive.getArchiveId());
+                  client.deleteArchive(container, archive.getArchiveId());
                } catch (ResourceNotFoundException ignored) {
                }
             }
          }
       } catch (InterruptedException e) {
-         throw new RuntimeException(e);
+         Throwables.propagate(e);
       }
    }
 }

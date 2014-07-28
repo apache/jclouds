@@ -29,7 +29,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 /**
- * Base implementation of PollingStrategy.
  * This implementation waits a fixed amount of time before start polling.
  */
 @Singleton

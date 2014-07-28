@@ -31,7 +31,6 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 /**
- * Base implementation of SlicingStrategy.
  * This implementation slice a payload based on the (part size)/(number of parts) ratio. This ratio may be overriden.
  */
 @Singleton

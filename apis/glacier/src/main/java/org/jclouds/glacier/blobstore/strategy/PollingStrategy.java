@@ -16,9 +16,6 @@
  */
 package org.jclouds.glacier.blobstore.strategy;
 
-/**
- * Strategy for polling jobs
- */
 public interface PollingStrategy {
    boolean waitForSuccess(String vault, String job) throws InterruptedException;
 }
