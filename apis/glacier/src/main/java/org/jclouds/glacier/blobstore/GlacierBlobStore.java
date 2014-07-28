@@ -18,8 +18,11 @@ package org.jclouds.glacier.blobstore;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+import static org.jclouds.util.Predicates2.retry;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.blobstore.domain.Blob;
@@ -48,11 +51,19 @@ import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
 import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.javax.annotation.Nullable;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Supplier;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.name.Named;
 
 public class GlacierBlobStore extends BaseBlobStore {
+   public static final long DEFAULT_INVENTORY_UPDATE_TIME = TimeUnit.HOURS.toMillis(24);
+
+   @Inject(optional = true)
+   @Named("jclouds.inventory.update.time")
+   private final long inventoryUpdateTime = DEFAULT_INVENTORY_UPDATE_TIME;
+
    private final GlacierClient sync;
    private final Crypto crypto;
    private final Provider<MultipartUploadStrategy> multipartUploadStrategy;
@@ -77,6 +88,24 @@ public class GlacierBlobStore extends BaseBlobStore {
       this.multipartUploadStrategy = checkNotNull(multipartUploadStrategy, "multipartUploadStrategy");
       this.sync = checkNotNull(sync, "sync");
       this.crypto = checkNotNull(crypto, "crypto");
+   }
+
+   @Override
+   public void deleteContainer(String container) {
+      // attempt to delete possibly-empty vault to avoid inventory retrieval
+      if (!sync.deleteVault(container)) {
+         deletePathAndEnsureGone(container);
+      }
+   }
+
+   @Override
+   protected void deletePathAndEnsureGone(String container) {
+      checkState(retry(new Predicate<String>() {
+          public boolean apply(String container) {
+             clearContainer(container);
+             return sync.deleteVault(container);
+          }
+       }, inventoryUpdateTime).apply(container), "%s still exists after deleting!", container);
    }
 
    @Override
