@@ -44,7 +44,8 @@ import com.google.common.hash.HashCode;
 public interface GlacierClient extends Closeable {
 
    /**
-    * Creates a new vault to store archives.
+    * Creates a new vault to store archives. An account can only create up to 1,000 vaults per region, but each vault
+    * can contain an unlimited number of archives.
     *
     * @param vaultName
     *           A name for the Vault being created.
@@ -54,7 +55,9 @@ public interface GlacierClient extends Closeable {
    URI createVault(String vaultName);
 
    /**
-    * Deletes a vault.
+    * Deletes a vault. Vaults can only be deleted if there are no archives in the vault in the last inventory computed
+    * by Amazon, and there are no new uploads after it. This is very important, as Amazon only updates inventories once
+    * every 24 hours.
     *
     * @param vaultName
     *           Name of the Vault being deleted.
@@ -64,7 +67,9 @@ public interface GlacierClient extends Closeable {
    boolean deleteVault(String vaultName);
 
    /**
-    * Retrieves the metadata for a vault.
+    * Retrieves the metadata for a vault. The response include information like the vault ARN, the creation data, the
+    * number of archives contained within the vault and total size of these archives. The number of archives and
+    * the total size is based on the last inventory computed by amazon and the information may be outdated.
     *
     * @param vaultName
     *           Name of the Vault being described.
@@ -75,7 +80,7 @@ public interface GlacierClient extends Closeable {
    VaultMetadata describeVault(String vaultName);
 
    /**
-    * Lists vaults according to specified options.
+    * Lists vaults according to specified options. By default this operation returns up to 1,000 vaults.
     *
     * @param options
     *          Options used for pagination.
@@ -85,14 +90,14 @@ public interface GlacierClient extends Closeable {
    PaginatedVaultCollection listVaults(PaginationOptions options);
 
    /**
-    * Lists vaults.
-    *
     * @see GlacierClient#listVaults(PaginationOptions)
     */
    PaginatedVaultCollection listVaults();
 
    /**
-    * Stores an archive in a vault.
+    * Stores an archive in a vault. Archives up to 4GB in size can be uploaded using this operation. Once the archive
+    * is uploaded it is immutable, this means that archive or its description cannot be modified. Except for the
+    * optional description Glacier does not support additional metadata.
     *
     * @param vaultName
     *           Name of the Vault where the archive is being stored.
@@ -106,14 +111,13 @@ public interface GlacierClient extends Closeable {
    String uploadArchive(String vaultName, Payload payload, String description);
 
    /**
-    * Stores an archive in a vault.
-    *
-    * @see GlacierClient#uploadArchive
+    * @see GlacierClient#uploadArchive(String, org.jclouds.io.Payload, String)
     */
    String uploadArchive(String vaultName, Payload payload);
 
    /**
-    * Deletes an archive from a vault.
+    * Deletes an archive from a vault. Be aware that after deleting an archive it may still be listed in the
+    * inventories until amazon compute a new inventory.
     *
     * @param vaultName
     *           Name of the Vault where the archive is stored.
@@ -125,7 +129,10 @@ public interface GlacierClient extends Closeable {
    boolean deleteArchive(String vaultName, String archiveId);
 
    /**
-    * Starts a new multipart upload.
+    * Starts a new multipart upload. Using a multipart upload you can upload archives up to 40,000GB (10,000 parts,
+    * 4GB each). The part size must be a megabyte multiplied by a power of 2 and every part must be the same size
+    * except the last one, which can have a smaller size. In addition, you don't need to know the archive size to
+    * initiate a multipart upload.
     *
     * @param vaultName
     *           Name of the Vault where the archive is going to be stored.
@@ -139,12 +146,14 @@ public interface GlacierClient extends Closeable {
    String initiateMultipartUpload(String vaultName, long partSizeInMB, String description);
 
    /**
-    * Starts a new multipart upload.
+    * @see GlacierClient#initiateMultipartUpload(String, long, String)
     */
    String initiateMultipartUpload(String vaultName, long partSizeInMB);
 
    /**
-    * Uploads one of the multipart upload parts.
+    * Uploads one of the multipart upload parts. The part size has to match the one specified in the multipart upload
+    * request, and the range needs to be aligned. In addition, to ensure that the data is not corrupted, the tree hash
+    * and the linear hash are checked by Glacier.
     *
     * @param vaultName
     *           Name of the Vault where the archive is going to be stored.
@@ -161,7 +170,8 @@ public interface GlacierClient extends Closeable {
    HashCode uploadPart(String vaultName, String uploadId, ContentRange range, Payload payload);
 
    /**
-    * Completes the multipart upload.
+    * Completes the multipart upload. After uploading all the parts this operation should be called to inform Glacier.
+    * Again, the checksum and the ranges of the whole archive will be computed to verify the data.
     *
     * @param vaultName
     *           Name of the Vault where the archive is going to be stored.
@@ -177,7 +187,7 @@ public interface GlacierClient extends Closeable {
    String completeMultipartUpload(String vaultName, String uploadId, Map<Integer, HashCode> hashes, long archiveSize);
 
    /**
-    * Aborts the multipart upload.
+    * Aborts the multipart upload. Once aborted, you cannot upload any more parts to it.
     *
     * @param vaultName
     *           Name of the Vault where the archive was going to be stored.
@@ -189,7 +199,8 @@ public interface GlacierClient extends Closeable {
    boolean abortMultipartUpload(String vaultName, String uploadId);
 
    /**
-    * Lists the multipart upload parts.
+    * Lists the multipart upload parts. You can list the parts of an ongoing multipart upload at any time. By default
+    * it returns up to 1,000 uploaded parts, but you can control this using the request options.
     *
     * @param vaultName
     *           Name of the Vault where the archive is going to be stored.
@@ -203,12 +214,13 @@ public interface GlacierClient extends Closeable {
    MultipartUploadMetadata listParts(String vaultName, String uploadId, PaginationOptions options);
 
    /**
-    * Lists the multipart upload parts.
+    * @see GlacierClient#listParts(String, String, org.jclouds.glacier.options.PaginationOptions)
     */
    MultipartUploadMetadata listParts(String vaultName, String uploadId);
 
    /**
-    * Lists the multipart uploads in a vault.
+    * Lists the ongoing multipart uploads in a vault. By default, this operation returns up to  1,000 multipart uploads.
+    * You can control this using the request options.
     *
     * @param vaultName
     *           Name of the Vault where the archive is going to be stored.
@@ -220,12 +232,13 @@ public interface GlacierClient extends Closeable {
    PaginatedMultipartUploadCollection listMultipartUploads(String vaultName, PaginationOptions options);
 
    /**
-    * Lists the multipart uploads in a vault.
+    * @see GlacierClient#listMultipartUploads(String, org.jclouds.glacier.options.PaginationOptions)
     */
    PaginatedMultipartUploadCollection listMultipartUploads(String vaultName);
 
    /**
-    * Initiates a job.
+    * Initiates a job. The job can be an inventory retrieval or an archive retrieval. Once the job is started the
+    * estimated time to complete it is ~4 hours.
     *
     * @param vaultName
     *           Name of the target Vault for the job.
@@ -237,7 +250,8 @@ public interface GlacierClient extends Closeable {
    String initiateJob(String vaultName, JobRequest job);
 
    /**
-    * Describes a job.
+    * Retrieves information about an ongoing job. Among the information you will find the initiation date, the user who
+    * initiated the job or the status message.
     *
     * @param vaultName
     *           Name of the target Vault for the job.
@@ -249,7 +263,9 @@ public interface GlacierClient extends Closeable {
    JobMetadata describeJob(String vaultName, String jobId);
 
    /**
-    * Lists jobs.
+    * Lists the ongoing jobs and the recently finished jobs for a vault. By default this operation returns up to
+    * 1,000 jobs in the response, but you can control this using the request options. Note that this operation also
+    * returns the recently finished jobs and you can still download their output.
     *
     * @param vaultName
     *           Name of the target Vault.
@@ -266,7 +282,8 @@ public interface GlacierClient extends Closeable {
    PaginatedJobCollection listJobs(String vaultName);
 
    /**
-    * Downloads part of the output of an archive retrieval job.
+    * Gets the raw job output of any kind of job. You can download the job output within the 24 hour period after
+    * Glacier comlpetes a job.
     *
     * @param vaultName
     *           Name of the target Vault for the job.
@@ -292,7 +309,8 @@ public interface GlacierClient extends Closeable {
    Payload getJobOutput(String vaultName, String jobId);
 
    /**
-    * Downloads the output of an inventory retrieval job.
+    * Gets the job output for the given job ID. The job must be an inventory retrieval, otherwise this operation will
+    * fail. This operation will parse the job output and build a collection of ArchiveMetadata.
     *
     * @param vaultName
     *           Name of the target Vault for the job.
