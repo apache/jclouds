@@ -112,7 +112,8 @@ public class GlacierClientLongLiveTest extends BaseApiLiveTest<GlacierClient>{
    @Test(groups = {"live", "livelong", "longtest"}, dependsOnMethods = {"testInitiateJob", "testDescribeJob", "testListJobs"})
    public void testWaitForSucceed() throws InterruptedException {
       new BasePollingStrategy(api).waitForSuccess(VAULT_NAME, archiveRetrievalJob);
-      new BasePollingStrategy(0, DEFAULT_TIME_BETWEEN_POLLS, api).waitForSuccess(VAULT_NAME, inventoryRetrievalJob);
+      new BasePollingStrategy(api, 0, DEFAULT_TIME_BETWEEN_POLLS).waitForSuccess(VAULT_NAME,
+            inventoryRetrievalJob);
       assertThat(api.describeJob(VAULT_NAME, archiveRetrievalJob).getStatusCode()).isEqualTo(JobStatus.SUCCEEDED);
       assertThat(api.describeJob(VAULT_NAME, inventoryRetrievalJob).getStatusCode()).isEqualTo(JobStatus.SUCCEEDED);
    }

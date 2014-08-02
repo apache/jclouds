@@ -68,7 +68,8 @@ public interface GlacierClient extends Closeable {
     *
     * @param vaultName
     *           Name of the Vault being described.
-    * @return A VaultMetadata object containing all the information relevant to the vault.
+    * @return A VaultMetadata object containing all the information relevant to the vault if the vault exists,
+    * null otherwise.
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-get.html" />
     */
    VaultMetadata describeVault(String vaultName);
@@ -242,7 +243,7 @@ public interface GlacierClient extends Closeable {
     *           Name of the target Vault for the job.
     * @param jobId
     *          Job identifier.
-    * @return The job metadata.
+    * @return The job metadata if the job exists in the vault, null otherwise.
     * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-describe-job-get.html" />
     */
    JobMetadata describeJob(String vaultName, String jobId);

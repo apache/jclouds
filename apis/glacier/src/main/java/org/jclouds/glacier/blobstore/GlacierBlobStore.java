@@ -52,6 +52,7 @@ import org.jclouds.javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Supplier;
+import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -196,10 +197,10 @@ public class GlacierBlobStore extends BaseBlobStore {
          if (pollingStrategy.get().waitForSuccess(container, jobId)) {
             return archivesToBlobs.apply(sync.getInventoryRetrievalOutput(container, jobId));
          }
-         return null;
       } catch (InterruptedException e) {
-         throw new RuntimeException(e);
+         Throwables.propagate(e);
       }
+      return null;
    }
 
    /**
@@ -216,11 +217,11 @@ public class GlacierBlobStore extends BaseBlobStore {
     */
    @Override
    public boolean blobExists(String container, String key) {
-      return this.blobMetadata(container, key) != null;
+      return blobMetadata(container, key) != null;
    }
 
    /**
-    * Stores a blob in a container.
+    * Stores a blob in a container. The blob name will be ignored, since it's not supported by Glacier.
     *
     * @param container
     *          container name
@@ -266,8 +267,8 @@ public class GlacierBlobStore extends BaseBlobStore {
     */
    @Override
    public BlobMetadata blobMetadata(String container, String key) {
-      PageSet<? extends StorageMetadata> blobs = this.list(container, null);
-      for (StorageMetadata blob : blobs) {
+      PageSet<? extends StorageMetadata> blobMetadataSet = list(container, null);
+      for (StorageMetadata blob : blobMetadataSet) {
          if (blob.getName().equals(key)) {
             return (BlobMetadata) blob;
          }
@@ -275,11 +276,12 @@ public class GlacierBlobStore extends BaseBlobStore {
       return null;
    }
 
-   private ArchiveRetrievalJobRequest buildArchiveRetrievalRequest(String key, GetOptions getOptions) {
+   private static ArchiveRetrievalJobRequest buildArchiveRetrievalRequest(String key, GetOptions getOptions) {
       ArchiveRetrievalJobRequest.Builder requestBuilder = ArchiveRetrievalJobRequest.builder().archiveId(key);
       if (getOptions != null) {
-         checkArgument(getOptions.getRanges().size() <= 1);
-         if (getOptions.getRanges().size() == 1) {
+         int size = getOptions.getRanges().size();
+         checkArgument(size <= 1, "The number of ranges should be zero or one");
+         if (size == 1) {
             requestBuilder.range(ContentRange.fromString(getOptions.getRanges().get(0)));
          }
       }
@@ -309,10 +311,10 @@ public class GlacierBlobStore extends BaseBlobStore {
             blob.setPayload(sync.getJobOutput(container, jobId));
             return blob;
          }
-         return null;
       } catch (InterruptedException e) {
-         throw new RuntimeException(e);
+         Throwables.propagate(e);
       }
+      return null;
    }
 
    /**

@@ -16,10 +16,15 @@
  */
 package org.jclouds.glacier.blobstore.functions;
 
+import org.jclouds.blobstore.domain.MutableBlobMetadata;
 import org.jclouds.blobstore.domain.PageSet;
 import org.jclouds.blobstore.domain.StorageMetadata;
+import org.jclouds.blobstore.domain.internal.MutableBlobMetadataImpl;
 import org.jclouds.blobstore.domain.internal.PageSetImpl;
+import org.jclouds.glacier.domain.ArchiveMetadata;
 import org.jclouds.glacier.domain.ArchiveMetadataCollection;
+import org.jclouds.io.MutableContentMetadata;
+import org.jclouds.io.payloads.BaseMutableContentMetadata;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
@@ -29,5 +34,19 @@ public class ArchiveMetadataCollectionToStorageMetadata implements Function<Arch
    @Override
    public PageSet<? extends StorageMetadata> apply(ArchiveMetadataCollection archives) {
       return new PageSetImpl<StorageMetadata>(Iterables.transform(archives, new ArchiveMetadataToBlobMetadata()), null);
+   }
+
+   private static class ArchiveMetadataToBlobMetadata implements Function<ArchiveMetadata, MutableBlobMetadata> {
+      @Override
+      public MutableBlobMetadata apply(ArchiveMetadata from) {
+         MutableContentMetadata contentMetadata = new BaseMutableContentMetadata();
+         contentMetadata.setContentLength(from.getSize());
+
+         MutableBlobMetadata to = new MutableBlobMetadataImpl();
+         to.setName(from.getArchiveId());
+         to.setCreationDate(from.getCreationDate());
+         to.setContentMetadata(contentMetadata);
+         return to;
+      }
    }
 }

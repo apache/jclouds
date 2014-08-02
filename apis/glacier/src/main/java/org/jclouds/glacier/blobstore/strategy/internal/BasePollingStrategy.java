@@ -40,27 +40,20 @@ public class BasePollingStrategy implements PollingStrategy {
    private final long initialWait;
    private final long timeBetweenPolls;
 
-   public BasePollingStrategy(long initialWait, long timeBetweenPolls, GlacierClient client) {
+   public BasePollingStrategy(GlacierClient client, long initialWait, long timeBetweenPolls) {
+      this.client = checkNotNull(client, "client");
       this.initialWait = initialWait;
       this.timeBetweenPolls = timeBetweenPolls;
-      this.client = checkNotNull(client, "client");
    }
 
    @Inject
    public BasePollingStrategy(GlacierClient client) {
-      this(DEFAULT_INITIAL_WAIT, DEFAULT_TIME_BETWEEN_POLLS, client);
+      this(client, DEFAULT_INITIAL_WAIT, DEFAULT_TIME_BETWEEN_POLLS);
    }
 
    private boolean inProgress(String job, String vault) {
       JobMetadata jobMetadata = client.describeJob(vault, job);
       return (jobMetadata != null) && (jobMetadata.getStatusCode() == JobStatus.IN_PROGRESS);
-   }
-
-   private void waitForJob(String job, String vault) throws InterruptedException {
-      Thread.sleep(initialWait);
-      while (inProgress(job, vault)) {
-         Thread.sleep(timeBetweenPolls);
-      }
    }
 
    private boolean succeeded(String job, String vault) {
@@ -74,7 +67,10 @@ public class BasePollingStrategy implements PollingStrategy {
       if (client.describeJob(vault, job) == null) {
          return false;
       }
-      waitForJob(job, vault);
+      Thread.sleep(initialWait);
+      while (inProgress(job, vault)) {
+         Thread.sleep(timeBetweenPolls);
+      }
       return succeeded(job, vault);
    }
 
