@@ -296,7 +296,7 @@ public class GlacierBlobStore extends BaseBlobStore {
     *          container name
     * @param key
     *          blob name
-    * @return null if the blob doesn't exist or the archive retrieval fails, the blob otherwise
+    * @return The blob to retrieve, or null if the blob doesn't exist or the archive retrieval fails
     */
    @Override
    public Blob getBlob(String container, String key, GetOptions getOptions) {
@@ -315,6 +315,21 @@ public class GlacierBlobStore extends BaseBlobStore {
          Throwables.propagate(e);
       }
       return null;
+   }
+
+   /**
+    * Retrieves the blob using default options
+    * This operation will take several hours.
+    *
+    * @param container
+    *          container name
+    * @param key
+    *          blob name
+    * @return The blob to retrieve, or null if the blob doesn't exist or the archive retrieval fails
+    */
+   @Override
+   public Blob getBlob(String container, String key) {
+      return getBlob(container, key, null);
    }
 
    /**
