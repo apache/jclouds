@@ -19,12 +19,12 @@ package org.jclouds.glacier.blobstore.strategy;
 import org.jclouds.io.Payload;
 
 public interface SlicingStrategy {
-   public static final int MAX_LIST_PARTS_RETURNED = 1000;
-   public static final int MAX_LIST_MPU_RETURNED = 1000;
-   public static final int MAX_NUMBER_OF_PARTS = 10000;
+   int MAX_LIST_PARTS_RETURNED = 1000;
+   int MAX_LIST_MPU_RETURNED = 1000;
+   int MAX_NUMBER_OF_PARTS = 10000;
 
-   public static final long MIN_PART_SIZE = 1L << 20; //1 MB, last part can be < 1 MB
-   public static final long MAX_PART_SIZE = 1L << 32; //4 GB
+   long MIN_PART_SIZE = 1L << 20; //1 MB, last part can be < 1 MB
+   long MAX_PART_SIZE = 1L << 32; //4 GB
 
    void startSlicing(Payload payload);
    PayloadSlice nextSlice();
