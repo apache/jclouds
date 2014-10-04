@@ -71,7 +71,7 @@ import com.squareup.okhttp.mockwebserver.RecordedRequest;
 /**
  * Mock test for Glacier.
  */
-@Test(singleThreaded = true, groups = {"mock"})
+@Test(singleThreaded = true, groups = {"mock"}, testName = "GlacierClientMockTest")
 public class GlacierClientMockTest {
 
    private static final String REQUEST_ID = "AAABZpJrTyioDC_HsOmHae8EZp_uBSJr6cnGOLKp_XJCl-Q";

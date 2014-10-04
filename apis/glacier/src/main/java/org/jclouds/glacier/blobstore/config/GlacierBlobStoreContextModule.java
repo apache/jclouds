@@ -19,28 +19,25 @@ package org.jclouds.glacier.blobstore.config;
 import org.jclouds.blobstore.AsyncBlobStore;
 import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.attr.ConsistencyModel;
+import org.jclouds.blobstore.internal.SubmissionAsyncBlobStore;
 import org.jclouds.blobstore.strategy.ClearListStrategy;
-import org.jclouds.glacier.blobstore.GlacierAsyncBlobStore;
 import org.jclouds.glacier.blobstore.GlacierBlobStore;
-import org.jclouds.glacier.blobstore.strategy.internal.ClearVaultStrategy;
 import org.jclouds.glacier.blobstore.strategy.MultipartUploadStrategy;
 import org.jclouds.glacier.blobstore.strategy.PollingStrategy;
 import org.jclouds.glacier.blobstore.strategy.SlicingStrategy;
 import org.jclouds.glacier.blobstore.strategy.internal.BasePollingStrategy;
 import org.jclouds.glacier.blobstore.strategy.internal.BaseSlicingStrategy;
+import org.jclouds.glacier.blobstore.strategy.internal.ClearVaultStrategy;
 import org.jclouds.glacier.blobstore.strategy.internal.SequentialMultipartUploadStrategy;
 
 import com.google.inject.AbstractModule;
 
-/**
- * Configures the context. Requires {@link GlacierAsyncBlobStore} bound.
- */
 public class GlacierBlobStoreContextModule extends AbstractModule {
    @Override
    protected void configure() {
       bind(ConsistencyModel.class).toInstance(ConsistencyModel.EVENTUAL);
       bind(BlobStore.class).to(GlacierBlobStore.class);
-      bind(AsyncBlobStore.class).to(GlacierAsyncBlobStore.class);
+      bind(AsyncBlobStore.class).to(SubmissionAsyncBlobStore.class);
       bind(MultipartUploadStrategy.class).to(SequentialMultipartUploadStrategy.class);
       bind(SlicingStrategy.class).to(BaseSlicingStrategy.class);
       bind(ClearListStrategy.class).to(ClearVaultStrategy.class);

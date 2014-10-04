@@ -16,10 +16,30 @@
  */
 package org.jclouds.glacier;
 
+import static org.jclouds.Fallbacks.NullOnNotFoundOr404;
+import static org.jclouds.blobstore.attr.BlobScopes.CONTAINER;
+
 import java.io.Closeable;
 import java.net.URI;
 import java.util.Map;
 
+import javax.inject.Named;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+
+import org.jclouds.blobstore.attr.BlobScope;
+import org.jclouds.glacier.binders.BindArchiveOutputRangeToHeaders;
+import org.jclouds.glacier.binders.BindArchiveSizeToHeaders;
+import org.jclouds.glacier.binders.BindContentRangeToHeaders;
+import org.jclouds.glacier.binders.BindDescriptionToHeaders;
+import org.jclouds.glacier.binders.BindHashesToHeaders;
+import org.jclouds.glacier.binders.BindJobRequestToJsonPayload;
+import org.jclouds.glacier.binders.BindMultipartTreeHashToHeaders;
+import org.jclouds.glacier.binders.BindPartSizeToHeaders;
 import org.jclouds.glacier.domain.ArchiveMetadataCollection;
 import org.jclouds.glacier.domain.JobMetadata;
 import org.jclouds.glacier.domain.JobRequest;
@@ -28,19 +48,41 @@ import org.jclouds.glacier.domain.PaginatedJobCollection;
 import org.jclouds.glacier.domain.PaginatedMultipartUploadCollection;
 import org.jclouds.glacier.domain.PaginatedVaultCollection;
 import org.jclouds.glacier.domain.VaultMetadata;
+import org.jclouds.glacier.fallbacks.FalseOnIllegalArgumentException;
+import org.jclouds.glacier.filters.RequestAuthorizeSignature;
+import org.jclouds.glacier.functions.GetPayloadFromHttpContent;
+import org.jclouds.glacier.functions.ParseArchiveIdHeader;
+import org.jclouds.glacier.functions.ParseArchiveMetadataCollectionFromHttpContent;
+import org.jclouds.glacier.functions.ParseJobIdHeader;
+import org.jclouds.glacier.functions.ParseJobMetadataFromHttpContent;
+import org.jclouds.glacier.functions.ParseJobMetadataListFromHttpContent;
+import org.jclouds.glacier.functions.ParseMultipartUploadIdHeader;
+import org.jclouds.glacier.functions.ParseMultipartUploadListFromHttpContent;
+import org.jclouds.glacier.functions.ParseMultipartUploadPartListFromHttpContent;
+import org.jclouds.glacier.functions.ParseMultipartUploadTreeHashHeader;
+import org.jclouds.glacier.functions.ParseVaultMetadataFromHttpContent;
+import org.jclouds.glacier.functions.ParseVaultMetadataListFromHttpContent;
 import org.jclouds.glacier.options.PaginationOptions;
+import org.jclouds.glacier.predicates.validators.DescriptionValidator;
+import org.jclouds.glacier.predicates.validators.PartSizeValidator;
+import org.jclouds.glacier.predicates.validators.PayloadValidator;
+import org.jclouds.glacier.predicates.validators.VaultNameValidator;
+import org.jclouds.glacier.reference.GlacierHeaders;
 import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.io.Payload;
+import org.jclouds.rest.annotations.BinderParam;
+import org.jclouds.rest.annotations.Fallback;
+import org.jclouds.rest.annotations.Headers;
+import org.jclouds.rest.annotations.ParamValidators;
+import org.jclouds.rest.annotations.RequestFilters;
+import org.jclouds.rest.annotations.ResponseParser;
 
 import com.google.common.hash.HashCode;
 
-/**
- * Provides access to Amazon Glacier resources via their REST API.
- * <p/>
- *
- * @see GlacierAsyncClient
- * @see <a href="http://aws.amazon.com/documentation/glacier/" />
- */
+/** Provides access to Amazon Glacier resources via their REST API. */
+@Headers(keys = GlacierHeaders.VERSION, values = "2012-06-01")
+@RequestFilters(RequestAuthorizeSignature.class)
+@BlobScope(CONTAINER)
 public interface GlacierClient extends Closeable {
 
    /**
@@ -50,9 +92,11 @@ public interface GlacierClient extends Closeable {
     * @param vaultName
     *           A name for the Vault being created.
     * @return A reference to an URI pointing to the resource created.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-put.html" />
     */
-   URI createVault(String vaultName);
+   @Named("CreateVault")
+   @PUT
+   @Path("/-/vaults/{vault}")
+   URI createVault(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 
    /**
     * Deletes a vault. Vaults can only be deleted if there are no archives in the vault in the last inventory computed
@@ -62,9 +106,12 @@ public interface GlacierClient extends Closeable {
     * @param vaultName
     *           Name of the Vault being deleted.
     * @return False if the vault was not empty and therefore not deleted, true otherwise.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-delete.html" />
     */
-   boolean deleteVault(String vaultName);
+   @Named("DeleteVault")
+   @DELETE
+   @Path("/-/vaults/{vault}")
+   @Fallback(FalseOnIllegalArgumentException.class)
+   boolean deleteVault(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 
    /**
     * Retrieves the metadata for a vault. The response include information like the vault ARN, the creation data, the
@@ -75,9 +122,13 @@ public interface GlacierClient extends Closeable {
     *           Name of the Vault being described.
     * @return A VaultMetadata object containing all the information relevant to the vault if the vault exists,
     * null otherwise.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-get.html" />
     */
-   VaultMetadata describeVault(String vaultName);
+   @Named("DescribeVault")
+   @GET
+   @Path("/-/vaults/{vault}")
+   @ResponseParser(ParseVaultMetadataFromHttpContent.class)
+   @Fallback(NullOnNotFoundOr404.class)
+   VaultMetadata describeVault(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 
    /**
     * Lists vaults according to specified options. By default this operation returns up to 1,000 vaults.
@@ -85,13 +136,20 @@ public interface GlacierClient extends Closeable {
     * @param options
     *          Options used for pagination.
     * @return A PaginatedVaultCollection object containing the list of vaults.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-vaults-get.html" />
     */
+   @Named("ListVaults")
+   @GET
+   @Path("/-/vaults")
+   @ResponseParser(ParseVaultMetadataListFromHttpContent.class)
    PaginatedVaultCollection listVaults(PaginationOptions options);
 
    /**
     * @see GlacierClient#listVaults(PaginationOptions)
     */
+   @Named("ListVaults")
+   @GET
+   @Path("/-/vaults")
+   @ResponseParser(ParseVaultMetadataListFromHttpContent.class)
    PaginatedVaultCollection listVaults();
 
    /**
@@ -106,14 +164,26 @@ public interface GlacierClient extends Closeable {
     * @param description
     *           Description for the archive.
     * @return A String containing the Archive identifier in Amazon Glacier.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-archive-post.html" />
     */
-   String uploadArchive(String vaultName, Payload payload, String description);
+   @Named("UploadArchive")
+   @POST
+   @Path("/-/vaults/{vault}/archives")
+   @ResponseParser(ParseArchiveIdHeader.class)
+   String uploadArchive(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @ParamValidators(PayloadValidator.class) @BinderParam(BindHashesToHeaders.class) Payload payload,
+         @ParamValidators(DescriptionValidator.class) @BinderParam(BindDescriptionToHeaders.class) String description);
 
    /**
     * @see GlacierClient#uploadArchive(String, org.jclouds.io.Payload, String)
     */
-   String uploadArchive(String vaultName, Payload payload);
+   @Named("UploadArchive")
+   @POST
+   @Path("/-/vaults/{vault}/archives")
+   @ResponseParser(ParseArchiveIdHeader.class)
+   String uploadArchive(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @ParamValidators(PayloadValidator.class) @BinderParam(BindHashesToHeaders.class) Payload payload);
 
    /**
     * Deletes an archive from a vault. Be aware that after deleting an archive it may still be listed in the
@@ -124,9 +194,13 @@ public interface GlacierClient extends Closeable {
     * @param archiveId
     *           Amazon Glacier archive identifier.
     * @return False if the archive was not deleted, true otherwise.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-archive-delete.html" />
     */
-   boolean deleteArchive(String vaultName, String archiveId);
+   @Named("DeleteArchive")
+   @DELETE
+   @Path("/-/vaults/{vault}/archives/{archive}")
+   boolean deleteArchive(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("archive") String archiveId);
 
    /**
     * Starts a new multipart upload. Using a multipart upload you can upload archives up to 40,000GB (10,000 parts,
@@ -141,14 +215,27 @@ public interface GlacierClient extends Closeable {
     * @param description
     *           The archive description.
     * @return The Multipart Upload Id.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-initiate-upload.html" />
     */
-   String initiateMultipartUpload(String vaultName, long partSizeInMB, String description);
+   @Named("InitiateMultipartUpload")
+   @POST
+   @Path("/-/vaults/{vault}/multipart-uploads")
+   @ResponseParser(ParseMultipartUploadIdHeader.class)
+   String initiateMultipartUpload(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @ParamValidators(PartSizeValidator.class) @BinderParam(BindPartSizeToHeaders.class) long partSizeInMB,
+         @ParamValidators(DescriptionValidator.class) @BinderParam(BindDescriptionToHeaders.class) String description);
 
    /**
     * @see GlacierClient#initiateMultipartUpload(String, long, String)
     */
-   String initiateMultipartUpload(String vaultName, long partSizeInMB);
+   @Named("InitiateMultipartUpload")
+   @POST
+   @Path("/-/vaults/{vault}/multipart-uploads")
+   @ResponseParser(ParseMultipartUploadIdHeader.class)
+   String initiateMultipartUpload(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @ParamValidators(PartSizeValidator.class) @BinderParam(BindPartSizeToHeaders.class) long partSizeInMB);
+
 
    /**
     * Uploads one of the multipart upload parts. The part size has to match the one specified in the multipart upload
@@ -165,9 +252,16 @@ public interface GlacierClient extends Closeable {
     *           Content for this part.
     * @return Tree-hash of the payload calculated by Amazon. This hash needs to be stored to complete the multipart
     *         upload.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-upload-part.html" />
     */
-   HashCode uploadPart(String vaultName, String uploadId, ContentRange range, Payload payload);
+   @Named("UploadPart")
+   @PUT
+   @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
+   @ResponseParser(ParseMultipartUploadTreeHashHeader.class)
+   HashCode uploadPart(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("uploadId") String uploadId,
+         @BinderParam(BindContentRangeToHeaders.class) ContentRange range,
+         @ParamValidators(PayloadValidator.class) @BinderParam(BindHashesToHeaders.class) Payload payload);
 
    /**
     * Completes the multipart upload. After uploading all the parts this operation should be called to inform Glacier.
@@ -182,9 +276,17 @@ public interface GlacierClient extends Closeable {
     * @param archiveSize
     *           Size of the complete archive.
     * @return A String containing the Archive identifier in Amazon Glacier.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-complete-upload.html" />
     */
-   String completeMultipartUpload(String vaultName, String uploadId, Map<Integer, HashCode> hashes, long archiveSize);
+   @Named("CompleteMultipartUpload")
+   @POST
+   @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
+   @ResponseParser(ParseArchiveIdHeader.class)
+   String completeMultipartUpload(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("uploadId") String uploadId,
+         @BinderParam(BindMultipartTreeHashToHeaders.class) Map<Integer, HashCode> hashes,
+         @BinderParam(BindArchiveSizeToHeaders.class) long archiveSize);
+
 
    /**
     * Aborts the multipart upload. Once aborted, you cannot upload any more parts to it.
@@ -194,9 +296,13 @@ public interface GlacierClient extends Closeable {
     * @param uploadId
     *           Multipart upload identifier.
     * @return True if the multipart upload was aborted, false otherwise.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-abort-upload.html" />
     */
-   boolean abortMultipartUpload(String vaultName, String uploadId);
+   @Named("AbortMultipartUpload")
+   @DELETE
+   @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
+   boolean abortMultipartUpload(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("uploadId") String uploadId);
 
    /**
     * Lists the multipart upload parts. You can list the parts of an ongoing multipart upload at any time. By default
@@ -209,14 +315,27 @@ public interface GlacierClient extends Closeable {
     * @param options
     *          Options used for pagination.
     * @return A MultipartUploadMetadata, containing an iterable part list with a marker.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-list-parts.html" />
     */
-   MultipartUploadMetadata listParts(String vaultName, String uploadId, PaginationOptions options);
+   @Named("ListParts")
+   @GET
+   @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
+   @ResponseParser(ParseMultipartUploadPartListFromHttpContent.class)
+   MultipartUploadMetadata listParts(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("uploadId") String uploadId,
+         PaginationOptions options);
+
 
    /**
     * @see GlacierClient#listParts(String, String, org.jclouds.glacier.options.PaginationOptions)
     */
-   MultipartUploadMetadata listParts(String vaultName, String uploadId);
+   @Named("ListParts")
+   @GET
+   @Path("/-/vaults/{vault}/multipart-uploads/{uploadId}")
+   @ResponseParser(ParseMultipartUploadPartListFromHttpContent.class)
+   MultipartUploadMetadata listParts(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("uploadId") String uploadId);
 
    /**
     * Lists the ongoing multipart uploads in a vault. By default, this operation returns up to  1,000 multipart uploads.
@@ -227,14 +346,24 @@ public interface GlacierClient extends Closeable {
     * @param options
     *          Options used for pagination.
     * @return A PaginatedMultipartUploadCollection, containing an iterable multipart upload list with a marker.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-multipart-list-uploads.html" />
     */
-   PaginatedMultipartUploadCollection listMultipartUploads(String vaultName, PaginationOptions options);
-
+   @Named("ListMultipartUploads")
+   @GET
+   @Path("/-/vaults/{vault}/multipart-uploads")
+   @ResponseParser(ParseMultipartUploadListFromHttpContent.class)
+   PaginatedMultipartUploadCollection listMultipartUploads(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         PaginationOptions options);
+   
    /**
     * @see GlacierClient#listMultipartUploads(String, org.jclouds.glacier.options.PaginationOptions)
     */
-   PaginatedMultipartUploadCollection listMultipartUploads(String vaultName);
+   @Named("ListMultipartUploads")
+   @GET
+   @Path("/-/vaults/{vault}/multipart-uploads")
+   @ResponseParser(ParseMultipartUploadListFromHttpContent.class)
+   PaginatedMultipartUploadCollection listMultipartUploads(
+         @ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 
    /**
     * Initiates a job. The job can be an inventory retrieval or an archive retrieval. Once the job is started the
@@ -245,9 +374,13 @@ public interface GlacierClient extends Closeable {
     * @param job
     *          JobRequest instance with the concrete request.
     * @return The job identifier.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-initiate-job-post.html" />
     */
-   String initiateJob(String vaultName, JobRequest job);
+   @Named("InitiateJob")
+   @POST
+   @Path("/-/vaults/{vault}/jobs")
+   @ResponseParser(ParseJobIdHeader.class)
+   String initiateJob(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @BinderParam(BindJobRequestToJsonPayload.class) JobRequest job);
 
    /**
     * Retrieves information about an ongoing job. Among the information you will find the initiation date, the user who
@@ -258,9 +391,14 @@ public interface GlacierClient extends Closeable {
     * @param jobId
     *          Job identifier.
     * @return The job metadata if the job exists in the vault, null otherwise.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-describe-job-get.html" />
     */
-   JobMetadata describeJob(String vaultName, String jobId);
+   @Named("DescribeJob")
+   @GET
+   @Path("/-/vaults/{vault}/jobs/{job}")
+   @ResponseParser(ParseJobMetadataFromHttpContent.class)
+   @Fallback(NullOnNotFoundOr404.class)
+   JobMetadata describeJob(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("job") String jobId);
 
    /**
     * Lists the ongoing jobs and the recently finished jobs for a vault. By default this operation returns up to
@@ -272,14 +410,22 @@ public interface GlacierClient extends Closeable {
     * @param options
     *          Options used for pagination
     * @return A PaginatedJobCollection, containing an iterable job list with a marker.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-jobs-get.html" />
     */
-   PaginatedJobCollection listJobs(String vaultName, PaginationOptions options);
+   @Named("ListJobs")
+   @GET
+   @Path("/-/vaults/{vault}/jobs")
+   @ResponseParser(ParseJobMetadataListFromHttpContent.class)
+   PaginatedJobCollection listJobs(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         PaginationOptions options);
 
    /**
     * Lists jobs.
     */
-   PaginatedJobCollection listJobs(String vaultName);
+   @Named("ListJobs")
+   @GET
+   @Path("/-/vaults/{vault}/jobs")
+   @ResponseParser(ParseJobMetadataListFromHttpContent.class)
+   PaginatedJobCollection listJobs(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName);
 
    /**
     * Gets the raw job output of any kind of job. You can download the job output within the 24 hour period after
@@ -292,9 +438,14 @@ public interface GlacierClient extends Closeable {
     * @param range
     *          The range of bytes to retrieve from the output.
     * @return The content data.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-job-output-get.html" />
     */
-   Payload getJobOutput(String vaultName, String jobId, ContentRange range);
+   @Named("GetJobOutput")
+   @GET
+   @Path("/-/vaults/{vault}/jobs/{job}/output")
+   @ResponseParser(GetPayloadFromHttpContent.class)
+   Payload getJobOutput(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("job") String jobId,
+         @BinderParam(BindArchiveOutputRangeToHeaders.class) ContentRange range);
 
    /**
     * Downloads the output of an archive retrieval job.
@@ -304,9 +455,13 @@ public interface GlacierClient extends Closeable {
     * @param jobId
     *          Job identifier.
     * @return The content data.
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-job-output-get.html" />
     */
-   Payload getJobOutput(String vaultName, String jobId);
+   @Named("GetJobOutput")
+   @GET
+   @Path("/-/vaults/{vault}/jobs/{job}/output")
+   @ResponseParser(GetPayloadFromHttpContent.class)
+   Payload getJobOutput(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("job") String jobId);
 
    /**
     * Gets the job output for the given job ID. The job must be an inventory retrieval, otherwise this operation will
@@ -317,7 +472,11 @@ public interface GlacierClient extends Closeable {
     * @param jobId
     *          Job identifier.
     * @return The ArchiveMetadata collection
-    * @see <a href="http://docs.aws.amazon.com/amazonglacier/latest/dev/api-job-output-get.html" />
     */
-   ArchiveMetadataCollection getInventoryRetrievalOutput(String vaultName, String jobId);
+   @Named("GetInventoryRetrievalOutput")
+   @GET
+   @Path("/-/vaults/{vault}/jobs/{job}/output")
+   @ResponseParser(ParseArchiveMetadataCollectionFromHttpContent.class)
+   ArchiveMetadataCollection getInventoryRetrievalOutput(@ParamValidators(VaultNameValidator.class) @PathParam("vault") String vaultName,
+         @PathParam("job") String jobId);
 }

@@ -23,7 +23,6 @@ import javax.inject.Named;
 import org.jclouds.Constants;
 import org.jclouds.date.DateService;
 import org.jclouds.date.TimeStamp;
-import org.jclouds.glacier.GlacierAsyncClient;
 import org.jclouds.glacier.GlacierClient;
 import org.jclouds.glacier.filters.RequestAuthorizeSignature;
 import org.jclouds.glacier.handlers.ParseGlacierErrorFromJsonContent;
@@ -31,8 +30,8 @@ import org.jclouds.http.HttpErrorHandler;
 import org.jclouds.http.annotation.ClientError;
 import org.jclouds.http.annotation.Redirection;
 import org.jclouds.http.annotation.ServerError;
-import org.jclouds.rest.ConfiguresRestClient;
-import org.jclouds.rest.config.RestClientModule;
+import org.jclouds.rest.ConfiguresHttpApi;
+import org.jclouds.rest.config.HttpApiModule;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -42,8 +41,8 @@ import com.google.inject.Scopes;
 /**
  * Configures the mappings. Installs the Object and Parser modules.
  */
-@ConfiguresRestClient
-public class GlacierRestClientModule extends RestClientModule<GlacierClient, GlacierAsyncClient> {
+@ConfiguresHttpApi
+public class GlacierHttpApiModule extends HttpApiModule<GlacierClient> {
 
    @Override
    protected void configure() {

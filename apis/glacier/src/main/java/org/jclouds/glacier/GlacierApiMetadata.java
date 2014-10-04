@@ -24,25 +24,18 @@ import java.util.Properties;
 
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.glacier.blobstore.config.GlacierBlobStoreContextModule;
+import org.jclouds.glacier.config.GlacierHttpApiModule;
 import org.jclouds.glacier.config.GlacierParserModule;
-import org.jclouds.glacier.config.GlacierRestClientModule;
 import org.jclouds.glacier.reference.GlacierHeaders;
-import org.jclouds.rest.internal.BaseRestApiMetadata;
+import org.jclouds.rest.internal.BaseHttpApiMetadata;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.reflect.TypeToken;
 import com.google.inject.Module;
 
 /**
  * Implementation of ApiMetadata for Amazon Glacier API
  */
-public class GlacierApiMetadata extends BaseRestApiMetadata {
-
-   @Deprecated
-   public static final TypeToken<org.jclouds.rest.RestContext<GlacierClient, GlacierAsyncClient>> CONTEXT_TOKEN = new TypeToken<org.jclouds.rest.RestContext<GlacierClient, GlacierAsyncClient>>() {
-
-      private static final long serialVersionUID = 1L;
-   };
+public class GlacierApiMetadata extends BaseHttpApiMetadata {
 
    private static Builder builder() {
       return new Builder();
@@ -62,16 +55,15 @@ public class GlacierApiMetadata extends BaseRestApiMetadata {
    }
 
    public static Properties defaultProperties() {
-      Properties properties = BaseRestApiMetadata.defaultProperties();
+      Properties properties = BaseHttpApiMetadata.defaultProperties();
       properties.setProperty(PROPERTY_HEADER_TAG, GlacierHeaders.DEFAULT_AMAZON_HEADERTAG);
       return properties;
    }
 
-   public static class Builder extends BaseRestApiMetadata.Builder<Builder> {
+   public static class Builder extends BaseHttpApiMetadata.Builder<GlacierClient, Builder> {
 
-      @SuppressWarnings("deprecation")
       protected Builder() {
-         super(GlacierClient.class, GlacierAsyncClient.class);
+         super(GlacierClient.class);
          id("glacier")
                .name("Amazon Glacier API")
                .identityName("Access Key ID")
@@ -80,9 +72,8 @@ public class GlacierApiMetadata extends BaseRestApiMetadata {
                .documentation(URI.create("http://docs.aws.amazon.com/amazonglacier/latest/dev/amazon-glacier-api.html"))
                .version("2012-06-01")
                .defaultProperties(GlacierApiMetadata.defaultProperties())
-               .context(CONTEXT_TOKEN)
                .view(typeToken(BlobStoreContext.class))
-               .defaultModules(ImmutableSet.<Class<? extends Module>> of(GlacierRestClientModule.class,
+               .defaultModules(ImmutableSet.<Class<? extends Module>> of(GlacierHttpApiModule.class,
                      GlacierParserModule.class, GlacierBlobStoreContextModule.class));
       }
 
