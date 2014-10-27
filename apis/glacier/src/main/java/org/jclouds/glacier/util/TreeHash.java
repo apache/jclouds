@@ -18,6 +18,7 @@ package org.jclouds.glacier.util;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.jclouds.util.Closeables2.closeQuietly;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +36,6 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 import com.google.common.io.ByteStreams;
-import com.google.common.io.Closeables;
 
 public final class TreeHash {
    private static final int CHUNK_SIZE = 1024 * 1024;
@@ -122,7 +122,7 @@ public final class TreeHash {
          //The result list contains exactly one element now.
          return new TreeHash(hashList(list.build()), linearHis.hash());
       } finally {
-         Closeables.closeQuietly(is);
+         closeQuietly(is);
       }
    }
 

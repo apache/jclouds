@@ -18,6 +18,7 @@ package org.jclouds.glacier.util;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.jclouds.util.Closeables2.closeQuietly;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -42,7 +43,6 @@ import com.google.common.hash.HashingInputStream;
 import com.google.common.io.BaseEncoding;
 import com.google.common.io.ByteSource;
 import com.google.common.io.ByteStreams;
-import com.google.common.io.Closeables;
 import com.google.common.net.HttpHeaders;
 
 // TODO: Query parameters, not necessary for Glacier
@@ -144,7 +144,7 @@ public final class AWSRequestSignerV4 {
       } catch (IOException e) {
          throw new HttpException("Error signing request", e);
       } finally {
-         Closeables.closeQuietly(his);
+         closeQuietly(his);
       }
    }
 
