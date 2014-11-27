@@ -130,8 +130,16 @@ public class GlacierClientMockTest {
    }
 
    @AfterMethod
-   private void shutdownServer() throws IOException {
-      server.shutdown();
+   private void shutdownServer() {
+      try {
+         server.shutdown();
+      } catch (IOException e) {
+         // MockWebServer 2.1.0 introduces an active wait for its executor
+         // termination. That active wait is a hardcoded value and throws an IOE
+         // if the executor has not terminated in that timeout. It is safe to
+         // ignore this exception as the functionality has been properly
+         // verified.
+      }
    }
 
    @Test
@@ -159,7 +167,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/describeVaultResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       VaultMetadata vault = client.describeVault(VAULT_NAME);
@@ -176,7 +184,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/listVaultsResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       assertThat(client.listVaults()).extracting("vaultName").containsExactly(VAULT_NAME1, VAULT_NAME2, VAULT_NAME3);
@@ -189,7 +197,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/listVaultsWithEmptyListResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       assertThat(client.listVaults()).isEmpty();
@@ -200,7 +208,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/listVaultsWithQueryParamsResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       PaginatedVaultCollection vaults = client.listVaults(PaginationOptions.Builder.limit(2).marker(VAULT_ARN1));
@@ -336,7 +344,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/listPartsResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       MultipartUploadMetadata mpu = client.listParts(VAULT_NAME, MULTIPART_UPLOAD_ID, PaginationOptions.Builder.limit(1).marker("1001"));
@@ -355,7 +363,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/listMultipartUploadsResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       PaginatedMultipartUploadCollection mpus = client.listMultipartUploads(VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER));
@@ -373,7 +381,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/listMultipartUploadsWithEmptyListResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       assertThat(client.listMultipartUploads(VAULT_NAME, PaginationOptions.Builder.limit(1).marker(MARKER))).isEmpty();
@@ -447,7 +455,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/describeJobResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       JobMetadata job = client.describeJob(VAULT_NAME, JOB_ID);
@@ -464,7 +472,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/listJobsResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       assertThat(client.listJobs(VAULT_NAME)).extracting("jobId").containsExactly(
@@ -479,12 +487,12 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/getJobOutputResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       Payload payload = client.getJobOutput(VAULT_NAME, JOB_ID);
       assertThat(payload.getContentMetadata().getContentType()).isEqualTo(MediaType.JSON_UTF_8.toString());
-      assertThat(payload.getContentMetadata().getContentLength()).isEqualTo(mr.getBody().length);
+      assertThat(payload.getContentMetadata().getContentLength()).isEqualTo(mr.getBody().size());
       assertThat(payload.openStream())
               .hasContentEqualTo(Resources.getResource(GlacierClientMockTest.class,
                       "/json/getJobOutputResponseBody.json").openStream());
@@ -498,7 +506,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(206);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/getJobOutputResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       ContentRange range = ContentRange.fromString("16-32");
@@ -515,7 +523,7 @@ public class GlacierClientMockTest {
       MockResponse mr = buildBaseResponse(200);
       mr.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8);
       mr.setBody(getResponseBody("/json/getJobOutputResponseBody.json"));
-      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().length);
+      mr.addHeader(HttpHeaders.CONTENT_LENGTH, mr.getBody().size());
       server.enqueue(mr);
 
       ArchiveMetadataCollection archives = client.getInventoryRetrievalOutput(VAULT_NAME, JOB_ID);
