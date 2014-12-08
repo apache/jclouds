@@ -351,8 +351,8 @@ public class GlacierClientMockTest {
       assertThat(mpu.getArchiveDescription()).isEqualTo("archive description 1");
       assertThat(mpu.getMultipartUploadId()).isEqualTo(MULTIPART_UPLOAD_ID);
       assertThat(mpu.getPartSizeInBytes()).isEqualTo(4194304);
-      assertThat(mpu).extracting("treeHash").containsExactly(HashCode.fromString("01d34dabf7be316472c93b1ef80721f5d4"));
-      assertThat(mpu).extracting("range").containsExactly(ContentRange.fromString("4194304-8388607"));
+      assertThat(mpu.iterator()).extracting("treeHash").containsExactly(HashCode.fromString("01d34dabf7be316472c93b1ef80721f5d4"));
+      assertThat(mpu.iterator()).extracting("range").containsExactly(ContentRange.fromString("4194304-8388607"));
 
       assertEquals(server.takeRequest().getRequestLine(),
               "GET /-/vaults/examplevault/multipart-uploads/" + MULTIPART_UPLOAD_ID + "?limit=1&marker=1001 " + HTTP);
