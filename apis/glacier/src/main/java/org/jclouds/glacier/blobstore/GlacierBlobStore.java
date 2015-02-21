@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.blobstore.domain.Blob;
+import org.jclouds.blobstore.domain.BlobAccess;
 import org.jclouds.blobstore.domain.BlobMetadata;
 import org.jclouds.blobstore.domain.ContainerAccess;
 import org.jclouds.blobstore.domain.MutableBlobMetadata;
@@ -354,5 +355,15 @@ public class GlacierBlobStore extends BaseBlobStore {
    @Override
    public void removeBlob(String container, String key) {
       sync.deleteArchive(container, key);
+   }
+
+   @Override
+   public BlobAccess getBlobAccess(String container, String name) {
+      throw new UnsupportedOperationException("not implemented");
+   }
+
+   @Override
+   public void setBlobAccess(String container, String name, BlobAccess access) {
+      throw new UnsupportedOperationException("not implemented");
    }
 }
