@@ -43,7 +43,7 @@ public final class VaultNameValidator extends Validator<String> {
    @Override
    public void validate(String vaultName) {
       checkArgument(!isNullOrEmpty(vaultName) && vaultName.length() <= MAX_LENGTH,
-            "Can't be null or empty. Length must be %d to %d symbols.", MIN_LENGTH, MAX_LENGTH);
+            "Can't be null or empty. Length must be %s to %s symbols.", MIN_LENGTH, MAX_LENGTH);
       checkArgument(VAULT_NAME_ACCEPTABLE_RANGE.matchesAllOf(vaultName),
             "Should contain only ASCII letters and numbers, underscores, hyphens, or periods.");
    }

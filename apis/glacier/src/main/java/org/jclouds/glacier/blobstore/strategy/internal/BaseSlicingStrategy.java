@@ -59,7 +59,7 @@ public class BaseSlicingStrategy implements SlicingStrategy {
    }
 
    protected long calculatePartSize(long length) {
-      long lengthInMB = (long) (length / (1L << 20)) + 1;
+      long lengthInMB = (length / (1L << 20)) + 1;
       double fpPartSizeInMB = sqrt(ratio * lengthInMB); //Get the part size which matches the given ratio
       long partSizeInMB = Long.highestOneBit((long) fpPartSizeInMB - 1) << 1;
       if (partSizeInMB < 1) return 1;

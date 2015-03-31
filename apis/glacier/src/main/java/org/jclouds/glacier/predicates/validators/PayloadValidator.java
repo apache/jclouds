@@ -37,6 +37,6 @@ public final class PayloadValidator extends Validator<Payload> {
       checkNotNull(payload, "Archive must have a payload.");
       checkNotNull(payload.getContentMetadata().getContentLength(), "Content length must be set.");
       checkArgument(payload.getContentMetadata().getContentLength() <= MAX_CONTENT_SIZE,
-            "Max content size is 4gb but was %d", payload.getContentMetadata().getContentLength());
+            "Max content size is 4gb but was %s", payload.getContentMetadata().getContentLength());
    }
 }

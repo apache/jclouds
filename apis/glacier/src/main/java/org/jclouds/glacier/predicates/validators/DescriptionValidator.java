@@ -39,7 +39,7 @@ public final class DescriptionValidator extends Validator<String> {
       if (isNullOrEmpty(description))
          return;
       checkArgument(description.length() <= MAX_DESC_LENGTH,
-            "Description can't be longer than %d characters but was %d",
+            "Description can't be longer than %s characters but was %s",
             MAX_DESC_LENGTH, description.length());
       checkArgument(DESCRIPTION_ACCEPTABLE_RANGE.matchesAllOf(description),
             "Description should have ASCII values between 32 and 126.");

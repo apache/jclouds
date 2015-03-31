@@ -77,7 +77,7 @@ public class JobMetadata {
       this.archiveId = archiveId;
       this.archiveSizeInBytes = archiveSizeInBytes;
       this.archiveSHA256TreeHash = archiveSHA256TreeHash;
-      this.completed = checkNotNull(completed, "completed");
+      this.completed = completed;
       this.completionDate = completionDate == null ? null : (Date) completionDate.clone();
       this.creationDate = (Date) checkNotNull(creationDate, "creationDate").clone();
       this.inventorySizeInBytes = inventorySizeInBytes;
