@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jclouds.util.Predicates2.retry;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -29,6 +30,8 @@ import org.jclouds.blobstore.domain.Blob;
 import org.jclouds.blobstore.domain.BlobAccess;
 import org.jclouds.blobstore.domain.BlobMetadata;
 import org.jclouds.blobstore.domain.ContainerAccess;
+import org.jclouds.blobstore.domain.MultipartPart;
+import org.jclouds.blobstore.domain.MultipartUpload;
 import org.jclouds.blobstore.domain.MutableBlobMetadata;
 import org.jclouds.blobstore.domain.PageSet;
 import org.jclouds.blobstore.domain.StorageMetadata;
@@ -50,6 +53,7 @@ import org.jclouds.glacier.blobstore.strategy.MultipartUploadStrategy;
 import org.jclouds.glacier.blobstore.strategy.PollingStrategy;
 import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
 import org.jclouds.glacier.util.ContentRange;
+import org.jclouds.io.Payload;
 import org.jclouds.javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
@@ -365,5 +369,45 @@ public class GlacierBlobStore extends BaseBlobStore {
    @Override
    public void setBlobAccess(String container, String name, BlobAccess access) {
       throw new UnsupportedOperationException("not implemented");
+   }
+
+   @Override
+   public MultipartUpload initiateMultipartUpload(String container, BlobMetadata blobMetadata) {
+      throw new UnsupportedOperationException("not yet implemented");
+   }
+
+   @Override
+   public void abortMultipartUpload(MultipartUpload mpu) {
+      throw new UnsupportedOperationException("not yet implemented");
+   }
+
+   @Override
+   public String completeMultipartUpload(MultipartUpload mpu, List<MultipartPart> parts) {
+      throw new UnsupportedOperationException("not yet implemented");
+   }
+
+   @Override
+   public MultipartPart uploadMultipartPart(MultipartUpload mpu, int partNumber, Payload payload) {
+      throw new UnsupportedOperationException("not yet implemented");
+   }
+
+   @Override
+   public List<MultipartPart> listMultipartUpload(MultipartUpload mpu) {
+      throw new UnsupportedOperationException("not yet implemented");
+   }
+
+   @Override
+   public long getMinimumMultipartPartSize() {
+      throw new UnsupportedOperationException("not yet implemented");
+   }
+
+   @Override
+   public long getMaximumMultipartPartSize() {
+      throw new UnsupportedOperationException("not yet implemented");
+   }
+
+   @Override
+   public int getMaximumNumberOfParts() {
+      throw new UnsupportedOperationException("not yet implemented");
    }
 }
