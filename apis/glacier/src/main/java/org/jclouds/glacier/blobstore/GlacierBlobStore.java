@@ -54,6 +54,7 @@ import org.jclouds.glacier.blobstore.strategy.PollingStrategy;
 import org.jclouds.glacier.domain.ArchiveRetrievalJobRequest;
 import org.jclouds.glacier.util.ContentRange;
 import org.jclouds.io.Payload;
+import org.jclouds.io.PayloadSlicer;
 import org.jclouds.javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
@@ -81,12 +82,12 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Inject
    GlacierBlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
-                    @Memoized Supplier<Set<? extends Location>> locations, GlacierClient sync,
+                    @Memoized Supplier<Set<? extends Location>> locations, PayloadSlicer slicer, GlacierClient sync,
                     Provider<MultipartUploadStrategy> multipartUploadStrategy,
                     Provider<PollingStrategy> pollingStrategy,
                     PaginatedVaultCollectionToStorageMetadata vaultsToContainers,
                     ArchiveMetadataCollectionToStorageMetadata archivesToBlobs, ListContainerOptionsToInventoryRetrievalJobRequest containerOptionsToInventoryRetrieval) {
-      super(context, blobUtils, defaultLocation, locations);
+      super(context, blobUtils, defaultLocation, locations, slicer);
       this.containerOptionsToInventoryRetrieval = checkNotNull(containerOptionsToInventoryRetrieval,
             "containerOptionsToInventoryRetrieval");
       this.archivesToBlobs = checkNotNull(archivesToBlobs, "archivesToBlobs");
