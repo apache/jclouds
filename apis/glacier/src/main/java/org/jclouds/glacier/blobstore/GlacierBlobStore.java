@@ -373,7 +373,7 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    @Override
-   public MultipartUpload initiateMultipartUpload(String container, BlobMetadata blobMetadata) {
+   public MultipartUpload initiateMultipartUpload(String container, BlobMetadata blobMetadata, PutOptions options) {
       throw new UnsupportedOperationException("not yet implemented");
    }
 
