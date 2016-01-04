@@ -56,11 +56,9 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient> {
 
    @Test
    public void testCreateVault() throws Exception {
-      assertThat(api.createVault(VAULT_NAME1).toString())
-            .contains("https://glacier.us-east-1.amazonaws.com/")
-            .contains("/vaults/" + VAULT_NAME1);
-      api.createVault(VAULT_NAME2);
-      api.createVault(VAULT_NAME3);
+      assertThat(api.createVault(VAULT_NAME1).toString()).contains("/vaults/" + VAULT_NAME1);
+      assertThat(api.createVault(VAULT_NAME2).toString()).contains("/vaults/" + VAULT_NAME2);
+      assertThat(api.createVault(VAULT_NAME3).toString()).contains("/vaults/" + VAULT_NAME3);
    }
 
    @Test(dependsOnMethods = {"testCreateVault"})
