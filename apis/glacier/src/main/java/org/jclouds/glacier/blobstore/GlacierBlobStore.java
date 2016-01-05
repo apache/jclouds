@@ -364,7 +364,7 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Override
    public BlobAccess getBlobAccess(String container, String name) {
-      throw new UnsupportedOperationException("not implemented");
+      return BlobAccess.PRIVATE;
    }
 
    @Override
