@@ -398,6 +398,11 @@ public class GlacierBlobStore extends BaseBlobStore {
    }
 
    @Override
+   public List<MultipartUpload> listMultipartUploads(String container) {
+      throw new UnsupportedOperationException("not yet implemented");
+   }
+
+   @Override
    public long getMinimumMultipartPartSize() {
       throw new UnsupportedOperationException("not yet implemented");
    }
