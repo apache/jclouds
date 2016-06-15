@@ -16,6 +16,7 @@
  */
 package org.jclouds.glacier;
 
+import static org.jclouds.Constants.PROPERTY_IDEMPOTENT_METHODS;
 import static org.jclouds.aws.reference.AWSConstants.PROPERTY_HEADER_TAG;
 import static org.jclouds.reflect.Reflection2.typeToken;
 
@@ -60,6 +61,7 @@ public class GlacierApiMetadata extends BaseHttpApiMetadata {
    public static Properties defaultProperties() {
       Properties properties = BaseHttpApiMetadata.defaultProperties();
       properties.setProperty(PROPERTY_HEADER_TAG, GlacierHeaders.DEFAULT_AMAZON_HEADERTAG);
+      properties.setProperty(PROPERTY_IDEMPOTENT_METHODS, "DELETE,GET,HEAD,OPTIONS,POST,PUT");
       return properties;
    }
 
