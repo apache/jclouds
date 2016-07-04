@@ -48,7 +48,8 @@ public class BasePollingStrategy implements PollingStrategy {
 
    @Inject
    public BasePollingStrategy(GlacierClient client) {
-      this(client, DEFAULT_INITIAL_WAIT, DEFAULT_TIME_BETWEEN_POLLS);
+      this(client, Long.parseLong(System.getProperty("test.glacier.initial-wait",
+              Long.toString(DEFAULT_INITIAL_WAIT))), DEFAULT_TIME_BETWEEN_POLLS);
    }
 
    private boolean inProgress(String job, String vault) {
