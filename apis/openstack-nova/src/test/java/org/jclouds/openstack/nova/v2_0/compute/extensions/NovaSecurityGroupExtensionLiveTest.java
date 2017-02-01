@@ -16,8 +16,18 @@
  */
 package org.jclouds.openstack.nova.v2_0.compute.extensions;
 
+import static org.testng.Assert.assertTrue;
+
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
+import org.jclouds.compute.ComputeService;
+import org.jclouds.compute.RunNodesException;
+import org.jclouds.compute.extensions.SecurityGroupExtension;
 import org.jclouds.compute.extensions.internal.BaseSecurityGroupExtensionLiveTest;
 import org.testng.annotations.Test;
+import org.jclouds.compute.domain.SecurityGroup;
+import com.google.common.base.Optional;
 
 /**
  * Live test for openstack-nova {@link org.jclouds.compute.extensions.SecurityGroupExtension} implementation.
@@ -29,4 +39,18 @@ public class NovaSecurityGroupExtensionLiveTest extends BaseSecurityGroupExtensi
       provider = "openstack-nova";
    }
 
+    @Test(groups = { "integration", "live" }, singleThreaded = true)
+    public void testListSecurityGroups() throws RunNodesException, InterruptedException, ExecutionException {
+        skipIfSecurityGroupsNotSupported();
+
+        ComputeService computeService = view.getComputeService();
+        Optional<SecurityGroupExtension> securityGroupExtension = computeService.getSecurityGroupExtension();
+        assertTrue(securityGroupExtension.isPresent(), "security extension was not present");
+
+        Set<SecurityGroup> groups = securityGroupExtension.get().listSecurityGroups();
+        System.out.println(groups.size());
+        for (SecurityGroup group : groups) {
+            System.out.println(group);
+        }
+    }
 }
