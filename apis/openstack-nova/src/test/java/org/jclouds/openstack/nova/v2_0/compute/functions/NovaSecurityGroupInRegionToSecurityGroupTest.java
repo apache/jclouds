@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
@@ -46,11 +47,14 @@ public class NovaSecurityGroupInRegionToSecurityGroupTest {
            .<String, Location>of("az-1.region-a.geo-1", region));
 
 
+   public static final ImmutableList<org.jclouds.openstack.nova.v2_0.domain.SecurityGroup> allGroups =
+      NovaSecurityGroupToSecurityGroupTest.allGroups;
+
    @Test
    public void testApplyWithGroup() {
       NovaSecurityGroupInRegionToSecurityGroup parser = createGroupParser();
 
-      SecurityGroupInRegion origGroup = new SecurityGroupInRegion(securityGroupWithGroup(), region.getId());
+      SecurityGroupInRegion origGroup = new SecurityGroupInRegion(securityGroupWithGroup(), region.getId(), allGroups);
 
       SecurityGroup newGroup = parser.apply(origGroup);
 
@@ -68,7 +72,7 @@ public class NovaSecurityGroupInRegionToSecurityGroupTest {
 
       NovaSecurityGroupInRegionToSecurityGroup parser = createGroupParser();
 
-      SecurityGroupInRegion origGroup = new SecurityGroupInRegion(securityGroupWithCidr(), region.getId());
+      SecurityGroupInRegion origGroup = new SecurityGroupInRegion(securityGroupWithCidr(), region.getId(), allGroups);
 
       SecurityGroup newGroup = parser.apply(origGroup);
 
@@ -82,9 +86,8 @@ public class NovaSecurityGroupInRegionToSecurityGroupTest {
    }
 
    private NovaSecurityGroupInRegionToSecurityGroup createGroupParser() {
-      NovaSecurityGroupToSecurityGroup baseParser = new NovaSecurityGroupToSecurityGroup(NovaSecurityGroupToSecurityGroupTest.ruleConverter);
 
-      NovaSecurityGroupInRegionToSecurityGroup parser = new NovaSecurityGroupInRegionToSecurityGroup(baseParser, locationIndex);
+      NovaSecurityGroupInRegionToSecurityGroup parser = new NovaSecurityGroupInRegionToSecurityGroup(locationIndex);
 
       return parser;
    }

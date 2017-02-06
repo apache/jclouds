@@ -41,6 +41,7 @@ import com.google.common.base.Suppliers;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
@@ -57,16 +58,21 @@ public class NovaSecurityGroupToSecurityGroupTest {
 
    private static final Predicate<AtomicReference<RegionAndName>> returnSecurityGroupExistsInRegion = Predicates.alwaysTrue();
 
+   public static final ImmutableList<org.jclouds.openstack.nova.v2_0.domain.SecurityGroup> allGroups =
+      ImmutableList.of(securityGroupWithGroup(), securityGroupWithCidr());
    private static final Map<RegionAndName, SecurityGroupInRegion> groupMap = ImmutableMap.of(
-           RegionAndName.fromRegionAndName("az-1.region-a.geo-1", "some-group"), new SecurityGroupInRegion(securityGroupWithGroup(), "az-1.region-a.geo-1"),
-           RegionAndName.fromRegionAndName("az-1.region-a.geo-1", "some-other-group"), new SecurityGroupInRegion(securityGroupWithCidr(), "az-1.region-a.geo-1"));
+      RegionAndName.fromRegionAndName("az-1.region-a.geo-1", "some-group"),
+         new SecurityGroupInRegion(securityGroupWithGroup(), "az-1.region-a.geo-1", allGroups),
+      RegionAndName.fromRegionAndName("az-1.region-a.geo-1", "some-other-group"),
+         new SecurityGroupInRegion(securityGroupWithCidr(), "az-1.region-a.geo-1", allGroups));
 
-   // weird compilation error means have to declare extra generics for call to build() - see https://bugs.eclipse.org/bugs/show_bug.cgi?id=365818
-   private static final Supplier <LoadingCache<RegionAndName, SecurityGroupInRegion>> groupCache = Suppliers.<LoadingCache<RegionAndName, SecurityGroupInRegion>> ofInstance(
-           CacheBuilder.newBuilder().<RegionAndName, SecurityGroupInRegion>build(CacheLoader.from(Functions.forMap(groupMap))));
+   // weird compilation error means have to declare extra generics for call to build()
+   // - see https://bugs.eclipse.org/bugs/show_bug.cgi?id=365818
+   private static final Supplier <LoadingCache<RegionAndName, SecurityGroupInRegion>> groupCache =
+      Suppliers.<LoadingCache<RegionAndName, SecurityGroupInRegion>> ofInstance(CacheBuilder.newBuilder().<RegionAndName, SecurityGroupInRegion>build(CacheLoader.from(Functions.forMap(groupMap))));
 
-   public static final SecurityGroupRuleToIpPermission ruleConverter = new SecurityGroupRuleToIpPermission(returnSecurityGroupExistsInRegion, locationIndex,
-           groupCache.get());
+   public static final SecurityGroupRuleToIpPermission ruleConverter =
+      new SecurityGroupRuleToIpPermission(returnSecurityGroupExistsInRegion, locationIndex, groupCache.get());
 
    public static org.jclouds.openstack.nova.v2_0.domain.SecurityGroup securityGroupWithGroup() {
       TenantIdAndName group = TenantIdAndName.builder().tenantId("tenant").name("some-other-group").build();
@@ -80,7 +86,8 @@ public class NovaSecurityGroupToSecurityGroupTest {
               .parentGroupId("some-other-id")
               .build();
 
-      org.jclouds.openstack.nova.v2_0.domain.SecurityGroup origGroup = org.jclouds.openstack.nova.v2_0.domain.SecurityGroup.builder()
+      org.jclouds.openstack.nova.v2_0.domain.SecurityGroup origGroup =
+         org.jclouds.openstack.nova.v2_0.domain.SecurityGroup.builder()
               .tenantId("tenant")
               .id("some-id")
               .name("some-group")
@@ -101,7 +108,8 @@ public class NovaSecurityGroupToSecurityGroupTest {
               .parentGroupId("some-other-id")
               .build();
 
-      org.jclouds.openstack.nova.v2_0.domain.SecurityGroup origGroup = org.jclouds.openstack.nova.v2_0.domain.SecurityGroup.builder()
+      org.jclouds.openstack.nova.v2_0.domain.SecurityGroup origGroup =
+         org.jclouds.openstack.nova.v2_0.domain.SecurityGroup.builder()
               .tenantId("tenant")
               .id("some-id")
               .name("some-other-group")
