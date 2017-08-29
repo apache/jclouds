@@ -71,7 +71,7 @@ public class GlacierBlobStore extends BaseBlobStore {
 
    @Inject(optional = true)
    @Named("jclouds.glacier.inventory.update.time")
-   private final long inventoryUpdateTime = DEFAULT_INVENTORY_UPDATE_TIME;
+   private long inventoryUpdateTime = DEFAULT_INVENTORY_UPDATE_TIME;
 
    private final GlacierClient sync;
    private final Provider<MultipartUploadStrategy> multipartUploadStrategy;

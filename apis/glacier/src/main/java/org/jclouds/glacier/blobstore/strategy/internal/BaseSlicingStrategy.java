@@ -40,7 +40,7 @@ public class BaseSlicingStrategy implements SlicingStrategy {
 
    @Inject(optional = true)
    @Named("jclouds.mpu.part.ratio")
-   private final double ratio = DEFAULT_RATIO;
+   private double ratio = DEFAULT_RATIO;
 
    private final PayloadSlicer slicer;
    private Payload payload;
