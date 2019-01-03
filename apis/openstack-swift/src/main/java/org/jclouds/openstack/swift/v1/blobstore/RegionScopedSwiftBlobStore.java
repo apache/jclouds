@@ -191,12 +191,7 @@ public class RegionScopedSwiftBlobStore implements BlobStore {
    @Override
    public boolean createContainerInLocation(Location location, String container, CreateContainerOptions options) {
       checkArgument(location == null || location.equals(region), "location must be null or %s", region);
-      boolean containerCreated;
-      if (options.isPublicRead()) {
-         containerCreated = api.getContainerApi(regionId).create(container, ANYBODY_READ);
-      } else {
-         containerCreated = api.getContainerApi(regionId).create(container, BASIC_CONTAINER);
-      }
+      boolean containerCreated = api.getContainerApi(regionId).create(container, options.isPublicRead() ? ANYBODY_READ : BASIC_CONTAINER);
 
       if (containerCreated) {
          containerCache.put(container, Optional.fromNullable(api.getContainerApi(regionId).get(container)));
