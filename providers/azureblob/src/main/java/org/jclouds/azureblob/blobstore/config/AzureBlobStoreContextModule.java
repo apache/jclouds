@@ -19,6 +19,7 @@ package org.jclouds.azureblob.blobstore.config;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
+import javax.inject.Named;
 
 import org.jclouds.azureblob.AzureBlobClient;
 import org.jclouds.azureblob.blobstore.AzureBlobRequestSigner;
@@ -46,12 +47,15 @@ public class AzureBlobStoreContextModule extends AbstractModule {
 
    @Provides
    @Singleton
-   protected final LoadingCache<String, PublicAccess> containerAcls(final AzureBlobClient client) {
+   protected final LoadingCache<String, PublicAccess> containerAcls(final AzureBlobClient client, @Named("sasAuth") final boolean sasAuthentication) {
       return CacheBuilder.newBuilder().expireAfterWrite(30, TimeUnit.SECONDS).build(
                new CacheLoader<String, PublicAccess>() {
                   @Override
                   public PublicAccess load(String container) {
-                     return client.getPublicAccessForContainer(container);
+                     if (!sasAuthentication) {
+                        return client.getPublicAccessForContainer(container);
+                     }
+                     return PublicAccess.CONTAINER;
                   }
 
                   @Override
