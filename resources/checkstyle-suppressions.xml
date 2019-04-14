@@ -27,4 +27,3 @@
     <!-- Turn off all checks for generated files -->
     <suppress files="AutoValue_.*.java" checks=".*" />
 </suppressions>
-
