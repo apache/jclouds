@@ -151,8 +151,7 @@ public interface VirtualMachineApi {
     */
    @Named("capture")
    @POST
-   @Payload("%7B\"vhdPrefix\":\"{vhdPrefix}\",\"destinationContainerName\":\"{destinationContainerName}\","
-         + "\"overwriteVhds\":\"true\"%7D")
+   @Payload("%7B\"vhdPrefix\":\"{vhdPrefix}\",\"destinationContainerName\":\"{destinationContainerName}\",\"overwriteVhds\":\"true\"%7D")
    @Path("/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/{name}/capture")
    @ResponseParser(URIParser.class)
    @Fallback(Fallbacks.NullOnNotFoundOr404.class)

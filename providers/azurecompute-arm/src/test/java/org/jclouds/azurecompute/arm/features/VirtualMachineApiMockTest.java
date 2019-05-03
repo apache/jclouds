@@ -122,7 +122,7 @@ public class VirtualMachineApiMockTest extends BaseAzureComputeApiMockTest {
    public void testListAll() throws Exception {
       server.enqueue(jsonResponse("/virtualmachinesinsubscription.json"));
       final VirtualMachineApi vmAPI = api.getVirtualMachineApi(null);
-      assertEquals(vmAPI.listAll(), getVMListAll()); //TODO allinsubs
+      assertEquals(vmAPI.listAll(), getVMListAll());
       assertSent(server, "GET",
             "/subscriptions/SUBSCRIPTIONID/providers/Microsoft.Compute/virtualMachines?api-version=2018-06-01");
    }
