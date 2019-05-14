@@ -30,13 +30,13 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.jclouds.azurecompute.arm.AzureComputeApi;
 import org.jclouds.azurecompute.arm.compute.config.AzurePredicatesModule.SecurityGroupAvailablePredicateFactory;
+import org.jclouds.azurecompute.arm.compute.config.AzurePredicatesModule.SecurityGroupRuleAvailablePredicateFactory;
 import org.jclouds.azurecompute.arm.compute.domain.ResourceGroupAndName;
 import org.jclouds.azurecompute.arm.domain.NetworkInterfaceCard;
 import org.jclouds.azurecompute.arm.domain.NetworkProfile.NetworkInterface;
@@ -78,20 +78,21 @@ public class AzureComputeSecurityGroupExtension implements SecurityGroupExtensio
    private final AzureComputeApi api;
    private final Function<NetworkSecurityGroup, SecurityGroup> securityGroupConverter;
    private final SecurityGroupAvailablePredicateFactory securityGroupAvailable;
+   private final SecurityGroupRuleAvailablePredicateFactory securityGroupRuleAvailable;
    private final Predicate<URI> resourceDeleted;
    private final LoadingCache<String, ResourceGroup> defaultResourceGroup;
    private final Supplier<Set<String>> regionIds;
 
    @Inject
-   AzureComputeSecurityGroupExtension(AzureComputeApi api,
-         Function<NetworkSecurityGroup, SecurityGroup> groupConverter,
-         SecurityGroupAvailablePredicateFactory securityRuleAvailable,
+   AzureComputeSecurityGroupExtension(AzureComputeApi api, Function<NetworkSecurityGroup, SecurityGroup> groupConverter,
+         SecurityGroupAvailablePredicateFactory securityGroupAvailable, SecurityGroupRuleAvailablePredicateFactory securityGroupRuleAvailable,
          @Named(TIMEOUT_RESOURCE_DELETED) Predicate<URI> resourceDeleted,
          LoadingCache<String, ResourceGroup> defaultResourceGroup,
          @Region Supplier<Set<String>> regionIds) {
       this.api = api;
       this.securityGroupConverter = groupConverter;
-      this.securityGroupAvailable = securityRuleAvailable;
+      this.securityGroupAvailable = securityGroupAvailable;
+      this.securityGroupRuleAvailable = securityGroupRuleAvailable;
       this.resourceDeleted = resourceDeleted;
       this.defaultResourceGroup = defaultResourceGroup;
       this.regionIds = regionIds;
@@ -252,8 +253,7 @@ public class AzureComputeSecurityGroupExtension implements SecurityGroupExtensio
 
          ruleApi.createOrUpdate(ruleName, properties);
 
-         checkState(
-               securityGroupAvailable.create(resourceGroupAndName.resourceGroup()).apply(networkSecurityGroup.name()),
+         checkState(securityGroupRuleAvailable.create(resourceGroupAndName.resourceGroup(), networkSecurityGroup.name()).apply(ruleName),
                "Security group was not updated in the configured timeout");
       }
 
@@ -295,9 +295,10 @@ public class AzureComputeSecurityGroupExtension implements SecurityGroupExtensio
       for (NetworkSecurityRule matchingRule : rules) {
          logger.debug(">> deleting network security rule %s from %s...", matchingRule.name(), group.getName());
          ruleApi.delete(matchingRule.name());
-         checkState(
-               securityGroupAvailable.create(resourceGroupAndName.resourceGroup()).apply(networkSecurityGroup.name()),
-               "Security group was not updated in the configured timeout");
+         URI uri = api.getNetworkSecurityRuleApi(resourceGroupAndName.resourceGroup(), networkSecurityGroup.name()).delete(resourceGroupAndName.name());
+         if (uri != null) {
+            resourceDeleted.apply(uri);
+         }
       }
 
       return getSecurityGroupById(group.getId());
