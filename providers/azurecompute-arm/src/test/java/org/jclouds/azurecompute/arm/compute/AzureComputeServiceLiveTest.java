@@ -75,8 +75,10 @@ public class AzureComputeServiceLiveTest extends BaseComputeServiceLiveTest {
       }, Names.named(TIMEOUT_RESOURCE_DELETED)));
    }
 
-   @Test(dependsOnMethods = "testSuspendResume")
+   // Base method performs Iterables.elementsEqual which is case sensitive.
+   // Azure API can return values in different cases so we'll perform a custom validation
    @Override
+   @Test(dependsOnMethods = "testSuspendResume")
    public void testListNodesByIds() {
       final Set<String> nodeIds = copyOf(transform(nodes, new Function<NodeMetadata, String>() {
 
