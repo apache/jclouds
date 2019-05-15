@@ -294,11 +294,11 @@ public class AzureComputeSecurityGroupExtension implements SecurityGroupExtensio
 
       for (NetworkSecurityRule matchingRule : rules) {
          logger.debug(">> deleting network security rule %s from %s...", matchingRule.name(), group.getName());
-         ruleApi.delete(matchingRule.name());
-         URI uri = api.getNetworkSecurityRuleApi(resourceGroupAndName.resourceGroup(), networkSecurityGroup.name()).delete(resourceGroupAndName.name());
+         URI uri = ruleApi.delete(matchingRule.name());
          if (uri != null) {
-            resourceDeleted.apply(uri);
+            checkState(resourceDeleted.apply(uri), "Rule %s could not be deleted", matchingRule.id());
          }
+
       }
 
       return getSecurityGroupById(group.getId());
