@@ -30,7 +30,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -108,22 +107,13 @@ public class AzureComputeSecurityGroupExtension implements SecurityGroupExtensio
    }
 
    private Set<SecurityGroup> securityGroupsInLocations(final Set<String> locations) {
-      List<SecurityGroup> securityGroups = new ArrayList<SecurityGroup>();
-      for (ResourceGroup rg : api.getResourceGroupApi().list()) {
-         securityGroups.addAll(securityGroupsInResourceGroup(rg.name()));
-      }
-      
-      return ImmutableSet.copyOf(filter(securityGroups, new Predicate<SecurityGroup>() {
+      final ImmutableSet<SecurityGroup> allSecurityGroups = ImmutableSet.copyOf(transform(filter(api.getNetworkSecurityGroupApi(null).listAll(), notNull()), securityGroupConverter));
+      return ImmutableSet.copyOf(filter(allSecurityGroups, new Predicate<SecurityGroup>() {
          @Override
          public boolean apply(SecurityGroup input) {
             return input.getLocation() != null && locations.contains(input.getLocation().getId());
          }
       }));
-   }
-
-   private Set<SecurityGroup> securityGroupsInResourceGroup(String resourceGroup) {
-      List<NetworkSecurityGroup> networkGroups = api.getNetworkSecurityGroupApi(resourceGroup).list();
-      return ImmutableSet.copyOf(transform(filter(networkGroups, notNull()), securityGroupConverter));
    }
 
    @Override
