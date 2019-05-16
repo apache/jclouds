@@ -351,8 +351,12 @@ public class AzureComputeServiceAdapter implements ComputeServiceAdapter<Virtual
    @Override
    public Iterable<VirtualMachine> listNodes() {
       ImmutableList.Builder<VirtualMachine> nodes = builder();
-      for (final String location : regionIds.get()) {
-         nodes.addAll(api.getVirtualMachineApi(null).listByLocation(location));
+      if (regionIds.get().isEmpty()) {
+         nodes.addAll(api.getVirtualMachineApi(null).listAll());
+      } else {
+         for (final String location : regionIds.get()) {
+            nodes.addAll(api.getVirtualMachineApi(null).listByLocation(location));
+         }
       }
       return nodes.build();
    }
