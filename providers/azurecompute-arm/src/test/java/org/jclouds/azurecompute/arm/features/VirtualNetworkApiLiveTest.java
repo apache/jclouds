@@ -111,7 +111,7 @@ public class VirtualNetworkApiLiveTest extends BaseAzureComputeApiLiveTest {
 
    @Test(dependsOnMethods = "createVirtualNetwork")
    public void listAllVirtualNetworks() {
-      List<VirtualNetwork> vnList = api().listAll();
+      List<VirtualNetwork> vnList = api.getVirtualNetworkApi(null).listAll();
 
       assertNotNull(vnList);
       assertTrue(vnList.size() > 0);

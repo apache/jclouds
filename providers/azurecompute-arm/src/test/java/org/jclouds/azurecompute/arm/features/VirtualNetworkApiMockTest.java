@@ -97,7 +97,7 @@ public class VirtualNetworkApiMockTest extends BaseAzureComputeApiMockTest {
    public void listAllVirtualNetworks() throws InterruptedException {
       server.enqueue(jsonResponse("/listvirtualnetworksall.json"));
 
-      final VirtualNetworkApi vnApi = api.getVirtualNetworkApi(resourcegroup);
+      final VirtualNetworkApi vnApi = api.getVirtualNetworkApi(null);
       List<VirtualNetwork> vnList = vnApi.listAll();
       String path = String.format("/subscriptions/%s/providers/Microsoft.Network/virtualNetworks?%s", subscriptionid, apiVersion);
 
