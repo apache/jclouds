@@ -32,7 +32,6 @@ import org.jclouds.azureblob.config.InsufficientAccessRightsException;
 import org.jclouds.util.Throwables2;
 
 import com.google.common.base.Function;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
 
