@@ -48,7 +48,7 @@
         </module>
         <module name="NoWhitespaceBefore"/>
         <module name="RedundantImport"/>
-        <module name="RedundantModifier"/>
+       <!-- <module name="RedundantModifier"/> -->
         <module name="SimplifyBooleanExpression"/>
         <module name="TypeName"/>
         <module name="UnnecessaryParentheses"/>

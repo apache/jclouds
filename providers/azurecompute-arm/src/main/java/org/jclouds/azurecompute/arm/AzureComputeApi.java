@@ -106,7 +106,7 @@ public interface AzureComputeApi extends Closeable {
     * @see <a href="https://msdn.microsoft.com/en-us/library/azure/mt163661.aspx">docs</a>
     */
    @Delegate
-   VirtualNetworkApi getVirtualNetworkApi(@PathParam("resourcegroup") String resourcegroup);
+   VirtualNetworkApi getVirtualNetworkApi(@Nullable @PathParam("resourcegroup") String resourcegroup);
 
 
    /**
@@ -132,7 +132,7 @@ public interface AzureComputeApi extends Closeable {
     * @see <a href="https://msdn.microsoft.com/en-us/library/azure/mt163630.aspx">docs</a>
     */
    @Delegate
-   VirtualMachineApi getVirtualMachineApi(@PathParam("resourceGroup") String resourceGroup);
+   VirtualMachineApi getVirtualMachineApi(@Nullable @PathParam("resourceGroup") String resourceGroup);
 
    /**
     * The Virtual Machine Scale Set API includes operations for managing the virtual machines in your subscription.
@@ -172,7 +172,7 @@ public interface AzureComputeApi extends Closeable {
     * @see <a href="https://msdn.microsoft.com/en-us/library/azure/mt163615.aspx">docs</a>
     */
    @Delegate
-   NetworkSecurityGroupApi getNetworkSecurityGroupApi(@PathParam("resourcegroup") String resourcegroup);
+   NetworkSecurityGroupApi getNetworkSecurityGroupApi(@Nullable @PathParam("resourcegroup") String resourcegroup);
  
    /**
     * The NetworkSecurityRule API includes operations for managing network security rules within a network security group.
@@ -192,7 +192,7 @@ public interface AzureComputeApi extends Closeable {
     *      </a>
     */
    @Delegate
-   LoadBalancerApi getLoadBalancerApi(@PathParam("resourcegroup") String resourcegroup);
+   LoadBalancerApi getLoadBalancerApi(@Nullable @PathParam("resourcegroup") String resourcegroup);
 
    /**
     * The AvailabilitySet API includes operations for managing availability sets

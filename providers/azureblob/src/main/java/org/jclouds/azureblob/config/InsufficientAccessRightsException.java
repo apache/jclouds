@@ -14,25 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.openstack.nova.v2_0.domain.regionscoped;
-
-import com.google.auto.value.AutoValue;
-import org.jclouds.javax.annotation.Nullable;
-import org.jclouds.json.SerializedNames;
-
+ 
+ 
 /**
- * Hypervisor which shows id and name
+ * Handles the inability of SAS Authentication string to authenticate the getAcl and setAcl requests.
+ * 
  */
-@AutoValue
-public abstract class Hypervisor {
+ 
+package org.jclouds.azureblob.config;
 
-   public abstract String getId();
+public class InsufficientAccessRightsException extends RuntimeException {
 
-   @Nullable
-   public abstract String getName();
-
-   @SerializedNames({"id", "hypervisor_hostname"})
-   private static Hypervisor create(String id, String name) {
-      return new AutoValue_Hypervisor(id, name);
+   public InsufficientAccessRightsException(String message) {
+      super(message);
    }
+
 }

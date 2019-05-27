@@ -108,7 +108,9 @@
     <!-- Disabling error-prone compiler due to: https://github.com/google/error-prone/issues/711
          The fix is only available in error-prone versions that do not support Java 7 -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
         <inherited>false</inherited>
         <configuration>
           <source>${maven.compile.source}</source>
