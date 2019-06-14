@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 
 import com.google.common.base.Throwables;
 import com.google.gson.TypeAdapter;
-import com.google.gson.internal.bind.TypeAdapters;
+import org.jclouds.json.gson.internal.bind.TypeAdapters;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 

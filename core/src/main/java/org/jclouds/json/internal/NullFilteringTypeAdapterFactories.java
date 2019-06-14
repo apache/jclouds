@@ -27,7 +27,7 @@ import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.JsonReaderInternalAccess;
+import org.jclouds.json.gson.internal.JsonReaderInternalAccess;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -55,7 +55,7 @@ public class NullFilteringTypeAdapterFactories {
    }
 
    static <T> TypeToken<?> resolve(TypeToken<T> ownerType, Type param) {
-      return TypeToken.get(com.google.gson.internal.$Gson$Types.resolve(ownerType.getType(), ownerType.getRawType(),
+      return TypeToken.get(org.jclouds.json.gson.internal.$Gson$Types.resolve(ownerType.getType(), ownerType.getRawType(),
             param));
    }
 

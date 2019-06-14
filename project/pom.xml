@@ -517,9 +517,11 @@
             <exclude>**/modernizer_exclusions.txt</exclude>
             <exclude>**/.factorypath</exclude>
             <exclude>**/.apt_generated/**</exclude>
+            <exclude>**/.apt_generated_tests/**</exclude>
             <exclude>**/.checkstyle</exclude>
             <exclude>nb-configuration.xml</exclude>
             <exclude>nbactions.xml</exclude>
+            <exclude>dependency-reduced-pom.xml</exclude>
 
             <!-- Temporary files generated on CloudBees slaves -->
             <exclude>.repository/**</exclude>

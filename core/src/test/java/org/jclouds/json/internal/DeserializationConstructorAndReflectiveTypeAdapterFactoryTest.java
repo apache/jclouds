@@ -48,8 +48,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
 import com.google.gson.TypeAdapter;
-import com.google.gson.internal.ConstructorConstructor;
-import com.google.gson.internal.Excluder;
+import org.jclouds.json.gson.internal.ConstructorConstructor;
+import org.jclouds.json.gson.internal.Excluder;
 import com.google.gson.reflect.TypeToken;
 
 @Test(testName = "DeserializationConstructorTypeAdapterFactoryTest")

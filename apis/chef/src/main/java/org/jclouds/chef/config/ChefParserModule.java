@@ -53,7 +53,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
-import com.google.gson.internal.JsonReaderInternalAccess;
+import org.jclouds.json.gson.internal.JsonReaderInternalAccess;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.inject.AbstractModule;
