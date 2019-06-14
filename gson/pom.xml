@@ -62,7 +62,7 @@
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
           </transformers>
-          <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+          <promoteTransitiveDependencies>false</promoteTransitiveDependencies>
         </configuration>
       </plugin>
     </plugins>
