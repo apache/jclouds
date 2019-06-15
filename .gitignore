@@ -25,3 +25,4 @@ nb-configuration.xml
 nbactions.xml
 /.nb-gradle/
 dependency-reduced-pom.xml
+.vscode
