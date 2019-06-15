@@ -26,6 +26,12 @@
     <relativePath>../project/pom.xml</relativePath>
   </parent>
 
+  <!-- 
+    JCLOUDS-1166: This project relocates the 'com.google.gson.internal' package
+    so we can keep using its contents in OSGi environments.
+    This is a temporal solution and we should try to remove the usages of the classes in
+    there and remove this once that is done.
+  -->
   <artifactId>jclouds-gson</artifactId>
   <name>jclouds gson copy without internal packages</name>
   <packaging>bundle</packaging>
@@ -53,6 +59,19 @@
           </execution>
         </executions>
         <configuration>
+          <artifactSet>
+            <includes>
+              <include>com.google.code.gson:gson</include>
+            </includes>
+          </artifactSet>
+          <filters>
+            <filter>
+              <artifact>com.google.code.gson:gson</artifact>
+              <includes>
+                <include>com/google/gson/internal/**</include>
+              </includes>
+            </filter>
+          </filters>
           <relocations>
             <relocation>
               <pattern>com.google.gson.internal</pattern>
