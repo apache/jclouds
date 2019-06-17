@@ -36,6 +36,14 @@
   <name>jclouds gson copy without internal packages</name>
   <packaging>bundle</packaging>
 
+  <properties>
+    <jclouds.osgi.export>
+      org.jclouds.json.gson.internal*;version=${project.version};-noimport:=true,
+      com.google.gson*;version=${project.version};-noimport:=true,
+    </jclouds.osgi.export>
+    <jclouds.osgi.import>*</jclouds.osgi.import>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.google.code.gson</groupId>
