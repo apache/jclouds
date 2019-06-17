@@ -615,6 +615,32 @@
                 <package>com.jcraft.jsch.agentproxy</package>
               </packages>
             </exception>
+            <!--
+              TODO: Remove this when the issues are fixed or we have completely moved away from
+                    gson.internal
+              Due to the following issues:
+                https://issues.apache.org/jira/browse/MSHADE-206
+                https://issues.apache.org/jira/browse/MNG-5899
+              The contents of the shaded gson jar are directly included as part of jclouds-core.
+              The classes are exactly the same, so it is safe to exclude them here.
+            -->
+            <exception>
+              <conflictingDependencies>
+                <dependency>
+                  <groupId>org.apache.jclouds</groupId>
+                  <artifactId>jclouds-core</artifactId>
+                  <version>${project.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.apache.jclouds</groupId>
+                  <artifactId>jclouds-gson</artifactId>
+                  <version>${project.version}</version>
+                </dependency>
+              </conflictingDependencies>
+              <packages>
+                <package>org.jclouds.json.gson.internal</package>
+              </packages>
+            </exception>
           </exceptions>
           <ignoredResourcePatterns>
             <!-- For all the jetty packages -->
