@@ -64,14 +64,6 @@
               <include>com.google.code.gson:gson</include>
             </includes>
           </artifactSet>
-          <filters>
-            <filter>
-              <artifact>com.google.code.gson:gson</artifact>
-              <includes>
-                <include>com/google/gson/internal/**</include>
-              </includes>
-            </filter>
-          </filters>
           <relocations>
             <relocation>
               <pattern>com.google.gson.internal</pattern>
