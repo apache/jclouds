@@ -269,12 +269,6 @@
             This exclusion makes sure projects including the shaded version don't get the original
             gson dependency as well. 
           -->
-          <!--
-          <exclusion>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-          </exclusion>
-          -->
           <exclusion>
             <groupId>org.apache.jclouds</groupId>
             <artifactId>jclouds-gson-shaded</artifactId>
