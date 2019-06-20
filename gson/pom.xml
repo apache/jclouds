@@ -39,7 +39,7 @@
     To overcome this, we generate both separately; first the shaded jar, then the bundle based on that jar. 
   -->
   <modules>
-    <module>gson-shade</module>
+    <module>gson-shaded</module>
     <module>gson-bundle</module>
   </modules>
 
