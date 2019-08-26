@@ -49,6 +49,7 @@ import org.jclouds.s3.blobstore.functions.BucketsToStorageMetadata;
 import org.jclouds.s3.domain.BucketMetadata;
 import org.jclouds.s3.filters.RequestAuthorizeSignature;
 import org.jclouds.s3.filters.RequestAuthorizeSignatureV2;
+import org.jclouds.s3.filters.RequestAuthorizeSignatureV4;
 import org.jclouds.s3.functions.GetRegionForBucket;
 import org.jclouds.s3.handlers.ParseS3ErrorFromXmlContent;
 import org.jclouds.s3.handlers.S3RedirectionRetryHandler;
@@ -169,7 +170,6 @@ public class S3HttpApiModule<S extends S3Client> extends AWSHttpApiModule<S> {
       super.configure();
       install(new S3ObjectModule());
       install(new S3ParserModule());
-      bindRequestSigner();
       bind(new TypeLiteral<Function<String, Optional<String>>>() {
       }).annotatedWith(Bucket.class).to(GetRegionForBucket.class);
       bind(new TypeLiteral<Function<Set<BucketMetadata>, PageSet<? extends StorageMetadata>>>() {
@@ -183,8 +183,16 @@ public class S3HttpApiModule<S extends S3Client> extends AWSHttpApiModule<S> {
       bind(HttpErrorHandler.class).annotatedWith(ServerError.class).to(ParseS3ErrorFromXmlContent.class);
    }
 
-   protected void bindRequestSigner() {
-      bind(RequestAuthorizeSignature.class).to(RequestAuthorizeSignatureV2.class).in(Scopes.SINGLETON);
+   @Provides
+   @Singleton
+   protected void bindRequestSigner(@Named(Constants.PROPERTY_V4_REQUEST_SIGNATURES) boolean v4Signatures) {
+      Class<? extends RequestAuthorizeSignature> clazz;
+      if (v4Signatures) {
+         clazz = RequestAuthorizeSignatureV4.class;
+      } else {
+         clazz = RequestAuthorizeSignatureV2.class;
+      }
+      bind(RequestAuthorizeSignature.class).to(clazz).in(Scopes.SINGLETON);
    }
 
    @Provides

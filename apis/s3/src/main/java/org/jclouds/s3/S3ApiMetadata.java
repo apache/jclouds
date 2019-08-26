@@ -18,6 +18,7 @@ package org.jclouds.s3;
 
 import static org.jclouds.Constants.PROPERTY_IDEMPOTENT_METHODS;
 import static org.jclouds.Constants.PROPERTY_RELAX_HOSTNAME;
+import static org.jclouds.Constants.PROPERTY_V4_REQUEST_SIGNATURES;
 import static org.jclouds.aws.reference.AWSConstants.PROPERTY_AUTH_TAG;
 import static org.jclouds.aws.reference.AWSConstants.PROPERTY_HEADER_TAG;
 import static org.jclouds.blobstore.reference.BlobStoreConstants.PROPERTY_BLOBSTORE_DIRECTORY_SUFFIX;
@@ -79,6 +80,7 @@ public class S3ApiMetadata extends BaseHttpApiMetadata {
       properties.setProperty(PROPERTY_S3_VIRTUAL_HOST_BUCKETS, "false");
       properties.setProperty(PROPERTY_RELAX_HOSTNAME, "true");
       properties.setProperty(PROPERTY_BLOBSTORE_DIRECTORY_SUFFIX, "/");
+      properties.setProperty(PROPERTY_V4_REQUEST_SIGNATURES, "false");
       properties.setProperty(PROPERTY_USER_METADATA_PREFIX, String.format("x-${%s}-meta-", PROPERTY_HEADER_TAG));
       properties.setProperty(PROPERTY_IDEMPOTENT_METHODS, "DELETE,GET,HEAD,OPTIONS,POST,PUT");
 

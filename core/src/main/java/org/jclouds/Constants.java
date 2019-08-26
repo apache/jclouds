@@ -355,6 +355,13 @@ public final class Constants {
    public static final String PROPERTY_USER_AGENT = "jclouds.user-agent";
 
    /**
+    * Boolean property. Default (false).
+    * <p/>
+    * Enables the use of V4 request signatures.
+    */
+   public static final String PROPERTY_V4_REQUEST_SIGNATURES = "jclouds.v4signatures";
+
+   /**
     * When true, add the Connection: close header. Useful when interacting with
     * providers that don't properly support persistent connections. Defaults to false.
     */
