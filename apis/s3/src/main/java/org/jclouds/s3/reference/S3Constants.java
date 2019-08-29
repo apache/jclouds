@@ -33,6 +33,13 @@ public final class S3Constants {
    public static final String PROPERTY_S3_VIRTUAL_HOST_BUCKETS = "jclouds.s3.virtual-host-buckets";
    public static final String PROPERTY_JCLOUDS_S3_CHUNKED_SIZE = "jclouds.s3.chunked.size";
 
+   /**
+    * Boolean property. Default (false).
+    * <p/>
+    * Enables the use of V4 request signatures.
+    */
+   public static final String PROPERTY_S3_V4_REQUEST_SIGNATURES = "jclouds.s3.v4signatures";
+
    public static final String TEMPORARY_SIGNATURE_PARAM = "Signature";
 
    private S3Constants() {

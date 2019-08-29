@@ -17,6 +17,7 @@
 package org.jclouds.aws.s3;
 
 import static org.jclouds.reflect.Reflection2.typeToken;
+import static org.jclouds.s3.reference.S3Constants.PROPERTY_S3_V4_REQUEST_SIGNATURES;
 import static org.jclouds.s3.reference.S3Constants.PROPERTY_S3_VIRTUAL_HOST_BUCKETS;
 
 import java.util.Properties;
@@ -50,6 +51,7 @@ public class AWSS3ApiMetadata extends S3ApiMetadata {
    public static Properties defaultProperties() {
       Properties properties = S3ApiMetadata.defaultProperties();
       properties.setProperty(PROPERTY_S3_VIRTUAL_HOST_BUCKETS, "true");
+      properties.setProperty(PROPERTY_S3_V4_REQUEST_SIGNATURES, "true");
       return properties;
    }
 

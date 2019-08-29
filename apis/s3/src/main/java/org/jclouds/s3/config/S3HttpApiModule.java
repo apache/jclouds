@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import com.google.inject.Injector;
 import org.jclouds.Constants;
 import org.jclouds.aws.config.AWSHttpApiModule;
 import org.jclouds.aws.handlers.AWSClientErrorRetryHandler;
@@ -53,6 +54,7 @@ import org.jclouds.s3.filters.RequestAuthorizeSignatureV4;
 import org.jclouds.s3.functions.GetRegionForBucket;
 import org.jclouds.s3.handlers.ParseS3ErrorFromXmlContent;
 import org.jclouds.s3.handlers.S3RedirectionRetryHandler;
+import org.jclouds.s3.reference.S3Constants;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -63,7 +65,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Iterables;
 import com.google.inject.Provides;
-import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
 
 /**
@@ -185,14 +186,9 @@ public class S3HttpApiModule<S extends S3Client> extends AWSHttpApiModule<S> {
 
    @Provides
    @Singleton
-   protected void bindRequestSigner(@Named(Constants.PROPERTY_V4_REQUEST_SIGNATURES) boolean v4Signatures) {
-      Class<? extends RequestAuthorizeSignature> clazz;
-      if (v4Signatures) {
-         clazz = RequestAuthorizeSignatureV4.class;
-      } else {
-         clazz = RequestAuthorizeSignatureV2.class;
-      }
-      bind(RequestAuthorizeSignature.class).to(clazz).in(Scopes.SINGLETON);
+   protected RequestAuthorizeSignature bindRequestSigner(
+           @Named(S3Constants.PROPERTY_S3_V4_REQUEST_SIGNATURES) boolean v4Signatures, Injector injector) {
+      return injector.getInstance(v4Signatures ? RequestAuthorizeSignatureV4.class : RequestAuthorizeSignatureV2.class);
    }
 
    @Provides
