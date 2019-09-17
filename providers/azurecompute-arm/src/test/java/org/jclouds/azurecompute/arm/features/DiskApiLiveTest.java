@@ -34,6 +34,7 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 
+import static org.jclouds.azurecompute.arm.domain.DiskStorageAccountType.PREMIUM_SSD;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
@@ -60,7 +61,7 @@ public class DiskApiLiveTest extends BaseAzureComputeApiLiveTest {
    @Test
    public void createDisk() {
       DiskProperties properties = DiskProperties.builder().creationData(CreationData.create(CreationData.CreateOptions.EMPTY)).diskSizeGB(2).build();
-      DiskSku sku = DiskSku.builder().name( "Premium_LRS" ).build();
+      DiskSku sku = DiskSku.builder().name(PREMIUM_SSD).build();
       Disk dataDisk = api().createOrUpdate(diskName, LOCATION, ImmutableMap.of("exampleTag", "jclouds-test-tag"), properties, sku);
       assertTrue(waitUntilAvailable(diskName), "creation operation did not complete in the configured timeout");
       assertTrue(dataDisk.properties().diskSizeGB() == 2);

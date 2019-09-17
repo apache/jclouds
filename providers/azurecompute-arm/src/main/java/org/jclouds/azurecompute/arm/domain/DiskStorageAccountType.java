@@ -16,32 +16,28 @@
  */
 package org.jclouds.azurecompute.arm.domain;
 
-import com.google.auto.value.AutoValue;
-import org.jclouds.javax.annotation.Nullable;
-import org.jclouds.json.SerializedNames;
-
-@AutoValue
-public abstract class DiskSku
+/**
+ * DiskStorageAccountTypes used in Azure.
+ *
+ * @see <a href="https://docs.microsoft.com/en-us/rest/api/compute/disks/createorupdate#diskstorageaccounttypes">this page</a>
+ */
+public enum DiskStorageAccountType
 {
-    @Nullable
-    public abstract DiskStorageAccountType name();
+    STANDARD_HDD("Standard_LRS"),
+    STANDARD_SSD("StandardSSD_LRS"),
+    PREMIUM_SSD("Premium_LRS"),
+    ULTRA_SSD("UltraSSD_LRS"); // Available only if your subscription is enabled for ultra disks
 
-    @SerializedNames({"name"})
-    public static DiskSku create(final DiskStorageAccountType diskStorageAccountType) {
-        return builder()
-                .name(diskStorageAccountType)
-                .build();
+    private final String name;
+
+    DiskStorageAccountType(String name)
+    {
+        this.name = name;
     }
 
-    public abstract Builder toBuilder();
-
-    public static Builder builder() {
-        return new AutoValue_DiskSku.Builder();
-    }
-
-    @AutoValue.Builder
-    public abstract static class Builder {
-        public abstract Builder name(DiskStorageAccountType diskStorageAccountType);
-        public abstract DiskSku build();
+    @Override
+    public String toString()
+    {
+        return this.name;
     }
 }
