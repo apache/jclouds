@@ -24,12 +24,12 @@ import org.jclouds.json.SerializedNames;
 public abstract class DiskSku
 {
     @Nullable
-    public abstract DiskStorageAccountType name();
+    public abstract StorageAccountType name();
 
     @SerializedNames({"name"})
-    public static DiskSku create(final DiskStorageAccountType diskStorageAccountType) {
+    public static DiskSku create(final StorageAccountType storageAccountType) {
         return builder()
-                .name(diskStorageAccountType)
+                .name(storageAccountType)
                 .build();
     }
 
@@ -41,7 +41,7 @@ public abstract class DiskSku
 
     @AutoValue.Builder
     public abstract static class Builder {
-        public abstract Builder name(DiskStorageAccountType diskStorageAccountType);
+        public abstract Builder name(StorageAccountType storageAccountType);
         public abstract DiskSku build();
     }
 }

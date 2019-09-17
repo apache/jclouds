@@ -29,7 +29,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static com.google.common.collect.Iterables.isEmpty;
-import static org.jclouds.azurecompute.arm.domain.DiskStorageAccountType.PREMIUM_SSD;
+import static org.jclouds.azurecompute.arm.domain.StorageAccountType.PREMIUM_LRS;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
@@ -88,7 +88,7 @@ public class DiskApiMockTest extends BaseAzureComputeApiMockTest {
 
       DiskProperties properties = DiskProperties.builder().diskSizeGB(2).creationData(CreationData.create(CreationData.CreateOptions.EMPTY)).build();
 
-      DiskSku sku = DiskSku.builder().name(PREMIUM_SSD).build();
+      DiskSku sku = DiskSku.builder().name(PREMIUM_LRS).build();
 
       Disk dataDisk = diskApi.createOrUpdate(diskName, "westus", ImmutableMap.of("exampleTag", "jclouds-test-tag"), properties, sku);
 
