@@ -140,8 +140,7 @@ public class AzureTemplateOptions extends TemplateOptions implements Cloneable {
       return this;
    }
 
-   public AzureTemplateOptions osDiskStorageType(StorageAccountType osDiskStorageType)
-   {
+   public AzureTemplateOptions osDiskStorageType(StorageAccountType osDiskStorageType) {
       this.osDiskStorageType = osDiskStorageType;
       return this;
    }
@@ -178,8 +177,7 @@ public class AzureTemplateOptions extends TemplateOptions implements Cloneable {
       return customData;
    }
 
-   public StorageAccountType getOsDiskStorageType()
-   {
+   public StorageAccountType getOsDiskStorageType() {
       return osDiskStorageType;
    }
 
