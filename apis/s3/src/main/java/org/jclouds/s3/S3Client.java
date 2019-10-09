@@ -295,7 +295,8 @@ public interface S3Client extends Closeable {
    @Endpoint(Bucket.class)
    @Fallback(FalseIfBucketAlreadyOwnedByYouOrOperationAbortedWhenBucketExists.class)
    boolean putBucketInRegion(@BinderParam(BindRegionToXmlPayload.class) @Nullable String region,
-         @Bucket @BinderParam(BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class)
+         @Bucket @EndpointParam(parser = AssignCorrectHostnameForBucket.class) 
+   		 @BinderParam(BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class)
          String bucketName, PutBucketOptions... options);
 
    /**
