@@ -22,10 +22,11 @@ jdk:
   - openjdk8
 
 sudo: false
+install: skip
 
 cache:
   directories:
     - $HOME/.m2
 
-script: mvn clean verify checkstyle:checkstyle -B -q -Dmaven.javadoc.skip=true
+script: mvn clean verify checkstyle:checkstyle -B -q -Dmaven.javadoc.skip=true -Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR 
 
