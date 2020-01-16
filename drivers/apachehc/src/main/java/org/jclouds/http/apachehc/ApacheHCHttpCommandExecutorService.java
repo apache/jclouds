@@ -103,11 +103,13 @@ public class ApacheHCHttpCommandExecutorService extends BaseHttpCommandExecutorS
       Multimap<String, String> headers = LinkedHashMultimap.create();
       for (Header header : apacheResponse.getAllHeaders()) {
          headers.put(header.getName(), header.getValue());
+      } else {
+         // still create a payload object on no entity responses (ex: to HEAD requests) as this is apparently where JClouds is
+         // exclusively looking for the content metadata (in order to fill in the BlobMetadata with correct size) 
+         payload = Payloads.newStringPayload("");
       }
-      if (payload != null) {
-         contentMetadataCodec.fromHeaders(payload.getContentMetadata(), headers);
-         headers = filterOutContentHeaders(headers);
-      }
+      contentMetadataCodec.fromHeaders(payload.getContentMetadata(), headers);
+      headers = filterOutContentHeaders(headers);
       return HttpResponse.builder().statusCode(apacheResponse.getStatusLine().getStatusCode())
                                    .message(apacheResponse.getStatusLine().getReasonPhrase())
                                    .payload(payload)
