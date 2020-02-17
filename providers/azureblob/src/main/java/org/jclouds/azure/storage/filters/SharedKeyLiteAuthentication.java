@@ -23,6 +23,7 @@ import static org.jclouds.util.Patterns.NEWLINE_PATTERN;
 import static org.jclouds.util.Strings2.toInputStream;
 import org.jclouds.http.Uris.UriBuilder;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -120,8 +121,10 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
       String[] parametersArray = cutUri(requestUri); 
       String containerName = parametersArray[1]; 
       UriBuilder endpoint = Uris.uriBuilder(storageUrl).appendPath(containerName);
-      if (parametersArray.length == 3) {
-         endpoint.appendPath(parametersArray[2]).query(finalQuery);
+      if (parametersArray.length >= 3) {
+         String[] blobNameParts = Arrays.copyOfRange(parametersArray, 2, parametersArray.length);
+         String blobName = Joiner.on("/").join(blobNameParts);
+         endpoint.appendPath(blobName).query(finalQuery);
       } else {
          endpoint.query("restype=container&" + finalQuery);
       }
