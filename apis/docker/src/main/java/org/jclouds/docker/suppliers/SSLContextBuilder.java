@@ -104,6 +104,7 @@ public class SSLContextBuilder {
     }
 
     public SSLContext build() throws NoSuchAlgorithmException, KeyManagementException {
+        /** TLS is not secure */
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(keyManagers, trustManagers, new SecureRandom());
         return sslContext;
