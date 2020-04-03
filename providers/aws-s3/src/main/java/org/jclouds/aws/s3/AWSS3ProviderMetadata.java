@@ -80,6 +80,7 @@ public class AWSS3ProviderMetadata extends BaseProviderMetadata {
       properties.setProperty(PROPERTY_REGION + "." + US_WEST_1 + "." + ENDPOINT, "https://s3-us-west-1.amazonaws.com");
       properties.setProperty(PROPERTY_REGION + "." + US_WEST_2 + "." + ENDPOINT, "https://s3-us-west-2.amazonaws.com");
       properties.setProperty(PROPERTY_REGION + "." + CA_CENTRAL_1 + "." + ENDPOINT, "https://s3-ca-central-1.amazonaws.com");
+      properties.setProperty(PROPERTY_REGION + "." + ME_SOUTH_1 + "." + ENDPOINT, "https://s3.me-south-1.amazonaws.com");
       properties.setProperty(PROPERTY_REGION + "." + SA_EAST_1 + "." + ENDPOINT, "https://s3-sa-east-1.amazonaws.com");
       properties.setProperty(PROPERTY_REGION + "." + EU_CENTRAL_1 + "." + ENDPOINT,
             "https://s3-eu-central-1.amazonaws.com");
@@ -115,7 +116,7 @@ public class AWSS3ProviderMetadata extends BaseProviderMetadata {
          .linkedServices("aws-ec2", "aws-elb", "aws-cloudwatch", "aws-s3", "aws-simpledb")
                .iso3166Codes("US", "US-OH", "US-CA", "US-OR", "CA", "BR-SP", "IE", "GB-LND", "FR-IDF", "DE-HE", "SE"
                            + "-AB", "SG",
-                     "AU-NSW", "IN-MH", "JP-13", "KR-11", "CN-BJ", "CN-NX")
+                     "AU-NSW", "IN-MH", "JP-13", "KR-11", "CN-BJ", "CN-NX", "BH")
          .defaultProperties(AWSS3ProviderMetadata.defaultProperties());
       }
 

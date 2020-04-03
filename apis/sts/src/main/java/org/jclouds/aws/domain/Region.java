@@ -159,16 +159,22 @@ public class Region {
     * Region in Ningxia, launched  Dec 12, 2017. This region improves latency for China users
     */
    public static final String CN_NORTHWEST_1 = "cn-northwest-1";
+   
+   /**
+    * ME (Bahrain)
+    */
+   public static final String ME_SOUTH_1 = "me-south-1";
+   
 
    public static final Set<String> DEFAULT_S3 = ImmutableSet.of(US_STANDARD, US_EAST_2, US_WEST_1, US_WEST_2,
          CA_CENTRAL_1, EU_WEST_1, EU_WEST_2, EU_WEST_3, EU_CENTRAL_1, EU_NORTH_1, SA_EAST_1, AP_SOUTHEAST_1,
          AP_SOUTHEAST_2,
-         AP_SOUTH_1, AP_NORTHEAST_1, AP_NORTHEAST_2, CN_NORTH_1, CN_NORTHWEST_1);
+         AP_SOUTH_1, AP_NORTHEAST_1, AP_NORTHEAST_2, CN_NORTH_1, CN_NORTHWEST_1, ME_SOUTH_1);
 
    public static final Set<String> DEFAULT_REGIONS = ImmutableSet.of(US_EAST_1, US_EAST_2, US_WEST_1, US_WEST_2,
          CA_CENTRAL_1, SA_EAST_1, EU_WEST_1, EU_WEST_2, EU_WEST_3, EU_CENTRAL_1, EU_NORTH_1, AP_SOUTHEAST_1,
          AP_SOUTHEAST_2,
-         AP_SOUTH_1, AP_NORTHEAST_1, AP_NORTHEAST_2, CN_NORTH_1, CN_NORTHWEST_1);
+         AP_SOUTH_1, AP_NORTHEAST_1, AP_NORTHEAST_2, CN_NORTH_1, CN_NORTHWEST_1, ME_SOUTH_1);
 
    public static Properties regionPropertiesS3() {
 
@@ -177,7 +183,7 @@ public class Region {
       // note that due to US_STANDARD the codes include US instead of US-VA
       properties.setProperty(PROPERTY_ISO3166_CODES, "US,US-OH,US-CA,US-OR,CA,BR-SP,IE,GB-LND,FR-IDF,DE-HE,SE-AB,SG,"
             + "AU-NSW,"
-            + "IN-MH,JP-13,KR-11,CN-BJ,CN-NX");
+            + "IN-MH,JP-13,KR-11,CN-BJ,CN-NX,BH");
       properties.setProperty(PROPERTY_REGION + "." + US_STANDARD + "." + ISO3166_CODES, "US");
       return properties;
    }
@@ -205,6 +211,7 @@ public class Region {
       properties.setProperty(PROPERTY_REGION + "." + AP_NORTHEAST_2 + "." + ISO3166_CODES, "KR-11");
       properties.setProperty(PROPERTY_REGION + "." + CN_NORTH_1 + "." + ISO3166_CODES, "CN-BJ");
       properties.setProperty(PROPERTY_REGION + "." + CN_NORTHWEST_1 + "." + ISO3166_CODES, "CN-NX");
+      properties.setProperty(PROPERTY_REGION + "." + ME_SOUTH_1 + "." + ISO3166_CODES, "BH");
       return properties;
    }
 }
