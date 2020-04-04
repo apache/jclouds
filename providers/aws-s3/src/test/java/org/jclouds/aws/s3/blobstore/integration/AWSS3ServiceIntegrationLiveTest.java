@@ -34,6 +34,7 @@ public class AWSS3ServiceIntegrationLiveTest extends S3ServiceIntegrationLiveTes
    protected Set<String> getIso3166Codes() {
       return ImmutableSet.<String> of(
             "AU-NSW",
+            "BH",
             "BR-SP",
             "CA",
             "CN-BJ",
