@@ -32,7 +32,7 @@
   <packaging>bundle</packaging>
 
   <properties>
-    <test.softlayer.endpoint>https://api.softlayer.com/rest</test.softlayer.endpoint>
+    <test.softlayer.endpoint>https://sldn.softlayer.com/rest</test.softlayer.endpoint>
     <test.softlayer.api-version>3</test.softlayer.api-version>
     <test.softlayer.build-version />
     <test.softlayer.identity>FIXME_IDENTITY</test.softlayer.identity>
