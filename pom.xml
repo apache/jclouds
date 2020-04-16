@@ -83,6 +83,9 @@
         <plugins>
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <additionalparam>${javadoc.opts}</additionalparam>
+            </configuration>
             <executions>
               <execution>
                 <id>javadoc</id>
