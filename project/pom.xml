@@ -886,6 +886,7 @@
                   <encoding>${project.build.sourceEncoding}</encoding>
                   <quiet>true</quiet>
                   <maxmemory>512m</maxmemory>
+                  <additionalparam>${javadoc.opts}</additionalparam>
                 </configuration>
                 <reportSets>
                   <reportSet>
@@ -987,6 +988,7 @@
             <maxmemory>512m</maxmemory>
             <encoding>${project.build.sourceEncoding}</encoding>
             <quiet>true</quiet>
+            <additionalparam>${javadoc.opts}</additionalparam>
             <links>
               <link>https://download.oracle.com/javase/6/docs/api/</link>
             </links>
@@ -1209,6 +1211,15 @@
   </reporting>
   <profiles>
     <profile>
+      <id>disable-doclint</id>
+      <activation>
+        <jdk>[1.8,)</jdk>
+      </activation>
+      <properties>
+        <javadoc.opts>-Xdoclint:none</javadoc.opts>
+      </properties>
+    </profile>
+    <profile>
       <id>live</id>
       <build>
         <plugins>
@@ -1421,6 +1432,9 @@
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.9</version>
+            <configuration>
+              <additionalparam>${javadoc.opts}</additionalparam>
+            </configuration>
             <executions>
               <execution>
                 <id>javadoc</id>
