@@ -29,7 +29,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpResponse;
@@ -90,14 +90,15 @@ public class TrackingJavaUrlHttpCommandExecutorService extends JavaUrlHttpComman
    public TrackingJavaUrlHttpCommandExecutorService(HttpUtils utils, ContentMetadataCodec contentMetadataCodec,
             DelegatingRetryHandler retryHandler, IOExceptionRetryHandler ioRetryHandler,
             DelegatingErrorHandler errorHandler, HttpWire wire, @Named("untrusted") HostnameVerifier verifier,
-            @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider, Function<URI, Proxy> proxyForURI,
+            @Named("untrusted") Supplier<SSLSocketFactory> untrustedSSLSocketFactoryProvider,
+            Function<URI, Proxy> proxyForURI,
             List<HttpCommand> commandsInvoked,
             @Named(PROPERTY_IDEMPOTENT_METHODS) String idempotentMethods,
             @Named(PROPERTY_OUTPUT_SOCKET_BUFFER_SIZE) int outputSocketBufferSize,
             @Named(PROPERTY_USER_AGENT) String userAgent)
             throws SecurityException, NoSuchFieldException {
       super(utils, contentMetadataCodec, retryHandler, ioRetryHandler, errorHandler, wire, verifier,
-            untrustedSSLContextProvider, proxyForURI, idempotentMethods, outputSocketBufferSize, userAgent);
+            untrustedSSLSocketFactoryProvider, proxyForURI, idempotentMethods, outputSocketBufferSize, userAgent);
       this.commandsInvoked = commandsInvoked;
    }
 

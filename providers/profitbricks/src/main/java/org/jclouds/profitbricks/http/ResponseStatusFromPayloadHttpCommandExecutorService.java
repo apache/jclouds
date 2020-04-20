@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.http.HttpUtils;
@@ -69,13 +69,14 @@ public class ResponseStatusFromPayloadHttpCommandExecutorService extends JavaUrl
    ResponseStatusFromPayloadHttpCommandExecutorService(HttpUtils utils, ContentMetadataCodec contentMetadataCodec,
            DelegatingRetryHandler retryHandler, IOExceptionRetryHandler ioRetryHandler,
            DelegatingErrorHandler errorHandler, HttpWire wire, @Named("untrusted") HostnameVerifier verifier,
-           @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider, Function<URI, Proxy> proxyForURI,
+           @Named("untrusted") Supplier<SSLSocketFactory> untrustedSSLSocketFactoryProvider,
+           Function<URI, Proxy> proxyForURI,
            ParseSax<ServiceFault> faultHandler,
            @Named(PROPERTY_IDEMPOTENT_METHODS) String idempotentMethods,
            @Named(PROPERTY_OUTPUT_SOCKET_BUFFER_SIZE) int outputSocketBufferSize,
            @Named(PROPERTY_USER_AGENT) String userAgent) {
-      super(utils, contentMetadataCodec, retryHandler, ioRetryHandler, errorHandler, wire, verifier, untrustedSSLContextProvider, proxyForURI,
-            idempotentMethods, outputSocketBufferSize, userAgent);
+      super(utils, contentMetadataCodec, retryHandler, ioRetryHandler, errorHandler, wire, verifier,
+            untrustedSSLSocketFactoryProvider, proxyForURI, idempotentMethods, outputSocketBufferSize, userAgent);
       this.faultHandler = faultHandler;
    }
 

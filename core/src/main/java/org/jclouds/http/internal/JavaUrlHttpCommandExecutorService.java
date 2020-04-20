@@ -44,6 +44,7 @@ import javax.inject.Singleton;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;
@@ -65,7 +66,7 @@ import com.google.inject.Inject;
 
 @Singleton
 public class JavaUrlHttpCommandExecutorService extends BaseHttpCommandExecutorService<HttpURLConnection> {
-   protected final Supplier<SSLContext> untrustedSSLContextProvider;
+   protected final Supplier<SSLSocketFactory> untrustedSSLSocketFactoryProvider;
    protected final Function<URI, Proxy> proxyForURI;
    protected final HostnameVerifier verifier;
    @Inject(optional = true)
@@ -77,7 +78,8 @@ public class JavaUrlHttpCommandExecutorService extends BaseHttpCommandExecutorSe
    public JavaUrlHttpCommandExecutorService(HttpUtils utils, ContentMetadataCodec contentMetadataCodec,
          DelegatingRetryHandler retryHandler, IOExceptionRetryHandler ioRetryHandler,
          DelegatingErrorHandler errorHandler, HttpWire wire, @Named("untrusted") HostnameVerifier verifier,
-         @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider, Function<URI, Proxy> proxyForURI,
+         @Named("untrusted") Supplier<SSLSocketFactory> untrustedSSLSocketFactoryProvider,
+         Function<URI, Proxy> proxyForURI,
          @Named(PROPERTY_IDEMPOTENT_METHODS) String idempotentMethods,
          @Named(PROPERTY_OUTPUT_SOCKET_BUFFER_SIZE) int outputSocketBufferSize,
          @Named(PROPERTY_USER_AGENT) String userAgent) {
@@ -85,7 +87,8 @@ public class JavaUrlHttpCommandExecutorService extends BaseHttpCommandExecutorSe
       if (utils.getMaxConnections() > 0) {
          System.setProperty("http.maxConnections", String.valueOf(checkNotNull(utils, "utils").getMaxConnections()));
       }
-      this.untrustedSSLContextProvider = checkNotNull(untrustedSSLContextProvider, "untrustedSSLContextProvider");
+      this.untrustedSSLSocketFactoryProvider =
+              checkNotNull(untrustedSSLSocketFactoryProvider, "untrustedSSLSocketFactoryProvider");
       this.verifier = checkNotNull(verifier, "verifier");
       this.proxyForURI = checkNotNull(proxyForURI, "proxyForURI");
       this.userAgent = userAgent;
@@ -209,7 +212,7 @@ public class JavaUrlHttpCommandExecutorService extends BaseHttpCommandExecutorSe
              // Provider provides SSLContext impl (which inits context with key manager)
              sslCon.setSSLSocketFactory(sslContextSupplier.get().getSocketFactory());
          } else if (utils.trustAllCerts()) {
-             sslCon.setSSLSocketFactory(untrustedSSLContextProvider.get().getSocketFactory());
+             sslCon.setSSLSocketFactory(untrustedSSLSocketFactoryProvider.get());
          }
       }
       return connection;

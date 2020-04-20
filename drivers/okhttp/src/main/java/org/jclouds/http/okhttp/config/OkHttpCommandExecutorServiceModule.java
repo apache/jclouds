@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.jclouds.http.HttpCommandExecutorService;
 import org.jclouds.http.HttpUtils;
@@ -53,16 +53,17 @@ public class OkHttpCommandExecutorServiceModule extends AbstractModule {
 
    private static final class OkHttpClientProvider implements Provider<OkHttpClient> {
       private final HostnameVerifier verifier;
-      private final Supplier<SSLContext> untrustedSSLContextProvider;
+      private final Supplier<SSLSocketFactory> untrustedSSLSocketFactorySupplier;
       private final HttpUtils utils;
       private final OkHttpClientSupplier clientSupplier;
 
       @Inject
       OkHttpClientProvider(HttpUtils utils, @Named("untrusted") HostnameVerifier verifier,
-            @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider, OkHttpClientSupplier clientSupplier) {
+                           @Named("untrusted") Supplier<SSLSocketFactory> untrustedSSLSocketFactorySupplier,
+                           OkHttpClientSupplier clientSupplier) {
          this.utils = utils;
          this.verifier = verifier;
-         this.untrustedSSLContextProvider = untrustedSSLContextProvider;
+         this.untrustedSSLSocketFactorySupplier = untrustedSSLSocketFactorySupplier;
          this.clientSupplier = clientSupplier;
       }
 
@@ -80,11 +81,10 @@ public class OkHttpCommandExecutorServiceModule extends AbstractModule {
             client.setHostnameVerifier(verifier);
          }
          if (utils.trustAllCerts()) {
-            client.setSslSocketFactory(untrustedSSLContextProvider.get().getSocketFactory());
+            client.setSslSocketFactory(untrustedSSLSocketFactorySupplier.get());
          }
 
          return client;
       }
    }
-
 }

@@ -16,9 +16,13 @@
  */
 package org.jclouds.http.config;
 
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-import java.util.Map;
+import com.google.common.base.Supplier;
+import com.google.common.base.Throwables;
+import com.google.common.collect.MapMaker;
+import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.name.Names;
+import org.jclouds.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -26,25 +30,20 @@ import javax.inject.Singleton;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
-import org.jclouds.logging.Logger;
-
-import com.google.common.collect.MapMaker;
-import com.google.common.base.Supplier;
-import com.google.common.base.Throwables;
-import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
-import com.google.inject.name.Names;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.Map;
 
 public class SSLModule extends AbstractModule {
 
    @Override
    protected void configure() {
       bind(HostnameVerifier.class).annotatedWith(Names.named("untrusted")).to(LogToMapHostnameVerifier.class);
-      bind(new TypeLiteral<Supplier<SSLContext>>() {
-      }).annotatedWith(Names.named("untrusted")).to(new TypeLiteral<UntrustedSSLContextSupplier>() {
+      bind(new TypeLiteral<Supplier<SSLSocketFactory>>() {
+      }).annotatedWith(Names.named("untrusted")).to(new TypeLiteral<UntrustedSSLSocketFactorySupplier>() {
       });
    }
 
@@ -73,25 +72,28 @@ public class SSLModule extends AbstractModule {
    }
 
    @Singleton
-   public static class UntrustedSSLContextSupplier implements Supplier<SSLContext> {
-      private final TrustAllCerts trustAllCerts;
+   public static class UntrustedSSLSocketFactorySupplier implements Supplier<SSLSocketFactory> {
+      private final Supplier<SSLSocketFactory> sslSocketFactorySupplier;
 
       @Inject
-      UntrustedSSLContextSupplier(TrustAllCerts trustAllCerts) {
-         this.trustAllCerts = trustAllCerts;
+      UntrustedSSLSocketFactorySupplier(TrustAllCerts trustAllCerts) {
+         this.sslSocketFactorySupplier = createSSLSocketFactorySupplier(trustAllCerts);
       }
 
-      @Override
-      public SSLContext get() {
+      private Supplier<SSLSocketFactory> createSSLSocketFactorySupplier(TrustAllCerts trustAllCerts) {
          try {
-            SSLContext sc;
-            sc = SSLContext.getInstance("SSL");
-            sc.init(null, new TrustManager[] { trustAllCerts }, new SecureRandom());
-            return sc;
+            SSLContext sslContext;
+            sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, new TrustManager[] { trustAllCerts }, new SecureRandom());
+            return new LazyCachingSSLSocketFactorySupplier(sslContext);
          } catch (Exception e) {
             throw Throwables.propagate(e);
          }
+      }
 
+      @Override
+      public SSLSocketFactory get() {
+         return sslSocketFactorySupplier.get();
       }
    }
 
