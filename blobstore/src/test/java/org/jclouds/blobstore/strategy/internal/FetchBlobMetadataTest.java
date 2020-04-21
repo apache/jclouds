@@ -16,7 +16,6 @@
  */
 package org.jclouds.blobstore.strategy.internal;
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.inject.Injector;
 import org.jclouds.ContextBuilder;
@@ -31,7 +30,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.Comparator;
-import java.util.Map;
 
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
