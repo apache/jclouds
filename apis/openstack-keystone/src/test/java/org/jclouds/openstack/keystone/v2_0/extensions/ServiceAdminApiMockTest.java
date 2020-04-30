@@ -119,7 +119,7 @@ public class ServiceAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> 
          assertExtensions(server);
          RecordedRequest createServiceRequest = server.takeRequest();
          assertEquals(createServiceRequest.getRequestLine(), "POST /OS-KSADM/services HTTP/1.1");
-         String bodyRequest = new String(createServiceRequest.getBody());
+         String bodyRequest = createServiceRequest.getBody().readUtf8();
          assertEquals(
                bodyRequest,
                "{\"OS-KSADM:service\":{\"name\":\"jclouds-service-test\",\"type\":\"jclouds-service-type\",\"description\":\"jclouds-service-description\"}}");

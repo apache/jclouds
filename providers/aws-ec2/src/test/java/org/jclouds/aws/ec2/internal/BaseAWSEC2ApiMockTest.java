@@ -48,7 +48,6 @@ import org.jclouds.rest.ConfiguresHttpApi;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.inject.Module;
@@ -122,7 +121,7 @@ public class BaseAWSEC2ApiMockTest {
    @BeforeMethod(alwaysRun = true)
    public void start() throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       regionToServers.put(DEFAULT_REGION, server);
    }
 
@@ -145,7 +144,7 @@ public class BaseAWSEC2ApiMockTest {
          describeRegionsResponse.append("<regionName>").append(region).append("</regionName>");
          if (!regionToServers.containsKey(region)) {
             MockWebServer server = new MockWebServer();
-            server.play();
+            server.start();
             regionToServers.put(region, server);
          }
          MockWebServer server = regionToServers.get(region);
@@ -196,7 +195,7 @@ public class BaseAWSEC2ApiMockTest {
       assertThat(
             request.getHeader(AUTHORIZATION)).startsWith("AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/20120416/" +
             region + "/ec2/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=");
-      String body = new String(request.getBody(), Charsets.UTF_8);
+      String body = request.getBody().readUtf8();
       assertThat(body).contains("&Version=" + apiVersion);
       assertEquals(body.replace("&Version=" + apiVersion, ""), postParams);
       return request;

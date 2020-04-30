@@ -16,7 +16,6 @@
  */
 package org.jclouds.openstack.swift.v1;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static org.jclouds.openstack.swift.v1.features.AccountApiMockTest.accountResponse;
 import static org.testng.Assert.assertEquals;
 
@@ -63,7 +62,7 @@ public class AuthenticationMockTest extends BaseOpenStackMockTest<SwiftApi> {
          assertEquals(server.getRequestCount(), 2);
          RecordedRequest authRequest = server.takeRequest();
          assertEquals(authRequest.getRequestLine(), "POST /tokens HTTP/1.1");
-         assertEquals(new String(authRequest.getBody(), UTF_8), expectedPost);
+         assertEquals(authRequest.getBody().readUtf8(), expectedPost);
       } finally {
          server.shutdown();
       }

@@ -60,7 +60,7 @@ public final class DynamicLargeObjectApiMockTest extends BaseOpenStackMockTest<S
          RecordedRequest uploadRequest = server.takeRequest();
          assertEquals(uploadRequest.getRequestLine(),
                "PUT /v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/myContainer/myObjectTest1 HTTP/1.1");
-         assertEquals(new String(uploadRequest.getBody()), "data1");
+         assertEquals(uploadRequest.getBody().readUtf8(), "data1");
 
          RecordedRequest uploadRequestManifest = server.takeRequest();
          assertRequest(uploadRequestManifest, "PUT",

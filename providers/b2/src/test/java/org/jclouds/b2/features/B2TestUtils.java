@@ -28,7 +28,6 @@ import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.b2.B2Api;
 import org.jclouds.util.Strings2;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -57,7 +56,7 @@ final class B2TestUtils {
 
    static MockWebServer createMockWebServer() throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       URL url = server.getUrl("");
       return server;
    }
@@ -104,7 +103,7 @@ final class B2TestUtils {
       JsonParser parser = new JsonParser();
       JsonElement requestJson;
       try {
-         requestJson = parser.parse(new String(request.getBody(), Charsets.UTF_8));
+         requestJson = parser.parse(request.getBody().readUtf8());
       } catch (Exception e) {
          throw Throwables.propagate(e);
       }
@@ -119,7 +118,7 @@ final class B2TestUtils {
     * @see RecordedRequest
     */
    private static void assertContentTypeIsJson(RecordedRequest request) {
-      assertThat(request.getHeaders()).contains("Content-Type: application/json");
+      assertThat(request.getHeaders().get("Content-Type")).isEqualTo("application/json");
    }
 
    /**

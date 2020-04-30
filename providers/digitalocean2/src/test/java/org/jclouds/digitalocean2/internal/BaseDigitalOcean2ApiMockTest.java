@@ -63,7 +63,7 @@ public class BaseDigitalOcean2ApiMockTest {
    @BeforeMethod
    public void start() throws IOException {
       server = new MockWebServer();
-      server.play();
+      server.start();
       ApiContext<DigitalOcean2Api> ctx = ContextBuilder.newBuilder("digitalocean2")
             .credentials("", MOCK_BEARER_TOKEN)
             .endpoint(url(""))
@@ -136,7 +136,7 @@ public class BaseDigitalOcean2ApiMockTest {
          throws InterruptedException {
       RecordedRequest request = assertSent(server, method, path);
       assertEquals(request.getHeader("Content-Type"), "application/json");
-      assertEquals(parser.parse(new String(request.getBody(), Charsets.UTF_8)), parser.parse(json));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(json));
       return request;
    }
 }

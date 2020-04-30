@@ -36,6 +36,7 @@ import com.google.common.base.Predicate;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
+import okio.Buffer;
 
 /**
  * Test class for {@link DataCenterProvisioningStatePredicate} and {@link ServerStatusPredicate}
@@ -47,8 +48,8 @@ public class StatusPredicateTest extends BaseProfitBricksMockTest {
    public void testDataCenterPredicate() throws Exception {
       MockWebServer server = mockWebServer();
 
-      byte[] payloadInProcess = payloadFromResource("/datacenter/datacenter-state-inprocess.xml");
-      byte[] payloadAvailable = payloadFromResource("/datacenter/datacenter-state.xml");
+      Buffer payloadInProcess = payloadFromResource("/datacenter/datacenter-state-inprocess.xml");
+      Buffer payloadAvailable = payloadFromResource("/datacenter/datacenter-state.xml");
 
       // wait 3 times
       server.enqueue(new MockResponse().setBody(payloadInProcess));
@@ -80,8 +81,8 @@ public class StatusPredicateTest extends BaseProfitBricksMockTest {
    public void testServerPredicate() throws Exception {
       MockWebServer server = mockWebServer();
 
-      byte[] payloadInProcess = payloadFromResource("/server/server-state-inprocess.xml");
-      byte[] payloadAvailable = payloadFromResource("/server/server.xml");
+      Buffer payloadInProcess = payloadFromResource("/server/server-state-inprocess.xml");
+      Buffer payloadAvailable = payloadFromResource("/server/server.xml");
 
       // wait 3 times
       server.enqueue(new MockResponse().setBody(payloadInProcess));
@@ -113,8 +114,8 @@ public class StatusPredicateTest extends BaseProfitBricksMockTest {
    public void testSnapshotPredicate() throws Exception {
       MockWebServer server = mockWebServer();
 
-      byte[] payloadInProcess = payloadFromResource("/snapshot/snapshot-state-inprocess.xml");
-      byte[] payloadAvailable = payloadFromResource("/snapshot/snapshot.xml");
+      Buffer payloadInProcess = payloadFromResource("/snapshot/snapshot-state-inprocess.xml");
+      Buffer payloadAvailable = payloadFromResource("/snapshot/snapshot.xml");
 
       // wait 3 times
       server.enqueue(new MockResponse().setBody(payloadInProcess));

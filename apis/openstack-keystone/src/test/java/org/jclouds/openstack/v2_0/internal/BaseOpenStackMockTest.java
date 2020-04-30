@@ -19,6 +19,7 @@ package org.jclouds.openstack.v2_0.internal;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.Closeable;
@@ -34,7 +35,6 @@ import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.util.Strings2;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.HttpHeaders;
@@ -85,7 +85,7 @@ public class BaseOpenStackMockTest<A extends Closeable> {
 
    public static MockWebServer mockOpenStackServer() throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       URL url = server.getUrl("");
       server.setDispatcher(getURLReplacingQueueDispatcher(url));
       return server;
@@ -187,7 +187,7 @@ public class BaseOpenStackMockTest<A extends Closeable> {
     * @see RecordedRequest
     */
    private void assertContentTypeIsJSON(RecordedRequest request) {
-      assertTrue(request.getHeaders().contains("Content-Type: application/json"));
+      assertNotNull(request.getHeaders().get("Content-Type: application/json"));
    }
 
    /**
@@ -224,7 +224,7 @@ public class BaseOpenStackMockTest<A extends Closeable> {
       JsonElement requestJson = null;  // to be compared
       JsonElement resourceJson;        // to be compared
       try {
-         requestJson = parser.parse(new String(request.getBody(), Charsets.UTF_8));
+         requestJson = parser.parse(request.getBody().readUtf8());
       } catch (Exception e) {
          Throwables.propagate(e);
       }

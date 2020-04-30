@@ -63,7 +63,7 @@ public class S3ClientMockTest {
    public void testZeroLengthPutHasContentLengthHeader() throws IOException, InterruptedException {
       MockWebServer server = new MockWebServer();
       server.enqueue(new MockResponse().addHeader(ETAG, "ABCDEF"));
-      server.play();
+      server.start();
 
       S3Client client = getS3Client(server.getUrl("/"));
       S3Object nada = client.newS3Object();
@@ -74,15 +74,15 @@ public class S3ClientMockTest {
 
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(), "PUT /bucket/object HTTP/1.1");
-      assertEquals(request.getHeaders(CONTENT_LENGTH), ImmutableList.of("0"));
-      assertThat(request.getHeaders(EXPECT)).isEmpty();
+      assertEquals(request.getHeaders().get(CONTENT_LENGTH), ImmutableList.of("0"));
+      assertThat(request.getHeaders().get(EXPECT)).isNull();
       server.shutdown();
    }
 
    public void testDirectorySeparator() throws IOException, InterruptedException {
       MockWebServer server = new MockWebServer();
       server.enqueue(new MockResponse().setBody("").addHeader(ETAG, "ABCDEF"));
-      server.play();
+      server.start();
 
       S3Client client = getS3Client(server.getUrl("/"));
       S3Object fileInDir = client.newS3Object();
@@ -93,7 +93,7 @@ public class S3ClientMockTest {
 
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(), "PUT /bucket/someDir/fileName HTTP/1.1");
-      assertEquals(request.getHeaders(EXPECT), ImmutableList.of("100-continue"));
+      assertEquals(request.getHeaders().get(EXPECT), ImmutableList.of("100-continue"));
 
       server.shutdown();
    }
@@ -104,11 +104,11 @@ public class S3ClientMockTest {
               "   <LastModified>2009-10-28T22:32:00</LastModified>\n" +
               "   <ETag>\"9b2cf535f27731c974343645a3985328\"</ETag>\n" +
               " </CopyObjectResult>"));
-      server.play();
+      server.start();
       S3Client client = getS3Client(server.getUrl("/"));
       client.copyObject("sourceBucket", "apples#?:$&'\"<>čॐ", "destinationBucket", "destinationObject", CopyObjectOptions.NONE);
       RecordedRequest request = server.takeRequest();
-      assertEquals(request.getHeaders("x-amz-copy-source"), ImmutableList.of("/sourceBucket/apples%23%3F%3A%24%26%27%22%3C%3E%C4%8D%E0%A5%90"));
+      assertEquals(request.getHeaders().get("x-amz-copy-source"), ImmutableList.of("/sourceBucket/apples%23%3F%3A%24%26%27%22%3C%3E%C4%8D%E0%A5%90"));
       server.shutdown();
    }
 }

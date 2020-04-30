@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.security.KeyPairGenerator;
+import java.security.SecureRandom;
 import java.util.Properties;
 
 import javax.net.ssl.SSLContext;
@@ -34,6 +36,7 @@ import org.testng.annotations.BeforeClass;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
+import com.squareup.okhttp.internal.HeldCertificate;
 import com.squareup.okhttp.internal.SslContextBuilder;
 import com.squareup.okhttp.mockwebserver.Dispatcher;
 import com.squareup.okhttp.mockwebserver.MockResponse;
@@ -50,7 +53,21 @@ public abstract class BaseMockWebServerTest {
    @BeforeClass(groups = "integration")
    protected void setupSSL() {
       try {
-         sslContext = new SslContextBuilder(InetAddress.getLocalHost().getHostName()).build();
+         // Must use 2048-bit certificates with newer Java versions
+         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+         keyPairGenerator.initialize(2048, new SecureRandom());
+
+         // Generate a self-signed cert for the server to serve and the client to trust.
+         HeldCertificate heldCertificate = new HeldCertificate.Builder()
+            .serialNumber("1")
+            .commonName(InetAddress.getByName("localhost").getHostName())
+            .keyPair(keyPairGenerator.generateKeyPair())
+            .build();
+
+         sslContext = new SslContextBuilder()
+            .certificateChain(heldCertificate)
+            .addTrustedCertificate(heldCertificate.certificate)
+            .build();
       } catch (GeneralSecurityException ex) {
          throw new RuntimeException(ex);
       } catch (UnknownHostException ex) {
@@ -64,7 +81,7 @@ public abstract class BaseMockWebServerTest {
     */
    protected static MockWebServer mockWebServer(MockResponse... responses) throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       for (MockResponse response : responses) {
          server.enqueue(response);
       }
@@ -76,7 +93,7 @@ public abstract class BaseMockWebServerTest {
     */
    protected static MockWebServer mockWebServer(Dispatcher dispatcher) throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       server.setDispatcher(dispatcher);
       return server;
    }

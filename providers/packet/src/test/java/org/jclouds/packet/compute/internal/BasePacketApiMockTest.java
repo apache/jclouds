@@ -65,7 +65,7 @@ public class BasePacketApiMockTest {
    @BeforeMethod
    public void start() throws IOException {
       server = new MockWebServer();
-      server.play();
+      server.start();
       ctx = ContextBuilder.newBuilder("packet")
             .credentials("", X_AUTHORIZATION_TOKEN)
             .endpoint(url(""))
@@ -140,7 +140,7 @@ public class BasePacketApiMockTest {
          throws InterruptedException {
       RecordedRequest request = assertSent(server, method, path);
       assertEquals(request.getHeader("Content-Type"), "application/json");
-      assertEquals(parser.parse(new String(request.getBody(), Charsets.UTF_8)), parser.parse(json));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(json));
       return request;
    }
 }

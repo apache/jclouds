@@ -100,10 +100,10 @@ public class TempAuthMockTest {
    @BeforeMethod
    public void start() throws IOException {
       tempAuthServer = new MockWebServer();
-      tempAuthServer.play();
+      tempAuthServer.start();
 
       swiftServer = new MockWebServer();
-      swiftServer.play();
+      swiftServer.start();
    }
 
    @AfterMethod(alwaysRun = true)

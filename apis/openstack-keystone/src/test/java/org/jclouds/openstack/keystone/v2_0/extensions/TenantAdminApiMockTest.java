@@ -58,7 +58,7 @@ public class TenantAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
          assertExtensions(server);
          RecordedRequest createTenantRequest = server.takeRequest();
          assertEquals(createTenantRequest.getRequestLine(), "POST /tenants HTTP/1.1");
-         assertEquals(new String(createTenantRequest.getBody()),
+         assertEquals(createTenantRequest.getBody().readUtf8(),
                "{\"tenant\":{\"name\":\"jclouds-tenant\",\"description\":\"jclouds-description\",\"enabled\":true}}");
       } finally {
          server.shutdown();
@@ -88,7 +88,7 @@ public class TenantAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
          RecordedRequest updateTenantRequest = server.takeRequest();
          assertEquals(updateTenantRequest.getRequestLine(), "PUT /tenants/t1000 HTTP/1.1");
          assertEquals(
-               new String(updateTenantRequest.getBody()),
+               updateTenantRequest.getBody().readUtf8(),
                "{\"tenant\":{\"name\":\"jclouds-tenant-modified\",\"description\":\"jclouds-description-modified\",\"enabled\":false}}");
       } finally {
          server.shutdown();

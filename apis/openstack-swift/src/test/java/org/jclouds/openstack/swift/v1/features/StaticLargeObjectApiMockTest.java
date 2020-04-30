@@ -67,7 +67,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
          assertRequest(replaceRequest, "PUT", "/v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/myContainer/myObject?multipart-manifest=put");
          assertEquals(replaceRequest.getHeader(OBJECT_METADATA_PREFIX + "myfoo"), "Bar");
          assertEquals(
-               new String(replaceRequest.getBody()),
+               replaceRequest.getBody().readUtf8(),
          "[{\"path\":\"/mycontainer/objseg1\",\"etag\":\"0228c7926b8b642dfb29554cd1f00963\",\"size_bytes\":1468006}," +
           "{\"path\":\"/mycontainer/pseudodir/seg-obj2\",\"etag\":\"5bfc9ea51a00b790717eeb934fb77b9b\",\"size_bytes\":1572864}," +
           "{\"path\":\"/other-container/seg-final\",\"etag\":\"b9c3da507d2557c1ddc51f27c54bae51\",\"size_bytes\":256}]");
@@ -115,7 +115,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
          assertEquals(replaceRequest.getHeader("content-length"), Long.toString(byteLength));
 
          assertEquals(
-             new String(replaceRequest.getBody()),
+             replaceRequest.getBody().readUtf8(),
              expectedManifest);
       } finally {
          server.shutdown();
@@ -158,7 +158,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
          assertEquals(replaceRequest.getHeader("some-header1"), "some-header-value");
 
          assertEquals(
-               new String(replaceRequest.getBody()),
+               replaceRequest.getBody().readUtf8(),
                "[{\"path\":\"/mycontainer/objseg1\",\"etag\":\"0228c7926b8b642dfb29554cd1f00963\",\"size_bytes\":1468006}," +
                      "{\"path\":\"/mycontainer/pseudodir/seg-obj2\",\"etag\":\"5bfc9ea51a00b790717eeb934fb77b9b\",\"size_bytes\":1572864}," +
                      "{\"path\":\"/other-container/seg-final\",\"etag\":\"b9c3da507d2557c1ddc51f27c54bae51\",\"size_bytes\":256}]");

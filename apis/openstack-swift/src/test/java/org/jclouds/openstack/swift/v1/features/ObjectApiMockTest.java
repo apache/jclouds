@@ -16,10 +16,8 @@
  */
 package org.jclouds.openstack.swift.v1.features;
 
-import static com.google.common.base.Charsets.US_ASCII;
 import static com.google.common.io.BaseEncoding.base16;
 import static com.google.common.net.HttpHeaders.EXPIRES;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 import static org.jclouds.Constants.PROPERTY_RETRY_DELAY_START;
 import static org.jclouds.Constants.PROPERTY_SO_TIMEOUT;
@@ -34,13 +32,13 @@ import static org.jclouds.openstack.swift.v1.reference.SwiftHeaders.OBJECT_METAD
 import static org.jclouds.openstack.swift.v1.reference.SwiftHeaders.OBJECT_REMOVE_METADATA_PREFIX;
 import static org.jclouds.util.Strings2.toStringAndClose;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -62,6 +60,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.ByteSource;
+import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
@@ -184,7 +183,7 @@ public class ObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
          RecordedRequest replace = server.takeRequest();
          assertRequest(replace, "PUT", "/v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/myContainer/myObject");
 
-         assertEquals(new String(replace.getBody()), "swifty");
+         assertEquals(replace.getBody().readUtf8(), "swifty");
          for (Entry<String, String> entry : metadata.entrySet()) {
             assertEquals(replace.getHeader(OBJECT_METADATA_PREFIX + entry.getKey().toLowerCase()), entry.getValue());
          }
@@ -213,7 +212,7 @@ public class ObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
          RecordedRequest replace = server.takeRequest();
          assertRequest(replace, "PUT", "/v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/container%20%23%20%21%20special/object%20%23%20%21%20special");
 
-         assertEquals(new String(replace.getBody()), "swifty");
+         assertEquals(replace.getBody().readUtf8(), "swifty");
       } finally {
          server.shutdown();
       }
@@ -246,7 +245,7 @@ public class ObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
          // This should take a while.
          assertRequest(replace, "PUT", "/v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/myContainer/myObject");
 
-         assertEquals(new String(replace.getBody()), "swifty");
+         assertEquals(replace.getBody().readUtf8(), "swifty");
          for (Entry<String, String> entry : metadata.entrySet()) {
             assertEquals(replace.getHeader(OBJECT_METADATA_PREFIX + entry.getKey().toLowerCase()), entry.getValue());
          }
@@ -464,8 +463,8 @@ public class ObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
          assertEquals(server.getRequestCount(), 2);
          assertEquals(server.takeRequest().getRequestLine(), "POST /tokens HTTP/1.1");
          RecordedRequest replaceRequest = server.takeRequest();
-         assertEquals(replaceRequest.getHeaders("Content-Type").get(0), "", "updateMetadata should send an empty content-type header, but sent "
-               + replaceRequest.getHeaders("Content-Type").get(0).toString());
+         assertEquals(replaceRequest.getHeaders().get("Content-Type"), "", "updateMetadata should send an empty content-type header, but sent "
+               + replaceRequest.getHeaders().get("Content-Type"));
 
          assertEquals(replaceRequest.getRequestLine(),
                "POST /v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/myContainer/myObject HTTP/1.1");
@@ -573,9 +572,9 @@ public class ObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
          assertEquals(copyRequest.getRequestLine(),
                "PUT /v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/foo/bar.txt HTTP/1.1");
 
-         List<String> requestHeaders = copyRequest.getHeaders();
-         assertThat(requestHeaders).contains("If-Match: fakeetag");
-         assertThat(requestHeaders).contains(SwiftHeaders.OBJECT_COPY_FROM + ": /bar/foo.txt");
+         Headers requestHeaders = copyRequest.getHeaders();
+         assertNotNull(requestHeaders.get("If-Match: fakeetag"));
+         assertNotNull(requestHeaders.get(SwiftHeaders.OBJECT_COPY_FROM + ": /bar/foo.txt"));
       } finally {
          server.shutdown();
       }
@@ -616,10 +615,10 @@ public class ObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
          assertEquals(copyRequest.getRequestLine(),
                "PUT /v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/foo/bar.txt HTTP/1.1");
 
-         List<String> requestHeaders = copyRequest.getHeaders();
-         assertTrue(requestHeaders.contains("X-Object-Meta-someuserheader: someUserMetadataValue"));
-         assertTrue(requestHeaders.contains("Content-Disposition: attachment; filename=\"fname.ext\""));
-         assertTrue(requestHeaders.contains(SwiftHeaders.OBJECT_COPY_FROM + ": /bar/foo.txt"));
+         Headers requestHeaders = copyRequest.getHeaders();
+         assertNotNull(requestHeaders.get("X-Object-Meta-someuserheader: someUserMetadataValue"));
+         assertNotNull(requestHeaders.get("Content-Disposition: attachment; filename=\"fname.ext\""));
+         assertNotNull(requestHeaders.get(SwiftHeaders.OBJECT_COPY_FROM + ": /bar/foo.txt"));
       } finally {
          server.shutdown();
       }
@@ -650,7 +649,7 @@ public class ObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
             .addHeader("ETag", "8a964ee2a5e88be344f36c22562a6486")
             // TODO: MWS doesn't allow you to return content length w/o content
             // on HEAD!
-            .setBody("ABCD".getBytes(US_ASCII))
+            .setBody("ABCD")
             .addHeader("Content-Length", "4")
             .addHeader("Content-Type", "text/plain; charset=UTF-8")
             .addHeader(EXPIRES, "Wed, 23 Jul 2014 14:00:00 GMT");

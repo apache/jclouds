@@ -90,7 +90,7 @@ public class RoleAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
          assertExtensions(server);
          RecordedRequest createRoleRequest = server.takeRequest();
          assertEquals(createRoleRequest.getRequestLine(), "POST /OS-KSADM/roles HTTP/1.1");
-         assertEquals(new String(createRoleRequest.getBody()), "{\"role\":{\"name\":\"jclouds-role\"}}");
+         assertEquals(createRoleRequest.getBody().readUtf8(), "{\"role\":{\"name\":\"jclouds-role\"}}");
       } finally {
          server.shutdown();
       }

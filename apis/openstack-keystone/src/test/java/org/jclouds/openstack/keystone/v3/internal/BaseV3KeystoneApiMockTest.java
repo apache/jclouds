@@ -68,7 +68,7 @@ public class BaseV3KeystoneApiMockTest {
    @BeforeMethod
    public void start() throws IOException {
       server = new MockWebServer();
-      server.play();
+      server.start();
       
       ApiContext<KeystoneApi> ctx = ContextBuilder.newBuilder("openstack-keystone-3")
               .credentials("domain:identity", "credential")
@@ -178,7 +178,7 @@ public class BaseV3KeystoneApiMockTest {
    
    private void assertBody(RecordedRequest request, String body) {
       assertEquals(request.getHeader("Content-Type"), "application/json");
-      assertEquals(parser.parse(new String(request.getBody(), Charsets.UTF_8)), parser.parse(body));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(body));
    }
 
    protected Token tokenFromResource(String resource) {

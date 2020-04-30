@@ -40,7 +40,6 @@ import org.jclouds.rest.annotations.PATCH;
 import org.jclouds.rest.binders.BindToStringPayload;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
@@ -89,7 +88,7 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          assertEquals(result, "fooPATCH");
          // Verify content headers are sent
          assertNotNull(request.getHeader("Content-Type"));
@@ -114,10 +113,10 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
          // Verify that the body was properly sent in the two requests
          RecordedRequest request = server.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = server.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(api);
          server.shutdown();
@@ -139,10 +138,10 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
          // Verify that the body was populated after the redirect
          RecordedRequest request = server.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = redirectTarget.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(api);
          redirectTarget.shutdown();
@@ -150,43 +149,41 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
       }
    }
 
-   @Test
-   public void testZeroLengthPatch() throws Exception {
-      MockWebServer server = mockWebServer(new MockResponse());
-      PatchApi api = api(PatchApi.class, server.getUrl("/").toString());
-      try {
-         api.patchNothing("");
-         assertEquals(server.getRequestCount(), 1);
-         RecordedRequest request = server.takeRequest();
-         assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "");
-      } finally {
-         closeQuietly(api);
-         server.shutdown();
-      }
+   @Override
+   @Test(expectedExceptions = IllegalArgumentException.class)
+   public void testZeroLengthPost() throws Exception {
+      // okhttp requires bodies for POST
+      super.testZeroLengthPost();
    }
 
-   @Test(expectedExceptions = HttpResponseException.class, expectedExceptionsMessageRegExp = ".*exhausted connection specs.*")
+   @Override
+   @Test(expectedExceptions = IllegalArgumentException.class)
+   public void testZeroLengthPut() throws Exception {
+      // okhttp requires bodies for PUT
+      super.testZeroLengthPut();
+   }
+
+   @Test(expectedExceptions = HttpResponseException.class)
    public void testSSLConnectionFailsIfOnlyHttpConfigured() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
       server.useHttps(sslContext.getSocketFactory(), false);
       Module httpConfigModule = new ConnectionSpecModule(ConnectionSpec.CLEARTEXT);
       PatchApi api = api(PatchApi.class, server.getUrl("/").toString(), httpConfigModule);
       try {
-         api.patchNothing("");
+         api.patch("", "foo");
       } finally {
          closeQuietly(api);
          server.shutdown();
       }
    }
 
-   @Test(expectedExceptions = HttpResponseException.class, expectedExceptionsMessageRegExp = ".*exhausted connection specs.*")
+   @Test(expectedExceptions = HttpResponseException.class)
    public void testHTTPConnectionFailsIfOnlySSLConfigured() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
       Module httpConfigModule = new ConnectionSpecModule(ConnectionSpec.MODERN_TLS);
       PatchApi api = api(PatchApi.class, server.getUrl("/").toString(), httpConfigModule);
       try {
-         api.patchNothing("");
+         api.patch("", "foo");
       } finally {
          closeQuietly(api);
          server.shutdown();
@@ -202,7 +199,7 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
       Module httpConfigModule = new ConnectionSpecModule(ConnectionSpec.CLEARTEXT, ConnectionSpec.MODERN_TLS);
       PatchApi api = api(PatchApi.class, server.getUrl("/").toString(), httpConfigModule);
       try {
-         api.patchNothing("");
+         api.patch("", "foo");
          assertEquals(server.getRequestCount(), 1);
          assertEquals(redirectTarget.getRequestCount(), 1);
       } finally {
@@ -220,10 +217,10 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
             .build();
       PatchApi api = api(PatchApi.class, server.getUrl("/").toString(), new ConnectionSpecModule(spec));
       try {
-         api.patchNothing("");
+         api.patch("", "foo");
          assertEquals(server.getRequestCount(), 1);
          RecordedRequest request = server.takeRequest();
-         assertEquals(request.getSslProtocol(), "TLSv1.2");
+         assertEquals(request.getTlsVersion().javaName(), "TLSv1.2");
       } finally {
          closeQuietly(api);
          server.shutdown();

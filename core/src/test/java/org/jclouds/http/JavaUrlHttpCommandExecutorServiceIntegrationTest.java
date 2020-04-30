@@ -62,7 +62,7 @@ public class JavaUrlHttpCommandExecutorServiceIntegrationTest extends BaseHttpCo
             return new MockResponse();
          }
       });
-      server.play();
+      server.start();
 
       HttpClient client =  api(HttpClient.class, server.getUrl("/").toString());
 

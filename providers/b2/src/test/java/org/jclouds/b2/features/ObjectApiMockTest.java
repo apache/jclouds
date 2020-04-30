@@ -285,7 +285,7 @@ public final class ObjectApiMockTest {
          request = server.takeRequest();
          assertThat(request.getMethod()).isEqualTo("GET");
          assertThat(request.getPath()).isEqualTo("/b2api/v2/b2_download_file_by_id?fileId=4_h4a48fe8875c6214145260818_f000000000000472a_d20140104_m032022_c001_v0000123_t0104");
-         assertThat(request.getHeaders()).contains("Range: bytes=42-69");
+         assertThat(request.getHeaders().get("Range")).isEqualTo("bytes=42-69");
       } finally {
          server.shutdown();
       }

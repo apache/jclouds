@@ -61,7 +61,7 @@ public class DynectApiMockTest {
       MockWebServer server = new MockWebServer();
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(session));
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(running));
-      server.play();
+      server.start();
 
       DynECTApi api = mockDynectApi(server.getUrl("/").toString());
 
@@ -80,7 +80,7 @@ public class DynectApiMockTest {
       MockWebServer server = new MockWebServer();
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(session));
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(taskBlocking));
-      server.play();
+      server.start();
 
       DynECTApi api = mockDynectApi(server.getUrl("/").toString());
 
@@ -98,7 +98,7 @@ public class DynectApiMockTest {
       MockWebServer server = new MockWebServer();
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(session));
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(targetExists));
-      server.play();
+      server.start();
 
       DynECTApi api = mockDynectApi(server.getUrl("/").toString());
 

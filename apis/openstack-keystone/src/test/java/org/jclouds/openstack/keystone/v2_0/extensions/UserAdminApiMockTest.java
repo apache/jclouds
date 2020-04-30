@@ -59,7 +59,7 @@ public class UserAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
          RecordedRequest createUserRequest = server.takeRequest();
          assertEquals(createUserRequest.getRequestLine(), "POST /users HTTP/1.1");
          assertEquals(
-               new String(createUserRequest.getBody()),
+               createUserRequest.getBody().readUtf8(),
                "{\"user\":{\"name\":\"jqsmith\",\"tenantId\":\"12345\",\"password\":\"jclouds-password\",\"email\":\"john.smith@example.org\",\"enabled\":true}}");
       } finally {
          server.shutdown();
@@ -89,7 +89,7 @@ public class UserAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
          RecordedRequest updateUserRequest = server.takeRequest();
          assertEquals(updateUserRequest.getRequestLine(), "PUT /users/u1000 HTTP/1.1");
          assertEquals(
-               new String(updateUserRequest.getBody()),
+               updateUserRequest.getBody().readUtf8(),
                "{\"user\":{\"name\":\"jqsmith-renamed\",\"email\":\"john.smith.renamed@example.org\",\"password\":\"jclouds-password\",\"enabled\":false}}");
       } finally {
          server.shutdown();

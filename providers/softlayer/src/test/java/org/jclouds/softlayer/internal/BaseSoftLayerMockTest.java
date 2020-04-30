@@ -37,6 +37,8 @@ import com.google.inject.Module;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
+import okio.Buffer;
+
 /**
  * Base class for all SoftLayer mock tests.
  */
@@ -54,12 +56,14 @@ public class BaseSoftLayerMockTest extends BaseMockWebServerTest {
       return new JavaUrlHttpCommandExecutorServiceModule();
    }
 
-   public byte[] payloadFromResource(String resource) {
+   public Buffer payloadFromResource(String resource) {
+      Buffer buffer = new Buffer();
       try {
-         return toStringAndClose(getClass().getResourceAsStream(resource)).getBytes(Charsets.UTF_8);
+         buffer.write(toStringAndClose(getClass().getResourceAsStream(resource)).getBytes(Charsets.UTF_8));
       } catch (IOException e) {
          throw Throwables.propagate(e);
       }
+      return buffer;
    }
 
    protected RecordedRequest assertSent(MockWebServer server, String method, String path) throws InterruptedException {

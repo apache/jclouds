@@ -16,7 +16,6 @@
  */
 package org.jclouds.googlecloudstorage.internal;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Throwables.propagate;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -83,7 +82,7 @@ public class BaseGoogleCloudStorageApiMockTest {
    public void start() throws IOException {
       suffix.set(0);
       server = new MockWebServer();
-      server.play();
+      server.start();
    }
 
    protected String url(String path) {
@@ -129,7 +128,7 @@ public class BaseGoogleCloudStorageApiMockTest {
          throws InterruptedException {
       RecordedRequest request = assertSent(server, method, path, type);
       assertEquals(request.getHeader("Content-Type"), APPLICATION_JSON);
-      assertEquals(parser.parse(new String(request.getBody(), UTF_8)), parser.parse(json));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(json));
       return request;
    }
 

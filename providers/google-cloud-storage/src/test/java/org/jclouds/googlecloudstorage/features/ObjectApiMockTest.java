@@ -20,7 +20,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertFalse;
-import static com.google.common.base.Charsets.UTF_8;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import org.jclouds.googlecloudstorage.domain.DomainResourceReferences.DestinationPredefinedAcl;
@@ -117,7 +116,7 @@ public class ObjectApiMockTest extends BaseGoogleCloudStorageApiMockTest {
       RecordedRequest request = assertSent(server, "POST", "/upload/storage/v1/b/bucket_name/o" +
          "?uploadType=media&name=new_object&predefinedAcl=publicReadWrite", null);
       assertEquals(request.getHeader("Content-Type"), "text/plain");
-      assertEquals(new String(request.getBody(), UTF_8), testPayload);
+      assertEquals(request.getBody().readUtf8(), testPayload);
    }
 
    public void delete() throws Exception {
@@ -271,9 +270,9 @@ public class ObjectApiMockTest extends BaseGoogleCloudStorageApiMockTest {
             new ParseGoogleCloudStorageObject().expected());
 
       RecordedRequest request = assertSent(server, "POST", "/upload/storage/v1/b/bucket_name/o?uploadType=multipart", null);
-      assertTrue(new String(request.getBody(), UTF_8).contains(testPayload));
+      assertTrue(request.getBody().readUtf8().contains(testPayload));
 
-      assertTrue(new String(request.getBody(), UTF_8).contains(testPayload));
+      assertTrue(request.getBody().readUtf8().contains(testPayload));
       //TODO: this should be a more robust assertion about the formatting of the payload
    }
 

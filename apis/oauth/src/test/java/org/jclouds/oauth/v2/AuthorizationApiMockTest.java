@@ -101,7 +101,7 @@ public class AuthorizationApiMockTest {
          server.enqueue(new MockResponse().setBody("{\n"
                  + "  \"access_token\" : \"1/8xbJqaOZXSUZbHLl5EOtu1pxz3fmmetKx9W8CV4t79M\",\n"
                  + "  \"token_type\" : \"Bearer\",\n" + "  \"expires_in\" : 3600\n" + "}"));
-         server.play();
+         server.start();
 
          AuthorizationApi api = api(server.getUrl("/"), P12_PRIVATE_KEY_CREDENTIALS);
 
@@ -113,7 +113,7 @@ public class AuthorizationApiMockTest {
          assertEquals(request.getHeader("Content-Type"), "application/x-www-form-urlencoded");
 
          assertEquals(
-                 new String(request.getBody(), UTF_8), //
+                 request.getBody().readUtf8(),
                  "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&"
                          +
                          // Base64 Encoded Header
@@ -134,7 +134,7 @@ public class AuthorizationApiMockTest {
       MockWebServer server = new MockWebServer();
       try {
          server.enqueue(new MockResponse().setResponseCode(400));
-         server.play();
+         server.start();
 
          AuthorizationApi api = api(server.getUrl("/"), P12_PRIVATE_KEY_CREDENTIALS);
          api.authorize(CLAIMS);
@@ -158,7 +158,7 @@ public class AuthorizationApiMockTest {
          server.enqueue(new MockResponse().setBody("{\n"
                  + "  \"access_token\" : \"1/8xbJqaOZXSUZbHLl5EOtu1pxz3fmmetKx9W8CV4t79M\",\n"
                  + "  \"token_type\" : \"Bearer\",\n" + "  \"expires_in\" : 3600\n" + "}"));
-         server.play();
+         server.start();
 
          AuthorizationApi api = api(server.getUrl("/"), CLIENT_CREDENTIALS_SECRET);
 
@@ -170,7 +170,7 @@ public class AuthorizationApiMockTest {
          assertEquals(request.getHeader("Content-Type"), "application/x-www-form-urlencoded");
 
          assertEquals(
-                 new String(request.getBody(), UTF_8), //
+                 request.getBody().readUtf8(),
                  "grant_type=client_credentials&client_id=" + identity
                          + "&client_secret=" + credential
                          + "&resource=" + encoded_resource);
@@ -190,7 +190,7 @@ public class AuthorizationApiMockTest {
          server.enqueue(new MockResponse().setBody("{\n"
                  + "  \"access_token\" : \"1/8xbJqaOZXSUZbHLl5EOtu1pxz3fmmetKx9W8CV4t79M\",\n"
                  + "  \"token_type\" : \"Bearer\",\n" + "  \"expires_in\" : 3600\n" + "}"));
-         server.play();
+         server.start();
 
          AuthorizationApi api = api(server.getUrl("/"), CLIENT_CREDENTIALS_P12_AND_CERTIFICATE);
          assertEquals(api.authorize(identity, CLIENT_CREDENTIALS_CLAIMS, resource, null), TOKEN);
@@ -201,7 +201,7 @@ public class AuthorizationApiMockTest {
          assertEquals(request.getHeader("Content-Type"), "application/x-www-form-urlencoded");
 
          assertEquals(
-                 new String(request.getBody(), UTF_8),
+                 request.getBody().readUtf8(),
                  "grant_type=client_credentials&" +
                          "client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&" +
                          "client_id=" + identity + "&" +

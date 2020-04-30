@@ -39,6 +39,8 @@ import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
+import okio.Buffer;
+
 /**
  * Mock tests for the {@link ElasticStackApi} class.
  */
@@ -84,12 +86,14 @@ public class ElasticStackMockTest extends BaseMockWebServerTest {
       assertEquals(request.getHeader(HttpHeaders.AUTHORIZATION), "Basic dXVpZDphcGlrZXk=");
    }
 
-   private byte[] payloadFromResource(String resource) {
+   private Buffer payloadFromResource(String resource) {
+      Buffer buffer = new Buffer();
       try {
-         return toStringAndClose(getClass().getResourceAsStream(resource)).getBytes(Charsets.UTF_8);
+         buffer.write(toStringAndClose(getClass().getResourceAsStream(resource)).getBytes(Charsets.UTF_8));
       } catch (IOException e) {
          throw Throwables.propagate(e);
       }
+      return buffer;
    }
 
    @Override

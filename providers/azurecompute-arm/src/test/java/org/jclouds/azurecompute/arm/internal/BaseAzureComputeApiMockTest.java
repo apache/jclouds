@@ -74,7 +74,7 @@ public class BaseAzureComputeApiMockTest {
    @BeforeMethod
    public void start() throws IOException, URISyntaxException {
       server = new MockWebServer();
-      server.play();
+      server.start();
       
       context = ContextBuilder.newBuilder(testProviderMetadata())
               .credentials("mock", MOCK_BEARER_TOKEN)
@@ -180,7 +180,7 @@ public class BaseAzureComputeApiMockTest {
          throws InterruptedException {
       RecordedRequest request = assertSent(server, method, path);
       assertEquals(request.getHeader("Content-Type"), "application/json");
-      assertEquals(parser.parse(new String(request.getBody(), Charsets.UTF_8)), parser.parse(json));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(json));
       return request;
    }
    

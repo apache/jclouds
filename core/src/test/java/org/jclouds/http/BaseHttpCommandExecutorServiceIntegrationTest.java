@@ -42,7 +42,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
@@ -52,6 +51,8 @@ import com.squareup.okhttp.mockwebserver.Dispatcher;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
+import okio.Buffer;
 
 /**
  * Tests for functionality all {@link HttpCommandExecutorService} http executor
@@ -214,9 +215,11 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testGetBigFile() throws Exception {
       String constitutionsMd5 = base64().encode(oneHundredOneConstitutions.hash(md5()).asBytes());
+      Buffer buffer = new Buffer();
+      buffer.write(oneHundredOneConstitutions.read());
       MockResponse response = new MockResponse().addHeader("Content-MD5", constitutionsMd5)
-            .addHeader("Content-type", "text/plain")
-            .setBody(oneHundredOneConstitutions.openStream(), oneHundredOneConstitutions.size());
+            .addHeader("Content-type", "text/utf-8")
+            .setBody(buffer);
 
       MockWebServer server = mockWebServer(response, response);
       InputStream input = server.getUrl("/101constitutions").openStream();
@@ -240,7 +243,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          try {
             MockResponse response = new MockResponse();
             String expectedMd5 = request.getHeader("Content-MD5");
-            ByteSource body = ByteSource.wrap(request.getBody());
+            ByteSource body = ByteSource.wrap(request.getBody().readByteArray());
             String realMd5FromRequest = base64().encode(body.hash(md5()).asBytes());
             boolean matched = expectedMd5.equals(realMd5FromRequest);
             if (matched) {
@@ -300,7 +303,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          String result = client.post("", "foo");
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          assertEquals(result, "fooPOST");
       } finally {
          closeQuietly(client);
@@ -316,7 +319,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          client.postNothing("");
          assertEquals(server.getRequestCount(), 1);
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "");
+         assertEquals(request.getBody().readUtf8(), "");
       } finally {
          closeQuietly(client);
          server.shutdown();
@@ -334,9 +337,9 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          assertEquals(result, "fooPOST");
          // Verify that the body was properly sent in the two requests
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(client);
          server.shutdown();
@@ -357,9 +360,9 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          assertEquals(redirectTarget.getRequestCount(), 1);
          // Verify that the body was populated after the redirect
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = redirectTarget.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(client);
          redirectTarget.shutdown();
@@ -375,7 +378,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          String result = client.postAsInputStream("", "foo");
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          assertEquals(result, "fooPOST");
       } finally {
          closeQuietly(client);
@@ -406,7 +409,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          String result = client.postJson("", "foo");
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "{\"key\":\"foo\"}");
+         assertEquals(request.getBody().readUtf8(), "{\"key\":\"foo\"}");
          assertEquals(result, "fooPOSTJSON");
       } finally {
          closeQuietly(client);
@@ -492,7 +495,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          String result = client.upload("", "foo");
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          assertEquals(result, "fooPUT");
       } finally {
          closeQuietly(client);
@@ -514,9 +517,9 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          assertEquals(redirectTarget.getRequestCount(), 1);
          // Verify that the body was populated after the redirect
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = redirectTarget.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(client);
          redirectTarget.shutdown();
@@ -532,7 +535,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          client.putNothing("");
          assertEquals(server.getRequestCount(), 1);
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "");
+         assertEquals(request.getBody().readUtf8(), "");
       } finally {
          closeQuietly(client);
          server.shutdown();
@@ -550,9 +553,9 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          assertEquals(result, "fooPUT");
          // Verify that the body was properly sent in the two requests
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(client);
          server.shutdown();

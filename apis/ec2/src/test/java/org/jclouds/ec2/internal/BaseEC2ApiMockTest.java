@@ -36,7 +36,6 @@ import org.jclouds.ec2.EC2ApiMetadata;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.inject.Module;
@@ -76,7 +75,7 @@ public class BaseEC2ApiMockTest {
    @BeforeMethod
    public void start() throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       regionToServers.put(DEFAULT_REGION, server);
    }
 
@@ -99,7 +98,7 @@ public class BaseEC2ApiMockTest {
          describeRegionsResponse.append("<regionName>").append(region).append("</regionName>");
          if (!regionToServers.containsKey(region)) {
             MockWebServer server = new MockWebServer();
-            server.play();
+            server.start();
             regionToServers.put(region, server);
          }
          MockWebServer server = regionToServers.get(region);
@@ -130,7 +129,7 @@ public class BaseEC2ApiMockTest {
       RecordedRequest request = regionToServers.get(region).takeRequest();
       assertEquals(request.getMethod(), "POST");
       assertEquals(request.getPath(), "/");
-      assertEquals(new String(request.getBody(), Charsets.UTF_8).replaceAll("&Signature.*", ""), postParams);
+      assertEquals(request.getBody().readUtf8().replaceAll("&Signature.*", ""), postParams);
       return request;
    }
 }
