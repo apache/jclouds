@@ -60,6 +60,8 @@ public class BucketApiLiveTest extends BaseGoogleCloudStorageApiLiveTest {
 
    private static final String BUCKET_NAME_COLDLINE = "jcloudstestbucketcoldline" + (int) (Math.random() * 10000);
 
+   private static final String BUCKET_NAME_ARCHIVE = "jcloudstestbucketarchive" + (int) (Math.random() * 10000);
+
    private static final String BUCKET_NAME_MULTI_REGIONAL = "jcloudstestbucketmultiregional" + (int) (Math.random() * 10000);
 
    private static final String BUCKET_NAME_NEARLINE = "jcloudstestbucketnearline" + (int) (Math.random() * 10000);
@@ -139,6 +141,23 @@ public class BucketApiLiveTest extends BaseGoogleCloudStorageApiLiveTest {
       assertThat(response.storageClass()).isEqualTo(StorageClass.COLDLINE);
 
       api().deleteBucket(BUCKET_NAME_COLDLINE);
+   }
+
+   @Test(groups = "live")
+   public void testCreateBucketArchive() {
+      BucketTemplate template = new BucketTemplate()
+               .name(BUCKET_NAME_ARCHIVE)
+               .location(Location.US)
+               .storageClass(StorageClass.ARCHIVE);
+
+      Bucket response = api().createBucket(PROJECT_NUMBER, template);
+
+      assertNotNull(response);
+      assertEquals(response.name(), BUCKET_NAME_ARCHIVE);
+      assertEquals(response.location(), Location.US);
+      assertThat(response.storageClass()).isEqualTo(StorageClass.ARCHIVE);
+
+      api().deleteBucket(BUCKET_NAME_ARCHIVE);
    }
 
    @Test(groups = "live")
