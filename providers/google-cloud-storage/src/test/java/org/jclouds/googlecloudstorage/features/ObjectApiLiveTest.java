@@ -449,6 +449,48 @@ public class ObjectApiLiveTest extends BaseGoogleCloudStorageApiLiveTest {
                ByteStreams2.toByteArrayAndClose(payloadImpl.getPayload().openStream()));
    }
 
+   @Test(groups = "live", dependsOnMethods = "testPatchObjectsWithOptions")
+   public void testMultipartJpegUploadArchive() throws IOException {
+      long contentLength = 32 * 1024L;
+      ByteSource byteSource = TestUtils.randomByteSource().slice(0, contentLength);
+      ByteSourcePayload payload = Payloads.newByteSourcePayload(byteSource);
+      PayloadEnclosing payloadImpl = new PayloadEnclosingImpl(payload);
+
+      ObjectTemplate template = new ObjectTemplate();
+
+      ObjectAccessControls oacl = ObjectAccessControls.builder().bucket(BUCKET_NAME).entity("allUsers")
+               .role(ObjectRole.OWNER).build();
+
+      // This would trigger server side validation of md5
+      md5Hash = base64().encode(byteSource.hash(Hashing.md5()).asBytes());
+      // TODO: crc32c = without making a compile dep on guava 18
+
+      template.contentType("image/jpeg").addAcl(oacl).size(contentLength).name(MULTIPART_UPLOAD_OBJECT)
+               .contentLanguage("en").contentDisposition("attachment").md5Hash(md5Hash)
+               .storageClass(StorageClass.ARCHIVE)
+               .customMetadata("custommetakey1", "custommetavalue1").crc32c(crc32c)
+               .customMetadata(ImmutableMap.of("Adrian", "powderpuff"));
+
+      GoogleCloudStorageObject gcsObject = api().multipartUpload(BUCKET_NAME, template, payloadImpl.getPayload());
+
+      assertThat(gcsObject.bucket()).isEqualTo(BUCKET_NAME);
+      assertThat(gcsObject.name()).isEqualTo(MULTIPART_UPLOAD_OBJECT);
+      checkHashCodes(gcsObject);
+
+      assertThat(gcsObject.metadata()).contains(entry("custommetakey1", "custommetavalue1"),
+               entry("Adrian", "powderpuff")).doesNotContainKey("adrian");
+
+      gcsObject = api().getObject(BUCKET_NAME, MULTIPART_UPLOAD_OBJECT, null);
+
+      assertThat(gcsObject).isNotNull();
+      assertThat(gcsObject.storageClass()).isEqualTo(StorageClass.ARCHIVE);
+
+      PayloadEnclosing impl = api().download(BUCKET_NAME, MULTIPART_UPLOAD_OBJECT);
+
+      assertThat(ByteStreams2.toByteArrayAndClose(impl.getPayload().openStream())).isEqualTo(
+               ByteStreams2.toByteArrayAndClose(payloadImpl.getPayload().openStream()));
+   }
+
    private void checkHashCodes(GoogleCloudStorageObject gcsObject) {
       assertEquals(gcsObject.md5Hash(), md5Hash);
       if (crc32c != null) {
