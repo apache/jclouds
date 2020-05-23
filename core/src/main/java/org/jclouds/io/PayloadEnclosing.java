@@ -48,4 +48,5 @@ public interface PayloadEnclosing {
    @Nullable
    Payload getPayload();
 
+   void resetPayload(boolean release);
 }

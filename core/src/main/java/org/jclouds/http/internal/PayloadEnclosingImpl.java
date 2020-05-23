@@ -98,6 +98,14 @@ public class PayloadEnclosingImpl implements PayloadEnclosing {
    }
 
    @Override
+   public void resetPayload(boolean release) {
+      if (release && payload != null) {
+         payload.release();
+      }
+      payload = null;
+   }
+
+   @Override
    public int hashCode() {
       final int prime = 31;
       int result = 1;

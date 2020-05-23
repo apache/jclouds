@@ -57,6 +57,7 @@ public final class MultipartUploadBinder implements MapBinder {
       Part jsonPart = Part.create("Metadata", jsonPayload, new Part.PartOptions().contentType(APPLICATION_JSON));
       Part mediaPart = Part.create(template.name(), payload, new Part.PartOptions().contentType(contentType));
 
+      request.resetPayload(/*release=*/ false);
       request.setPayload(new MultipartForm(BOUNDARY_HEADER, jsonPart, mediaPart));
       // HeaderPart
       request.toBuilder().replaceHeader(CONTENT_TYPE, "Multipart/related; boundary= " + BOUNDARY_HEADER).build();
