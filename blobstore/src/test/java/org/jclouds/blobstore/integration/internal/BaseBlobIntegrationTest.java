@@ -267,7 +267,7 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
       }
    }
 
-   private void putBlobWithMd5(byte[] payload, HashCode contentMD5) throws InterruptedException, IOException {
+   private void putBlobWithMd5(Payload payload, long contentLength, HashCode contentMD5) throws InterruptedException, IOException {
       String container = getContainerName();
       BlobStore blobStore = view.getBlobStore();
       try {
@@ -275,6 +275,7 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
          Blob blob = blobStore
             .blobBuilder(blobName)
             .payload(payload)
+            .contentLength(contentLength)
             .contentMD5(contentMD5)
             .build();
          blobStore.putBlob(container, blob);
@@ -288,18 +289,39 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
    }
 
    @Test(groups = { "integration", "live" })
-   public void testPutCorrectContentMD5() throws InterruptedException, IOException {
-      byte[] payload = createTestInput(1024).read();
-      HashCode contentMD5 = md5().hashBytes(payload);
-      putBlobWithMd5(payload, contentMD5);
+   public void testPutCorrectContentMD5ByteSource() throws InterruptedException, IOException {
+      ByteSource payload = createTestInput(1024);
+      HashCode contentMD5 = md5().hashBytes(payload.read());
+      putBlobWithMd5(new ByteSourcePayload(payload), payload.size(), contentMD5);
    }
 
    @Test(groups = { "integration", "live" })
-   public void testPutIncorrectContentMD5() throws InterruptedException, IOException {
-      byte[] payload = createTestInput(1024).read();
+   public void testPutIncorrectContentMD5ByteSource() throws InterruptedException, IOException {
+      ByteSource payload = createTestInput(1024);
       HashCode contentMD5 = md5().hashBytes(new byte[0]);
       try {
-         putBlobWithMd5(payload, contentMD5);
+         putBlobWithMd5(new ByteSourcePayload(payload), payload.size(), contentMD5);
+         fail();
+      } catch (HttpResponseException hre) {
+         if (hre.getResponse().getStatusCode() != getIncorrectContentMD5StatusCode()) {
+            throw hre;
+         }
+      }
+   }
+
+   @Test(groups = { "integration", "live" })
+   public void testPutCorrectContentMD5InputStream() throws InterruptedException, IOException {
+      ByteSource payload = createTestInput(1024);
+      HashCode contentMD5 = md5().hashBytes(payload.read());
+      putBlobWithMd5(new InputStreamPayload(payload.openStream()), payload.size(), contentMD5);
+   }
+
+   @Test(groups = { "integration", "live" })
+   public void testPutIncorrectContentMD5InputStream() throws InterruptedException, IOException {
+      ByteSource payload = createTestInput(1024);
+      HashCode contentMD5 = md5().hashBytes(new byte[0]);
+      try {
+         putBlobWithMd5(new InputStreamPayload(payload.openStream()), payload.size(), contentMD5);
          fail();
       } catch (HttpResponseException hre) {
          if (hre.getResponse().getStatusCode() != getIncorrectContentMD5StatusCode()) {
