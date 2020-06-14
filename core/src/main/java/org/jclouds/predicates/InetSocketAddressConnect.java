@@ -59,13 +59,13 @@ public class InetSocketAddressConnect implements SocketOpen {
    
    @Override
    public boolean apply(HostAndPort socketA) {
-      InetSocketAddress socketAddress = new InetSocketAddress(socketA.getHostText(), socketA
+      InetSocketAddress socketAddress = new InetSocketAddress(socketA.getHost(), socketA
                .getPort());
       Socket socket = null;
       try {
          logger.trace("testing socket %s", socketAddress);
          socket = new Socket(
-               proxyForURI.apply(URI.create("socket://" + socketA.getHostText() + ":" + socketA.getPort())));
+               proxyForURI.apply(URI.create("socket://" + socketA.getHost() + ":" + socketA.getPort())));
          socket.setReuseAddress(false);
          socket.setSoLinger(false, 1);
          socket.setSoTimeout(timeout);

@@ -85,7 +85,7 @@ public class ImageToOperatingSystem implements Function<Image, OperatingSystem> 
          } else if (imageName.contains("Oracle")) {
             osFamily = OsFamily.OEL;
          } else {
-            final Iterable<String> imageNameParts = Splitter.on(CharMatcher.WHITESPACE).trimResults().split(
+            final Iterable<String> imageNameParts = Splitter.on(CharMatcher.whitespace()).trimResults().split(
                      imageName.toLowerCase());
 
             try {

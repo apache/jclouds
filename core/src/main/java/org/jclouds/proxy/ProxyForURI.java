@@ -67,7 +67,7 @@ public class ProxyForURI implements Function<URI, Proxy> {
          return Proxy.NO_PROXY;
       }
       if (config.getProxy().isPresent()) {
-         SocketAddress addr = new InetSocketAddress(config.getProxy().get().getHostText(), config.getProxy().get()
+         SocketAddress addr = new InetSocketAddress(config.getProxy().get().getHost(), config.getProxy().get()
             .getPort());
          Proxy proxy = new Proxy(config.getType(), addr);
 

@@ -34,6 +34,7 @@ import org.jclouds.chef.domain.User;
 import org.jclouds.date.TimeStamp;
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;
+import org.jclouds.http.HttpResponseException;
 import org.jclouds.rest.ConfiguresHttpApi;
 import org.jclouds.rest.ResourceNotFoundException;
 import org.testng.annotations.Test;
@@ -144,7 +145,7 @@ public class OrganizationApiExpectTest extends BaseChefApiExpectTest<ChefApi> {
       api.organizationApi().get().deleteGroup("foo");
    }
 
-   @Test(expectedExceptions = ResourceNotFoundException.class)
+   @Test(expectedExceptions = HttpResponseException.class)
    public void testDeleteGroupFailsOn404() {
       ChefApi api = requestSendsResponse(signed(HttpRequest.builder() //
             .method("DELETE") //

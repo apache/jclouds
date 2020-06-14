@@ -39,6 +39,7 @@ import com.google.common.base.Function;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.inject.assistedinject.Assisted;
 
 /**
@@ -105,7 +106,7 @@ public class DelegatingImageExtension implements ImageExtension {
             logger.info(">> Adding default image credentials to image(%s)...", template.getName());
             return addDefaultCredentialsToImage.apply(input);
          }
-      });
+      }, MoreExecutors.directExecutor());
 
       Futures.addCallback(future, new FutureCallback<Image>() {
          @Override
@@ -117,7 +118,7 @@ public class DelegatingImageExtension implements ImageExtension {
          public void onFailure(Throwable t) {
 
          }
-      });
+      }, MoreExecutors.directExecutor());
       return future;
    }
 

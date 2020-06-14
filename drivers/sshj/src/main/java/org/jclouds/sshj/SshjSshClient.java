@@ -144,7 +144,7 @@ public class SshjSshClient implements SshClient {
    public SshjSshClient(BackoffLimitedRetryHandler backoffLimitedRetryHandler, HostAndPort socket,
             LoginCredentials loginCredentials, int timeout, Optional<Connector> agentConnector) {
       this.user = checkNotNull(loginCredentials, "loginCredentials").getUser();
-      this.host = checkNotNull(socket, "socket").getHostText();
+      this.host = checkNotNull(socket, "socket").getHost();
       checkArgument(socket.getPort() > 0, "ssh port must be greater then zero" + socket.getPort());
       checkArgument(loginCredentials.getOptionalPassword().isPresent() || loginCredentials.hasUnencryptedPrivateKey() || agentConnector.isPresent(),
               "you must specify a password, a key or an SSH agent needs to be available");
