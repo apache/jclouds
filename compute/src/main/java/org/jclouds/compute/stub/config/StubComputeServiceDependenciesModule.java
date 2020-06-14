@@ -183,9 +183,9 @@ public class StubComputeServiceDependenciesModule extends AbstractModule {
 
       @Override
       public boolean apply(HostAndPort input) {
-         if (input.getHostText().indexOf(publicIpPrefix) == -1)
+         if (input.getHost().indexOf(publicIpPrefix) == -1)
             return false;
-         String id = input.getHostText().replace(publicIpPrefix, "");
+         String id = input.getHost().replace(publicIpPrefix, "");
          NodeMetadata node = nodes.get(id);
          return node != null && node.getStatus() == Status.RUNNING;
       }

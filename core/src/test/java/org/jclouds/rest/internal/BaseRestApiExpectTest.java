@@ -22,7 +22,6 @@ import static com.google.inject.name.Names.named;
 import static org.jclouds.Constants.PROPERTY_IDEMPOTENT_METHODS;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 import static org.jclouds.Constants.PROPERTY_USER_THREADS;
-import static org.jclouds.concurrent.config.ExecutorServiceModule.createSimpleTimeLimiter;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
@@ -81,6 +80,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
 import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.SimpleTimeLimiter;
 import com.google.common.util.concurrent.TimeLimiter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -235,7 +235,7 @@ public abstract class BaseRestApiExpectTest<S> {
       @Provides
       @Singleton
       TimeLimiter timeLimiter(@Named(PROPERTY_USER_THREADS) ListeningExecutorService userExecutor) {
-         return createSimpleTimeLimiter(userExecutor);
+         return SimpleTimeLimiter.create(userExecutor);
       }
    }
 
