@@ -37,6 +37,7 @@ public interface ObjectMetadata extends Comparable<ObjectMetadata> {
       STANDARD(Tier.STANDARD),
       STANDARD_IA(Tier.INFREQUENT),
       ONEZONE_IA(Tier.INFREQUENT),
+      INTELLIGENT_TIERING(Tier.STANDARD),
       REDUCED_REDUNDANCY(Tier.STANDARD),
       GLACIER(Tier.ARCHIVE),
       DEEP_ARCHIVE(Tier.ARCHIVE);
