@@ -1494,9 +1494,6 @@
           </plugin>
         </plugins>
       </build>
-      <properties>
-        <javadoc.opts></javadoc.opts>
-      </properties>
     </profile>
   </profiles>
 </project>
