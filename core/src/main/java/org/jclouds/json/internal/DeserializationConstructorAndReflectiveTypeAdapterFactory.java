@@ -26,10 +26,10 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 
-import org.jclouds.json.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory;
-import org.jclouds.json.gson.internal.ConstructorConstructor;
-import org.jclouds.json.gson.internal.Excluder;
-import org.jclouds.json.gson.internal.bind.ReflectiveTypeAdapterFactory;
+import com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory;
+import com.google.gson.internal.ConstructorConstructor;
+import com.google.gson.internal.Excluder;
+import com.google.gson.internal.bind.ReflectiveTypeAdapterFactory;
 import org.jclouds.json.internal.NamingStrategies.AnnotationConstructorNamingStrategy;
 
 import com.google.common.base.MoreObjects;
