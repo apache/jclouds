@@ -16,7 +16,7 @@
  */
 package org.jclouds.glacier.blobstore.strategy.internal;
 
-import static com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor;
+import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 import static org.jclouds.Constants.PROPERTY_SO_TIMEOUT;
@@ -54,8 +54,8 @@ import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 @Test(groups = {"mock"}, singleThreaded = true)
 public class MultipartUploadStrategyMockTest {
-   private static final Set<Module> modules = ImmutableSet.<Module> of(new ExecutorServiceModule(sameThreadExecutor(),
-         sameThreadExecutor()));
+   private static final Set<Module> modules = ImmutableSet.<Module> of(new ExecutorServiceModule(newDirectExecutorService(),
+         newDirectExecutorService()));
    private static HashCode hash8 = HashCode.fromString("c87a460c93d4a8ffcf09a9a236cc17a486d7ed8a1a2f48e9c361c5f7ac0f1280");
    private static HashCode hash4 = HashCode.fromString("9491cb2ed1d4e7cd53215f4017c23ec4ad21d7050a1e6bb636c4f67e8cddb844");
    private static HashCode hcomp = HashCode.fromString("e196b8ae66b4e55a10c84647957c1291c84ffafa44bfdb88d87f0456e5399e46");
