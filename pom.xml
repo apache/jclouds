@@ -32,19 +32,21 @@
     <module>project</module>
     <module>resources</module>
     <module>core</module>
-    <module>common</module>
+    <module>scriptbuilder</module>
+    <module>blobstore</module>
     <module>compute</module>
     <module>loadbalancer</module>
+    <!--
+    <module>common</module>
     <module>apis</module>
     <module>providers</module>
-    <module>blobstore</module>
     <module>skeletons</module>
     <module>drivers</module>
-    <module>scriptbuilder</module>
     <module>allcompute</module>
     <module>allblobstore</module>
     <module>allloadbalancer</module>
     <module>all</module>
+    -->
   </modules>
   
   <profiles>

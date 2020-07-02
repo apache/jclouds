@@ -29,22 +29,6 @@
   <artifactId>jclouds-compute</artifactId>
   <name>jclouds compute core</name>
   <description>jclouds components to access compute providers</description>
-  <packaging>bundle</packaging>
-
-  <properties>
-    <jclouds.osgi.import>
-      org.jclouds;version=${project.version},
-      org.jclouds*;version=${project.version},
-      *
-    </jclouds.osgi.import>
-    <jclouds.osgi.export>
-      org.jclouds.cim*;version=${project.version};-noimport:=true,
-      org.jclouds.compute*;version=${project.version};-noimport:=true,
-      org.jclouds.net*;version=${project.version};-noimport:=true,
-      org.jclouds.ovf*;version=${project.version};-noimport:=true,
-      org.jclouds.ssh*;version=${project.version};-noimport:=true
-    </jclouds.osgi.export>
-  </properties>
 
   <dependencies>
     <dependency>
