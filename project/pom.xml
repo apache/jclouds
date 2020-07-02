@@ -217,6 +217,10 @@
   </developers>
 
   <properties>
+
+    <bnd.version>5.1.0</bnd.version>
+    <maven-jar-plugin.version>3.0.1</maven-jar-plugin.version>
+
     <maven.compile.source>1.8</maven.compile.source>
     <maven.compile.target>1.8</maven.compile.target>
     <jdk.version>1.8</jdk.version>
@@ -260,7 +264,7 @@
         <groupId>com.google.code.gson</groupId>
         <artifactId>gson</artifactId>
         <version>${gson.version}</version>
-        <scope>provided</scope>
+        <scope>compile</scope>
       </dependency>
       <dependency>
         <groupId>com.google.code.findbugs</groupId>
@@ -438,6 +442,10 @@
     </testResources>
     <plugins>
       <plugin>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <version>2.4</version>
@@ -591,48 +599,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Specification-Title>jclouds ${project.name}</Specification-Title>
-              <Specification-Vendor>jclouds</Specification-Vendor>
-              <Implementation-Vendor>jclouds</Implementation-Vendor>
-              <Implementation-Vendor-Id>org.jclouds</Implementation-Vendor-Id>
-              <Implementation-Version>${project.version}</Implementation-Version>
-              <X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
-              <X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <version>2.3.7</version>
-        <extensions>true</extensions>
-        <configuration>
-          <obrRepository>NONE</obrRepository>
-          <instructions>
-            <Bundle-Activator>${jclouds.osgi.activator}</Bundle-Activator>
-            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-            <Export-Package>${jclouds.osgi.export}</Export-Package>
-            <Import-Package>${guava.osgi.import},${jclouds.osgi.import}</Import-Package>
-            <DynamicImport-Package>${jclouds.osgi.dynamic}</DynamicImport-Package>
-            <Fragment-Host>${jclouds.osgi.fragment}</Fragment-Host>
-            <Include-Resource>${jclouds.osgi.include}</Include-Resource>
-          </instructions>
-        </configuration>
-      </plugin>
-      <plugin>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.0.0</version>
         <!-- configuration and dependencies set via profiles -->
@@ -664,6 +630,32 @@
     </plugins>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+          <configuration>
+            <archive>
+              <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+            </archive>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>biz.aQute.bnd</groupId>
+          <artifactId>bnd-maven-plugin</artifactId>
+          <version>${bnd.version}</version>
+          <configuration>
+            <bndfile>bnd.bnd</bndfile>
+          </configuration>
+          <executions>
+            <execution>
+              <id>bnd-process</id>
+              <goals>
+                <goal>bnd-process</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -1001,7 +993,8 @@
               <exclude>**/services/*LoggingModule</exclude>
               <exclude>**/services/*ApiMetadata</exclude>
               <exclude>**/services/*ProviderMetadata</exclude>
-
+              <!-- OSGi metadata rules -->
+              <exclude>**/bnd.bnd</exclude>
               <!-- prevent duplicating license -->
               <exclude>**/LICENSE.txt</exclude>
               <exclude>**/header.txt</exclude>
@@ -1024,6 +1017,10 @@
               <exclude>**/test</exclude>
               <exclude>**/test.pub</exclude>
               <exclude>**/src/test/resources/**/ssh-*.pub</exclude>
+
+              <!-- temporary exclude due to minimized module declaration -->
+              <exclude>**/providers/profitbricks/src/test/resources/html/maintenance-503.html</exclude>
+              <exclude>**/providers/profitbricks/src/test/resources/html/fault-401.html</exclude>
 
               <!-- temporary files or those generated by IDE or SCM -->
               <exclude>**/target/**</exclude>

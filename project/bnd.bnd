@@ -1,0 +1,26 @@
+Bundle-Developers:
+Bundle-DocURL:
+Bundle-License:
+Bundle-SCM:
+Bundle-Vendor:
+
+Specification-Title: \
+    jclouds ${project.name}\
+
+Specification-Vendor: \
+    jclouds
+
+Implementation-Vendor: \
+    jclouds
+
+Implementation-Vendor-Id: \
+    org.apache.jclouds
+
+Implementation-Version: \
+    ${project.version}
+
+X-Compile-Source-JDK: \
+    ${maven.compile.source}
+
+X-Compile-Target-JDK: \
+    ${maven.compile.target}

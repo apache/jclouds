@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.blobstore.*;version="${project.version}";-noimport:=true
