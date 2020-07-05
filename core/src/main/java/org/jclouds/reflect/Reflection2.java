@@ -155,7 +155,8 @@ public class Reflection2 {
                ImmutableSet.Builder<Invokable<?, ?>> builder = ImmutableSet.<Invokable<?, ?>> builder();
                Class<?> raw = key.getRawType();
                for (Constructor<?> ctor : raw.getDeclaredConstructors()) {
-                  if (!coreJavaClass(raw)) {
+                  // TODO replace isAccessible() with canAccess() when using Java >= 9
+                  if (!ctor.isAccessible() && !coreJavaClass(raw)) {
                      // In JDK 11 up to 14, the only uses for `java.beans.ConstructorProperties` annotation
                      // are in the `java.awt`, `java.beans` and `javax.swing` packages.
                      // Since these constructors are public, there is no need to call `setAccessible()`
@@ -167,7 +168,8 @@ public class Reflection2 {
                if (Modifier.isAbstract(raw.getModifiers())) {
                   for (Invokable<?, Object> method : methods(raw)){
                      if (method.isStatic() && method.getReturnType().equals(key)) {
-                        if (!coreJavaClass(raw)) {
+                        // TODO replace isAccessible() with canAccess() when using Java >= 9
+                        if (!method.isAccessible() && !coreJavaClass(raw)) {
                            method.setAccessible(true);
                         }
                         builder.add(method);
@@ -325,7 +327,8 @@ public class Reflection2 {
                   if (raw == Object.class)
                      continue;
                   for (Method method : raw.getDeclaredMethods()) {
-                     if (!coreJavaClass(raw)) {
+                     // TODO replace isAccessible() with canAccess() when using Java >= 9
+                     if (!method.isAccessible() && !coreJavaClass(raw)) {
                         method.setAccessible(true);
                      }
                      builder.add(key.method(method));
