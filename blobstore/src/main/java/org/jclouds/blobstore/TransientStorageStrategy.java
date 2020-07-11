@@ -55,7 +55,6 @@ import com.google.common.collect.Multimaps;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
-import com.google.common.io.ByteSource;
 import com.google.common.io.ByteStreams;
 import com.google.common.net.HttpHeaders;
 
@@ -239,7 +238,7 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
       checkNotNull(in, "blob");
       checkNotNull(input, "input");
       checkNotNull(contentMd5, "contentMd5");
-      Payload payload = Payloads.newByteSourcePayload(ByteSource.wrap(input));
+      Payload payload = Payloads.newByteArrayPayload(input);
       MutableContentMetadata oldMd = in.getPayload().getContentMetadata();
       HttpUtils.copy(oldMd, payload.getContentMetadata());
       payload.getContentMetadata().setContentMD5(contentMd5);
