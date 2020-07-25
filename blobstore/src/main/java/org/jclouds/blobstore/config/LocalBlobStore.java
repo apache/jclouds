@@ -1010,12 +1010,21 @@ public final class LocalBlobStore implements BlobStore {
 
       @Override
       public int read() throws IOException {
-         byte[] b = new byte[1];
-         int result = read(b, 0, b.length);
-         if (result == -1) {
-            return -1;
+         while (true) {
+            if (current == null) {
+               if (!blobs.hasNext()) {
+                  return -1;
+               }
+               current = blobs.next().getPayload().openStream();
+            }
+            int result = current.read();
+            if (result == -1) {
+               current.close();
+               current = null;
+               continue;
+            }
+            return result & 0x000000FF;
          }
-         return b[0] & 0x000000FF;
       }
 
       @Override
