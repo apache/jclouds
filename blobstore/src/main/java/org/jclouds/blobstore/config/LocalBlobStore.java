@@ -685,6 +685,7 @@ public final class LocalBlobStore implements BlobStore {
             try {
                byteSource = (ByteSource) blob.getPayload().getRawContent();
             } catch (ClassCastException cce) {
+               // This should not happen; both FilesystemStorageStrategyImpl and TransientStorageStrategy return ByteSource
                try {
                   byteSource = ByteSource.wrap(ByteStreams2.toByteArrayAndClose(blob.getPayload().openStream()));
                } catch (IOException e) {
@@ -724,18 +725,31 @@ public final class LocalBlobStore implements BlobStore {
                      "bytes " + offset + "-" + last + "/" + blob.getPayload().getContentMetadata().getContentLength());
             }
             ContentMetadata cmd = blob.getPayload().getContentMetadata();
-            // return InputStream to more closely follow real blobstore
-            try {
-               blob.setPayload(ByteSource.concat(streams.build()).openStream());
-            } catch (IOException ioe) {
-               throw new RuntimeException(ioe);
-            }
+            blob.setPayload(ByteSource.concat(streams.build()));
             HttpUtils.copy(cmd, blob.getPayload().getContentMetadata());
             blob.getPayload().getContentMetadata().setContentLength(size);
             blob.getMetadata().setSize(size);
          }
       }
       checkNotNull(blob.getPayload(), "payload " + blob);
+      // return InputStream to more closely follow real blobstore
+      Payload payload;
+      try {
+         InputStream is = blob.getPayload().openStream();
+         if (is instanceof FileInputStream) {
+            // except for FileInputStream since large MPU can open too many fds
+            is.close();
+            payload = blob.getPayload();
+         } else {
+            blob.resetPayload(/*release=*/ false);
+            payload = new InputStreamPayload(is);
+         }
+      } catch (IOException ioe) {
+         throw new RuntimeException(ioe);
+      }
+      payload.setContentMetadata(blob.getMetadata().getContentMetadata());
+      blob.setPayload(payload);
+      copyPayloadHeadersToBlob(blob.getPayload(), blob);
       return blob;
    }
 
@@ -753,22 +767,7 @@ public final class LocalBlobStore implements BlobStore {
 
    private Blob copyBlob(Blob blob) {
       Blob returnVal = blobFactory.create(BlobStoreUtils.copy(blob.getMetadata()));
-      // return InputStream to more closely follow real blobstore
-      Payload payload;
-      try {
-         InputStream is = blob.getPayload().openStream();
-         if (is instanceof FileInputStream) {
-            // except for FileInputStream since large MPU can open too many fds
-            is.close();
-            payload = blob.getPayload();
-         } else {
-            payload = new InputStreamPayload(blob.getPayload().openStream());
-         }
-      } catch (IOException ioe) {
-         throw new RuntimeException(ioe);
-      }
-      payload.setContentMetadata(blob.getMetadata().getContentMetadata());
-      returnVal.setPayload(payload);
+      returnVal.setPayload(blob.getPayload());
       copyPayloadHeadersToBlob(blob.getPayload(), returnVal);
       return returnVal;
    }
