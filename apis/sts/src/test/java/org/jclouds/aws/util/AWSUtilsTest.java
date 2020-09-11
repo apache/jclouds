@@ -17,8 +17,13 @@
 package org.jclouds.aws.util;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
@@ -32,6 +37,8 @@ import org.jclouds.domain.Credentials;
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;
+import org.jclouds.io.payloads.StringPayload;
+import org.jclouds.logging.Logger;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -85,6 +92,20 @@ public class AWSUtilsTest {
    public void testNoExceptionParsingTextPlain() {
       HttpResponse response = HttpResponse.builder().statusCode(BAD_REQUEST.getStatusCode()).payload("foo bar").build();
       response.getPayload().getContentMetadata().setContentType(TEXT_PLAIN);
+      assertNull(utils.parseAWSErrorFromContent(command.getCurrentRequest(), response));
+   }
+
+   /**
+    * Do not attempt to parse empty payload.
+    */
+   @Test
+   public void testNoExceptionEmptyPayload() {
+      utils.logger = mock(Logger.class);
+      utils.logger.warn(anyObject(Throwable.class), anyString());
+      expectLastCall().andThrow(new IllegalStateException("log spam"));
+      replay(utils.logger);
+      HttpResponse response = HttpResponse.builder().statusCode(NOT_FOUND.getStatusCode()).payload(new StringPayload("")).build();
+      response.getPayload().getContentMetadata().setContentType("application/unknown");
       assertNull(utils.parseAWSErrorFromContent(command.getCurrentRequest(), response));
    }
 
