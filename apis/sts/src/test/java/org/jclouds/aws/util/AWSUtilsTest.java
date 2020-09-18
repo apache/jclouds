@@ -18,12 +18,8 @@ package org.jclouds.aws.util;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
@@ -31,14 +27,17 @@ import static org.testng.Assert.assertNull;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.inject.Provider;
+
 import org.jclouds.aws.domain.AWSError;
 import org.jclouds.aws.filters.FormSignerV2Test;
 import org.jclouds.domain.Credentials;
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;
+import org.jclouds.http.functions.ParseSax;
 import org.jclouds.io.payloads.StringPayload;
-import org.jclouds.logging.Logger;
+import org.jclouds.rest.RequestSigner;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -100,13 +99,22 @@ public class AWSUtilsTest {
     */
    @Test
    public void testNoExceptionEmptyPayload() {
-      utils.logger = mock(Logger.class);
-      utils.logger.warn(anyObject(Throwable.class), anyString());
-      expectLastCall().andThrow(new IllegalStateException("log spam"));
-      replay(utils.logger);
+      RequestSigner requestSigner = createMock(RequestSigner.class);
+      ParseSax.Factory factory = createMock(ParseSax.Factory.class);
+      Provider provider = createMock(Provider.class);
+      // these all will throw UnexpectedInvocationEx if touched
+      replay(requestSigner, factory, provider);
+
+      AWSUtils riggedUtil = new AWSUtils(
+          "ignore",
+          requestSigner,
+          factory,
+          provider
+      );
+
       HttpResponse response = HttpResponse.builder().statusCode(NOT_FOUND.getStatusCode()).payload(new StringPayload("")).build();
       response.getPayload().getContentMetadata().setContentType("application/unknown");
-      assertNull(utils.parseAWSErrorFromContent(command.getCurrentRequest(), response));
+      assertNull(riggedUtil.parseAWSErrorFromContent(command.getCurrentRequest(), response));
    }
 
    @Test
