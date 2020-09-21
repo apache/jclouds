@@ -19,6 +19,7 @@ package org.jclouds.aws.util;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.jclouds.aws.reference.AWSConstants.PROPERTY_HEADER_TAG;
+import static org.jclouds.http.HttpUtils.closeClientButKeepContentStream;
 
 import java.util.Collection;
 import java.util.Map;
@@ -82,7 +83,8 @@ public class AWSUtils {
    }
 
    public AWSError parseAWSErrorFromContent(HttpRequest request, HttpResponse response) {
-      if (response.getPayload() == null)
+      byte[] actualPayload = response.getPayload() != null ? closeClientButKeepContentStream(response) : null;
+      if (actualPayload == null || actualPayload.length == 0)
          return null;
       if ("text/plain".equals(response.getPayload().getContentMetadata().getContentType()))
          return null;

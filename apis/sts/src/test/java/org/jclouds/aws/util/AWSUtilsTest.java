@@ -17,6 +17,7 @@
 package org.jclouds.aws.util;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -26,12 +27,17 @@ import static org.testng.Assert.assertNull;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.inject.Provider;
+
 import org.jclouds.aws.domain.AWSError;
 import org.jclouds.aws.filters.FormSignerV2Test;
 import org.jclouds.domain.Credentials;
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;
+import org.jclouds.http.functions.ParseSax;
+import org.jclouds.io.payloads.StringPayload;
+import org.jclouds.rest.RequestSigner;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -86,6 +92,29 @@ public class AWSUtilsTest {
       HttpResponse response = HttpResponse.builder().statusCode(BAD_REQUEST.getStatusCode()).payload("foo bar").build();
       response.getPayload().getContentMetadata().setContentType(TEXT_PLAIN);
       assertNull(utils.parseAWSErrorFromContent(command.getCurrentRequest(), response));
+   }
+
+   /**
+    * Do not attempt to parse empty payload.
+    */
+   @Test
+   public void testNoExceptionEmptyPayload() {
+      RequestSigner requestSigner = createMock(RequestSigner.class);
+      ParseSax.Factory factory = createMock(ParseSax.Factory.class);
+      Provider provider = createMock(Provider.class);
+      // these all will throw UnexpectedInvocationEx if touched
+      replay(requestSigner, factory, provider);
+
+      AWSUtils riggedUtil = new AWSUtils(
+          "ignore",
+          requestSigner,
+          factory,
+          provider
+      );
+
+      HttpResponse response = HttpResponse.builder().statusCode(NOT_FOUND.getStatusCode()).payload(new StringPayload("")).build();
+      response.getPayload().getContentMetadata().setContentType("application/unknown");
+      assertNull(riggedUtil.parseAWSErrorFromContent(command.getCurrentRequest(), response));
    }
 
    @Test
