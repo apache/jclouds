@@ -23,7 +23,7 @@ import com.google.inject.name.Names;
 import com.google.inject.util.Modules;
 import org.jclouds.docker.DockerApi;
 import org.jclouds.docker.handlers.DockerErrorHandler;
-import org.jclouds.docker.suppliers.DockerUntrustedSSLContextSupplier;
+import org.jclouds.docker.suppliers.DockerUntrustedSSLSocketFactorySupplier;
 import org.jclouds.http.HttpErrorHandler;
 import org.jclouds.http.annotation.ClientError;
 import org.jclouds.http.annotation.Redirection;
@@ -34,7 +34,7 @@ import org.jclouds.http.okhttp.config.OkHttpCommandExecutorServiceModule;
 import org.jclouds.rest.ConfiguresHttpApi;
 import org.jclouds.rest.config.HttpApiModule;
 
-import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 
 /**
  * Configures the Docker connection.
@@ -59,10 +59,11 @@ public class DockerHttpApiModule extends HttpApiModule<DockerApi> {
       install(Modules.override(new OkHttpCommandExecutorServiceModule()).with(new AbstractModule() {
          @Override
          protected void configure() {
-            bind(new TypeLiteral<Supplier<SSLContext>>() {}).annotatedWith(Names.named("untrusted")).to(DockerUntrustedSSLContextSupplier.class);
+            bind(new TypeLiteral<Supplier<SSLSocketFactory>>() {})
+                    .annotatedWith(Names.named("untrusted"))
+                    .to(DockerUntrustedSSLSocketFactorySupplier.class);
          }
       }));
       bind(OkHttpClientSupplier.class).to(DockerOkHttpClientSupplier.class);
-
    }
 }

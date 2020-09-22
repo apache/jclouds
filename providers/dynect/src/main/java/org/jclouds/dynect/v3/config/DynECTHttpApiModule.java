@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.jclouds.concurrent.SingleThreaded;
 import org.jclouds.dynect.v3.DynECTApi;
@@ -105,13 +105,13 @@ public class DynECTHttpApiModule extends HttpApiModule<DynECTApi> {
       private SillyRabbit200sAreForSuccess(HttpUtils utils, ContentMetadataCodec contentMetadataCodec,
             DelegatingRetryHandler retryHandler, IOExceptionRetryHandler ioRetryHandler,
             DelegatingErrorHandler errorHandler, HttpWire wire, @Named("untrusted") HostnameVerifier verifier,
-            @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider, Function<URI, Proxy> proxyForURI,
+            @Named("untrusted") Supplier<SSLSocketFactory> untrustedSSLSocketFactory, Function<URI, Proxy> proxyForURI,
             @Named(PROPERTY_IDEMPOTENT_METHODS) String idempotentMethods,
             @Named(PROPERTY_OUTPUT_SOCKET_BUFFER_SIZE) int outputSocketBufferSize,
             @Named(PROPERTY_USER_AGENT) String userAgent)
-            throws SecurityException, NoSuchFieldException {
+            throws SecurityException {
          super(utils, contentMetadataCodec, retryHandler, ioRetryHandler, errorHandler, wire, verifier,
-               untrustedSSLContextProvider, proxyForURI, idempotentMethods, outputSocketBufferSize, userAgent);
+               untrustedSSLSocketFactory, proxyForURI, idempotentMethods, outputSocketBufferSize, userAgent);
       }
 
       /**

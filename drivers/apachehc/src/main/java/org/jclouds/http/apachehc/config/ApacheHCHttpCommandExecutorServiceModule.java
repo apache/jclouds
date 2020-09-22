@@ -16,16 +16,10 @@
  */
 package org.jclouds.http.apachehc.config;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.net.ProxySelector;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.net.ssl.SSLContext;
-
+import com.google.common.base.Supplier;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Scopes;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;
@@ -53,10 +47,14 @@ import org.jclouds.http.config.SSLModule;
 import org.jclouds.lifecycle.Closer;
 import org.jclouds.proxy.ProxyConfig;
 
-import com.google.common.base.Supplier;
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Scopes;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.net.ssl.SSLContext;
+import java.io.Closeable;
+import java.io.IOException;
+import java.net.ProxySelector;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Configures {@link ApacheHCHttpCommandExecutorService}.
@@ -109,25 +107,31 @@ public class ApacheHCHttpCommandExecutorServiceModule extends AbstractModule {
 
    @Singleton
    @Provides
-   final SSLContext newSSLContext(HttpUtils utils, @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider)
+   final SSLContext newSSLContext()
             throws NoSuchAlgorithmException, KeyManagementException {
-      if (utils.trustAllCerts())
-         return untrustedSSLContextProvider.get();
       SSLContext context = SSLContext.getInstance("TLS");
-
       context.init(null, null, null);
       return context;
    }
 
    @Singleton
    @Provides
-   final ClientConnectionManager newClientConnectionManager(HttpParams params, X509HostnameVerifier verifier,
-            SSLContext context, Closer closer) throws NoSuchAlgorithmException, KeyManagementException {
+   final ClientConnectionManager newClientConnectionManager(HttpUtils utils,
+                                                            HttpParams params,
+                                                            X509HostnameVerifier verifier,
+                                                            SSLContext context,
+                                                            Closer closer,
+                                                            @Named("untrusted") Supplier<javax.net.ssl.SSLSocketFactory> untrustedSSLSocketFactory) {
 
       SchemeRegistry schemeRegistry = new SchemeRegistry();
       schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
 
-      SSLSocketFactory sf = new SSLSocketFactory(context);
+      final SSLSocketFactory sf;
+      if (utils.trustAllCerts()) {
+         sf = new SSLSocketFactory(untrustedSSLSocketFactory.get(), null);
+      } else {
+         sf = new SSLSocketFactory(context);
+      }
       sf.setHostnameVerifier(verifier);
       schemeRegistry.register(new Scheme("https", sf, 443));
 

@@ -16,39 +16,41 @@
  */
 package org.jclouds.docker.suppliers;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import com.google.common.base.Supplier;
-
 import org.jclouds.domain.Credentials;
+import org.jclouds.http.config.LazyCachingSSLSocketFactorySupplier;
 import org.jclouds.http.config.SSLModule;
 import org.jclouds.location.Provider;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.net.ssl.SSLContext;
-
+import javax.net.ssl.SSLSocketFactory;
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Throwables.propagate;
 import static org.jclouds.docker.suppliers.SSLContextBuilder.isClientKeyAndCertificateData;
 
 @Singleton
-public class DockerUntrustedSSLContextSupplier implements Supplier<SSLContext> {
-   private final Supplier<Credentials> creds;
-   private final SSLModule.TrustAllCerts insecureTrustManager;
+public class DockerUntrustedSSLSocketFactorySupplier implements Supplier<SSLSocketFactory> {
+
+   private final Supplier<SSLSocketFactory> sslSocketFactorySupplier;
 
    @Inject
-   DockerUntrustedSSLContextSupplier(@Provider Supplier<Credentials> creds,
-         SSLModule.TrustAllCerts insecureTrustManager) {
-      this.creds = creds;
-      this.insecureTrustManager = insecureTrustManager;
+   DockerUntrustedSSLSocketFactorySupplier(@Provider Supplier<Credentials> creds,
+                                           SSLModule.TrustAllCerts insecureTrustManager) {
+      this.sslSocketFactorySupplier = new LazyCachingSSLSocketFactorySupplier(createSSLContext(creds, insecureTrustManager));
    }
 
    @Override
-   public SSLContext get() {
+   public SSLSocketFactory get() {
+      return sslSocketFactorySupplier.get();
+   }
+
+   private SSLContext createSSLContext(Supplier<Credentials> creds, SSLModule.TrustAllCerts insecureTrustManager) {
       Credentials currentCreds = checkNotNull(creds.get(), "credential supplier returned null");
       try {
          SSLContextBuilder builder = new SSLContextBuilder();
@@ -65,5 +67,4 @@ public class DockerUntrustedSSLContextSupplier implements Supplier<SSLContext> {
          throw propagate(e);
       }
    }
-
 }
