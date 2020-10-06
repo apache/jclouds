@@ -26,6 +26,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.digitalocean2.DigitalOcean2Api;
@@ -42,9 +46,7 @@ import com.google.common.io.Resources;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonParser;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 public class BaseDigitalOcean2ApiMockTest {
    
@@ -63,7 +65,7 @@ public class BaseDigitalOcean2ApiMockTest {
    @BeforeMethod
    public void start() throws IOException {
       server = new MockWebServer();
-      server.play();
+      server.start();
       ApiContext<DigitalOcean2Api> ctx = ContextBuilder.newBuilder("digitalocean2")
             .credentials("", MOCK_BEARER_TOKEN)
             .endpoint(url(""))
@@ -85,7 +87,7 @@ public class BaseDigitalOcean2ApiMockTest {
    }
 
    protected String url(String path) {
-      return server.getUrl(path).toString();
+      return server.url(path).toString();
    }
 
    protected MockResponse jsonResponse(String resource) {
@@ -136,7 +138,7 @@ public class BaseDigitalOcean2ApiMockTest {
          throws InterruptedException {
       RecordedRequest request = assertSent(server, method, path);
       assertEquals(request.getHeader("Content-Type"), "application/json");
-      assertEquals(parser.parse(new String(request.getBody(), Charsets.UTF_8)), parser.parse(json));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(json));
       return request;
    }
 }

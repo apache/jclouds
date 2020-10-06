@@ -22,6 +22,9 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.docker.DockerApi;
 import org.jclouds.docker.config.DockerParserModule;
 import org.jclouds.docker.domain.ImageHistory;
@@ -33,8 +36,7 @@ import org.jclouds.docker.parse.ImagesParseTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 /**
  * Mock tests for the {@link org.jclouds.docker.features.ImageApi} class.
@@ -44,7 +46,7 @@ public class ImageApiMockTest extends BaseDockerMockTest {
 
    public void testCreateImage() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(200));
-      ImageApi api = api(DockerApi.class, server.getUrl("/").toString()).getImageApi();
+      ImageApi api = api(DockerApi.class, server.url("/").toString()).getImageApi();
       try {
          api.createImage(CreateImageOptions.Builder.fromImage("base"));
          assertSent(server, "POST", "/images/create?fromImage=base");
@@ -55,7 +57,7 @@ public class ImageApiMockTest extends BaseDockerMockTest {
 
    public void testGetImage() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/image.json")));
-      ImageApi api = api(DockerApi.class, server.getUrl("/").toString(), new DockerParserModule()).getImageApi();
+      ImageApi api = api(DockerApi.class, server.url("/").toString(), new DockerParserModule()).getImageApi();
       try {
          String imageId = "cbba6639a342646deed70d7ea6162fa2a0acea9300f911f4e014555fe37d3456";
          assertEquals(api.inspectImage(imageId), new ImageParseTest().expected());
@@ -67,7 +69,7 @@ public class ImageApiMockTest extends BaseDockerMockTest {
 
    public void testListImages() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/images.json")));
-      ImageApi api = api(DockerApi.class, server.getUrl("/").toString()).getImageApi();
+      ImageApi api = api(DockerApi.class, server.url("/").toString()).getImageApi();
       try {
          assertEquals(api.listImages(), new ImagesParseTest().expected());
          assertSent(server, "GET", "/images/json");
@@ -78,7 +80,7 @@ public class ImageApiMockTest extends BaseDockerMockTest {
 
    public void testTagImage() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(201));
-      ImageApi api = api(DockerApi.class, server.getUrl("/").toString()).getImageApi();
+      ImageApi api = api(DockerApi.class, server.url("/").toString()).getImageApi();
       try {
          api.tagImage("633fcd11259e8d6bccfbb59a4086b95b0d0fb44edfc3912000ef1f70e8a7bfc6", "jclouds", "testTag", true);
          assertSent(server, "POST",
@@ -90,7 +92,7 @@ public class ImageApiMockTest extends BaseDockerMockTest {
 
    public void testDeleteImage() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(204));
-      ImageApi api = api(DockerApi.class, server.getUrl("/").toString()).getImageApi();
+      ImageApi api = api(DockerApi.class, server.url("/").toString()).getImageApi();
       try {
          api.deleteImage("1");
          assertSent(server, "DELETE", "/images/1");
@@ -105,7 +107,7 @@ public class ImageApiMockTest extends BaseDockerMockTest {
             new MockResponse().setBody(payloadFromResource("/history.json")),
             new MockResponse().setBody(payloadFromResource("/history-apiver22.json")),
             new MockResponse().setResponseCode(404));
-      ImageApi api = api(DockerApi.class, server.getUrl("/").toString()).getImageApi();
+      ImageApi api = api(DockerApi.class, server.url("/").toString()).getImageApi();
       try {
          assertEquals(api.getHistory("ubuntu"), new HistoryParseTest().expected());
          assertSent(server, "GET", "/images/ubuntu/history");

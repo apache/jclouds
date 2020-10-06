@@ -23,12 +23,14 @@ import static org.testng.Assert.fail;
 
 import java.util.Properties;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.http.config.JavaUrlHttpCommandExecutorServiceModule;
 import org.testng.annotations.Test;
 
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 /**
  * Tests the retry behavior of the default {@link RetryHandler} implementation
@@ -57,7 +59,7 @@ public class BackoffLimitedRetryJavaTest extends BaseMockWebServerTest {
    @Test
    public void testNoRetriesSuccessful() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          client.download("");
          assertEquals(server.getRequestCount(), 1);
@@ -70,7 +72,7 @@ public class BackoffLimitedRetryJavaTest extends BaseMockWebServerTest {
    @Test
    public void testSingleRetrySuccessful() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(500), new MockResponse());
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          client.download("");
          assertEquals(server.getRequestCount(), 2);
@@ -88,7 +90,7 @@ public class BackoffLimitedRetryJavaTest extends BaseMockWebServerTest {
       }
       server.enqueue(new MockResponse());
 
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          client.download("");
          assertEquals(server.getRequestCount(), maxRetries);
@@ -105,7 +107,7 @@ public class BackoffLimitedRetryJavaTest extends BaseMockWebServerTest {
          server.enqueue(new MockResponse().setResponseCode(500));
       }
 
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
 
          client.download("");
@@ -126,7 +128,7 @@ public class BackoffLimitedRetryJavaTest extends BaseMockWebServerTest {
          server.enqueue(new MockResponse().setResponseCode(500));
       }
 
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          client.download("");
          client.download("");

@@ -25,8 +25,9 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 
 import org.jclouds.profitbricks.ProfitBricksApi;
 import org.jclouds.profitbricks.domain.LoadBalancer;
@@ -42,7 +43,7 @@ public class LoadBalancerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/loadbalancer/loadbalancers.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       LoadBalancerApi api = pbApi.loadBalancerApi();
 
       try {
@@ -63,7 +64,7 @@ public class LoadBalancerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       LoadBalancerApi api = pbApi.loadBalancerApi();
 
       try {
@@ -83,7 +84,7 @@ public class LoadBalancerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/loadbalancer/loadbalancer.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       LoadBalancerApi api = pbApi.loadBalancerApi();
 
       String id = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
@@ -106,7 +107,7 @@ public class LoadBalancerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       LoadBalancerApi api = pbApi.loadBalancerApi();
 
       String id = "random-non-existing-id";
@@ -127,7 +128,7 @@ public class LoadBalancerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/loadbalancer/loadbalancer-create.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       LoadBalancerApi api = pbApi.loadBalancerApi();
 
       String content = "<ws:createLoadBalancer>"
@@ -166,7 +167,7 @@ public class LoadBalancerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/loadbalancer/loadbalancer-update.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       LoadBalancerApi api = pbApi.loadBalancerApi();
 
       String id = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
@@ -205,7 +206,7 @@ public class LoadBalancerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/loadbalancer/loadbalancer-register.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       LoadBalancerApi api = pbApi.loadBalancerApi();
 
       String content = "<ws:registerServersOnLoadBalancer>"
@@ -237,7 +238,7 @@ public class LoadBalancerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/loadbalancer/loadbalancer-deregister.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       LoadBalancerApi api = pbApi.loadBalancerApi();
 
       String content = "<ws:deregisterServersOnLoadBalancer>"
@@ -265,7 +266,7 @@ public class LoadBalancerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/loadbalancer/loadbalancer-delete.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       LoadBalancerApi api = pbApi.loadBalancerApi();
 
       String loadBalancerId = "qwertyui-qwer-qwer-qwer-qwertyyuiiop";

@@ -16,7 +16,6 @@
  */
 package org.jclouds.docker.internal;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jclouds.util.Strings2.toStringAndClose;
@@ -27,15 +26,16 @@ import java.util.Properties;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.http.BaseMockWebServerTest;
 import org.jclouds.http.okhttp.config.OkHttpCommandExecutorServiceModule;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.gson.JsonParser;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Base class for all Docker mock tests.
@@ -54,9 +54,9 @@ public class BaseDockerMockTest extends BaseMockWebServerTest {
       return new OkHttpCommandExecutorServiceModule();
    }
 
-   public byte[] payloadFromResource(String resource) {
+   public String payloadFromResource(String resource) {
       try {
-         return toStringAndClose(getClass().getResourceAsStream(resource)).getBytes(Charsets.UTF_8);
+         return toStringAndClose(getClass().getResourceAsStream(resource));
       } catch (IOException e) {
          throw Throwables.propagate(e);
       }
@@ -74,7 +74,7 @@ public class BaseDockerMockTest extends BaseMockWebServerTest {
            throws InterruptedException {
       RecordedRequest request = assertSent(server, method, path);
       assertEquals(request.getHeader("Content-Type"), APPLICATION_JSON);
-      assertEquals(parser.parse(new String(request.getBody(), UTF_8)), parser.parse(json));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(json));
       return request;
    }
 

@@ -21,14 +21,15 @@ import static org.testng.Assert.assertNotNull;
 
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.internal.BaseNeutronApiMockTest;
 import org.jclouds.openstack.v2_0.domain.Extension;
 import org.jclouds.openstack.v2_0.features.ExtensionApi;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 /**
  * Tests annotation parsing of {@code ExtensionApi}
@@ -43,7 +44,7 @@ public class ExtensionApiMockTest extends BaseNeutronApiMockTest {
          .setResponseCode(200).setBody(stringFromResource("/extension_list.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          ExtensionApi api = neutronApi.getExtensionApi("RegionOne");
 
          Set<Extension> extensions = api.list();
@@ -72,7 +73,7 @@ public class ExtensionApiMockTest extends BaseNeutronApiMockTest {
          .setResponseCode(200).setBody(stringFromResource("/extension_details.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
 
          Extension routerExtension = neutronApi.getExtensionApi("RegionOne").get("router");
 

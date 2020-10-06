@@ -23,13 +23,14 @@ import static org.jclouds.b2.features.B2TestUtils.assertRequest;
 import static org.jclouds.b2.features.B2TestUtils.createMockWebServer;
 import static org.jclouds.b2.features.B2TestUtils.stringFromResource;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.b2.domain.Bucket;
 import org.jclouds.b2.domain.BucketList;
 import org.jclouds.b2.domain.BucketType;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 @Test(groups = "unit", testName = "BucketApiMockTest")
 public final class BucketApiMockTest {
@@ -39,7 +40,7 @@ public final class BucketApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/bucket.json")));
 
       try {
-         BucketApi api = api(server.getUrl("/").toString(), "b2").getBucketApi();
+         BucketApi api = api(server.url("/").toString(), "b2").getBucketApi();
          Bucket response = api.createBucket("any_name_you_pick", BucketType.ALL_PRIVATE);
          assertThat(response.bucketId()).isEqualTo("4a48fe8875c6214145260818");
          assertThat(response.bucketName()).isEqualTo("any_name_you_pick");
@@ -59,7 +60,7 @@ public final class BucketApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/bucket.json")));
 
       try {
-         BucketApi api = api(server.getUrl("/").toString(), "b2").getBucketApi();
+         BucketApi api = api(server.url("/").toString(), "b2").getBucketApi();
          Bucket response = api.deleteBucket("4a48fe8875c6214145260818");
          assertThat(response.bucketId()).isEqualTo("4a48fe8875c6214145260818");
          assertThat(response.bucketName()).isEqualTo("any_name_you_pick");
@@ -79,7 +80,7 @@ public final class BucketApiMockTest {
       server.enqueue(new MockResponse().setResponseCode(400).setBody(stringFromResource("/delete_bucket_already_deleted_response.json")));
 
       try {
-         BucketApi api = api(server.getUrl("/").toString(), "b2").getBucketApi();
+         BucketApi api = api(server.url("/").toString(), "b2").getBucketApi();
          Bucket response = api.deleteBucket("4a48fe8875c6214145260818");
          assertThat(response).isNull();
 
@@ -97,7 +98,7 @@ public final class BucketApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/bucket.json")));
 
       try {
-         BucketApi api = api(server.getUrl("/").toString(), "b2").getBucketApi();
+         BucketApi api = api(server.url("/").toString(), "b2").getBucketApi();
          Bucket response = api.updateBucket("4a48fe8875c6214145260818", BucketType.ALL_PRIVATE);
          assertThat(response.bucketId()).isEqualTo("4a48fe8875c6214145260818");
          assertThat(response.bucketName()).isEqualTo("any_name_you_pick");
@@ -117,7 +118,7 @@ public final class BucketApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/list_buckets_response.json")));
 
       try {
-         BucketApi api = api(server.getUrl("/").toString(), "b2").getBucketApi();
+         BucketApi api = api(server.url("/").toString(), "b2").getBucketApi();
          BucketList response = api.listBuckets();
 
          assertThat(response.buckets()).hasSize(3);

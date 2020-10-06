@@ -27,6 +27,8 @@ import static org.testng.Assert.assertTrue;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.azurecompute.arm.AzureComputeProviderMetadata;
 import org.jclouds.azurecompute.arm.domain.DnsSettings;
 import org.jclouds.azurecompute.arm.domain.publicipaddress.PublicIPAddress;
@@ -36,7 +38,6 @@ import org.jclouds.azurecompute.arm.internal.BaseAzureComputeApiMockTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMap;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 
 @Test(groups = "unit", testName = "PublicIPAddressApiMockTest", singleThreaded = true)

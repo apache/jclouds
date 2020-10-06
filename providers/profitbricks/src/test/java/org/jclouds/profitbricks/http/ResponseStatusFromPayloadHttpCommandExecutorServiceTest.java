@@ -16,9 +16,11 @@
  */
 package org.jclouds.profitbricks.http;
 
-import static org.jclouds.profitbricks.internal.BaseProfitBricksMockTest.mockWebServer;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 
 import org.jclouds.http.HttpResponseException;
 import org.jclouds.profitbricks.ProfitBricksApi;
@@ -33,8 +35,6 @@ import org.jclouds.rest.InsufficientResourcesException;
 import org.jclouds.rest.ResourceNotFoundException;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 /**
  * Mock tests for the {@link ResponseStatusFromPayloadHttpCommandExecutorService} class.
@@ -49,7 +49,7 @@ public class ResponseStatusFromPayloadHttpCommandExecutorServiceTest extends Bas
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(500).setBody(payloadFromResource("/fault-404.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl("/"));
+      ProfitBricksApi pbApi = api(server.url("/").url());
       DataCenterApi api = pbApi.dataCenterApi();
 
       String id = "random-non-existing-id";
@@ -69,7 +69,7 @@ public class ResponseStatusFromPayloadHttpCommandExecutorServiceTest extends Bas
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(500).setBody(payloadFromResource("/fault-400.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl("/"));
+      ProfitBricksApi pbApi = api(server.url("/").url());
       DataCenterApi api = pbApi.dataCenterApi();
 
       try {
@@ -88,7 +88,7 @@ public class ResponseStatusFromPayloadHttpCommandExecutorServiceTest extends Bas
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(401).setBody(payloadFromResource("/html/fault-401.html")));
 
-      ProfitBricksApi pbApi = api(server.getUrl("/"));
+      ProfitBricksApi pbApi = api(server.url("/").url());
       DataCenterApi api = pbApi.dataCenterApi();
 
       try {
@@ -107,7 +107,7 @@ public class ResponseStatusFromPayloadHttpCommandExecutorServiceTest extends Bas
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(503).setBody(payloadFromResource("/fault-413.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl("/"));
+      ProfitBricksApi pbApi = api(server.url("/").url());
       ServerApi api = pbApi.serverApi();
 
       try {
@@ -131,9 +131,9 @@ public class ResponseStatusFromPayloadHttpCommandExecutorServiceTest extends Bas
    public void testServiceUnderMaintenance() throws Exception {
       MockWebServer server = mockWebServer();
       for (int i = 0; i <= MAX_RETRIES; i++)  // jclouds retries 5 times
-         server.enqueue(new MockResponse().setResponseCode(503).setBody(payloadFromResource("/html/maintenance-503.html")));
+         server.enqueue(new MockResponse().setStatus(statusLine503ok()).setBody(payloadFromResource("/html/maintenance-503.html")));
 
-      ProfitBricksApi pbApi = api(server.getUrl("/"));
+      ProfitBricksApi pbApi = api(server.url("/").url());
       DataCenterApi api = pbApi.dataCenterApi();
 
       try {
@@ -145,5 +145,9 @@ public class ResponseStatusFromPayloadHttpCommandExecutorServiceTest extends Bas
          pbApi.close();
          server.shutdown();
       }
+   }
+
+   public String statusLine503ok() {
+      return "HTTP/1.1 503 OK";
    }
 }

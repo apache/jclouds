@@ -16,19 +16,19 @@
  */
 package org.jclouds.openstack.swift.v1;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static org.jclouds.openstack.swift.v1.features.AccountApiMockTest.accountResponse;
 import static org.testng.Assert.assertEquals;
 
 import java.util.Properties;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 /**
  * @see KeystoneProperties#CREDENTIAL_TYPE
@@ -56,14 +56,14 @@ public class AuthenticationMockTest extends BaseOpenStackMockTest<SwiftApi> {
          Properties overrides = new Properties();
          overrides.setProperty("jclouds.keystone.credential-type", credentialType);
 
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift", overrides);
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift", overrides);
 
          api.getAccountApi("DFW").get();
 
          assertEquals(server.getRequestCount(), 2);
          RecordedRequest authRequest = server.takeRequest();
          assertEquals(authRequest.getRequestLine(), "POST /tokens HTTP/1.1");
-         assertEquals(new String(authRequest.getBody(), UTF_8), expectedPost);
+         assertEquals(authRequest.getBody().readUtf8(), expectedPost);
       } finally {
          server.shutdown();
       }

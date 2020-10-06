@@ -17,8 +17,10 @@
 package org.jclouds.openstack.nova.v2_0.features;
 
 import com.google.common.collect.FluentIterable;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.BlockDeviceMapping;
 import org.jclouds.openstack.nova.v2_0.domain.Image;
@@ -36,7 +38,7 @@ public class ImageApiMockTest extends BaseOpenStackMockTest<NovaApi> {
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/image_list_with_block_device_mapping.json"))));
 
       try {
-         NovaApi novaApi = api(server.getUrl("/").toString(), "openstack-nova");
+         NovaApi novaApi = api(server.url("/").toString(), "openstack-nova");
          ImageApi imageApi = novaApi.getImageApiForZone("RegionOne");
 
          FluentIterable<? extends Image> images = imageApi.listInDetail().concat();

@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.IPv6DHCPMode;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
@@ -34,8 +37,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 /**
  * Tests NetworkApi Guice wiring and parsing
@@ -50,7 +52,7 @@ public class SubnetApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/subnet_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SubnetApi api = neutronApi.getSubnetApi("RegionOne");
 
          Subnet.CreateSubnet createSubnet = Subnet.createBuilder("1234567890", "10.0.3.0/24")
@@ -86,7 +88,7 @@ public class SubnetApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/subnet_list_response_pages1.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SubnetApi api = neutronApi.getSubnetApi("RegionOne");
 
          Subnets subnets = api.list(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -114,7 +116,7 @@ public class SubnetApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/subnet_list_response_pages2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SubnetApi api = neutronApi.getSubnetApi("RegionOne");
 
          // Note: Lazy! Have to actually look at the collection.
@@ -146,7 +148,7 @@ public class SubnetApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/subnet_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SubnetApi api = neutronApi.getSubnetApi("RegionOne");
 
          Subnet subnet = api.get("12345");
@@ -177,7 +179,7 @@ public class SubnetApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/subnet_bulk_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SubnetApi api = neutronApi.getSubnetApi("RegionOne");
 
          Subnet.CreateSubnet createSubnet1 = Subnet.createBuilder("e6031bc2-901a-4c66-82da-f4c32ed89406",
@@ -225,7 +227,7 @@ public class SubnetApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/subnet_update_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SubnetApi api = neutronApi.getSubnetApi("RegionOne");
 
          Subnet.UpdateSubnet updateSubnet = Subnet.updateBuilder()
@@ -260,7 +262,7 @@ public class SubnetApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SubnetApi api = neutronApi.getSubnetApi("RegionOne");
 
          boolean result = api.delete("12345");

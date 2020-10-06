@@ -20,6 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.docker.DockerApi;
 import org.jclouds.docker.config.DockerParserModule;
 import org.jclouds.docker.domain.Config;
@@ -32,8 +35,7 @@ import org.jclouds.docker.parse.ContainersParseTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 /**
  * Mock tests for the {@link org.jclouds.docker.features.ContainerApi} class.
@@ -43,7 +45,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testListContainers() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/containers.json")));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          assertEquals(api.listContainers(), new ContainersParseTest().expected());
          assertSent(server, "GET", "/containers/json");
@@ -54,7 +56,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testListNonexistentContainers() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          assertEquals(api.listContainers(), ImmutableList.of());
          assertSent(server, "GET", "/containers/json");
@@ -66,7 +68,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
    @Test(timeOut = 10000L)
    public void testListAllContainers() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/containers.json")));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          assertEquals(api.listContainers(ListContainerOptions.Builder.all(true)), new ContainersParseTest().expected());
          assertSent(server, "GET", "/containers/json?all=true");
@@ -77,7 +79,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testGetContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/container.json")));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString(), new DockerParserModule()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString(), new DockerParserModule()).getContainerApi();
       String containerId = "e475abdf3e139a5e1e158b38b6cb290a1bec856d39d5a951f015dfb8fcba7331";
       try {
          assertEquals(api.inspectContainer(containerId), new ContainerParseTest().expected());
@@ -89,7 +91,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testCreateContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/container-creation.json")));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       Config containerConfig = Config.builder()
               .cmd(ImmutableList.of("date"))
               .attachStdin(false)
@@ -110,7 +112,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testRemoveContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(204));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       String containerId = "6d35806c1bd2b25cd92bba2d2c2c5169dc2156f53ab45c2b62d76e2d2fee14a9";
 
       try {
@@ -124,7 +126,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testStartContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(200));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.startContainer("1");
          assertSent(server, "POST", "/containers/1/start");
@@ -135,7 +137,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testStopContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(200));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.stopContainer("1");
          assertSent(server, "POST", "/containers/1/stop");
@@ -147,7 +149,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testCommitContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(201));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.commit();
          assertSent(server, "POST", "/commit");
@@ -158,7 +160,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testPauseContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(204));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.pause("1");
          assertSent(server, "POST", "/containers/1/pause");
@@ -169,7 +171,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testUnpauseContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(204));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.unpause("1");
          assertSent(server, "POST", "/containers/1/unpause");
@@ -180,7 +182,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testAttachContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(200));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.attach("1");
          assertSent(server, "POST", "/containers/1/attach");
@@ -191,7 +193,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testWaitContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(200));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.wait("1");
          assertSent(server, "POST", "/containers/1/wait");
@@ -202,7 +204,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testRestartContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(204));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.restart("1");
          assertSent(server, "POST", "/containers/1/restart");
@@ -213,7 +215,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testKillContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(204));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.kill("1");
          assertSent(server, "POST", "/containers/1/kill");
@@ -224,7 +226,7 @@ public class ContainerApiMockTest extends BaseDockerMockTest {
 
    public void testCopyFileFromContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(204));
-      ContainerApi api = api(DockerApi.class, server.getUrl("/").toString()).getContainerApi();
+      ContainerApi api = api(DockerApi.class, server.url("/").toString()).getContainerApi();
       try {
          api.copy("1", Resource.create("test"));
          assertSent(server, "POST", "/containers/1/copy");

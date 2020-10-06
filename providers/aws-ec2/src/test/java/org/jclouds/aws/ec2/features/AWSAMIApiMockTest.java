@@ -25,6 +25,8 @@ import static org.testng.Assert.assertTrue;
 import java.util.Map;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.aws.ec2.internal.BaseAWSEC2ApiMockTest;
 import org.jclouds.ec2.domain.Image;
 import org.jclouds.ec2.domain.Permission;
@@ -34,7 +36,6 @@ import org.jclouds.ec2.options.RegisterImageOptions;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "AWSAMIApiMockTest", singleThreaded = true)
 public class AWSAMIApiMockTest extends BaseAWSEC2ApiMockTest {

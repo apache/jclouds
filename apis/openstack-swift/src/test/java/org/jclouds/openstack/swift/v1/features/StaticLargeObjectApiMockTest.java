@@ -23,19 +23,21 @@ import static org.testng.Assert.assertNotEquals;
 
 import java.util.List;
 
-import com.google.common.base.Charsets;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.openstack.swift.v1.SwiftApi;
 import org.jclouds.openstack.swift.v1.domain.DeleteStaticLargeObjectResponse;
 import org.jclouds.openstack.swift.v1.domain.Segment;
 import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 @Test(groups = "unit", testName = "StaticLargeObjectApiMockTest")
 public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
@@ -46,7 +48,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
       server.enqueue(addCommonHeaders(new MockResponse().addHeader(HttpHeaders.ETAG, "\"abcd\"")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          assertEquals(
                api.getStaticLargeObjectApi("DFW", "myContainer").replaceManifest(
                      "myObject",
@@ -67,7 +69,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
          assertRequest(replaceRequest, "PUT", "/v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/myContainer/myObject?multipart-manifest=put");
          assertEquals(replaceRequest.getHeader(OBJECT_METADATA_PREFIX + "myfoo"), "Bar");
          assertEquals(
-               new String(replaceRequest.getBody()),
+               replaceRequest.getBody().readUtf8(),
          "[{\"path\":\"/mycontainer/objseg1\",\"etag\":\"0228c7926b8b642dfb29554cd1f00963\",\"size_bytes\":1468006}," +
           "{\"path\":\"/mycontainer/pseudodir/seg-obj2\",\"etag\":\"5bfc9ea51a00b790717eeb934fb77b9b\",\"size_bytes\":1572864}," +
           "{\"path\":\"/other-container/seg-final\",\"etag\":\"b9c3da507d2557c1ddc51f27c54bae51\",\"size_bytes\":256}]");
@@ -82,7 +84,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
       server.enqueue(addCommonHeaders(new MockResponse().addHeader(HttpHeaders.ETAG, "\"abcd\"")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          assertEquals(
              api.getStaticLargeObjectApi("DFW", "myContainer").replaceManifest(
                  "unic₪de",
@@ -115,7 +117,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
          assertEquals(replaceRequest.getHeader("content-length"), Long.toString(byteLength));
 
          assertEquals(
-             new String(replaceRequest.getBody()),
+             replaceRequest.getBody().readUtf8(),
              expectedManifest);
       } finally {
          server.shutdown();
@@ -128,7 +130,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
       server.enqueue(addCommonHeaders(new MockResponse().addHeader(HttpHeaders.ETAG, "\"abcd\"")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          assertEquals(
                api.getStaticLargeObjectApi("DFW", "myContainer").replaceManifest(
                      "myObject",
@@ -158,7 +160,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
          assertEquals(replaceRequest.getHeader("some-header1"), "some-header-value");
 
          assertEquals(
-               new String(replaceRequest.getBody()),
+               replaceRequest.getBody().readUtf8(),
                "[{\"path\":\"/mycontainer/objseg1\",\"etag\":\"0228c7926b8b642dfb29554cd1f00963\",\"size_bytes\":1468006}," +
                      "{\"path\":\"/mycontainer/pseudodir/seg-obj2\",\"etag\":\"5bfc9ea51a00b790717eeb934fb77b9b\",\"size_bytes\":1572864}," +
                      "{\"path\":\"/other-container/seg-final\",\"etag\":\"b9c3da507d2557c1ddc51f27c54bae51\",\"size_bytes\":256}]");
@@ -174,7 +176,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
             stringFromResource("/manifest_get_response.json")) ));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          List<Segment> manifest = api.getStaticLargeObjectApi("DFW", "myContainer").getManifest("myObject");
 
          // Check response
@@ -199,7 +201,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404).setBody(stringFromResource("/manifest_get_response.json")) ));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          List<Segment> manifest = api.getStaticLargeObjectApi("DFW", "myContainer").getManifest("myObject");
 
          // Check response
@@ -222,7 +224,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
             .setBody("{\"Number Not Found\": 0, \"Response Status\": \"200 OK\", \"Errors\": [], \"Number Deleted\": 6, \"Response Body\": \"\"}")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          DeleteStaticLargeObjectResponse response = api.getStaticLargeObjectApi("DFW", "myContainer").delete("myObject");
 
          assertEquals(server.getRequestCount(), 2);
@@ -244,7 +246,7 @@ public class StaticLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi
             .setBody("{\"Number Not Found\": 1, \"Response Status\": \"200 OK\", \"Errors\": [], \"Number Deleted\": 0, \"Response Body\": \"\"}")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          DeleteStaticLargeObjectResponse response = api.getStaticLargeObjectApi("DFW", "myContainer").delete("myObject");
 
          assertEquals(server.getRequestCount(), 2);

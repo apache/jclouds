@@ -20,11 +20,12 @@ import static org.jclouds.openstack.swift.v1.features.AccountApiMockTest.account
 import static org.jclouds.openstack.swift.v1.reference.SwiftHeaders.ACCOUNT_TEMPORARY_URL_KEY;
 import static org.testng.Assert.assertEquals;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 @Test(groups = "unit", testName = "TemporaryUrlSignerMockTest")
 public class TemporaryUrlSignerMockTest extends BaseOpenStackMockTest<SwiftApi> {
@@ -40,7 +41,7 @@ public class TemporaryUrlSignerMockTest extends BaseOpenStackMockTest<SwiftApi> 
       server.enqueue(addCommonHeaders(accountResponse().addHeader(ACCOUNT_TEMPORARY_URL_KEY, "mykey")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          String signature = TemporaryUrlSigner.checkApiEvery(api.getAccountApi("DFW"), 10000)
                .sign("GET", "/v1/AUTH_account/container/object", 1323479485L);
 
@@ -62,7 +63,7 @@ public class TemporaryUrlSignerMockTest extends BaseOpenStackMockTest<SwiftApi> 
       server.enqueue(addCommonHeaders(accountResponse()));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          TemporaryUrlSigner.checkApiEvery(api.getAccountApi("DFW"), 10000)
             .sign("GET", "/v1/AUTH_account/container/object", 1323479485L);
       } finally {

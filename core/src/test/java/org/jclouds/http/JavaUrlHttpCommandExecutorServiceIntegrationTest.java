@@ -26,6 +26,11 @@ import static org.testng.Assert.fail;
 
 import java.util.Properties;
 
+import okhttp3.mockwebserver.Dispatcher;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.http.config.JavaUrlHttpCommandExecutorServiceModule;
 import org.jclouds.io.Payload;
 import org.jclouds.io.payloads.StringPayload;
@@ -34,10 +39,7 @@ import org.jclouds.utils.TestUtils;
 import org.testng.annotations.Test;
 
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.Dispatcher;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 @Test(groups = "integration")
 public class JavaUrlHttpCommandExecutorServiceIntegrationTest extends BaseHttpCommandExecutorServiceIntegrationTest {
@@ -62,9 +64,9 @@ public class JavaUrlHttpCommandExecutorServiceIntegrationTest extends BaseHttpCo
             return new MockResponse();
          }
       });
-      server.play();
+      server.start();
 
-      HttpClient client =  api(HttpClient.class, server.getUrl("/").toString());
+      HttpClient client =  api(HttpClient.class, server.url("/").toString());
 
       // Make a fake payload that has no data, but says there's a lot!
       Payload fakePayload = new StringPayload("");
@@ -72,7 +74,7 @@ public class JavaUrlHttpCommandExecutorServiceIntegrationTest extends BaseHttpCo
 
       try {
          try {
-            client.post(server.getUrl("/").toURI(), fakePayload);
+            client.post(server.url("/").uri(), fakePayload);
             fail("Should have errored since we didn't sent that much data!");
          } catch (HttpResponseException expected) {
          }

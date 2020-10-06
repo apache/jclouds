@@ -19,13 +19,14 @@ package org.jclouds.azurecompute.arm.features;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.azurecompute.arm.domain.MetricDefinition;
 import org.jclouds.azurecompute.arm.domain.MetricName;
 import org.jclouds.azurecompute.arm.internal.BaseAzureComputeApiMockTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "MetricDefinitionsApiMockTest", singleThreaded = true)
 public class MetricDefinitionsApiMockTest extends BaseAzureComputeApiMockTest {

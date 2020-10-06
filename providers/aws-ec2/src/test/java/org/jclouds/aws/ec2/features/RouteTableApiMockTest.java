@@ -26,6 +26,8 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.aws.AWSResponseException;
 import org.jclouds.aws.ec2.domain.Route;
 import org.jclouds.aws.ec2.domain.RouteTable;
@@ -34,7 +36,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "RouteTableApiMockTest", singleThreaded = true)
 public class RouteTableApiMockTest extends BaseAWSEC2ApiMockTest {

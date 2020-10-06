@@ -16,10 +16,12 @@
  */
 package org.jclouds.profitbricks.compute.config;
 
-import static org.jclouds.profitbricks.internal.BaseProfitBricksMockTest.mockWebServer;
 import static org.testng.Assert.assertEquals;
 
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 
 import org.jclouds.profitbricks.ProfitBricksApi;
 import org.jclouds.profitbricks.compute.config.ProfitBricksComputeServiceContextModule.DataCenterProvisioningStatePredicate;
@@ -33,8 +35,6 @@ import org.jclouds.util.Predicates2;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Predicate;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 
 /**
@@ -47,8 +47,8 @@ public class StatusPredicateTest extends BaseProfitBricksMockTest {
    public void testDataCenterPredicate() throws Exception {
       MockWebServer server = mockWebServer();
 
-      byte[] payloadInProcess = payloadFromResource("/datacenter/datacenter-state-inprocess.xml");
-      byte[] payloadAvailable = payloadFromResource("/datacenter/datacenter-state.xml");
+      String payloadInProcess = payloadFromResource("/datacenter/datacenter-state-inprocess.xml");
+      String payloadAvailable = payloadFromResource("/datacenter/datacenter-state.xml");
 
       // wait 3 times
       server.enqueue(new MockResponse().setBody(payloadInProcess));
@@ -58,7 +58,7 @@ public class StatusPredicateTest extends BaseProfitBricksMockTest {
 
       server.enqueue(new MockResponse().setBody(payloadAvailable));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
 
       Predicate<String> waitUntilAvailable = Predicates2.retry(
               new DataCenterProvisioningStatePredicate(pbApi, ProvisioningState.AVAILABLE),
@@ -80,8 +80,8 @@ public class StatusPredicateTest extends BaseProfitBricksMockTest {
    public void testServerPredicate() throws Exception {
       MockWebServer server = mockWebServer();
 
-      byte[] payloadInProcess = payloadFromResource("/server/server-state-inprocess.xml");
-      byte[] payloadAvailable = payloadFromResource("/server/server.xml");
+      String payloadInProcess = payloadFromResource("/server/server-state-inprocess.xml");
+      String payloadAvailable = payloadFromResource("/server/server.xml");
 
       // wait 3 times
       server.enqueue(new MockResponse().setBody(payloadInProcess));
@@ -91,7 +91,7 @@ public class StatusPredicateTest extends BaseProfitBricksMockTest {
 
       server.enqueue(new MockResponse().setBody(payloadAvailable));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
 
       Predicate<String> waitUntilAvailable = Predicates2.retry(
               new ServerStatusPredicate(pbApi, Server.Status.RUNNING),
@@ -113,8 +113,8 @@ public class StatusPredicateTest extends BaseProfitBricksMockTest {
    public void testSnapshotPredicate() throws Exception {
       MockWebServer server = mockWebServer();
 
-      byte[] payloadInProcess = payloadFromResource("/snapshot/snapshot-state-inprocess.xml");
-      byte[] payloadAvailable = payloadFromResource("/snapshot/snapshot.xml");
+      String payloadInProcess = payloadFromResource("/snapshot/snapshot-state-inprocess.xml");
+      String payloadAvailable = payloadFromResource("/snapshot/snapshot.xml");
 
       // wait 3 times
       server.enqueue(new MockResponse().setBody(payloadInProcess));
@@ -124,7 +124,7 @@ public class StatusPredicateTest extends BaseProfitBricksMockTest {
 
       server.enqueue(new MockResponse().setBody(payloadAvailable));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
 
       Predicate<String> waitUntilAvailable = Predicates2.retry(
               new SnapshotProvisioningStatePredicate(pbApi, ProvisioningState.AVAILABLE),

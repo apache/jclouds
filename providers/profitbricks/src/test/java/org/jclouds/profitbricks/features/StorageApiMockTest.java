@@ -24,13 +24,14 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.profitbricks.ProfitBricksApi;
 import org.jclouds.profitbricks.domain.Storage;
 import org.jclouds.profitbricks.internal.BaseProfitBricksMockTest;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 @Test(groups = "unit", testName = "StorageApiMockTest")
 public class StorageApiMockTest extends BaseProfitBricksMockTest {
@@ -40,7 +41,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/storage/storages.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       try {
@@ -59,7 +60,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       try {
@@ -77,7 +78,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/storage/storage.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       String id = "qswdefrg-qaws-qaws-defe-rgrgdsvcxbrh";
@@ -99,7 +100,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       String id = "random-non-existing-id";
@@ -118,7 +119,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/storage/storage-connect.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       String storageId = "qswdefrg-qaws-qaws-defe-rgrgdsvcxbrh";
@@ -152,7 +153,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/storage/storage-disconnect.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       String storageId = "qswdefrg-qaws-qaws-defe-rgrgdsvcxbrh";
@@ -178,7 +179,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/storage/storage-create.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       String dataCenterId = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
@@ -213,7 +214,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/storage/storage-update.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       String storageId = "qswdefrg-qaws-qaws-defe-rgrgdsvcxbrh";
@@ -247,7 +248,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/storage/storage-delete.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       String storageId = "qswdefrg-qaws-qaws-defe-rgrgdsvcxbrh";
@@ -269,7 +270,7 @@ public class StorageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       StorageApi api = pbApi.storageApi();
 
       String id = "random-non-existing-id";

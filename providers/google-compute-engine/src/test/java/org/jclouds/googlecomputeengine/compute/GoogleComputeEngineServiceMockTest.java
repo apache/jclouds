@@ -25,6 +25,8 @@ import static org.testng.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.compute.ComputeService;
 import org.jclouds.compute.domain.ComputeMetadata;
 import org.jclouds.compute.domain.Hardware;
@@ -38,7 +40,7 @@ import org.jclouds.googlecomputeengine.internal.BaseGoogleComputeEngineApiMockTe
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
+
 
 @Test(groups = "unit", testName = "GoogleComputeEngineServiceMockTest", singleThreaded = true)
 public class GoogleComputeEngineServiceMockTest extends BaseGoogleComputeEngineApiMockTest {

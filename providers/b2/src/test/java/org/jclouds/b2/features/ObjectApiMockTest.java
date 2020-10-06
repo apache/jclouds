@@ -28,6 +28,10 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.blobstore.ContainerNotFoundException;
 import org.jclouds.blobstore.KeyNotFoundException;
 import org.jclouds.http.options.GetOptions;
@@ -45,9 +49,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 @Test(groups = "unit", testName = "ObjectApiMockTest")
 public final class ObjectApiMockTest {
@@ -66,7 +68,7 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/get_upload_url_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          UploadUrlResponse response = api.getUploadUrl(BUCKET_ID);
          assertThat(response.bucketId()).isEqualTo(BUCKET_ID);
          assertThat(response.uploadUrl()).isEqualTo(URI.create("https://pod-000-1005-03.backblaze.com/b2api/v2/b2_upload_file?cvt=c001_v0001005_t0027&bucket=4a48fe8875c6214145260818"));
@@ -86,7 +88,7 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setResponseCode(400).setBody(stringFromResource("/get_upload_url_deleted_bucket_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          try {
             api.getUploadUrl(BUCKET_ID);
             failBecauseExceptionWasNotThrown(ContainerNotFoundException.class);
@@ -107,10 +109,10 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/upload_file_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          String accountId = "d522aa47a10f";
 
-         UploadUrlResponse uploadUrl = UploadUrlResponse.create(BUCKET_ID, server.getUrl("/b2api/v2/b2_upload_file/4a48fe8875c6214145260818/c001_v0001007_t0042").toURI(), "FAKE-AUTHORIZATION-TOKEN");
+         UploadUrlResponse uploadUrl = UploadUrlResponse.create(BUCKET_ID, server.url("/b2api/v2/b2_upload_file/4a48fe8875c6214145260818/c001_v0001007_t0042").uri(), "FAKE-AUTHORIZATION-TOKEN");
          Payload payload = Payloads.newStringPayload(PAYLOAD);
          payload.getContentMetadata().setContentType(CONTENT_TYPE);
          UploadFileResponse response = api.uploadFile(uploadUrl, FILE_NAME, SHA1, FILE_INFO, payload);
@@ -137,7 +139,7 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/delete_object_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          DeleteFileResponse response = api.deleteFileVersion(FILE_NAME, FILE_ID);
          assertThat(response.fileName()).isEqualTo(FILE_NAME);
          assertThat(response.fileId()).isEqualTo(FILE_ID);
@@ -156,7 +158,7 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setResponseCode(400).setBody(stringFromResource("/delete_file_version_already_deleted_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          try {
             api.deleteFileVersion(FILE_NAME, FILE_ID);
             failBecauseExceptionWasNotThrown(KeyNotFoundException.class);
@@ -178,7 +180,7 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/get_file_info_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          B2Object b2Object = api.getFileInfo("4_ze73ede9c9c8412db49f60715_f100b4e93fbae6252_d20150824_m224353_c900_v8881000_t0001");
          assertThat(b2Object.fileId()).isEqualTo("4_ze73ede9c9c8412db49f60715_f100b4e93fbae6252_d20150824_m224353_c900_v8881000_t0001");
          assertThat(b2Object.fileName()).isEqualTo("akitty.jpg");
@@ -206,7 +208,7 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setResponseCode(404).setBody(stringFromResource("/get_file_info_deleted_file_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          B2Object b2Object = api.getFileInfo("4_ze73ede9c9c8412db49f60715_f100b4e93fbae6252_d20150824_m224353_c900_v8881000_t0001");
          assertThat(b2Object).isNull();
 
@@ -232,7 +234,7 @@ public final class ObjectApiMockTest {
             .setBody(PAYLOAD));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
 
          B2Object b2Object = api.downloadFileById(FILE_ID);
 
@@ -272,7 +274,7 @@ public final class ObjectApiMockTest {
             .setBody(PAYLOAD));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
 
          B2Object b2Object = api.downloadFileById(FILE_ID, new GetOptions().range(42, 69));
 
@@ -285,7 +287,7 @@ public final class ObjectApiMockTest {
          request = server.takeRequest();
          assertThat(request.getMethod()).isEqualTo("GET");
          assertThat(request.getPath()).isEqualTo("/b2api/v2/b2_download_file_by_id?fileId=4_h4a48fe8875c6214145260818_f000000000000472a_d20140104_m032022_c001_v0000123_t0104");
-         assertThat(request.getHeaders()).contains("Range: bytes=42-69");
+         assertThat(request.getHeaders().values("Range")).contains("bytes=42-69");
       } finally {
          server.shutdown();
       }
@@ -305,7 +307,7 @@ public final class ObjectApiMockTest {
             .setBody(PAYLOAD));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
 
          B2Object b2Object = api.downloadFileByName(BUCKET_NAME, FILE_NAME);
 
@@ -337,7 +339,7 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/list_file_names_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          String accountId = "d522aa47a10f";
 
          B2ObjectList list = api.listFileNames(BUCKET_ID, null, null, null, null);
@@ -373,7 +375,7 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/list_file_versions_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          String accountId = "d522aa47a10f";
 
          B2ObjectList list = api.listFileVersions(BUCKET_ID, null, null, null, null, null);
@@ -417,7 +419,7 @@ public final class ObjectApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/hide_file_response.json")));
 
       try {
-         ObjectApi api = api(server.getUrl("/").toString(), "b2").getObjectApi();
+         ObjectApi api = api(server.url("/").toString(), "b2").getObjectApi();
          String accountId = "d522aa47a10f";
 
          HideFileResponse response = api.hideFile(BUCKET_ID, FILE_NAME);

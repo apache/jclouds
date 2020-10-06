@@ -22,6 +22,8 @@ import javax.inject.Named;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
+import okhttp3.OkHttpClient;
+
 import org.jclouds.http.HttpCommandExecutorService;
 import org.jclouds.http.HttpUtils;
 import org.jclouds.http.config.ConfiguresHttpCommandExecutorService;
@@ -34,7 +36,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
-import com.squareup.okhttp.OkHttpClient;
+
 
 /**
  * Configures the {@link OkHttpCommandExecutorService}.
@@ -68,22 +70,22 @@ public class OkHttpCommandExecutorServiceModule extends AbstractModule {
 
       @Override
       public OkHttpClient get() {
-         OkHttpClient client = clientSupplier.get();
-         client.setConnectTimeout(utils.getConnectionTimeout(), TimeUnit.MILLISECONDS);
-         client.setReadTimeout(utils.getSocketOpenTimeout(), TimeUnit.MILLISECONDS);
-         // do not follow redirects since https redirects don't work properly
-         // ex. Caused by: java.io.IOException: HTTPS hostname wrong: should be
-         // <adriancole.s3int0.s3-external-3.amazonaws.com>
-         client.setFollowRedirects(false);
+         OkHttpClient.Builder clientBuilder = clientSupplier.get().newBuilder()
+            .connectTimeout(utils.getConnectionTimeout(), TimeUnit.MILLISECONDS)
+            .readTimeout(utils.getSocketOpenTimeout(), TimeUnit.MILLISECONDS)
+            // do not follow redirects since https redirects don't work properly
+            // ex. Caused by: java.io.IOException: HTTPS hostname wrong: should be
+            // <adriancole.s3int0.s3-external-3.amazonaws.com>
+            .followRedirects(false);
 
          if (utils.relaxHostname()) {
-            client.setHostnameVerifier(verifier);
+            clientBuilder.hostnameVerifier(verifier);
          }
          if (utils.trustAllCerts()) {
-            client.setSslSocketFactory(untrustedSSLContextProvider.get().getSocketFactory());
+            clientBuilder.sslSocketFactory(untrustedSSLContextProvider.get().getSocketFactory());
          }
 
-         return client;
+         return clientBuilder.build();
       }
    }
 
