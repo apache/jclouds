@@ -54,7 +54,7 @@ public class JobApiMockTest extends BaseAzureComputeApiMockTest {
    }
 
    public void testGetJobStatusNoContent() throws InterruptedException {
-      server.enqueue(jsonResponse("/resourcegroup.json").setStatus("HTTP/1.1 204 No Content"));
+      server.enqueue(response204());
 
       JobStatus status = api.getJobApi().jobStatus(URI.create(requestUrl));
 

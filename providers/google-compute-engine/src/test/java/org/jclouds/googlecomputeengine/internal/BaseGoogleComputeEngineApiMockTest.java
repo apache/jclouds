@@ -16,7 +16,6 @@
  */
 package org.jclouds.googlecomputeengine.internal;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Throwables.propagate;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -33,6 +32,10 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.compute.ComputeService;
 import org.jclouds.compute.ComputeServiceContext;
@@ -46,9 +49,7 @@ import org.testng.annotations.BeforeMethod;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonParser;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Tests need to run {@code singleThreaded = true} as otherwise tests will clash on the server field.
@@ -91,11 +92,17 @@ public class BaseGoogleComputeEngineApiMockTest {
    public void start() throws IOException {
       suffix.set(0);
       server = new MockWebServer();
-      server.play();
+      server.start();
    }
 
    protected String url(String path) {
-      return server.getUrl(path).toString();
+      if ("".equals(path)) {
+         final String serverUrl = server.url("").toString();
+
+         return serverUrl.substring(0, serverUrl.length() - 1);
+      }
+
+      return server.url(path).toString();
    }
 
    @AfterMethod(alwaysRun = true)
@@ -138,7 +145,7 @@ public class BaseGoogleComputeEngineApiMockTest {
          throws InterruptedException {
       RecordedRequest request = assertSent(server, method, path);
       assertEquals(request.getHeader("Content-Type"), APPLICATION_JSON);
-      assertEquals(parser.parse(new String(request.getBody(), UTF_8)), parser.parse(json));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(json));
       return request;
    }
 

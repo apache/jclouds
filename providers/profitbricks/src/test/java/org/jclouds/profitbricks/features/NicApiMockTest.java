@@ -24,8 +24,8 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 
 import org.jclouds.profitbricks.ProfitBricksApi;
 import org.jclouds.profitbricks.domain.Nic;
@@ -41,7 +41,7 @@ public class NicApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/nic/nic.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       NicApi api = pbApi.nicApi();
 
       String id = "12345678-abcd-efgh-ijkl-987654321000";
@@ -63,7 +63,7 @@ public class NicApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       NicApi api = pbApi.nicApi();
 
       String id = "nonexisting-nic-id";
@@ -83,7 +83,7 @@ public class NicApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/nic/nics.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       NicApi api = pbApi.nicApi();
       try {
          List<Nic> nics = api.getAllNics();
@@ -100,7 +100,7 @@ public class NicApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/nic/nic-create.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       NicApi api = pbApi.nicApi();
 
       String content = "<ws:createNic>"
@@ -137,7 +137,7 @@ public class NicApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/nic/nic-update.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       NicApi api = pbApi.nicApi();
 
       String content = "<ws:updateNic>"
@@ -170,7 +170,7 @@ public class NicApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/nic/nic-internetaccess.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       NicApi api = pbApi.nicApi();
 
       String content = "<ws:setInternetAccess>"
@@ -197,7 +197,7 @@ public class NicApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/nic/nic-delete.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       NicApi api = pbApi.nicApi();
 
       String id = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
@@ -219,7 +219,7 @@ public class NicApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       NicApi api = pbApi.nicApi();
 
       String id = "nonexisting-nic-id";

@@ -17,8 +17,10 @@
 package org.jclouds.softlayer.features;
 
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.http.config.JavaUrlHttpCommandExecutorServiceModule;
 import org.jclouds.softlayer.SoftLayerApi;
 import org.jclouds.softlayer.config.SoftLayerParserModule;
@@ -364,7 +366,7 @@ public class NetworkApiMockTest extends BaseSoftLayerMockTest {
    }
 
    private NetworkApi getNetworkApi(MockWebServer server) {
-      return api(SoftLayerApi.class, server.getUrl("/").toString(), new
+      return api(SoftLayerApi.class, server.url("/").toString(), new
               JavaUrlHttpCommandExecutorServiceModule(), new SoftLayerParserModule()).getNetworkApi();
    }
 }

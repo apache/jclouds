@@ -30,6 +30,10 @@ import java.nio.charset.StandardCharsets;
 
 import javax.ws.rs.core.HttpHeaders;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.docker.DockerApi;
 import org.jclouds.docker.config.DockerParserModule;
 import org.jclouds.docker.domain.Exec;
@@ -47,9 +51,7 @@ import org.jclouds.io.Payloads;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Mock tests for the {@link org.jclouds.docker.features.MiscApi} class.
@@ -59,7 +61,7 @@ public class MiscApiMockTest extends BaseDockerMockTest {
 
    public void testGetVersion() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/version.json")));
-      MiscApi api = api(DockerApi.class, server.getUrl("/").toString()).getMiscApi();
+      MiscApi api = api(DockerApi.class, server.url("/").toString()).getMiscApi();
       try {
          assertEquals(api.getVersion(), new VersionParseTest().expected());
          assertSent(server, "GET", "/version");
@@ -70,7 +72,7 @@ public class MiscApiMockTest extends BaseDockerMockTest {
 
    public void testGetInfo() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/info.json")));
-      MiscApi api = api(DockerApi.class, server.getUrl("/").toString()).getMiscApi();
+      MiscApi api = api(DockerApi.class, server.url("/").toString()).getMiscApi();
       try {
          assertEquals(api.getInfo(), new InfoParseTest().expected());
          assertSent(server, "GET", "/info");
@@ -81,7 +83,7 @@ public class MiscApiMockTest extends BaseDockerMockTest {
 
    public void testBuildContainer() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(200));
-      MiscApi api = api(DockerApi.class, server.getUrl("/").toString()).getMiscApi();
+      MiscApi api = api(DockerApi.class, server.url("/").toString()).getMiscApi();
       try {
          api.build(tarredDockerfile());
          RecordedRequest request = assertSent(server, "POST", "/build");
@@ -93,7 +95,7 @@ public class MiscApiMockTest extends BaseDockerMockTest {
 
    public void testBuildContainerUsingPayload() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(200));
-      MiscApi api = api(DockerApi.class, server.getUrl("/").toString()).getMiscApi();
+      MiscApi api = api(DockerApi.class, server.url("/").toString()).getMiscApi();
       File file = File.createTempFile("docker", "tmp");
       FileInputStream data = new FileInputStream(file);
       Payload payload = Payloads.newInputStreamPayload(data);
@@ -110,7 +112,7 @@ public class MiscApiMockTest extends BaseDockerMockTest {
 
    public void testExecCreate() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/exec.json")));
-      MiscApi api = api(DockerApi.class, server.getUrl("/").toString(), new DockerParserModule()).getMiscApi();
+      MiscApi api = api(DockerApi.class, server.url("/").toString(), new DockerParserModule()).getMiscApi();
       try {
          final String containerId = "a40d212a0a379de00426a1da2a8fd3fd20d5f74fd7c2dd42f6c93a6b1b0e6974";
          final ExecCreateParams execParams = ExecCreateParams.builder()
@@ -126,7 +128,7 @@ public class MiscApiMockTest extends BaseDockerMockTest {
 
    public void testExecStart() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/exec.start")));
-      MiscApi api = api(DockerApi.class, server.getUrl("/").toString(), new DockerParserModule()).getMiscApi();
+      MiscApi api = api(DockerApi.class, server.url("/").toString(), new DockerParserModule()).getMiscApi();
       DockerInputStream dis = null;
       try {
          final String execId = "dbf45d296388032ebb9872edb75847f6655a72b4e9ab0d99ae1c75589c4ca957";
@@ -155,7 +157,7 @@ public class MiscApiMockTest extends BaseDockerMockTest {
 
    public void testExecInspect() throws IOException, InterruptedException {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/execInspect.json")));
-      MiscApi api = api(DockerApi.class, server.getUrl("/").toString(), new DockerParserModule()).getMiscApi();
+      MiscApi api = api(DockerApi.class, server.url("/").toString(), new DockerParserModule()).getMiscApi();
       final String expectedExecId = "fda1cf8064863fc0667c691c69793fdb7d0bd4a1fabb8250536abe5203e4208a";
       ExecInspect execInspect = api.execInspect(expectedExecId);
       assertNotNull(execInspect);

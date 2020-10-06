@@ -24,6 +24,8 @@ import static org.testng.Assert.assertTrue;
 import java.util.Date;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.aws.ec2.domain.Spot;
 import org.jclouds.aws.ec2.domain.SpotInstanceRequest;
 import org.jclouds.aws.ec2.internal.BaseAWSEC2ApiMockTest;
@@ -31,7 +33,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
    @Test(groups = "unit", testName = "SpotInstanceApiMockTest", singleThreaded = true)
    public class SpotInstanceApiMockTest extends BaseAWSEC2ApiMockTest {

@@ -20,6 +20,9 @@ import static com.google.common.collect.Iterables.getFirst;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Console;
 import org.jclouds.openstack.nova.v2_0.parse.ParseNOVNCConsoleTest;
@@ -29,8 +32,6 @@ import org.jclouds.openstack.nova.v2_0.parse.ParseXVPVNCConsoleTest;
 import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 /**
  * Tests ConsolesApi Guice wiring and parsing
@@ -71,7 +72,7 @@ public class ConsolesApiMockTest extends BaseOpenStackMockTest<NovaApi> {
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource(responseResource))));
 
       try {
-         NovaApi novaApi = api(server.getUrl("/").toString(), "openstack-nova");
+         NovaApi novaApi = api(server.url("/").toString(), "openstack-nova");
 
          String regionId = getFirst(novaApi.getConfiguredRegions(), "RegionTwo");
 

@@ -24,10 +24,11 @@ import static org.testng.Assert.fail;
 
 import java.util.Properties;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.digitalocean2.internal.BaseDigitalOcean2ApiMockTest;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "RateLimitExceptionMockTest", singleThreaded = true)
 public class RateLimitExceptionMockTest extends BaseDigitalOcean2ApiMockTest {

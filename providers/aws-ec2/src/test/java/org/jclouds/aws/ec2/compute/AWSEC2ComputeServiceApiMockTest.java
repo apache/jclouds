@@ -19,6 +19,8 @@ package org.jclouds.aws.ec2.compute;
 import static org.jclouds.aws.ec2.compute.AWSEC2TemplateOptions.Builder.blockUntilRunning;
 import static org.testng.Assert.assertEquals;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.aws.ec2.internal.BaseAWSEC2ApiMockTest;
 import org.jclouds.aws.ec2.options.Tenancy;
 import org.jclouds.compute.ComputeService;
@@ -28,7 +30,6 @@ import org.jclouds.compute.predicates.NodePredicates;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.Iterables;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "AWSEC2ComputeServiceMockTest", singleThreaded = true)
 public class AWSEC2ComputeServiceApiMockTest extends BaseAWSEC2ApiMockTest {

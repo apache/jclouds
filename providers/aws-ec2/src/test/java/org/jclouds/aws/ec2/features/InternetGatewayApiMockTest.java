@@ -25,6 +25,8 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.aws.AWSResponseException;
 import org.jclouds.aws.ec2.domain.InternetGateway;
 import org.jclouds.aws.ec2.domain.InternetGatewayAttachment;
@@ -37,7 +39,6 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "InternetGatewayApiMockTest", singleThreaded = true)
 public class InternetGatewayApiMockTest extends BaseAWSEC2ApiMockTest {

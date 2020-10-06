@@ -28,6 +28,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.io.Payload;
 import org.jclouds.io.Payloads;
 import org.jclouds.b2.domain.Action;
@@ -42,8 +45,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 @Test(groups = "unit", testName = "MultipartApiMockTest")
 public final class MultipartApiMockTest {
@@ -64,7 +66,7 @@ public final class MultipartApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/start_large_file_response.json")));
 
       try {
-         MultipartApi api = api(server.getUrl("/").toString(), "b2").getMultipartApi();
+         MultipartApi api = api(server.url("/").toString(), "b2").getMultipartApi();
          MultipartUploadResponse response = api.startLargeFile(BUCKET_ID, FILE_NAME, CONTENT_TYPE, FILE_INFO);
          assertThat(response.accountId()).isEqualTo(ACCOUNT_ID);
          assertThat(response.bucketId()).isEqualTo(BUCKET_ID);
@@ -88,7 +90,7 @@ public final class MultipartApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/cancel_large_file_response.json")));
 
       try {
-         MultipartApi api = api(server.getUrl("/").toString(), "b2").getMultipartApi();
+         MultipartApi api = api(server.url("/").toString(), "b2").getMultipartApi();
          B2Object response = api.cancelLargeFile(FILE_ID);
          assertThat(response.accountId()).isEqualTo(ACCOUNT_ID);
          assertThat(response.bucketId()).isEqualTo(BUCKET_ID);
@@ -112,7 +114,7 @@ public final class MultipartApiMockTest {
             "ffffffffffffffffffffffffffffffffffffffff");
 
       try {
-         MultipartApi api = api(server.getUrl("/").toString(), "b2").getMultipartApi();
+         MultipartApi api = api(server.url("/").toString(), "b2").getMultipartApi();
          B2Object response = api.finishLargeFile(FILE_ID, sha1);
          assertThat(response.accountId()).isEqualTo(ACCOUNT_ID);
          assertThat(response.action()).isEqualTo(Action.UPLOAD);
@@ -139,7 +141,7 @@ public final class MultipartApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/get_upload_part_url_response.json")));
 
       try {
-         MultipartApi api = api(server.getUrl("/").toString(), "b2").getMultipartApi();
+         MultipartApi api = api(server.url("/").toString(), "b2").getMultipartApi();
          GetUploadPartResponse response = api.getUploadPartUrl(FILE_ID);
          assertThat(response.authorizationToken()).isEqualTo(AUTHORIZATION_TOKEN);
          assertThat(response.fileId()).isEqualTo(FILE_ID);
@@ -158,8 +160,8 @@ public final class MultipartApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/upload_part_response.json")));
 
       try {
-         MultipartApi api = api(server.getUrl("/").toString(), "b2").getMultipartApi();
-         GetUploadPartResponse uploadPart = GetUploadPartResponse.create(FILE_ID, server.getUrl("/b2api/v2/b2_upload_part/4a48fe8875c6214145260818/c001_v0001007_t0042").toURI(), AUTHORIZATION_TOKEN);
+         MultipartApi api = api(server.url("/").toString(), "b2").getMultipartApi();
+         GetUploadPartResponse uploadPart = GetUploadPartResponse.create(FILE_ID, server.url("/b2api/v2/b2_upload_part/4a48fe8875c6214145260818/c001_v0001007_t0042").uri(), AUTHORIZATION_TOKEN);
          long contentLength = 100 * 1000 * 1000;
          Payload payload = Payloads.newByteSourcePayload(TestUtils.randomByteSource().slice(0, contentLength));
          payload.getContentMetadata().setContentLength(contentLength);
@@ -182,7 +184,7 @@ public final class MultipartApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/list_parts_response.json")));
 
       try {
-         MultipartApi api = api(server.getUrl("/").toString(), "b2").getMultipartApi();
+         MultipartApi api = api(server.url("/").toString(), "b2").getMultipartApi();
          ListPartsResponse response = api.listParts(FILE_ID, 1, 1000);
          assertThat(response.nextPartNumber()).isNull();
          assertThat(response.parts()).hasSize(3);
@@ -222,7 +224,7 @@ public final class MultipartApiMockTest {
       server.enqueue(new MockResponse().setBody(stringFromResource("/list_unfinished_large_files_response.json")));
 
       try {
-         MultipartApi api = api(server.getUrl("/").toString(), "b2").getMultipartApi();
+         MultipartApi api = api(server.url("/").toString(), "b2").getMultipartApi();
          ListUnfinishedLargeFilesResponse response = api.listUnfinishedLargeFiles(BUCKET_ID, FILE_ID, 1000);
          assertThat(response.nextFileId()).isNull();
          assertThat(response.files()).hasSize(1);

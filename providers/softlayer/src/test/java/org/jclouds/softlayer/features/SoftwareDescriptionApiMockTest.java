@@ -18,13 +18,14 @@ package org.jclouds.softlayer.features;
 
 import static org.testng.Assert.assertEquals;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.softlayer.SoftLayerApi;
 import org.jclouds.softlayer.internal.BaseSoftLayerMockTest;
 import org.jclouds.softlayer.parse.SoftwareDescriptionsParseTest;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 /**
  * Mock tests for the {@link org.jclouds.softlayer.features.SoftwareDescriptionApi} class.
@@ -35,7 +36,7 @@ public class SoftwareDescriptionApiMockTest extends BaseSoftLayerMockTest {
    public void testGetAllObjects() throws Exception {
 
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/software_description_list.json")));
-      SoftwareDescriptionApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getSoftwareDescriptionApi();
+      SoftwareDescriptionApi api = api(SoftLayerApi.class, server.url("/").toString()).getSoftwareDescriptionApi();
 
       try {
          assertEquals(api.getAllObjects(), new SoftwareDescriptionsParseTest().expected());

@@ -16,8 +16,9 @@
  */
 package org.jclouds.profitbricks.features;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.profitbricks.ProfitBricksApi;
 import org.jclouds.profitbricks.domain.OsType;
 import org.jclouds.profitbricks.domain.Snapshot;
@@ -25,7 +26,6 @@ import org.jclouds.profitbricks.internal.BaseProfitBricksMockTest;
 import org.testng.annotations.Test;
 
 import java.util.List;
-import static org.jclouds.profitbricks.internal.BaseProfitBricksMockTest.mockWebServer;
 import org.testng.Assert;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -43,7 +43,7 @@ public class SnapshotApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/snapshot/snapshots.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       SnapshotApi api = pbApi.snapshotApi();
 
       try {
@@ -62,7 +62,7 @@ public class SnapshotApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       SnapshotApi api = pbApi.snapshotApi();
 
       try {
@@ -80,7 +80,7 @@ public class SnapshotApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/snapshot/snapshot.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       SnapshotApi api = pbApi.snapshotApi();
 
       String id = "qswdefrg-qaws-qaws-defe-rgrgdsvcxbrh";
@@ -103,7 +103,7 @@ public class SnapshotApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       SnapshotApi api = pbApi.snapshotApi();
 
       String id = "random-non-existing-id";
@@ -122,7 +122,7 @@ public class SnapshotApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/snapshot/snapshot-create.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       SnapshotApi api = pbApi.snapshotApi();
 
       String storageId = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
@@ -157,7 +157,7 @@ public class SnapshotApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/snapshot/snapshot-update.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       SnapshotApi api = pbApi.snapshotApi();
 
       String snapshotId = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
@@ -209,7 +209,7 @@ public class SnapshotApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/snapshot/snapshot-delete.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       SnapshotApi api = pbApi.snapshotApi();
 
       String snapshotId = "qswdefrg-qaws-qaws-defe-rgrgdsvcxbrh";
@@ -230,7 +230,7 @@ public class SnapshotApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       SnapshotApi api = pbApi.snapshotApi();
 
       String id = "random-non-existing-id";
@@ -249,7 +249,7 @@ public class SnapshotApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/snapshot/snapshot-rollback.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       SnapshotApi api = pbApi.snapshotApi();
 
       String snapshotId = "qswdefrg-qaws-qaws-defe-rgrgdsvcxbrh";

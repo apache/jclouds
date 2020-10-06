@@ -21,6 +21,9 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.http.config.JavaUrlHttpCommandExecutorServiceModule;
 import org.jclouds.softlayer.SoftLayerApi;
 import org.jclouds.softlayer.config.SoftLayerParserModule;
@@ -32,9 +35,6 @@ import org.jclouds.softlayer.parse.GetCreateObjectOptionsParseTest;
 import org.jclouds.softlayer.parse.VirtualGuestFilteredParseTest;
 import org.jclouds.softlayer.parse.VirtualGuestParseTest;
 import org.testng.annotations.Test;
-
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -93,7 +93,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testDeleteVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       try {
          assertTrue(api.deleteVirtualGuest(1301396));
          assertSent(server, "GET", "/SoftLayer_Virtual_Guest/1301396/deleteObject");
@@ -104,7 +104,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testDeleteNonExistingVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       try {
          assertFalse(api.deleteVirtualGuest(1301396));
          assertSent(server, "GET", "/SoftLayer_Virtual_Guest/1301396/deleteObject");
@@ -126,7 +126,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testGetNullCreateObjectOptions() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       try {
          assertNull(api.getCreateObjectOptions());
          assertSent(server, "GET", "/SoftLayer_Virtual_Guest/getCreateObjectOptions");
@@ -137,7 +137,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testRebootHardVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/datacenter_get.json")));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       try {
          api.rebootHardVirtualGuest(1301396);
          assertSent(server, "GET", "/SoftLayer_Virtual_Guest/1301396/rebootHard.json");
@@ -148,7 +148,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testRebootNonExistingVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       try {
          api.rebootHardVirtualGuest(1301396);
          assertSent(server, "GET", "/SoftLayer_Virtual_Guest/1301396/rebootHard.json");
@@ -159,7 +159,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testPauseVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/datacenter_get.json")));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       try {
          api.pauseVirtualGuest(1301396);
          assertSent(server, "GET", "/SoftLayer_Virtual_Guest/1301396/pause.json");
@@ -170,7 +170,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testPauseNonExistingVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       try {
          api.pauseVirtualGuest(1301396);
          assertSent(server, "GET", "/SoftLayer_Virtual_Guest/1301396/pause.json");
@@ -181,7 +181,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testResumeVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/datacenter_get.json")));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       try {
          api.resumeVirtualGuest(1301396);
          assertSent(server, "GET", "/SoftLayer_Virtual_Guest/1301396/resume.json");
@@ -192,7 +192,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testResumeNonExistingVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       try {
          api.resumeVirtualGuest(1301396);
          assertSent(server, "GET", "/SoftLayer_Virtual_Guest/1301396/resume.json");
@@ -203,7 +203,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testSetTagsOnVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/virtual_guest_set_tags_response.json")));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       VirtualGuest virtualGuest = createVirtualGuest();
       try {
          assertTrue(api.setTags(virtualGuest.getId(), ImmutableSet.of("test1", "test2", "test3")));
@@ -215,7 +215,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
 
    public void testSetTagsOnNonExistingVirtualGuest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      VirtualGuestApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestApi();
+      VirtualGuestApi api = api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestApi();
       VirtualGuest virtualGuest = createVirtualGuest();
       try {
          assertFalse(api.setTags(virtualGuest.getId(), ImmutableSet.of("test1", "test2", "test3")));
@@ -241,7 +241,7 @@ public class VirtualGuestApiMockTest extends BaseSoftLayerMockTest {
    }
 
    private VirtualGuestApi getVirtualGuestApi(MockWebServer server) {
-      return api(SoftLayerApi.class, server.getUrl("/").toString(), new
+      return api(SoftLayerApi.class, server.url("/").toString(), new
               JavaUrlHttpCommandExecutorServiceModule(), new SoftLayerParserModule()).getVirtualGuestApi();
    }
 

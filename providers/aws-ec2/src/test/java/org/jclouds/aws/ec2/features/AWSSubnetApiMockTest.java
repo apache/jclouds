@@ -20,6 +20,8 @@ import static org.jclouds.aws.ec2.options.ModifySubnetAttributeOptions.Builder.m
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.aws.ec2.internal.BaseAWSEC2ApiMockTest;
 import org.jclouds.aws.ec2.options.CreateSubnetOptions;
 import org.jclouds.ec2.domain.Subnet;
@@ -28,7 +30,6 @@ import org.testng.annotations.Test;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "AWSSubnetApiMockTest", singleThreaded = true)
 public class AWSSubnetApiMockTest extends BaseAWSEC2ApiMockTest {

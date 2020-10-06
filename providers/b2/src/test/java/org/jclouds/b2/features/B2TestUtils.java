@@ -23,20 +23,21 @@ import java.net.URL;
 import java.util.Set;
 import java.util.Properties;
 
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.b2.B2Api;
 import org.jclouds.util.Strings2;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 final class B2TestUtils {
    static B2Api api(String uri, String provider, Properties overrides) {
@@ -57,8 +58,8 @@ final class B2TestUtils {
 
    static MockWebServer createMockWebServer() throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
-      URL url = server.getUrl("");
+      server.start();
+      URL url = server.url("").url();
       return server;
    }
 
@@ -104,7 +105,7 @@ final class B2TestUtils {
       JsonParser parser = new JsonParser();
       JsonElement requestJson;
       try {
-         requestJson = parser.parse(new String(request.getBody(), Charsets.UTF_8));
+         requestJson = parser.parse(request.getBody().readUtf8());
       } catch (Exception e) {
          throw Throwables.propagate(e);
       }
@@ -119,7 +120,7 @@ final class B2TestUtils {
     * @see RecordedRequest
     */
    private static void assertContentTypeIsJson(RecordedRequest request) {
-      assertThat(request.getHeaders()).contains("Content-Type: application/json");
+      assertThat(request.getHeaders().values("Content-Type")).contains("application/json");
    }
 
    /**

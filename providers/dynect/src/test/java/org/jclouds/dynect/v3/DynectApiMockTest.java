@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.dynect.v3.DynECTExceptions.JobStillRunningException;
@@ -32,8 +35,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 @Test(singleThreaded = true)
 public class DynectApiMockTest {
@@ -61,9 +63,9 @@ public class DynectApiMockTest {
       MockWebServer server = new MockWebServer();
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(session));
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(running));
-      server.play();
+      server.start();
 
-      DynECTApi api = mockDynectApi(server.getUrl("/").toString());
+      DynECTApi api = mockDynectApi(server.url("/").toString());
 
       try {
          api.getZoneApi().list();
@@ -80,9 +82,9 @@ public class DynectApiMockTest {
       MockWebServer server = new MockWebServer();
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(session));
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(taskBlocking));
-      server.play();
+      server.start();
 
-      DynECTApi api = mockDynectApi(server.getUrl("/").toString());
+      DynECTApi api = mockDynectApi(server.url("/").toString());
 
       try {
          api.getZoneApi().list();
@@ -98,9 +100,9 @@ public class DynectApiMockTest {
       MockWebServer server = new MockWebServer();
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(session));
       server.enqueue(new MockResponse().setResponseCode(OK.getStatusCode()).setBody(targetExists));
-      server.play();
+      server.start();
 
-      DynECTApi api = mockDynectApi(server.getUrl("/").toString());
+      DynECTApi api = mockDynectApi(server.url("/").toString());
 
       try {
          api.getZoneApi().list();
