@@ -30,6 +30,10 @@ import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.azurecompute.arm.AzureComputeApi;
 import org.jclouds.azurecompute.arm.AzureComputeProviderMetadata;
@@ -54,9 +58,7 @@ import com.google.common.io.Resources;
 import com.google.gson.JsonParser;
 import com.google.inject.Module;
 import com.google.inject.TypeLiteral;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 public class BaseAzureComputeApiMockTest {
 
@@ -74,11 +76,11 @@ public class BaseAzureComputeApiMockTest {
    @BeforeMethod
    public void start() throws IOException, URISyntaxException {
       server = new MockWebServer();
-      server.play();
+      server.start();
       
       context = ContextBuilder.newBuilder(testProviderMetadata())
               .credentials("mock", MOCK_BEARER_TOKEN)
-              .endpoint(server.getUrl("/").toString() + "subscriptions/SUBSCRIPTIONID")
+              .endpoint(server.url("/").toString() + "subscriptions/SUBSCRIPTIONID")
               .modules(setupModules())
               .overrides(setupProperties())
               .build();
@@ -118,7 +120,7 @@ public class BaseAzureComputeApiMockTest {
    }
 
    protected String url(String path) {
-      return server.getUrl(path).toString();
+      return server.url(path).toString();
    }
 
    protected MockResponse jsonResponse(String resource) {
@@ -180,7 +182,7 @@ public class BaseAzureComputeApiMockTest {
          throws InterruptedException {
       RecordedRequest request = assertSent(server, method, path);
       assertEquals(request.getHeader("Content-Type"), "application/json");
-      assertEquals(parser.parse(new String(request.getBody(), Charsets.UTF_8)), parser.parse(json));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(json));
       return request;
    }
    
@@ -197,7 +199,7 @@ public class BaseAzureComputeApiMockTest {
          // Override the hardcoded service URIs to allow mocking service endpoints
          bind(new TypeLiteral<Supplier<URI>>() {
          }).annotatedWith(GraphRBAC.class).toInstance(
-               Suppliers.ofInstance(URI.create(server.getUrl("/graphrbac").toString() + "/tenant-id")));
+               Suppliers.ofInstance(URI.create(server.url("/graphrbac").toString() + "/tenant-id")));
       }
    }
 }

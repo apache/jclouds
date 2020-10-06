@@ -29,7 +29,16 @@ import java.net.Proxy;
 import java.net.URI;
 import java.util.Map;
 
+import javax.annotation.Nullable;
 import javax.inject.Named;
+
+import okhttp3.internal.http.HttpMethod;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import okio.BufferedSink;
 import okio.Okio;
@@ -51,12 +60,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableMultimap.Builder;
 import com.google.inject.Inject;
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+
 
 public final class OkHttpCommandExecutorService extends BaseHttpCommandExecutorService<Request> {
    private final Function<URI, Proxy> proxyForURI;
@@ -92,6 +96,11 @@ public final class OkHttpCommandExecutorService extends BaseHttpCommandExecutorS
          }
       }
 
+      // OkHttp requires body (at least empty one) for some type of the requests, so let's generate it
+      if (body == null && HttpMethod.requiresRequestBody(request.getMethod())) {
+         body = generateEmptyRequestBody(payload);
+      }
+
       builder.method(request.getMethod(), body);
 
       return builder.build();
@@ -115,6 +124,22 @@ public final class OkHttpCommandExecutorService extends BaseHttpCommandExecutorS
             builder.addHeader(entry.getKey(), entry.getValue());
          }
       }
+   }
+
+   private RequestBody generateEmptyRequestBody(final Payload payload) {
+      return new RequestBody() {
+         @Nullable @Override public MediaType contentType() {
+            return payload != null ? MediaType.parse(payload.getContentMetadata().getContentType()) : null;
+         }
+
+         @Override public void writeTo(BufferedSink sink) throws IOException {
+            // nothing to do
+         }
+
+         @Override public long contentLength() throws IOException {
+            return 0;
+         }
+      };
    }
 
    protected RequestBody generateRequestBody(final HttpRequest request, final Payload payload) {
@@ -147,8 +172,9 @@ public final class OkHttpCommandExecutorService extends BaseHttpCommandExecutorS
 
    @Override
    protected HttpResponse invoke(Request nativeRequest) throws IOException, InterruptedException {
-      OkHttpClient requestScopedClient = globalClient.clone();
-      requestScopedClient.setProxy(proxyForURI.apply(nativeRequest.uri()));
+      OkHttpClient requestScopedClient = globalClient.newBuilder()
+          .proxy(proxyForURI.apply(nativeRequest.url().uri()))
+          .build();
 
       Response response = requestScopedClient.newCall(nativeRequest).execute();
 

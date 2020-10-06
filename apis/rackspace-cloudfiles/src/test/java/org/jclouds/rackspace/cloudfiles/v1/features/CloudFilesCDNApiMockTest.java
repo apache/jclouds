@@ -35,6 +35,9 @@ import static org.testng.Assert.assertTrue;
 import java.net.URI;
 import java.util.List;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
 import org.jclouds.rackspace.cloudfiles.v1.CloudFilesApi;
 import org.jclouds.rackspace.cloudfiles.v1.domain.CDNContainer;
@@ -43,8 +46,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 /**
  * Tests the behavior of the {@link CloudFilesCDNApi}.
@@ -60,7 +62,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/cdn_container_list.json"))));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
          CDNApi cdnApi = api.getCDNApi("DFW");
 
          ImmutableList<CDNContainer> cdnContainers = cdnApi.list().toList();
@@ -81,7 +83,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
          CDNApi cdnApi = api.getCDNApi("DFW");
 
          List<CDNContainer> cdnContainers = cdnApi.list().toList();
@@ -102,7 +104,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/cdn_container_list_at.json"))));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
          ListCDNContainerOptions options = new ListCDNContainerOptions().marker("cdn-container-3");
          ImmutableList<CDNContainer> containers = api.getCDNApi("DFW").list(options).toList();
 
@@ -126,7 +128,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
          ListCDNContainerOptions options = ListCDNContainerOptions.Builder.marker("cdn-container-3");
          FluentIterable<CDNContainer> containers = api.getCDNApi("DFW").list(options);
 
@@ -147,7 +149,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(enabledResponse().setResponseCode(201)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          // enable a CDN Container
          URI enabledContainer = api.getCDNApi("DFW").enable("container-1");
@@ -167,7 +169,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(enabledResponse().setResponseCode(404)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
          // enable a CDN Container
          assertNull(api.getCDNApi("DFW").enable("container-1"));
 
@@ -185,7 +187,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(enabledResponse().setResponseCode(201)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          // enable a CDN Container with a TTL
          URI enabledContainer = api.getCDNApi("DFW").enable("container-1", 777777);
@@ -205,7 +207,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(enabledResponse().setResponseCode(404)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          // enable a CDN Container with a TTL
          URI enabledContainer = api.getCDNApi("DFW").enable("container-1", 777777);
@@ -225,7 +227,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(enabledResponse().setResponseCode(201)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          // disable a CDN Container
          assertTrue(api.getCDNApi("DFW").disable("container-1"));
@@ -244,7 +246,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(enabledResponse().setResponseCode(404)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          // disable a CDN Container
          boolean disbledContainer = api.getCDNApi("DFW").disable("container-1");
@@ -264,7 +266,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(enabledResponse().setResponseCode(201)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          CDNContainer cdnContainer = api.getCDNApi("DFW").get("container-1");
          assertCDNContainerNotNull(cdnContainer);
@@ -284,7 +286,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(enabledResponse().setResponseCode(201)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          CDNContainer cdnContainer = api.getCDNApi("DFW").get("cdn-container with spaces");
          assertCDNContainerNotNull(cdnContainer);
@@ -304,7 +306,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          CDNContainer cdnContainer = api.getCDNApi("DFW").get("container-1");
 
@@ -322,7 +324,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          // purge the object
          assertTrue(api.getCDNApi("DFW").purgeObject("myContainer", "myObject", emails));
@@ -341,7 +343,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          // purge the object
          assertFalse(api.getCDNApi("DFW").purgeObject("myContainer", "myObject", emails));
@@ -362,7 +364,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(updatedResponse().setResponseCode(200)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          CDNContainer cdnContainer = api.getCDNApi("DFW").get("container-1");
          assertCDNContainerNotNull(cdnContainer);
@@ -403,7 +405,7 @@ public class CloudFilesCDNApiMockTest extends BaseOpenStackMockTest<CloudFilesAp
       server.enqueue(addCommonHeaders(updatedResponse().setResponseCode(404)));
 
       try {
-         CloudFilesApi api = api(server.getUrl("/").toString(), "rackspace-cloudfiles");
+         CloudFilesApi api = api(server.url("/").toString(), "rackspace-cloudfiles");
 
          CDNContainer cdnContainer = api.getCDNApi("DFW").get("container-1");
          assertCDNContainerNotNull(cdnContainer);

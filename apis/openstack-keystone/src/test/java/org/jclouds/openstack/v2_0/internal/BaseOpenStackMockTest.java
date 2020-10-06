@@ -30,11 +30,16 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Pattern;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.QueueDispatcher;
+import okhttp3.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.SocketPolicy;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.util.Strings2;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.HttpHeaders;
@@ -43,10 +48,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.QueueDispatcher;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 public class BaseOpenStackMockTest<A extends Closeable> {
 
@@ -85,9 +87,9 @@ public class BaseOpenStackMockTest<A extends Closeable> {
 
    public static MockWebServer mockOpenStackServer() throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
-      URL url = server.getUrl("");
-      server.setDispatcher(getURLReplacingQueueDispatcher(url));
+      server.start();
+      URL url = server.url("").url();
+      server.setDispatcher(getURLReplacingQueueDispatcher(url.toString()));
       return server;
    }
 
@@ -95,7 +97,9 @@ public class BaseOpenStackMockTest<A extends Closeable> {
     * there's no built-in way to defer evaluation of a response header, hence
     * this method, which allows us to send back links to the mock server.
     */
-   public static QueueDispatcher getURLReplacingQueueDispatcher(final URL url) {
+   public static QueueDispatcher getURLReplacingQueueDispatcher(final String url) {
+      final String strippedUrl = url.endsWith("/") ? url.substring(0, url.length() - 1) : url;
+
       final QueueDispatcher dispatcher = new QueueDispatcher() {
          protected final BlockingQueue<MockResponse> responseQueue = new LinkedBlockingQueue<MockResponse>();
 
@@ -108,7 +112,7 @@ public class BaseOpenStackMockTest<A extends Closeable> {
                 * access.json or accessRackspace.json) for the declared service
                 * endpoints.
                 */
-               String newBody = urlTokenPattern.matcher(new String(response.getBody().readByteArray())).replaceAll(": \"" + url.toString());
+               String newBody = urlTokenPattern.matcher(new String(response.getBody().readByteArray())).replaceAll(": \"" + strippedUrl);
 
                response = response.setBody(newBody);
             }
@@ -118,6 +122,11 @@ public class BaseOpenStackMockTest<A extends Closeable> {
          @Override
          public void enqueueResponse(MockResponse response) {
             responseQueue.add(response);
+         }
+
+         @Override
+         public MockResponse peek() {
+            return super.peek().setSocketPolicy(SocketPolicy.EXPECT_CONTINUE);
          }
       };
 
@@ -187,7 +196,7 @@ public class BaseOpenStackMockTest<A extends Closeable> {
     * @see RecordedRequest
     */
    private void assertContentTypeIsJSON(RecordedRequest request) {
-      assertTrue(request.getHeaders().contains("Content-Type: application/json"));
+      assertTrue(request.getHeaders().values("Content-Type").contains("application/json"));
    }
 
    /**
@@ -224,7 +233,7 @@ public class BaseOpenStackMockTest<A extends Closeable> {
       JsonElement requestJson = null;  // to be compared
       JsonElement resourceJson;        // to be compared
       try {
-         requestJson = parser.parse(new String(request.getBody(), Charsets.UTF_8));
+         requestJson = parser.parse(request.getBody().readUtf8());
       } catch (Exception e) {
          Throwables.propagate(e);
       }

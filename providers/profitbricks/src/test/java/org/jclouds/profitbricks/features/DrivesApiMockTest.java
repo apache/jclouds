@@ -16,13 +16,14 @@
  */
 package org.jclouds.profitbricks.features;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+import static org.testng.Assert.assertNotNull;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.profitbricks.ProfitBricksApi;
 import org.jclouds.profitbricks.domain.Drive;
 import org.jclouds.profitbricks.internal.BaseProfitBricksMockTest;
-import static org.jclouds.profitbricks.internal.BaseProfitBricksMockTest.mockWebServer;
-import static org.testng.Assert.assertNotNull;
 import org.testng.annotations.Test;
 
 @Test(groups = "unit", testName = "DrivesApiMockTest")
@@ -33,7 +34,7 @@ public class DrivesApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/drives/drives-add.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       DrivesApi api = pbApi.drivesApi();
 
       String content = "<ws:addRomDriveToServer>"
@@ -62,7 +63,7 @@ public class DrivesApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/drives/drives-remove.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       DrivesApi api = pbApi.drivesApi();
 
       String content = "<ws:removeRomDriveFromServer>"

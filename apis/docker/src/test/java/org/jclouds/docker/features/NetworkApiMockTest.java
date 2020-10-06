@@ -21,6 +21,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import java.util.Map;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.docker.DockerApi;
 import org.jclouds.docker.config.DockerParserModule;
 import org.jclouds.docker.domain.Network;
@@ -31,8 +34,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 /**
  * Mock tests for the {@link NetworkApi} class.
@@ -42,7 +44,7 @@ public class NetworkApiMockTest extends BaseDockerMockTest {
 
    public void testListNetworks() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/networks.json")));
-      NetworkApi api = api(DockerApi.class, server.getUrl("/").toString()).getNetworkApi();
+      NetworkApi api = api(DockerApi.class, server.url("/").toString()).getNetworkApi();
       try {
          assertEquals(api.listNetworks(), new NetworksParseTest().expected());
          assertSent(server, "GET", "/networks");
@@ -53,7 +55,7 @@ public class NetworkApiMockTest extends BaseDockerMockTest {
 
    public void testListNonexistentNetworks() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      NetworkApi api = api(DockerApi.class, server.getUrl("/").toString()).getNetworkApi();
+      NetworkApi api = api(DockerApi.class, server.url("/").toString()).getNetworkApi();
       try {
          assertEquals(api.listNetworks(), ImmutableList.of());
          assertSent(server, "GET", "/networks");
@@ -64,7 +66,7 @@ public class NetworkApiMockTest extends BaseDockerMockTest {
 
    public void testGetNetwork() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/network.json")));
-      NetworkApi api = api(DockerApi.class, server.getUrl("/").toString(), new DockerParserModule()).getNetworkApi();
+      NetworkApi api = api(DockerApi.class, server.url("/").toString(), new DockerParserModule()).getNetworkApi();
       String networkId = "b03d4cd15b76f8876110615cdeed15eadf77c9beb408d62f1687dcc69192cd6d";
       try {
          assertEquals(api.inspectNetwork(networkId), new NetworkParseTest().expected());
@@ -76,7 +78,7 @@ public class NetworkApiMockTest extends BaseDockerMockTest {
 
    public void testCreateNetwork() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/network-creation.json")));
-      NetworkApi api = api(DockerApi.class, server.getUrl("/").toString()).getNetworkApi();
+      NetworkApi api = api(DockerApi.class, server.url("/").toString()).getNetworkApi();
 
       Map<String, String> options = ImmutableMap.<String, String> builder()
               .put("com.docker.network.bridge.default_bridge", "true")
@@ -118,7 +120,7 @@ public class NetworkApiMockTest extends BaseDockerMockTest {
 
    public void testRemoveNetwork() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(204));
-      NetworkApi api = api(DockerApi.class, server.getUrl("/").toString()).getNetworkApi();
+      NetworkApi api = api(DockerApi.class, server.url("/").toString()).getNetworkApi();
       String networkId = "6d35806c1bd2b25cd92bba2d2c2c5169dc2156f53ab45c2b62d76e2d2fee14a9";
       try {
          api.removeNetwork(networkId);
@@ -130,7 +132,7 @@ public class NetworkApiMockTest extends BaseDockerMockTest {
 
    public void testConnectContainerToNetwork() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(200));
-      NetworkApi api = api(DockerApi.class, server.getUrl("/").toString()).getNetworkApi();
+      NetworkApi api = api(DockerApi.class, server.url("/").toString()).getNetworkApi();
       try {
          api.connectContainerToNetwork("123456789", "containerName");
          assertSent(server, "POST", "/networks/123456789/connect", "{ \"Container\": \"containerName\" }");
@@ -141,7 +143,7 @@ public class NetworkApiMockTest extends BaseDockerMockTest {
 
    public void testDisconnectContainerFromNetwork() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(200));
-      NetworkApi api = api(DockerApi.class, server.getUrl("/").toString()).getNetworkApi();
+      NetworkApi api = api(DockerApi.class, server.url("/").toString()).getNetworkApi();
       try {
          api.disconnectContainerFromNetwork("123456789", "containerName");
          assertSent(server, "POST", "/networks/123456789/disconnect", "{ \"Container\": \"containerName\" }");

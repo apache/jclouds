@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.CreateFirewall;
 import org.jclouds.openstack.neutron.v2.domain.CreateFirewallPolicy;
@@ -44,8 +47,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 /**
  * Tests Floating Api Guice wiring and parsing
@@ -62,7 +63,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          CreateFirewall firewallRequest = CreateFirewall.builder()
@@ -103,7 +104,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/firewall_list_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          PaginatedCollection<Firewall> firewalls = api.list(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -135,7 +136,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/floatingip_list_response_paged2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FloatingIPApi api = neutronApi.getFloatingIPApi("RegionOne");
 
          // Note: Lazy! Have to actually look at the collection.
@@ -169,7 +170,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          Firewall firewall = api.get("12345");
@@ -206,7 +207,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_update_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          UpdateFirewall updateFirewall = UpdateFirewall.builder()
@@ -242,7 +243,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          boolean result = api.delete("12345");
@@ -272,7 +273,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
               new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_policy_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          CreateFirewallPolicy firewallPolicyRequest = CreateFirewallPolicy.builder()
@@ -313,7 +314,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
               new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_policy_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          FirewallPolicy firewallPolicy = api.getFirewallPolicy("12345");
@@ -350,7 +351,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
               new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_policy_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          UpdateFirewallPolicy updateFirewallPolicy = UpdateFirewallPolicy.builder()
@@ -391,7 +392,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
               new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_policy_insert_rule_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          FirewallPolicy updatedFirewallPolicy = api.insertFirewallRuleToPolicy("12345", "59585143-e819-48c9-944d-f03e0f049dba");
@@ -422,7 +423,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
               new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_rule_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          CreateFirewallRule firewallRuleRequest = CreateFirewallRule.builder()
@@ -469,7 +470,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
               new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_rule_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          FirewallRule firewallRule = api.getFirewallRule("12345");
@@ -508,7 +509,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
               new MockResponse().setResponseCode(201).setBody(stringFromResource("/firewall_rule_update_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          UpdateFirewallRule updateFirewallRule = UpdateFirewallRule.builder()
@@ -542,7 +543,7 @@ public class FWaaSApiMockTest extends BaseNeutronApiMockTest {
               new MockResponse().setResponseCode(201)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FWaaSApi api = neutronApi.getFWaaSApi("RegionOne").get();
 
          boolean result = api.deleteFirewallRule("12345");

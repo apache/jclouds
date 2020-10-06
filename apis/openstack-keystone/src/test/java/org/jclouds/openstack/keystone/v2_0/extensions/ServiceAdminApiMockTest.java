@@ -21,6 +21,10 @@ import static org.testng.Assert.assertNotNull;
 
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.collect.PagedIterable;
 import org.jclouds.openstack.keystone.v2_0.KeystoneApi;
 import org.jclouds.openstack.keystone.v2_0.domain.Service;
@@ -30,9 +34,7 @@ import org.jclouds.openstack.v2_0.options.PaginationOptions;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Tests ServiceApi Guice wiring and parsing
@@ -54,7 +56,7 @@ public class ServiceAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> 
             stringFromResource("/service_list_response.json"))));
 
       try {
-         KeystoneApi keystoneApi = api(server.getUrl("/").toString(), "openstack-keystone");
+         KeystoneApi keystoneApi = api(server.url("/").toString(), "openstack-keystone");
          ServiceAdminApi serviceAdminApi = keystoneApi.getServiceAdminApi().get();
          PagedIterable<? extends Service> services = serviceAdminApi.list();
 
@@ -80,7 +82,7 @@ public class ServiceAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> 
             stringFromResource("/service_list_response.json"))));
 
       try {
-         KeystoneApi keystoneApi = api(server.getUrl("/").toString(), "openstack-keystone");
+         KeystoneApi keystoneApi = api(server.url("/").toString(), "openstack-keystone");
          ServiceAdminApi serviceAdminApi = keystoneApi.getServiceAdminApi().get();
          PaginatedCollection<? extends Service> services = serviceAdminApi.list(new PaginationOptions());
 
@@ -106,7 +108,7 @@ public class ServiceAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> 
             stringFromResource("/service_create_response.json"))));
 
       try {
-         KeystoneApi keystoneApi = api(server.getUrl("/").toString(), "openstack-keystone");
+         KeystoneApi keystoneApi = api(server.url("/").toString(), "openstack-keystone");
          ServiceAdminApi serviceAdminApi = keystoneApi.getServiceAdminApi().get();
          Service testService = serviceAdminApi.create("jclouds-service-test", "jclouds-service-type",
                "jclouds-service-description");
@@ -119,7 +121,7 @@ public class ServiceAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> 
          assertExtensions(server);
          RecordedRequest createServiceRequest = server.takeRequest();
          assertEquals(createServiceRequest.getRequestLine(), "POST /OS-KSADM/services HTTP/1.1");
-         String bodyRequest = new String(createServiceRequest.getBody());
+         String bodyRequest = createServiceRequest.getBody().readUtf8();
          assertEquals(
                bodyRequest,
                "{\"OS-KSADM:service\":{\"name\":\"jclouds-service-test\",\"type\":\"jclouds-service-type\",\"description\":\"jclouds-service-description\"}}");
@@ -136,7 +138,7 @@ public class ServiceAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> 
             stringFromResource("/service_create_response.json"))));
 
       try {
-         KeystoneApi keystoneApi = api(server.getUrl("/").toString(), "openstack-keystone");
+         KeystoneApi keystoneApi = api(server.url("/").toString(), "openstack-keystone");
          ServiceAdminApi serviceAdminApi = keystoneApi.getServiceAdminApi().get();
          Service service = serviceAdminApi.get("s1000");
 
@@ -163,7 +165,7 @@ public class ServiceAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> 
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(204)));
 
       try {
-         KeystoneApi keystoneApi = api(server.getUrl("/").toString(), "openstack-keystone");
+         KeystoneApi keystoneApi = api(server.url("/").toString(), "openstack-keystone");
          ServiceAdminApi serviceAdminApi = keystoneApi.getServiceAdminApi().get();
          serviceAdminApi.delete("s1000");
 

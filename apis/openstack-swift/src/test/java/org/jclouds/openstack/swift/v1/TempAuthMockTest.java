@@ -26,6 +26,10 @@ import static org.testng.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Properties;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.openstack.swift.v1.reference.TempAuthHeaders;
@@ -34,9 +38,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 @Test(groups = "unit", testName = "TempAuthMockTest", singleThreaded = true)
 public class TempAuthMockTest {
@@ -63,11 +65,11 @@ public class TempAuthMockTest {
    private void test(Properties overrides, String identityHeaderName, String identityHeaderPass) throws Exception{
        tempAuthServer.enqueue(new MockResponse().setResponseCode(204)
             .addHeader("X-Auth-Token", "token")
-            .addHeader("X-Storage-Url", swiftServer.getUrl("").toString()));
+            .addHeader("X-Storage-Url", swiftServer.url("").toString()));
 
       swiftServer.enqueue(new MockResponse().setBody("[{\"name\":\"test_container_1\",\"count\":2,\"bytes\":78}]"));
 
-      SwiftApi api = api(tempAuthServer.getUrl("").toString(), overrides);
+      SwiftApi api = api(tempAuthServer.url("").toString(), overrides);
 
       // Region name is derived from the swift server host.
       assertEquals(api.getConfiguredRegions(), ImmutableSet.of(tempAuthServer.getHostName()));
@@ -100,10 +102,10 @@ public class TempAuthMockTest {
    @BeforeMethod
    public void start() throws IOException {
       tempAuthServer = new MockWebServer();
-      tempAuthServer.play();
+      tempAuthServer.start();
 
       swiftServer = new MockWebServer();
-      swiftServer.play();
+      swiftServer.start();
    }
 
    @AfterMethod(alwaysRun = true)

@@ -20,14 +20,15 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.softlayer.SoftLayerApi;
 import org.jclouds.softlayer.internal.BaseSoftLayerMockTest;
 import org.jclouds.softlayer.parse.PublicImagesParseTest;
 import org.jclouds.softlayer.parse.VirtualGuestBlockDeviceTemplateGroupParseTest;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 /**
  * Mock tests for the {@link VirtualGuestBlockDeviceTemplateGroupApi} class.
@@ -80,7 +81,7 @@ public class VirtualGuestBlockDeviceTemplateGroupApiMockTest extends BaseSoftLay
    }
 
    private VirtualGuestBlockDeviceTemplateGroupApi getVirtualGuestBlockDeviceTemplateGroupApi(MockWebServer server) {
-      return api(SoftLayerApi.class, server.getUrl("/").toString()).getVirtualGuestBlockDeviceTemplateGroupApi();
+      return api(SoftLayerApi.class, server.url("/").toString()).getVirtualGuestBlockDeviceTemplateGroupApi();
    }
 
 }

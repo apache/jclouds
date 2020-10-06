@@ -21,6 +21,8 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.aws.ec2.domain.VPC;
 import org.jclouds.aws.ec2.internal.BaseAWSEC2ApiMockTest;
 import org.jclouds.aws.ec2.options.CreateVpcOptions;
@@ -28,7 +30,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "VPCApiMockTest", singleThreaded = true)
 public class VPCApiMockTest extends BaseAWSEC2ApiMockTest {

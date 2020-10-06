@@ -16,9 +16,10 @@
  */
 package org.jclouds.azurecompute.arm.features;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.azurecompute.arm.domain.Deployment;
 import org.jclouds.azurecompute.arm.domain.Deployment.ProvisioningState;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 import org.jclouds.azurecompute.arm.internal.BaseAzureComputeApiMockTest;
 import org.testng.annotations.Test;
 

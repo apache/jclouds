@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIPs;
@@ -32,8 +35,6 @@ import org.jclouds.openstack.neutron.v2.internal.BaseNeutronApiMockTest;
 import org.jclouds.openstack.v2_0.options.PaginationOptions;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 /**
  * Tests Floating Api Guice wiring and parsing
@@ -49,7 +50,7 @@ public class FloatingIPApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/floatingip_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FloatingIPApi api = neutronApi.getFloatingIPApi("RegionOne");
 
          FloatingIP.CreateFloatingIP createFip = FloatingIP.createBuilder("376da547-b977-4cfe-9cba-275c80debf57")
@@ -88,7 +89,7 @@ public class FloatingIPApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/floatingip_list_response_paged1.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FloatingIPApi api = neutronApi.getFloatingIPApi("RegionOne");
 
          FloatingIPs floatingIPs = api.list(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -119,7 +120,7 @@ public class FloatingIPApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/floatingip_list_response_paged2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FloatingIPApi api = neutronApi.getFloatingIPApi("RegionOne");
 
          // Note: Lazy! Have to actually look at the collection.
@@ -152,7 +153,7 @@ public class FloatingIPApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/floatingip_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FloatingIPApi api = neutronApi.getFloatingIPApi("RegionOne");
 
          FloatingIP floatingIP = api.get("12345");
@@ -188,7 +189,7 @@ public class FloatingIPApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/floatingip_update_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FloatingIPApi api = neutronApi.getFloatingIPApi("RegionOne");
 
          FloatingIP.UpdateFloatingIP updateFloatingIP = FloatingIP.updateBuilder()
@@ -222,7 +223,7 @@ public class FloatingIPApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/floatingip_update_dissociate_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FloatingIPApi api = neutronApi.getFloatingIPApi("RegionOne");
 
          FloatingIP.UpdateFloatingIP updateFloatingIP = FloatingIP.updateBuilder().build();
@@ -254,7 +255,7 @@ public class FloatingIPApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          FloatingIPApi api = neutronApi.getFloatingIPApi("RegionOne");
 
          boolean result = api.delete("12345");

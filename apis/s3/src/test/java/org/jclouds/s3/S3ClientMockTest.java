@@ -29,6 +29,11 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.SocketPolicy;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.http.okhttp.config.OkHttpCommandExecutorServiceModule;
@@ -39,9 +44,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 @Test(singleThreaded = true)
 public class S3ClientMockTest {
@@ -63,9 +66,9 @@ public class S3ClientMockTest {
    public void testZeroLengthPutHasContentLengthHeader() throws IOException, InterruptedException {
       MockWebServer server = new MockWebServer();
       server.enqueue(new MockResponse().addHeader(ETAG, "ABCDEF"));
-      server.play();
+      server.start();
 
-      S3Client client = getS3Client(server.getUrl("/"));
+      S3Client client = getS3Client(server.url("/").url());
       S3Object nada = client.newS3Object();
       nada.getMetadata().setKey("object");
       nada.setPayload(new byte[] {});
@@ -74,17 +77,17 @@ public class S3ClientMockTest {
 
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(), "PUT /bucket/object HTTP/1.1");
-      assertEquals(request.getHeaders(CONTENT_LENGTH), ImmutableList.of("0"));
-      assertThat(request.getHeaders(EXPECT)).isEmpty();
+      assertEquals(request.getHeaders().values(CONTENT_LENGTH), ImmutableList.of("0"));
+      assertThat(request.getHeader(EXPECT)).isNull();
       server.shutdown();
    }
 
    public void testDirectorySeparator() throws IOException, InterruptedException {
       MockWebServer server = new MockWebServer();
-      server.enqueue(new MockResponse().setBody("").addHeader(ETAG, "ABCDEF"));
-      server.play();
+      server.enqueue(new MockResponse().setBody("").addHeader(ETAG, "ABCDEF").setSocketPolicy(SocketPolicy.EXPECT_CONTINUE));
+      server.start();
 
-      S3Client client = getS3Client(server.getUrl("/"));
+      S3Client client = getS3Client(server.url("/").url());
       S3Object fileInDir = client.newS3Object();
       fileInDir.getMetadata().setKey("someDir/fileName");
       fileInDir.setPayload(new byte[] { 1, 2, 3, 4 });
@@ -93,7 +96,7 @@ public class S3ClientMockTest {
 
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(), "PUT /bucket/someDir/fileName HTTP/1.1");
-      assertEquals(request.getHeaders(EXPECT), ImmutableList.of("100-continue"));
+      assertEquals(request.getHeaders().values(EXPECT), ImmutableList.of("100-continue"));
 
       server.shutdown();
    }
@@ -104,11 +107,11 @@ public class S3ClientMockTest {
               "   <LastModified>2009-10-28T22:32:00</LastModified>\n" +
               "   <ETag>\"9b2cf535f27731c974343645a3985328\"</ETag>\n" +
               " </CopyObjectResult>"));
-      server.play();
-      S3Client client = getS3Client(server.getUrl("/"));
+      server.start();
+      S3Client client = getS3Client(server.url("/").url());
       client.copyObject("sourceBucket", "apples#?:$&'\"<>čॐ", "destinationBucket", "destinationObject", CopyObjectOptions.NONE);
       RecordedRequest request = server.takeRequest();
-      assertEquals(request.getHeaders("x-amz-copy-source"), ImmutableList.of("/sourceBucket/apples%23%3F%3A%24%26%27%22%3C%3E%C4%8D%E0%A5%90"));
+      assertEquals(request.getHeaders().values("x-amz-copy-source"), ImmutableList.of("/sourceBucket/apples%23%3F%3A%24%26%27%22%3C%3E%C4%8D%E0%A5%90"));
       server.shutdown();
    }
 }

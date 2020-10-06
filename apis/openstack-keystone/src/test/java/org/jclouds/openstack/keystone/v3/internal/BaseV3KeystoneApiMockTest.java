@@ -27,6 +27,10 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.http.okhttp.config.OkHttpCommandExecutorServiceModule;
@@ -48,9 +52,7 @@ import com.google.common.io.Resources;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonParser;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 public class BaseV3KeystoneApiMockTest {
    
@@ -68,7 +70,7 @@ public class BaseV3KeystoneApiMockTest {
    @BeforeMethod
    public void start() throws IOException {
       server = new MockWebServer();
-      server.play();
+      server.start();
       
       ApiContext<KeystoneApi> ctx = ContextBuilder.newBuilder("openstack-keystone-3")
               .credentials("domain:identity", "credential")
@@ -103,7 +105,7 @@ public class BaseV3KeystoneApiMockTest {
    }
 
    protected String url(String path) {
-      return server.getUrl(path).toString();
+      return server.url(path).toString();
    }
    
    protected void enqueueAuthentication(MockWebServer server) {
@@ -178,7 +180,7 @@ public class BaseV3KeystoneApiMockTest {
    
    private void assertBody(RecordedRequest request, String body) {
       assertEquals(request.getHeader("Content-Type"), "application/json");
-      assertEquals(parser.parse(new String(request.getBody(), Charsets.UTF_8)), parser.parse(body));
+      assertEquals(parser.parse(request.getBody().readUtf8()), parser.parse(body));
    }
 
    protected Token tokenFromResource(String resource) {

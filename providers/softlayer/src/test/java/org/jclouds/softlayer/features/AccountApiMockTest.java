@@ -19,6 +19,9 @@ package org.jclouds.softlayer.features;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.http.config.JavaUrlHttpCommandExecutorServiceModule;
 import org.jclouds.softlayer.SoftLayerApi;
 import org.jclouds.softlayer.config.SoftLayerParserModule;
@@ -27,8 +30,6 @@ import org.jclouds.softlayer.parse.VirtualGuestBlockDeviceTemplateGroupsParseTes
 import org.jclouds.softlayer.parse.VirtualGuestsParseTest;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 /**
  * Mock tests for the {@link org.jclouds.softlayer.features.AccountApi} class.
@@ -60,7 +61,7 @@ public class AccountApiMockTest extends BaseSoftLayerMockTest {
 
    public void testGetBlockDeviceTemplateGroups() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/account_get_block_devices_template_groups.json")));
-      AccountApi api = api(SoftLayerApi.class, server.getUrl("/").toString()).getAccountApi();
+      AccountApi api = api(SoftLayerApi.class, server.url("/").toString()).getAccountApi();
       try {
          assertEquals(api.getBlockDeviceTemplateGroups(), new VirtualGuestBlockDeviceTemplateGroupsParseTest().expected());
          assertSent(server, "GET", "/SoftLayer_Account/getBlockDeviceTemplateGroups?objectMask=children.blockDevices.diskImage.softwareReferences.softwareDescription");
@@ -81,7 +82,7 @@ public class AccountApiMockTest extends BaseSoftLayerMockTest {
    }
 
    private AccountApi getAccountApi(MockWebServer server) {
-      return api(SoftLayerApi.class, server.getUrl("/").toString(), new
+      return api(SoftLayerApi.class, server.url("/").toString(), new
               JavaUrlHttpCommandExecutorServiceModule(), new SoftLayerParserModule()).getAccountApi();
    }
 

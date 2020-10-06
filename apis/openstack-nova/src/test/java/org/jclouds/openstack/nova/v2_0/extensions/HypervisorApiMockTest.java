@@ -19,8 +19,10 @@ package org.jclouds.openstack.nova.v2_0.extensions;
 import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.regionscoped.Hypervisor;
 import org.jclouds.openstack.nova.v2_0.domain.regionscoped.HypervisorDetails;
@@ -58,7 +60,7 @@ public class HypervisorApiMockTest extends BaseOpenStackMockTest<NovaApi> {
       MockWebServer server = servers.get(method.getName());
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/extension_list_full.json"))));
 
-      NovaApi novaApi = api(server.getUrl("/").toString(), "openstack-nova");
+      NovaApi novaApi = api(server.url("/").toString(), "openstack-nova");
       assertEquals(novaApi.getConfiguredRegions(), ImmutableSet.of("RegionOne", "RegionTwo", "RegionThree"));
 
       Optional<HypervisorApi> hypervisorApi = novaApi.getHypervisorApi("RegionOne");
@@ -72,7 +74,7 @@ public class HypervisorApiMockTest extends BaseOpenStackMockTest<NovaApi> {
       MockWebServer server = servers.get(method.getName());
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/extension_list.json"))));
 
-      NovaApi novaApi = api(server.getUrl("/").toString(), "openstack-nova");
+      NovaApi novaApi = api(server.url("/").toString(), "openstack-nova");
       assertEquals(novaApi.getConfiguredRegions(), ImmutableSet.of("RegionOne", "RegionTwo", "RegionThree"));
 
       Optional<HypervisorApi> hypervisorApi = novaApi.getHypervisorApi("RegionOne");
@@ -87,7 +89,7 @@ public class HypervisorApiMockTest extends BaseOpenStackMockTest<NovaApi> {
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/extension_list_full.json"))));
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/hypervisor_list.json"))));
 
-      NovaApi novaApi = api(server.getUrl("/").toString(), "openstack-nova");
+      NovaApi novaApi = api(server.url("/").toString(), "openstack-nova");
       assertEquals(novaApi.getConfiguredRegions(), ImmutableSet.of("RegionOne", "RegionTwo", "RegionThree"));
 
       FluentIterable<? extends Hypervisor> hypervisors = novaApi.getHypervisorApi("RegionOne").get().list();
@@ -106,7 +108,7 @@ public class HypervisorApiMockTest extends BaseOpenStackMockTest<NovaApi> {
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/extension_list_full.json"))));
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/hypervisor_details.json"))));
 
-      NovaApi novaApi = api(server.getUrl("/").toString(), "openstack-nova");
+      NovaApi novaApi = api(server.url("/").toString(), "openstack-nova");
       assertEquals(novaApi.getConfiguredRegions(), ImmutableSet.of("RegionOne", "RegionTwo", "RegionThree"));
 
       FluentIterable<? extends HypervisorDetails> hypervisors = novaApi.getHypervisorApi("RegionOne").get().listInDetail();

@@ -33,6 +33,10 @@ import java.util.Set;
 
 import javax.ws.rs.core.Response;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.Constants;
 import org.jclouds.ContextBuilder;
 import org.jclouds.aws.ec2.AWSEC2Api;
@@ -48,14 +52,10 @@ import org.jclouds.rest.ConfiguresHttpApi;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.inject.Module;
 import com.google.inject.Provides;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 /**
  * Tests need to run {@code singleThreaded = true} as otherwise tests will clash on the regionToServers field.
@@ -84,7 +84,7 @@ public class BaseAWSEC2ApiMockTest {
       overrides.setProperty(ComputeServiceProperties.TIMEOUT_CLEANUP_INCIDENTAL_RESOURCES, "0");
       return ContextBuilder.newBuilder(new AWSEC2ProviderMetadata())
             .credentials(ACCESS_KEY, SECRET_KEY)
-            .endpoint(defaultServer.getUrl("").toString())
+            .endpoint(defaultServer.url("").toString())
             .overrides(overrides)
             .modules(modules);
    }
@@ -122,7 +122,7 @@ public class BaseAWSEC2ApiMockTest {
    @BeforeMethod(alwaysRun = true)
    public void start() throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       regionToServers.put(DEFAULT_REGION, server);
    }
 
@@ -145,11 +145,11 @@ public class BaseAWSEC2ApiMockTest {
          describeRegionsResponse.append("<regionName>").append(region).append("</regionName>");
          if (!regionToServers.containsKey(region)) {
             MockWebServer server = new MockWebServer();
-            server.play();
+            server.start();
             regionToServers.put(region, server);
          }
          MockWebServer server = regionToServers.get(region);
-         String regionEndpoint = server.getUrl("").toString();
+         String regionEndpoint = server.url("").toString();
          describeRegionsResponse.append("<regionEndpoint>").append(regionEndpoint).append("</regionEndpoint>");
          describeRegionsResponse.append("</item>");
       }
@@ -196,7 +196,7 @@ public class BaseAWSEC2ApiMockTest {
       assertThat(
             request.getHeader(AUTHORIZATION)).startsWith("AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/20120416/" +
             region + "/ec2/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=");
-      String body = new String(request.getBody(), Charsets.UTF_8);
+      String body = request.getBody().readUtf8();
       assertThat(body).contains("&Version=" + apiVersion);
       assertEquals(body.replace("&Version=" + apiVersion, ""), postParams);
       return request;

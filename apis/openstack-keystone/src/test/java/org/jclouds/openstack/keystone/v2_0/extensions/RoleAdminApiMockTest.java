@@ -22,6 +22,10 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.openstack.keystone.v2_0.KeystoneApi;
 import org.jclouds.openstack.keystone.v2_0.domain.Role;
 import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
@@ -29,9 +33,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Tests RoleApi Guice wiring and parsing
@@ -52,7 +54,7 @@ public class RoleAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
             stringFromResource("/role_list_response.json"))));
 
       try {
-         KeystoneApi keystoneApi = api(server.getUrl("/").toString(), "openstack-keystone");
+         KeystoneApi keystoneApi = api(server.url("/").toString(), "openstack-keystone");
          RoleAdminApi roleAdminApi = keystoneApi.getRoleAdminApi().get();
          FluentIterable<? extends Role> roles = roleAdminApi.list();
 
@@ -78,7 +80,7 @@ public class RoleAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
             stringFromResource("/role_create_response.json"))));
 
       try {
-         KeystoneApi keystoneApi = api(server.getUrl("/").toString(), "openstack-keystone");
+         KeystoneApi keystoneApi = api(server.url("/").toString(), "openstack-keystone");
          RoleAdminApi roleAdminApi = keystoneApi.getRoleAdminApi().get();
          Role testRole = roleAdminApi.create("jclouds-role");
 
@@ -90,7 +92,7 @@ public class RoleAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
          assertExtensions(server);
          RecordedRequest createRoleRequest = server.takeRequest();
          assertEquals(createRoleRequest.getRequestLine(), "POST /OS-KSADM/roles HTTP/1.1");
-         assertEquals(new String(createRoleRequest.getBody()), "{\"role\":{\"name\":\"jclouds-role\"}}");
+         assertEquals(createRoleRequest.getBody().readUtf8(), "{\"role\":{\"name\":\"jclouds-role\"}}");
       } finally {
          server.shutdown();
       }
@@ -104,7 +106,7 @@ public class RoleAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
             stringFromResource("/role_create_response.json"))));
 
       try {
-         KeystoneApi keystoneApi = api(server.getUrl("/").toString(), "openstack-keystone");
+         KeystoneApi keystoneApi = api(server.url("/").toString(), "openstack-keystone");
          RoleAdminApi roleAdminApi = keystoneApi.getRoleAdminApi().get();
          Role role = roleAdminApi.get("r1000");
 
@@ -131,7 +133,7 @@ public class RoleAdminApiMockTest extends BaseOpenStackMockTest<KeystoneApi> {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(204)));
 
       try {
-         KeystoneApi keystoneApi = api(server.getUrl("/").toString(), "openstack-keystone");
+         KeystoneApi keystoneApi = api(server.url("/").toString(), "openstack-keystone");
          RoleAdminApi roleAdminApi = keystoneApi.getRoleAdminApi().get();
          boolean success = roleAdminApi.delete("r1000");
 

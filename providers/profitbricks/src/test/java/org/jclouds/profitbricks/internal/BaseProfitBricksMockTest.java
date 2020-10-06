@@ -27,16 +27,17 @@ import java.util.Set;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.ContextBuilder;
 import org.jclouds.http.filters.BasicAuthentication;
 import org.jclouds.profitbricks.ProfitBricksApi;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Base class for all ProfitBricks mock test
@@ -74,13 +75,13 @@ public class BaseProfitBricksMockTest {
 
    public static MockWebServer mockWebServer() throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       return server;
    }
 
-   public byte[] payloadFromResource(String resource) {
+   public String payloadFromResource(String resource) {
       try {
-         return toStringAndClose(getClass().getResourceAsStream(resource)).getBytes(Charsets.UTF_8);
+         return toStringAndClose(getClass().getResourceAsStream(resource));
       } catch (IOException e) {
          throw Throwables.propagate(e);
       }
@@ -98,7 +99,7 @@ public class BaseProfitBricksMockTest {
    }
 
    protected static void assertRequestHasCommonProperties(final RecordedRequest request, String content) {
-      assertEquals(new String(request.getBody()), payloadSoapWithBody(content));
+      assertEquals(request.getBody().readUtf8(), payloadSoapWithBody(content));
       assertRequestHasCommonProperties(request);
    }
 }

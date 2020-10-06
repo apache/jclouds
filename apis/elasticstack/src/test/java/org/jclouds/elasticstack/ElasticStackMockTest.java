@@ -27,17 +27,18 @@ import java.util.Set;
 
 import javax.ws.rs.core.HttpHeaders;
 
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.elasticstack.domain.StandardDrive;
 import org.jclouds.http.BaseMockWebServerTest;
 import org.jclouds.http.config.JavaUrlHttpCommandExecutorServiceModule;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Mock tests for the {@link ElasticStackApi} class.
@@ -48,7 +49,7 @@ public class ElasticStackMockTest extends BaseMockWebServerTest {
    public void testListStandardDrives() throws IOException, InterruptedException {
       MockWebServer server = mockWebServer(new MockResponse()
             .setBody(payloadFromResource("/standard_drives_uuids.txt")));
-      ElasticStackApi api = api(ElasticStackApi.class, server.getUrl("/").toString());
+      ElasticStackApi api = api(ElasticStackApi.class, server.url("/").toString());
 
       try {
          Set<String> standardDrives = api.listStandardDrives();
@@ -65,7 +66,7 @@ public class ElasticStackMockTest extends BaseMockWebServerTest {
 
    public void testListStandardDriveInfo() throws IOException, InterruptedException {
       MockWebServer server = mockWebServer(new MockResponse().setBody(payloadFromResource("/standard_drives.txt")));
-      ElasticStackApi api = api(ElasticStackApi.class, server.getUrl("/").toString());
+      ElasticStackApi api = api(ElasticStackApi.class, server.url("/").toString());
 
       try {
          Set<StandardDrive> standardDrives = api.listStandardDriveInfo();
@@ -84,9 +85,9 @@ public class ElasticStackMockTest extends BaseMockWebServerTest {
       assertEquals(request.getHeader(HttpHeaders.AUTHORIZATION), "Basic dXVpZDphcGlrZXk=");
    }
 
-   private byte[] payloadFromResource(String resource) {
+   private String payloadFromResource(String resource) {
       try {
-         return toStringAndClose(getClass().getResourceAsStream(resource)).getBytes(Charsets.UTF_8);
+         return toStringAndClose(getClass().getResourceAsStream(resource));
       } catch (IOException e) {
          throw Throwables.propagate(e);
       }

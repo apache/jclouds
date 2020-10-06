@@ -24,6 +24,9 @@ import static org.testng.Assert.assertTrue;
 import java.io.IOException;
 import java.util.List;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.lbaas.v1.HealthMonitor;
 import org.jclouds.openstack.neutron.v2.domain.lbaas.v1.HealthMonitors;
@@ -44,8 +47,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 @Test
 public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
@@ -56,7 +58,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/extension_list_with_lbaas_v1_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          Optional<LBaaSApi> lbaasApiExtension = neutronApi.getLBaaSApi("RegionOne");
 
          assertAuthentication(server);
@@ -77,7 +79,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/extension_list_without_lbaas_v1_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          Optional<LBaaSApi> lbaasApiExtension = neutronApi.getLBaaSApi("RegionOne");
 
          assertAuthentication(server);
@@ -99,7 +101,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/pool_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          Pool.CreatePool createPool = Pool.createBuilder("8032909d-47a1-4715-90af-5153ffe39861", Protocol.TCP, Pool.ROUND_ROBIN)
@@ -148,7 +150,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/pool_list_response_paged1.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          Pools pools = lbaasApi.listPools(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -179,7 +181,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/lbaas/v1/pool_list_response_paged2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          // Note: Lazy! Have to actually look at the collection.
@@ -213,7 +215,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/pool_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          Pool pool = lbaasApi.getPool("72741b06-df4d-4715-b142-276b6bce75ab");
@@ -259,7 +261,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/pool_update_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          Pool.UpdatePool updatePool = Pool.updateBuilder().name("new_name").description("new description").lbMethod("NEW_LB_METHOD")
@@ -310,7 +312,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(204)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          boolean result = lbaasApi.deletePool("72741b06-df4d-4715-b142-276b6bce75ab");
@@ -338,7 +340,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/member_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          Member.CreateMember createMember = Member.createBuilder("72741b06-df4d-4715-b142-276b6bce75ab", null, 80)
@@ -378,7 +380,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/member_list_response_paged1.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          Members members = lbaasApi.listMembers(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -409,7 +411,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/lbaas/v1/member_list_response_paged2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          // Note: Lazy! Have to actually look at the collection.
@@ -443,7 +445,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/member_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          Member member = lbaasApi.getMember("48a471ea-64f1-4eb6-9be7-dae6bbe40a0f");
@@ -480,7 +482,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/member_update_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          Member.UpdateMember updateMember = Member.updateBuilder().poolId("new_pool_id").weight(2)
@@ -520,7 +522,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(204)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          boolean result = lbaasApi.deleteMember("48a471ea-64f1-4eb6-9be7-dae6bbe40a0f");
@@ -548,7 +550,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/vip_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          VIP.CreateVIP createVIP = VIP.createBuilder("8032909d-47a1-4715-90af-5153ffe39861", Protocol.HTTP, 80, "61b1f87a-7a21-4ad3-9dda-7f81d249944f")
@@ -594,7 +596,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/vip_list_response_paged1.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          VIPs vips = lbaasApi.listVIPs(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -625,7 +627,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/lbaas/v1/vip_list_response_paged2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          // Note: Lazy! Have to actually look at the collection.
@@ -659,7 +661,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/vip_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          VIP vip = lbaasApi.getVIP("4ec89087-d057-4e2c-911f-60a3b47ee304");
@@ -703,7 +705,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/vip_update_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          SessionPersistence sessionPersistence = SessionPersistence.builder().type(SessionPersistence.Type.APP_COOKIE).cookieName("MyNewAppCookie").build();
@@ -750,7 +752,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(204)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          boolean result = lbaasApi.deleteVIP("c987d2be-9a3c-4ac9-a046-e8716b1350e2");
@@ -778,7 +780,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/health_monitor_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          HealthMonitor.CreateHealthMonitor createHealthMonitor = HealthMonitor.createBuilder(ProbeType.HTTP, Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1))
@@ -823,7 +825,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/health_monitor_list_response_paged1.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          HealthMonitors healthMonitors = lbaasApi.listHealthMonitors(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -854,7 +856,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/lbaas/v1/health_monitor_list_response_paged2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          // Note: Lazy! Have to actually look at the collection.
@@ -888,7 +890,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/health_monitor_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          HealthMonitor healthMonitor = lbaasApi.getHealthMonitor("5d4b5228-33b0-4e60-b225-9b727c1a20e7");
@@ -930,7 +932,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/health_monitor_update_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          HealthMonitor.UpdateHealthMonitor updateHealthMonitor = HealthMonitor.updateBuilder().delay(Integer.valueOf(1)).timeout(Integer.valueOf(1)).maxRetries(Integer.valueOf(1))
@@ -975,7 +977,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(204)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          boolean result = lbaasApi.deleteHealthMonitor("466c8345-28d8-4f84-a246-e04380b0461d");
@@ -1003,7 +1005,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/lbaas/v1/pool_associate_health_monitor_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          HealthMonitor healthMonitor = lbaasApi.associateHealthMonitor("72741b06-df4d-4715-b142-276b6bce75ab", "5d4b5228-33b0-4e60-b225-9b727c1a20e7");
@@ -1031,7 +1033,7 @@ public class LBaaSApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(204)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          LBaaSApi lbaasApi = neutronApi.getLBaaSApi("RegionOne").get();
 
          boolean result = lbaasApi.disassociateHealthMonitor("72741b06-df4d-4715-b142-276b6bce75ab", "5d4b5228-33b0-4e60-b225-9b727c1a20e7");
