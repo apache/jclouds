@@ -24,6 +24,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
@@ -167,7 +168,7 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
       }
    }
 
-   @Test(expectedExceptions = HttpResponseException.class, expectedExceptionsMessageRegExp = "Failed to connect to.*")
+   @Test(expectedExceptions = HttpResponseException.class, expectedExceptionsMessageRegExp = "Unable to find acceptable protocols.*")
    public void testSSLConnectionFailsIfOnlyHttpConfigured() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
       server.useHttps(sslSocketFactory(), false);
@@ -229,6 +230,15 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
          closeQuietly(api);
          server.shutdown();
       }
+   }
+
+   protected static MockWebServer mockWebServer(MockResponse... responses) throws IOException {
+      MockWebServer server = new MockWebServer();
+      server.start(null, 0);
+      for (MockResponse response : responses) {
+         server.enqueue(response);
+      }
+      return server;
    }
 
    @ConfiguresHttpCommandExecutorService
