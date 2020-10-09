@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 
@@ -56,15 +57,19 @@ public class OkHttpCommandExecutorServiceModule extends AbstractModule {
    private static final class OkHttpClientProvider implements Provider<OkHttpClient> {
       private final HostnameVerifier verifier;
       private final Supplier<SSLContext> untrustedSSLContextProvider;
+      private final X509TrustManager trustAllCertsManager;
       private final HttpUtils utils;
       private final OkHttpClientSupplier clientSupplier;
 
       @Inject
       OkHttpClientProvider(HttpUtils utils, @Named("untrusted") HostnameVerifier verifier,
-            @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider, OkHttpClientSupplier clientSupplier) {
+            @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider,
+            @Named("untrusted") X509TrustManager trustAllCertsManager,
+            OkHttpClientSupplier clientSupplier) {
          this.utils = utils;
          this.verifier = verifier;
          this.untrustedSSLContextProvider = untrustedSSLContextProvider;
+         this.trustAllCertsManager = trustAllCertsManager;
          this.clientSupplier = clientSupplier;
       }
 
@@ -82,7 +87,7 @@ public class OkHttpCommandExecutorServiceModule extends AbstractModule {
             clientBuilder.hostnameVerifier(verifier);
          }
          if (utils.trustAllCerts()) {
-            clientBuilder.sslSocketFactory(untrustedSSLContextProvider.get().getSocketFactory());
+            clientBuilder.sslSocketFactory(untrustedSSLContextProvider.get().getSocketFactory(), trustAllCertsManager);
          }
 
          return clientBuilder.build();
