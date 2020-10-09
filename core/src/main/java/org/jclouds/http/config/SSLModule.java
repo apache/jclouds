@@ -46,6 +46,7 @@ public class SSLModule extends AbstractModule {
       bind(new TypeLiteral<Supplier<SSLContext>>() {
       }).annotatedWith(Names.named("untrusted")).to(new TypeLiteral<UntrustedSSLContextSupplier>() {
       });
+      bind(X509TrustManager.class).annotatedWith(Names.named("untrusted")).to(TrustAllCerts.class);
    }
 
    /**
