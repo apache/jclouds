@@ -16,17 +16,19 @@
  */
 package org.jclouds.profitbricks.features;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import java.util.List;
-import org.jclouds.profitbricks.ProfitBricksApi;
-import org.jclouds.profitbricks.domain.Image;
-import org.jclouds.profitbricks.internal.BaseProfitBricksMockTest;
-import static org.jclouds.profitbricks.internal.BaseProfitBricksMockTest.mockWebServer;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
+
+import java.util.List;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
+import org.jclouds.profitbricks.ProfitBricksApi;
+import org.jclouds.profitbricks.domain.Image;
+import org.jclouds.profitbricks.internal.BaseProfitBricksMockTest;
 import org.testng.annotations.Test;
 
 /**
@@ -40,7 +42,7 @@ public class ImageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/image/images.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ImageApi api = pbApi.imageApi();
 
       try {
@@ -59,7 +61,7 @@ public class ImageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ImageApi api = pbApi.imageApi();
 
       try {
@@ -77,7 +79,7 @@ public class ImageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/image/image.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ImageApi api = pbApi.imageApi();
 
       String id = "5ad99c9e-9166-11e4-9d74-52540066fee9";
@@ -100,7 +102,7 @@ public class ImageApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ImageApi api = pbApi.imageApi();
 
       String id = "random-non-existing-id";
