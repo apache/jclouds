@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.googlecomputeengine.*;version="${project.version}";-noimport:=true

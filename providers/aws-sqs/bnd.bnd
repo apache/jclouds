@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.aws.sqs.*;version="${project.version}";-noimport:=true

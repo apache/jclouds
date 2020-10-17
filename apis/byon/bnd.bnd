@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.byon.*;version="${project.version}";-noimport:=true

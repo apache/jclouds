@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.http.apachehc.*;version="${project.version}";-noimport:=true

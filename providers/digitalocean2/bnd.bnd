@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.digitalocean2.*;version="${project.version}";-noimport:=true

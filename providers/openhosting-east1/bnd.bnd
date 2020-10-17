@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.openhosting.*;version="${project.version}";-noimport:=true

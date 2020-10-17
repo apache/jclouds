@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.profitbricks.*;version="${project.version}";-noimport:=true

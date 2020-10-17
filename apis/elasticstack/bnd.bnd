@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.elasticstack.*;version="${project.version}";-noimport:=true

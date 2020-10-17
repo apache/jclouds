@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.cloudstack.*;version="${project.version}";-noimport:=true

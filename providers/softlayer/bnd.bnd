@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.softlayer.*;version="${project.version}";-noimport:=true

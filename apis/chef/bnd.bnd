@@ -1,0 +1,3 @@
+Export-Package: \
+    org.jclouds.chef.*;version="${project.version}";-noimport:=true, \
+    org.jclouds.ohai.*;version="${project.version}";-noimport:=true
