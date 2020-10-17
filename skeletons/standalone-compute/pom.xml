@@ -28,7 +28,6 @@
   <groupId>org.apache.jclouds.api</groupId>
   <artifactId>servermanager</artifactId>
   <name>jclouds example components for a standalone compute provider</name>
-  <packaging>bundle</packaging>
 
   <properties>
     <!-- when instances are hung, open a ticket and add here -->
@@ -38,9 +37,6 @@
     <test.servermanager.endpoint>https://servermanager.com</test.servermanager.endpoint>
     <test.servermanager.api-version>1.0</test.servermanager.api-version>
     <test.servermanager.build-version />
-
-    <jclouds.osgi.export>org.jclouds.servermanager*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
   <dependencies>
     <dependency>

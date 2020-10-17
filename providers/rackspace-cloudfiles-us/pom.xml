@@ -31,7 +31,6 @@
   <version>2.3.0-SNAPSHOT</version>
   <name>jclouds Rackspace Cloud Files US provider</name>
   <description>OpenStack Object Storage implementation targeted to Rackspace Cloud Files US</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <!-- identity endpoint -->
@@ -40,8 +39,6 @@
     <test.rackspace-cloudfiles-us.build-version />
     <test.rackspace-cloudfiles-us.identity>${test.rackspace-us.identity}</test.rackspace-cloudfiles-us.identity>
     <test.rackspace-cloudfiles-us.credential>${test.rackspace-us.credential}</test.rackspace-cloudfiles-us.credential>
-    <jclouds.osgi.export>org.jclouds.rackspace.cloudfiles.us*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

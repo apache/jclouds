@@ -29,12 +29,6 @@
   <artifactId>jclouds-gae</artifactId>
   <name>jclouds Google App Engine Components</name>
   <description>Google App Engine Components</description>
-  <packaging>bundle</packaging>
-
-  <properties>
-    <jclouds.osgi.export>org.jclouds.gae*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
-  </properties>
 
   <dependencies>
     <dependency>

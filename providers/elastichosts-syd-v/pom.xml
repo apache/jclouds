@@ -29,7 +29,6 @@
   <artifactId>elastichosts-syd-v</artifactId>
   <name>jclouds ElasticHosts Sydney provider</name>
   <description>ElasticHosts implementation targeted to Sydney</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-syd-v.endpoint>https://api-syd-v.elastichosts.com</test.elastichosts-syd-v.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-syd-v.identity>FIXME_IDENTITY</test.elastichosts-syd-v.identity>
     <test.elastichosts-syd-v.credential>FIXME_CREDENTIAL</test.elastichosts-syd-v.credential>
     <test.elastichosts-syd-v.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

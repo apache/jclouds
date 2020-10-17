@@ -29,7 +29,6 @@
   <artifactId>elastichosts-hkg-e</artifactId>
   <name>jclouds ElasticHosts Hong Kong provider</name>
   <description>ElasticHosts implementation targeted to Hong Kong</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-hkg-e.endpoint>https://api-hkg-e.elastichosts.com</test.elastichosts-hkg-e.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-hkg-e.identity>FIXME_IDENTITY</test.elastichosts-hkg-e.identity>
     <test.elastichosts-hkg-e.credential>FIXME_CREDENTIAL</test.elastichosts-hkg-e.credential>
     <test.elastichosts-hkg-e.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

@@ -29,7 +29,6 @@
   <artifactId>dynect</artifactId>
   <name>jclouds dynect api</name>
   <description>jclouds components for DynECT Managed DNS</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.dynect.endpoint>https://api2.dynect.net/REST</test.dynect.endpoint>
@@ -37,13 +36,6 @@
     <test.dynect.build-version />
     <test.dynect.identity />
     <test.dynect.credential />
-
-    <jclouds.osgi.export>org.jclouds.dynect.v3*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

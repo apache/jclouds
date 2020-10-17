@@ -29,7 +29,6 @@
   <artifactId>rackspace-cloudblockstorage-uk</artifactId>
   <name>jclouds Rackspace Next Generation Cloud Block Storage UK provider</name>
   <description>OpenStack Cinder implementation targeted to Rackspace Next Generation Cloud Block Storage UK</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.rackspace-cloudblockstorage-uk.endpoint>https://lon.identity.api.rackspacecloud.com/v2.0/</test.rackspace-cloudblockstorage-uk.endpoint>
@@ -38,8 +37,6 @@
     <test.rackspace-cloudblockstorage-uk.identity>${test.rackspace-uk.identity}</test.rackspace-cloudblockstorage-uk.identity>
     <test.rackspace-cloudblockstorage-uk.credential>${test.rackspace-uk.credential}</test.rackspace-cloudblockstorage-uk.credential>
     <test.rackspace-cloudblockstorage-uk.template />
-    <jclouds.osgi.export>org.jclouds.rackspace.cloudblockstorage.uk*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

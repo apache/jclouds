@@ -29,16 +29,6 @@
   <artifactId>jclouds-slf4j</artifactId>
   <name>jclouds SLF4J Logging Module</name>
   <description>jclouds SLF4J Logging Module</description>
-  <packaging>bundle</packaging>
-
-  <properties>
-    <jclouds.osgi.export>org.jclouds.logging.slf4j*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds*;version="${project.version}",
-      org.slf4j*;version="[1.5,2)",
-      *
-    </jclouds.osgi.import>
-  </properties>
 
   <dependencies>
     <dependency>

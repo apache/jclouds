@@ -28,13 +28,7 @@
   <groupId>org.apache.jclouds.driver</groupId>
   <artifactId>jclouds-apachehc</artifactId>
   <name>jclouds Apache Http Components Client</name>
-  <packaging>bundle</packaging>
   <description>Apache HttpComponents client</description>
-
-  <properties>
-    <jclouds.osgi.export>org.jclouds.http.apachehc*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
-  </properties>
 
   <dependencies>
     <dependency>

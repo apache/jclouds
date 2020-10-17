@@ -29,7 +29,6 @@
   <artifactId>rackspace-cloudidentity</artifactId>
   <name>jclouds rackspace cloudidentity api</name>
   <description>jclouds components to access an implementation of Rackspace Cloud Identity</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <!-- keystone endpoint -->
@@ -40,9 +39,6 @@
     <test.rackspace-cloudidentity.identity>${test.rackspace-us.identity}</test.rackspace-cloudidentity.identity>
     <test.rackspace-cloudidentity.credential>${test.rackspace-us.credential}</test.rackspace-cloudidentity.credential>
     <test.jclouds.keystone.credential-type>RAX-KSKEY:apiKeyCredentials</test.jclouds.keystone.credential-type>
-
-    <jclouds.osgi.export>org.jclouds.rackspace.cloudidentity.v2_0*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

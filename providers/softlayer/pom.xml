@@ -29,7 +29,6 @@
   <artifactId>softlayer</artifactId>
   <name>jclouds SoftLayer core</name>
   <description>jclouds components to access SoftLayer</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.softlayer.endpoint>https://api.softlayer.com/rest</test.softlayer.endpoint>
@@ -38,13 +37,6 @@
     <test.softlayer.identity>FIXME_IDENTITY</test.softlayer.identity>
     <test.softlayer.credential>FIXME_CREDENTIAL</test.softlayer.credential>
     <test.softlayer.template />
-    <jclouds.osgi.export>org.jclouds.softlayer*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
   <dependencies>
     <dependency>

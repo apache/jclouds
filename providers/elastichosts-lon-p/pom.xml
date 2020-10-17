@@ -29,7 +29,6 @@
   <artifactId>elastichosts-lon-p</artifactId>
   <name>jclouds ElasticHosts Peer1 London provider</name>
   <description>ElasticHosts implementation targeted to Peer1 London</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-lon-p.endpoint>https://api-lon-p.elastichosts.com</test.elastichosts-lon-p.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-lon-p.identity>FIXME_IDENTITY</test.elastichosts-lon-p.identity>
     <test.elastichosts-lon-p.credential>FIXME_CREDENTIAL</test.elastichosts-lon-p.credential>
     <test.elastichosts-lon-p.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

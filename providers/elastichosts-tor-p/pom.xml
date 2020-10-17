@@ -29,7 +29,6 @@
   <artifactId>elastichosts-tor-p</artifactId>
   <name>jclouds ElasticHosts Peer1 Toronto provider</name>
   <description>ElasticHosts implementation targeted to Peer1 Toronto</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-tor-p.endpoint>https://api-tor-p.elastichosts.com</test.elastichosts-tor-p.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-tor-p.identity>FIXME_IDENTITY</test.elastichosts-tor-p.identity>
     <test.elastichosts-tor-p.credential>FIXME_CREDENTIAL</test.elastichosts-tor-p.credential>
     <test.elastichosts-tor-p.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

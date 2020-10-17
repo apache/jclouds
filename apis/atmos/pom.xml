@@ -29,7 +29,6 @@
   <groupId>org.apache.jclouds.api</groupId>
   <artifactId>atmos</artifactId>
   <name>jclouds atmos components</name>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.atmos.endpoint>https://accesspoint.atmosonline.com</test.atmos.endpoint>
@@ -37,9 +36,6 @@
     <test.atmos.build-version />
     <test.atmos.identity>FIXME_IDENTITY</test.atmos.identity>
     <test.atmos.credential>FIXME_CREDENTIAL</test.atmos.credential>
-
-    <jclouds.osgi.export>org.jclouds.atmos*;version="${project.version}";-noimport:=true</jclouds.osgi.export>
-    <jclouds.osgi.import>*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

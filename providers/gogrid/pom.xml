@@ -29,7 +29,6 @@
   <artifactId>gogrid</artifactId>
   <name>jclouds GoGrid provider</name>
   <description>ComputeService implementation of GoGrid datacenters</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.gogrid.endpoint>https://api.gogrid.com/api</test.gogrid.endpoint>
@@ -38,14 +37,6 @@
     <test.gogrid.identity>FIXME_IDENTITY</test.gogrid.identity>
     <test.gogrid.credential>FIXME_CREDENTIAL</test.gogrid.credential>
     <test.gogrid.template />
-
-    <jclouds.osgi.export>org.jclouds.gogrid*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
   <dependencies>
     <dependency>

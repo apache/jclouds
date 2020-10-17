@@ -29,7 +29,6 @@
   <artifactId>elastichosts-sjc-c</artifactId>
   <name>jclouds ElasticHosts San Jose provider</name>
   <description>ElasticHosts implementation targeted to San Jose</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-sjc-c.endpoint>https://api-sjc-c.elastichosts.com</test.elastichosts-sjc-c.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-sjc-c.identity>FIXME_IDENTITY</test.elastichosts-sjc-c.identity>
     <test.elastichosts-sjc-c.credential>FIXME_CREDENTIAL</test.elastichosts-sjc-c.credential>
     <test.elastichosts-sjc-c.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

@@ -29,12 +29,6 @@
   <artifactId>jclouds-joda</artifactId>
   <name>jclouds joda DateService Module</name>
   <description>jclouds joda DateService Module</description>
-  <packaging>bundle</packaging>
-
-  <properties>
-    <jclouds.osgi.export>org.jclouds.date.joda*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
-  </properties>
 
   <dependencies>
     <dependency>

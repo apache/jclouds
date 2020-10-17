@@ -29,17 +29,13 @@
   <artifactId>rackspace-cloudloadbalancers-us</artifactId>
   <name>jclouds Rackspace Cloud Load Balancers US provider</name>
   <description>Cloud Load Balancers implementation targeted to Rackspace US</description>
-  <packaging>bundle</packaging>
-  
+
   <properties>
     <test.rackspace-cloudloadbalancers-us.endpoint>https://identity.api.rackspacecloud.com/v2.0/</test.rackspace-cloudloadbalancers-us.endpoint>
     <test.rackspace-cloudloadbalancers-us.api-version>1</test.rackspace-cloudloadbalancers-us.api-version>
     <test.rackspace-cloudloadbalancers-us.build-version />
     <test.rackspace-cloudloadbalancers-us.identity>${test.rackspace-us.identity}</test.rackspace-cloudloadbalancers-us.identity>
     <test.rackspace-cloudloadbalancers-us.credential>${test.rackspace-us.credential}</test.rackspace-cloudloadbalancers-us.credential>
-
-    <jclouds.osgi.export>org.jclouds.rackspace.cloudloadbalancers.us*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
   
   <dependencies>

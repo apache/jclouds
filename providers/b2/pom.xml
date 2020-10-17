@@ -31,14 +31,11 @@
   <artifactId>b2</artifactId>
   <name>Apache jclouds B2 API</name>
   <description>BlobStore binding to the Backblaze B2 API</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.b2.identity>FIXME_IDENTITY</test.b2.identity>
     <test.b2.credential>FIXME_CREDENTIAL</test.b2.credential>
     <test.b2.build-version />
-    <jclouds.osgi.export>org.jclouds.b2*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

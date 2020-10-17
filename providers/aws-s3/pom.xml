@@ -29,7 +29,6 @@
   <artifactId>aws-s3</artifactId>
   <name>jclouds Amazon Simple Storage Service (S3) provider</name>
   <description>Simple Storage Service (S3) implementation targeted to Amazon Web Services</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.aws.identity>FIXME_IDENTITY</test.aws.identity>
@@ -42,14 +41,6 @@
     <test.aws-s3.credential>${test.aws.credential}</test.aws-s3.credential>
     <test.aws-s3.sessionToken>${test.aws.sessionToken}</test.aws-s3.sessionToken>
     <test.blobstore.container-count>25</test.blobstore.container-count>
-
-    <jclouds.osgi.export>org.jclouds.aws.s3*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds*;version="${project.version}",
-      org.jclouds.io;version="${project.version}",
-      org.jclouds.http.options;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>
