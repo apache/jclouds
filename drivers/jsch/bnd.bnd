@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.ssh.jsch.*;version="${project.version}";-noimport:=true

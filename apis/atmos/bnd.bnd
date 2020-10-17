@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.atmos.*;version="${project.version}";-noimport:=true

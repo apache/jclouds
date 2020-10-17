@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.filesystem.*;version="${project.version}";-noimport:=true

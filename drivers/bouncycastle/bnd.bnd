@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.encryption.bouncycastle.*;version="${project.version}";-noimport:=true

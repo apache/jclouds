@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.netty.*;version="${project.version}";-noimport:=true

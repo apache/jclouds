@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.rackspace.cloudblockstorage.uk.*;version="${project.version}";-noimport:=true

@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.serverlove.*;version="${project.version}";-noimport:=true

@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.cloudwatch.*;version="${project.version}";-noimport:=true

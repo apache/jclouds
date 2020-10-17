@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.googlecloud.*;version="${project.version}";-noimport:=true

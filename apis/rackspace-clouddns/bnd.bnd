@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.rackspace.clouddns.v1.*;version="${project.version}";-noimport:=true

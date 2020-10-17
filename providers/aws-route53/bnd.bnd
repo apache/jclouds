@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.aws.route53.*;version="${project.version}";-noimport:=true

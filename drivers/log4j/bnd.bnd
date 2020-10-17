@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.logging.log4j.*;version="${project.version}";-noimport:=true

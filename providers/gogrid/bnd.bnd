@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.gogrid.*;version="${project.version}";-noimport:=true
