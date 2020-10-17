@@ -36,7 +36,6 @@
     <module>blobstore</module>
     <module>compute</module>
     <module>loadbalancer</module>
-    <!--
     <module>common</module>
     <module>apis</module>
     <module>providers</module>
@@ -46,7 +45,6 @@
     <module>allblobstore</module>
     <module>allloadbalancer</module>
     <module>all</module>
-    -->
   </modules>
   
   <profiles>

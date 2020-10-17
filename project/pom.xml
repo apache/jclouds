@@ -218,7 +218,7 @@
 
   <properties>
 
-    <bnd.version>5.1.0</bnd.version>
+    <bnd.version>5.2.0</bnd.version>
     <maven-jar-plugin.version>3.0.1</maven-jar-plugin.version>
 
     <maven.compile.source>1.8</maven.compile.source>
