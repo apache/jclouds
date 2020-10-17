@@ -29,7 +29,6 @@
   <artifactId>aws-sqs</artifactId>
   <name>jclouds Amazon Simple Queue Service provider</name>
   <description>Simple Queue Service implementation targeted to Amazon Web Services</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.aws.identity>FIXME_IDENTITY</test.aws.identity>
@@ -39,9 +38,6 @@
     <test.aws-sqs.build-version />
     <test.aws-sqs.identity>${test.aws.identity}</test.aws-sqs.identity>
     <test.aws-sqs.credential>${test.aws.credential}</test.aws-sqs.credential>
-
-    <jclouds.osgi.export>org.jclouds.aws.sqs*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

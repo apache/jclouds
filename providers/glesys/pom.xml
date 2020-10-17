@@ -29,7 +29,6 @@
   <artifactId>glesys</artifactId>
   <name>jclouds GleSYS core</name>
   <description>jclouds components to access GleSYS</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.glesys.endpoint>https://api.glesys.com</test.glesys.endpoint>
@@ -38,8 +37,6 @@
     <test.glesys.identity>FIXME_IDENTITY</test.glesys.identity>
     <test.glesys.credential>FIXME_CREDENTIAL</test.glesys.credential>
     <test.glesys.template>osFamily=UBUNTU,osVersionMatches=1[012].[01][04],os64Bit=true,minRam=768</test.glesys.template>
-    <jclouds.osgi.export>org.jclouds.glesys*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

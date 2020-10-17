@@ -27,7 +27,6 @@
   </parent>
   <groupId>org.apache.jclouds.api</groupId>
   <artifactId>chef</artifactId>
-  <packaging>bundle</packaging>
   <name>jclouds Chef api</name>
   <description>jclouds components to access Chef</description>
 
@@ -37,15 +36,6 @@
     <test.chef.build-version />
     <test.chef.identity>chef-webui</test.chef.identity>
     <test.chef.credential>${user.home}/.chef/webui.pem</test.chef.credential>
-    <jclouds.osgi.export>
-      org.jclouds.chef*;version=${project.version};-noimport:=true,
-      org.jclouds.ohai*;version=${project.version};-noimport:=true,
-    </jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.*;version="${project.version}",
-      org.jclouds;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

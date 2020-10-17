@@ -29,12 +29,6 @@
   <artifactId>jclouds-log4j</artifactId>
   <name>jclouds Log4J Logging Module</name>
   <description>jclouds Log4J Logging Module</description>
-  <packaging>bundle</packaging>
-
-  <properties>
-    <jclouds.osgi.export>org.jclouds.logging.log4j*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
-  </properties>
 
   <dependencies>
     <dependency>

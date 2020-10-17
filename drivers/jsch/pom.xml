@@ -29,7 +29,6 @@
   <artifactId>jclouds-jsch</artifactId>
   <name>jclouds jsch ssh client</name>
   <description>jclouds jsch ssh client</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.ssh.host>localhost</test.ssh.host>
@@ -37,9 +36,6 @@
     <test.ssh.username />
     <test.ssh.password />
     <test.ssh.keyfile />
-
-    <jclouds.osgi.export>org.jclouds.ssh.jsch*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

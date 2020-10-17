@@ -29,7 +29,6 @@
   <artifactId>elastichosts-dal-a</artifactId>
   <name>jclouds ElasticHosts Dallas provider</name>
   <description>ElasticHosts implementation targeted to Dallas</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-dal-a.endpoint>https://api-dal-a.elastichosts.com</test.elastichosts-dal-a.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-dal-a.identity>FIXME_IDENTITY</test.elastichosts-dal-a.identity>
     <test.elastichosts-dal-a.credential>FIXME_CREDENTIAL</test.elastichosts-dal-a.credential>
     <test.elastichosts-dal-a.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

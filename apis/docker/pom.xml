@@ -31,7 +31,6 @@
   <artifactId>docker</artifactId>
   <name>jclouds docker API</name>
   <description>ComputeService binding to the Docker API</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.docker.api-version>1.21</test.docker.api-version>
@@ -40,13 +39,6 @@
     <test.docker.cacert.path>${env.DOCKER_CERT_PATH}/ca.pem</test.docker.cacert.path>
     <test.docker.endpoint>${env.DOCKER_HOST}</test.docker.endpoint>
     <test.jclouds.trust-all-certs>false</test.jclouds.trust-all-certs>
-    <jclouds.osgi.export>org.jclouds.docker*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

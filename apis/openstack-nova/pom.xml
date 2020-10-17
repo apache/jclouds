@@ -29,7 +29,6 @@
   <artifactId>openstack-nova</artifactId>
   <name>Apache jclouds :: OpenStack :: Nova API</name>
   <description>jclouds components to access an implementation of OpenStack Nova</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <!-- keystone endpoint -->
@@ -42,9 +41,6 @@
     <test.openstack-nova.template />
     <test.jclouds.openstack-nova.auto-allocate-floating-ips>false</test.jclouds.openstack-nova.auto-allocate-floating-ips>
     <test.jclouds.keystone.credential-type>passwordCredentials</test.jclouds.keystone.credential-type>
-
-    <jclouds.osgi.export>org.jclouds.openstack.nova.v2_0*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

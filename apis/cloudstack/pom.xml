@@ -29,7 +29,6 @@
   <artifactId>cloudstack</artifactId>
   <name>jclouds cloudstack core</name>
   <description>jclouds components to access cloudstack</description>
-  <packaging>bundle</packaging>
   
   <properties>
     <test.cloudstack.endpoint>http://localhost:8080/client/api</test.cloudstack.endpoint>
@@ -42,8 +41,6 @@
     <test.cloudstack.globalAdminIdentity />
     <test.cloudstack.globalAdminCredential />
     <test.cloudstack.template>osFamily=CENTOS</test.cloudstack.template>
-    <jclouds.osgi.export>org.jclouds.cloudstack*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

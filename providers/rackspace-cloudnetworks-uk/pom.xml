@@ -29,7 +29,6 @@
   <artifactId>rackspace-cloudnetworks-uk</artifactId>
   <name>jclouds Rackspace Cloud Networks UK provider</name>
   <description>OpenStack Neutron implementation targeted to Rackspace Cloud Networks UK</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <!-- identity endpoint -->
@@ -38,8 +37,6 @@
     <test.rackspace-cloudnetworks-uk.build-version />
     <test.rackspace-cloudnetworks-uk.identity>${test.rackspace-uk.identity}</test.rackspace-cloudnetworks-uk.identity>
     <test.rackspace-cloudnetworks-uk.credential>${test.rackspace-uk.credential}</test.rackspace-cloudnetworks-uk.credential>
-    <jclouds.osgi.export>org.jclouds.rackspace.cloudnetworks.uk*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

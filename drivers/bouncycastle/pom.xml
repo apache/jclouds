@@ -29,12 +29,6 @@
   <artifactId>jclouds-bouncycastle</artifactId>
   <name>jclouds bouncycastle EncryptionService Module</name>
   <description>jclouds bouncycastle EncryptionService Module</description>
-  <packaging>bundle</packaging>
-
-  <properties>
-    <jclouds.osgi.export>org.jclouds.encryption.bouncycastle*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
-  </properties>
 
   <dependencies>
     <dependency>

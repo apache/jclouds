@@ -31,7 +31,6 @@
   <version>2.3.0-SNAPSHOT</version>
   <name>jclouds rackspace-cloudfiles api</name>
   <description>jclouds components to access Rackspace Cloud Files</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <!-- identity endpoint -->
@@ -40,8 +39,6 @@
     <test.rackspace-cloudfiles.build-version />
     <test.rackspace-cloudfiles.identity>FIXME_IDENTITY</test.rackspace-cloudfiles.identity>
     <test.rackspace-cloudfiles.credential>FIXME_CREDENTIALS</test.rackspace-cloudfiles.credential>
-    <jclouds.osgi.export>org.jclouds.rackspace.cloudfiles.v1*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

@@ -29,7 +29,6 @@
   <artifactId>elastichosts-lax-p</artifactId>
   <name>jclouds ElasticHosts Peer1 Los Angeles provider</name>
   <description>ElasticHosts implementation targeted to Peer1 Toronto</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-lax-p.endpoint>https://api-lax-p.elastichosts.com</test.elastichosts-lax-p.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-lax-p.identity>FIXME_IDENTITY</test.elastichosts-lax-p.identity>
     <test.elastichosts-lax-p.credential>FIXME_CREDENTIAL</test.elastichosts-lax-p.credential>
     <test.elastichosts-lax-p.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

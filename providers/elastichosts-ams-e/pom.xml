@@ -29,7 +29,6 @@
   <artifactId>elastichosts-ams-e</artifactId>
   <name>jclouds ElasticHosts Amsterdam provider</name>
   <description>ElasticHosts implementation targeted to Amsterdam</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-ams-e.endpoint>https://api-ams-e.elastichosts.com</test.elastichosts-ams-e.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-ams-e.identity>FIXME_IDENTITY</test.elastichosts-ams-e.identity>
     <test.elastichosts-ams-e.credential>FIXME_CREDENTIAL</test.elastichosts-ams-e.credential>
     <test.elastichosts-ams-e.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

@@ -30,12 +30,6 @@
   <artifactId>openstack-common</artifactId>
   <name>jclouds OpenStack Components Core</name>
   <description>jclouds Core components to access OpenStack apis</description>
-  <packaging>bundle</packaging>
-
-  <properties>
-    <jclouds.osgi.export>org.jclouds.openstack*;version="${project.version}";-noimport:=true</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
-  </properties>
 
   <dependencies>
     <dependency>

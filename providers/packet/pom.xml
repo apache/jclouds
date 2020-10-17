@@ -30,14 +30,11 @@
     <artifactId>packet</artifactId>
     <name>jclouds Packet compute API</name>
     <description>jclouds components to access an implementation of Packet's Compute Service</description>
-    <packaging>bundle</packaging>
 
     <properties>
         <test.packet.endpoint>https://api.packet.net/</test.packet.endpoint>
         <test.packet.identity>projectId</test.packet.identity>
         <test.packet.credential>api key</test.packet.credential>
-        <jclouds.osgi.export>org.jclouds.packet*;version="${project.version}"</jclouds.osgi.export>
-        <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
     </properties>
 
     <dependencies>

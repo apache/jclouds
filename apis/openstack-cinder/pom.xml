@@ -29,7 +29,6 @@
   <artifactId>openstack-cinder</artifactId>
   <name>jclouds openstack-cinder api</name>
   <description>jclouds components to access an implementation of OpenStack Cinder</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <!-- keystone endpoint -->
@@ -40,9 +39,6 @@
     <test.openstack-cinder.identity>FIXME_IDENTITY</test.openstack-cinder.identity>
     <test.openstack-cinder.credential>FIXME_CREDENTIALS</test.openstack-cinder.credential>
     <test.jclouds.keystone.credential-type>passwordCredentials</test.jclouds.keystone.credential-type>
-
-    <jclouds.osgi.export>org.jclouds.openstack.cinder.v1*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

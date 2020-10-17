@@ -29,7 +29,6 @@
   <artifactId>elastichosts-sat-p</artifactId>
   <name>jclouds ElasticHosts Peer1 San Antonio provider</name>
   <description>ElasticHosts implementation targeted to Peer1 San Antonio</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-sat-p.endpoint>https://api-sat-p.elastichosts.com</test.elastichosts-sat-p.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-sat-p.identity>FIXME_IDENTITY</test.elastichosts-sat-p.identity>
     <test.elastichosts-sat-p.credential>FIXME_CREDENTIAL</test.elastichosts-sat-p.credential>
     <test.elastichosts-sat-p.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

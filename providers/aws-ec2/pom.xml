@@ -29,7 +29,6 @@
   <artifactId>aws-ec2</artifactId>
   <name>jclouds Amazon EC2 provider</name>
   <description>EC2 implementation targeted to Amazon Web Services</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.aws.identity>FIXME_IDENTITY</test.aws.identity>
@@ -45,15 +44,6 @@
     <test.aws-ec2.ebs-template>hardwareId=m1.small,imageId=us-east-1/ami-53b1ff3a</test.aws-ec2.ebs-template>
     <!-- Windows_Server-2008-R2 with WinRM enabled (setup instructions at http://www.frontiertown.co.uk/2011/12/overthere-control-windows-from-java/) -->
     <test.aws-ec2.windows-template>hardwareId=m1.small,imageId=us-east-1/ami-0cb76d65</test.aws-ec2.windows-template>
-    <jclouds.osgi.export>org.jclouds.aws.ec2*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds.aws;version="${project.version}",
-      org.jclouds.aws*;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

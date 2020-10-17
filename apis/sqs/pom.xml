@@ -29,7 +29,6 @@
   <artifactId>sqs</artifactId>
   <name>jclouds sqs api</name>
   <description>jclouds components to access an implementation of Simple Queue Service</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.sqs.endpoint>https://sqs.us-east-1.amazonaws.com</test.sqs.endpoint>
@@ -37,9 +36,6 @@
     <test.sqs.build-version />
     <test.sqs.identity>${test.aws.identity}</test.sqs.identity>
     <test.sqs.credential>${test.aws.credential}</test.sqs.credential>
-
-    <jclouds.osgi.export>org.jclouds.sqs*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

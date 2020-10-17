@@ -29,7 +29,6 @@
   <artifactId>azureblob</artifactId>
   <name>jclouds Azure Storage provider</name>
   <description>jclouds components to access Azure Blob Service</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.azureblob.endpoint>https://${jclouds.identity}.blob.core.windows.net</test.azureblob.endpoint>
@@ -37,9 +36,6 @@
     <test.azureblob.build-version />
     <test.azureblob.identity>${test.azure.identity}</test.azureblob.identity>
     <test.azureblob.credential>${test.azure.credential}</test.azureblob.credential>
-
-    <jclouds.osgi.export>org.jclouds.azureblob*;version="${project.version}",org.jclouds.azure.storage*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

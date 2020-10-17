@@ -30,19 +30,12 @@
     <artifactId>profitbricks</artifactId>
     <name>jclouds ProfitBricks api</name>
     <description>jclouds components to access an implementation of ProfitBricks</description>
-    <packaging>bundle</packaging>
 
     <properties>
         <test.profitbricks.endpoint>https://api.profitbricks.com/1.3</test.profitbricks.endpoint>
         <test.profitbricks.identity>FIXME</test.profitbricks.identity>
         <test.profitbricks.credential>FIXME</test.profitbricks.credential>
         <test.profitbricks.api-version>1.3</test.profitbricks.api-version>
-        <jclouds.osgi.export>org.jclouds.profitbricks*;version="${project.version}"</jclouds.osgi.export>
-        <jclouds.osgi.import>
-            org.jclouds.profitbricks*;version="${project.version}",
-            org.jclouds*;version="${project.version}",
-            *
-        </jclouds.osgi.import>
     </properties>
   
     <dependencies>

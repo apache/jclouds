@@ -29,7 +29,6 @@
   <artifactId>aws-route53</artifactId>
   <name>jclouds Amazon Route 53 provider</name>
   <description>Route 53 targeted to Amazon Web Services</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.aws.identity>FIXME_IDENTITY</test.aws.identity>
@@ -39,9 +38,6 @@
     <test.aws-route53.build-version />
     <test.aws-route53.identity>${test.aws.identity}</test.aws-route53.identity>
     <test.aws-route53.credential>${test.aws.credential}</test.aws-route53.credential>
-
-    <jclouds.osgi.export>org.jclouds.aws.route53*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

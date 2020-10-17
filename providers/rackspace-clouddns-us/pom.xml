@@ -29,7 +29,6 @@
   <artifactId>rackspace-clouddns-us</artifactId>
   <name>jclouds Rackspace Next Generation Cloud DNS US provider</name>
   <description>Rackspace Next Generation Cloud DNS US</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.rackspace-clouddns-us.endpoint>https://identity.api.rackspacecloud.com/v2.0/</test.rackspace-clouddns-us.endpoint>
@@ -38,8 +37,6 @@
     <test.rackspace-clouddns-us.identity>${test.rackspace-us.identity}</test.rackspace-clouddns-us.identity>
     <test.rackspace-clouddns-us.credential>${test.rackspace-us.credential}</test.rackspace-clouddns-us.credential>
     <test.rackspace-clouddns-us.template />
-    <jclouds.osgi.export>org.jclouds.rackspace.clouddns.us*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

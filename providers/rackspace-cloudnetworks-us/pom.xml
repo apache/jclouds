@@ -29,7 +29,6 @@
   <artifactId>rackspace-cloudnetworks-us</artifactId>
   <name>jclouds Rackspace Cloud Networks US provider</name>
   <description>OpenStack Neutron implementation targeted to Rackspace Cloud Networks US</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <!-- identity endpoint -->
@@ -38,8 +37,6 @@
     <test.rackspace-cloudnetworks-us.build-version />
     <test.rackspace-cloudnetworks-us.identity>${test.rackspace-us.identity}</test.rackspace-cloudnetworks-us.identity>
     <test.rackspace-cloudnetworks-us.credential>${test.rackspace-us.credential}</test.rackspace-cloudnetworks-us.credential>
-    <jclouds.osgi.export>org.jclouds.rackspace.cloudnetworks.us*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

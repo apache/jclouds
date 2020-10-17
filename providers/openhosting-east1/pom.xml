@@ -29,7 +29,6 @@
   <artifactId>openhosting-east1</artifactId>
   <name>jclouds Open Hosting East1 provider</name>
   <description>Open Hosting implementation targeted to East1</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.openhosting-east1.endpoint>https://api.east1.openhosting.com</test.openhosting-east1.endpoint>
@@ -38,14 +37,6 @@
     <test.openhosting-east1.identity>FIXME_IDENTITY</test.openhosting-east1.identity>
     <test.openhosting-east1.credential>FIXME_CREDENTIAL</test.openhosting-east1.credential>
     <test.openhosting-east1.template />
-
-    <jclouds.osgi.export>org.jclouds.openhosting*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>
