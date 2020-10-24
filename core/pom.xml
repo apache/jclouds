@@ -108,6 +108,7 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
           <execution>
@@ -119,7 +120,7 @@
         <configuration>
           <!--
               These files are excluded to avoid corrupting the classpath with ProviderMetadata implementation
-              classes that should only be availble when running the core tests.
+              classes that should only be available when running the core tests.
           -->
           <excludes>
             <exclude>META-INF/services/</exclude>
