@@ -239,6 +239,7 @@
     <java-xmlbuilder.version>1.2</java-xmlbuilder.version>
 
     <jetty.version>8.1.8.v20121106</jetty.version>
+    <javax.ws.rs-api.version>2.0.1</javax.ws.rs-api.version>
 
     <modernizer-maven-annotations.version>1.8.0</modernizer-maven-annotations.version>
 
@@ -330,6 +331,11 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-server</artifactId>
         <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.ws.rs</groupId>
+        <artifactId>javax.ws.rs-api</artifactId>
+        <version>${javax.ws.rs-api.version}</version>
       </dependency>
 
       <dependency>
