@@ -63,11 +63,6 @@
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
-    <!--  for ohai -->
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-multibindings</artifactId>
-    </dependency>
     <!--  for transient chef provider -->
     <dependency>
       <groupId>org.apache.jclouds</groupId>
