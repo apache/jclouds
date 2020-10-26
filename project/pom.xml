@@ -1117,29 +1117,6 @@
           <configuration>
             <exceptions>
               <exception>
-                <!-- CloudSigma bundles conflict between api and providers-->
-                <conflictingDependencies>
-                  <dependency>
-                    <groupId>org.apache.jclouds.api</groupId>
-                    <artifactId>cloudsigma</artifactId>
-                    <version>${project.version}</version>
-                  </dependency>
-                  <dependency>
-                    <groupId>org.apache.jclouds.provider</groupId>
-                    <artifactId>cloudsigma-lvs</artifactId>
-                    <version>${project.version}</version>
-                  </dependency>
-                  <dependency>
-                    <groupId>org.apache.jclouds.provider</groupId>
-                    <artifactId>cloudsigma-zrh</artifactId>
-                    <version>${project.version}</version>
-                  </dependency>
-                </conflictingDependencies>
-                <packages>
-                  <package>org.jclouds.cloudsigma</package>
-                </packages>
-              </exception>
-              <exception>
                 <!-- Google App Engine Deps, some google classes are duplicated between packages -->
                 <conflictingDependencies>
                   <dependency>
