@@ -84,6 +84,8 @@ public class AWSUtils {
 
    public AWSError parseAWSErrorFromContent(HttpRequest request, HttpResponse response) {
       byte[] actualPayload = response.getPayload() != null ? closeClientButKeepContentStream(response) : null;
+      if (request.getMethod().equals("HEAD"))
+         return null;
       if (actualPayload == null || actualPayload.length == 0)
          return null;
       if ("text/plain".equals(response.getPayload().getContentMetadata().getContentType()))
