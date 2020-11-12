@@ -23,22 +23,24 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.jclouds.domain.Credentials;
-import org.jclouds.providers.ProviderMetadata;
 
 import com.google.common.base.Supplier;
+import org.jclouds.location.Provider;
+
+import java.net.URI;
 
 @Singleton
 public class StorageUrlDelegate {
 
-   private ProviderMetadata providerMetadata;
+   private Supplier<URI> endpointSupplier;
    private Supplier<Credentials> credentialsSupplier;
    private boolean storageAccountInsideVirtualHost;
 
    @Inject
-   public StorageUrlDelegate(ProviderMetadata providerMetadata,
-         @org.jclouds.location.Provider Supplier<Credentials> creds,
-         @Named(PROPERTY_AZURE_VIRTUAL_HOST_STORAGE_ACCOUNT) boolean storageAccountInsideVirtualHost) {
-      this.providerMetadata = providerMetadata;
+   public StorageUrlDelegate(@Provider Supplier<URI> endpointSupplier,
+                             @Provider Supplier<Credentials> creds,
+                             @Named(PROPERTY_AZURE_VIRTUAL_HOST_STORAGE_ACCOUNT) boolean storageAccountInsideVirtualHost) {
+      this.endpointSupplier = endpointSupplier;
       this.credentialsSupplier = creds;
       this.storageAccountInsideVirtualHost = storageAccountInsideVirtualHost;
    }
@@ -46,9 +48,9 @@ public class StorageUrlDelegate {
    public String configureStorageUrl() {
 
       StringBuilder builder = new StringBuilder();
-      if (providerMetadata != null && providerMetadata.getEndpoint() != null
-            && !providerMetadata.getEndpoint().isEmpty()) {
-         builder.append(providerMetadata.getEndpoint());
+      URI endpoint = endpointSupplier.get();
+      if (endpoint != null) {
+         builder.append(endpoint);
          if (!builder.substring(builder.length()).equals("/")) {
             builder.append("/");
          }
