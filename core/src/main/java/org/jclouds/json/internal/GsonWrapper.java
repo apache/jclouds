@@ -19,6 +19,7 @@ package org.jclouds.json.internal;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -51,13 +52,13 @@ public class GsonWrapper extends ForwardingObject implements Json  {
    
    @SuppressWarnings("unchecked")
    @Override
-   public <T> T fromJson(InputStream json, Type type) {
-      return (T) gson.fromJson(new InputStreamReader(json), type);
+   public <T> T fromJson(InputStream json, Charset charset, Type type) {
+      return (T) gson.fromJson(new InputStreamReader(json, charset), type);
    }
 
    @Override
-   public <T> T fromJson(InputStream json, Class<T> classOfT) {
-      return gson.fromJson(new InputStreamReader(json), classOfT);
+   public <T> T fromJson(InputStream json, Charset charset, Class<T> classOfT) {
+      return gson.fromJson(new InputStreamReader(json, charset), classOfT);
    }
 
    @Override

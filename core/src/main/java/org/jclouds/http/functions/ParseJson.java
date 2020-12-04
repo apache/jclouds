@@ -21,6 +21,7 @@ import static org.jclouds.http.HttpUtils.releasePayload;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -79,7 +80,7 @@ public class ParseJson<T> implements Function<HttpResponse, T> {
    @SuppressWarnings("unchecked")
    public <V> V apply(InputStream stream, Type type) throws IOException {
       try {
-         return (V) json.fromJson(stream, type);
+         return (V) json.fromJson(stream, StandardCharsets.UTF_8, type);
       } finally {
          if (stream != null)
             stream.close();
