@@ -18,6 +18,7 @@ package org.jclouds.json;
 
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 
 public interface Json {
    /**
@@ -48,12 +49,12 @@ public interface Json {
     * Deserialize the generic object from json. If the object is not a generic type, use
     * {@link #fromJson(Object, Class)}
     */
-   <T> T fromJson(InputStream json, Type type);
+   <T> T fromJson(InputStream json, Charset charset, Type type);
 
    /**
     * Deserialize the object from json. If the object is a generic type, use
     * {@link #fromJson(Object, Type)}
     */
-   <T> T fromJson(InputStream json, Class<T> classOfT);
+   <T> T fromJson(InputStream json, Charset charset, Class<T> classOfT);
 
 }
