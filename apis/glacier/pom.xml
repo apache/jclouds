@@ -32,7 +32,6 @@
   <artifactId>glacier</artifactId>
   <name>Apache jclouds :: AWS :: Glacier API</name>
   <description>jclouds components to access an implementation of glacier</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.aws.identity>FIXME_IDENTITY</test.aws.identity>
@@ -42,8 +41,6 @@
     <test.glacier.build-version />
     <test.glacier.identity>${test.aws.identity}</test.glacier.identity>
     <test.glacier.credential>${test.aws.credential}</test.glacier.credential>
-    <jclouds.osgi.export>org.jclouds.glacier*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <repositories>
