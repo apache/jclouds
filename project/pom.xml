@@ -813,10 +813,6 @@
           <version>2.2</version>
         </plugin>
         <plugin>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.3</version>
-        </plugin>
-        <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.7</version>
         </plugin>
@@ -1078,39 +1074,6 @@
                 </configuration>
               </execution>
             </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>distribution</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>generate-distribution-files</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <descriptors>
-                    <descriptor>src-descriptor.xml</descriptor>
-                    <descriptor>provided-dependencies-descriptor.xml</descriptor>
-                    <descriptor>jar-with-dependencies-no-core-no-apis-descriptor.xml</descriptor>
-                  </descriptors>
-                </configuration>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.apache.jclouds</groupId>
-                <artifactId>jclouds-assemblies</artifactId>
-                <version>${project.version}</version>
-              </dependency>
-            </dependencies>
           </plugin>
         </plugins>
       </build>
