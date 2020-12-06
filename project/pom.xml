@@ -1255,31 +1255,5 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>jenkins</id>
-      <build>
-        <plugins>
-          <!-- Make sure jclouds is built with the right JDK -->
-          <plugin>
-            <artifactId>maven-toolchains-plugin</artifactId>
-            <version>1.1</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>toolchain</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <toolchains>
-                <jdk>
-                  <version>${jdk.version}</version>
-                </jdk>
-              </toolchains>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
 </project>
