@@ -49,34 +49,6 @@
   
   <profiles>
     <profile>
-      <id>distribution</id>
-      <build>
-        <plugins>
-          <!-- top-level only -->
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>2.3</version>
-            <inherited>false</inherited>
-            <executions>
-              <execution>
-                <id>create-distribution</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <finalName>jclouds-${project.version}</finalName>
-                  <descriptors>
-                    <descriptor>package-descriptor.xml</descriptor>
-                  </descriptors>
-                </configuration>
-              </execution>
-            </executions>                               
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>doc</id>
       <build>
         <plugins>
