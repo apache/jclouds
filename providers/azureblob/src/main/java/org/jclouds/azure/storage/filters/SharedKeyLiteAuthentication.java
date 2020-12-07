@@ -35,7 +35,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.jclouds.Constants;
-import org.jclouds.azure.storage.util.StorageUrlDelegate;
+import org.jclouds.azure.storage.util.storageurl.StorageUrlSupplier;
 import org.jclouds.crypto.Crypto;
 import org.jclouds.date.TimeStamp;
 import org.jclouds.domain.Credentials;
@@ -88,12 +88,12 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
    @Inject
    public SharedKeyLiteAuthentication(SignatureWire signatureWire,
          @org.jclouds.location.Provider Supplier<Credentials> creds, @TimeStamp Provider<String> timeStampProvider,
-         Crypto crypto, HttpUtils utils, @Named("sasAuth") boolean sasAuthentication,
-         StorageUrlDelegate storageUrlDelegate) {
+         Crypto crypto, HttpUtils utils, @Named("sasAuth") boolean sasAuthentication, 
+         StorageUrlSupplier storageUrlSupplier) {
       this.crypto = crypto;
       this.utils = utils;
       this.signatureWire = signatureWire;
-      this.storageUrl = URI.create(storageUrlDelegate.configureStorageUrl());
+      this.storageUrl = storageUrlSupplier.get();
       this.creds = creds;
       this.credential = creds.get().credential;
       this.timeStampProvider = timeStampProvider;

@@ -16,7 +16,6 @@
  */
 package org.jclouds.azureblob;
 
-import static org.jclouds.azure.storage.reference.AzureConstants.PROPERTY_AZURE_VIRTUAL_HOST_STORAGE_ACCOUNT;
 import static org.jclouds.blobstore.reference.BlobStoreConstants.PROPERTY_USER_METADATA_PREFIX;
 import static org.jclouds.reflect.Reflection2.typeToken;
 
@@ -53,7 +52,6 @@ public class AzureBlobApiMetadata extends BaseHttpApiMetadata {
    public static Properties defaultProperties() {
       Properties properties = BaseHttpApiMetadata.defaultProperties();
       properties.setProperty(PROPERTY_USER_METADATA_PREFIX, "x-ms-meta-");
-      properties.setProperty(PROPERTY_AZURE_VIRTUAL_HOST_STORAGE_ACCOUNT, "true");
       return properties;
    }
    

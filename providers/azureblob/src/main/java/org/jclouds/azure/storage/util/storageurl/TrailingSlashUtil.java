@@ -14,19 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.azure.storage.reference;
+package org.jclouds.azure.storage.util.storageurl;
 
-public class AzureConstants {
+import java.net.URI;
 
-   /**
-    * Azure endpoint URL format (container in hostname) -
-    * https://devstoreaccount1.blob.core.windows.net/ -
-    * PROPERTY_AZURE_VIRTUAL_HOST_STORAGE_ACCOUNT = true
-    *
-    * Azurite endpoint URL format (container in path) -
-    * http://localhost:10000/devstoreaccount1/ -
-    * PROPERTY_AZURE_VIRTUAL_HOST_STORAGE_ACCOUNT = false
-    */
-   public static final String PROPERTY_AZURE_VIRTUAL_HOST_STORAGE_ACCOUNT = "jclouds.azureblob.virtual-host-storage-account";
+public class TrailingSlashUtil {
+
+   static String ensureTrailingSlash(URI endpointUri) {
+      String endpoint = endpointUri.toString();
+      return endpoint.endsWith("/") ? endpoint : endpoint + "/";
+   }
 
 }

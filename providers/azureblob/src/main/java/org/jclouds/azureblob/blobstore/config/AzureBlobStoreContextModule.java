@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 import javax.inject.Named;
 
+import org.jclouds.azure.storage.util.storageurl.StorageAccountInVhost;
+import org.jclouds.azure.storage.util.storageurl.StorageUrlSupplier;
 import org.jclouds.azureblob.AzureBlobClient;
 import org.jclouds.azureblob.blobstore.AzureBlobRequestSigner;
 import org.jclouds.azureblob.blobstore.AzureBlobStore;
