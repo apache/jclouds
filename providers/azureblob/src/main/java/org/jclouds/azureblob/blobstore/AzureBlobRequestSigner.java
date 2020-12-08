@@ -21,11 +21,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.net.URI;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.jclouds.azure.storage.filters.SharedKeyLiteAuthentication;
+import org.jclouds.azure.storage.util.storageurl.StorageUrlSupplier;
 import org.jclouds.blobstore.BlobRequestSigner;
 import org.jclouds.blobstore.domain.Blob;
 import org.jclouds.blobstore.functions.BlobToHttpGetOptions;
@@ -36,6 +38,7 @@ import org.jclouds.http.HttpRequest;
 import org.jclouds.http.Uris;
 import org.jclouds.http.options.GetOptions;
 import org.jclouds.javax.annotation.Nullable;
+
 import com.google.common.base.Supplier;
 import com.google.common.net.HttpHeaders;
 import com.google.inject.Provider;
@@ -53,17 +56,18 @@ public class AzureBlobRequestSigner implements BlobRequestSigner {
    private final DateService dateService;
    private final SharedKeyLiteAuthentication auth;
    private final String credential;
-   private final boolean isSAS; 
+   private final boolean isSAS;
 
    @Inject
    public AzureBlobRequestSigner(
          BlobToHttpGetOptions blob2HttpGetOptions, @TimeStamp Provider<String> timeStampProvider,
          DateService dateService, SharedKeyLiteAuthentication auth,
-         @org.jclouds.location.Provider Supplier<Credentials> creds, @Named("sasAuth") boolean sasAuthentication)
+         @org.jclouds.location.Provider Supplier<Credentials> creds, @Named("sasAuth") boolean sasAuthentication,
+         StorageUrlSupplier storageUriSupplier)
          throws SecurityException, NoSuchMethodException {
       this.identity = creds.get().identity;
       this.credential = creds.get().credential;
-      this.storageUrl = URI.create("https://" + creds.get().identity + ".blob.core.windows.net/");
+      this.storageUrl = storageUriSupplier.get();
       this.blob2HttpGetOptions = checkNotNull(blob2HttpGetOptions, "blob2HttpGetOptions");
       this.timeStampProvider = checkNotNull(timeStampProvider, "timeStampProvider");
       this.dateService = checkNotNull(dateService, "dateService");
