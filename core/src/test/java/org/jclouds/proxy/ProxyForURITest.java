@@ -26,6 +26,10 @@ import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.jclouds.domain.Credentials;
 import org.testng.annotations.Test;
@@ -46,13 +50,19 @@ public class ProxyForURITest {
       private Type type;
       private Optional<HostAndPort> proxy;
       private Optional<Credentials> credentials;
+      private Set<Pattern> proxyExcludeUriPatterns;
 
       MyProxyConfig(boolean useSystem, boolean jvmProxyEnabled, Type type, Optional<HostAndPort> proxy, Optional<Credentials> credentials) {
+         this(useSystem, jvmProxyEnabled, type, proxy, credentials, Collections.<Pattern>emptySet());
+      }
+
+      MyProxyConfig(boolean useSystem, boolean jvmProxyEnabled, Type type, Optional<HostAndPort> proxy, Optional<Credentials> credentials, Set<Pattern> proxyExcludeUriPatterns) {
          this.useSystem = useSystem;
          this.jvmProxyEnabled = jvmProxyEnabled;
          this.type = type;
          this.proxy = proxy;
          this.credentials = credentials;
+         this.proxyExcludeUriPatterns = proxyExcludeUriPatterns;
       }
 
       @Override
@@ -73,6 +83,11 @@ public class ProxyForURITest {
       @Override
       public Optional<Credentials> getCredentials() {
          return credentials;
+      }
+
+      @Override
+      public Set<Pattern> getProxyExcludedPatterns() {
+         return proxyExcludeUriPatterns;
       }
 
       @Override
@@ -181,4 +196,17 @@ public class ProxyForURITest {
       assertEquals(new ProxyForURI(test).apply(uri), new ProxyForURI(jvm).apply(uri));
    }
 
+   @Test
+   public void testProxyExcludeList() throws URISyntaxException {
+      Pattern excludedPattern = Pattern.compile("http://excluded\\.com.*");
+      URI excludedUri = new URI("http://excluded.com/file");
+      URI includedUri = new URI("http://example.com/file");
+      Set<Pattern> proxyExcludeList = new HashSet<>();
+      proxyExcludeList.add(excludedPattern);
+      HostAndPort hostAndPort = HostAndPort.fromParts("proxy.example.com", 8080);
+      ProxyConfig config = new MyProxyConfig(true, true, Proxy.Type.HTTP, Optional.of(hostAndPort), noCreds, proxyExcludeList);
+      Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress("proxy.example.com", 8080));
+      assertEquals(new ProxyForURI(config).apply(includedUri), proxy);
+      assertEquals(new ProxyForURI(config).apply(excludedUri), Proxy.NO_PROXY);
+   }
 }

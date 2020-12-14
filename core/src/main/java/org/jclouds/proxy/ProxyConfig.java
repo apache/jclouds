@@ -17,6 +17,8 @@
 package org.jclouds.proxy;
 
 import java.net.Proxy.Type;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.proxy.internal.GuiceProxyConfig;
@@ -63,4 +65,8 @@ public interface ProxyConfig {
     */
    Optional<Credentials> getCredentials();
 
+   /**
+    * @see org.jclouds.Constants#PROPERTY_PROXY_EXCLUDE_URI_PATTERN_PREFIX
+    */
+   Set<Pattern> getProxyExcludedPatterns();
 }
