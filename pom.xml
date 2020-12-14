@@ -46,29 +46,4 @@
     <module>allloadbalancer</module>
     <module>all</module>
   </modules>
-  
-  <profiles>
-    <profile>
-      <id>doc</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <additionalparam>${javadoc.opts}</additionalparam>
-            </configuration>
-            <executions>
-              <execution>
-                <id>javadoc</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>aggregate-jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
