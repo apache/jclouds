@@ -20,22 +20,24 @@ import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.hash.Hashing.md5;
-
-import java.util.Properties;
+import static org.jclouds.s3.binders.XMLHelper.asString;
+import static org.jclouds.s3.binders.XMLHelper.createDocument;
+import static org.jclouds.s3.binders.XMLHelper.elem;
+import static org.jclouds.s3.binders.XMLHelper.elemWithText;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerException;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
-import com.jamesmurty.utils.XMLBuilder;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.io.Payload;
 import org.jclouds.io.Payloads;
 import org.jclouds.rest.Binder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class BindIterableAsPayloadToDeleteRequest implements Binder {
 
@@ -51,15 +53,14 @@ public class BindIterableAsPayloadToDeleteRequest implements Binder {
 
       String content;
       try {
-         XMLBuilder rootBuilder = XMLBuilder.create("Delete");
+         Document document = createDocument();
+         Element rootNode = elem(document, "Delete", document);
          for (String key : keys) {
-            rootBuilder.elem("Object").elem("Key").text(key);
+            Element objectNode = elem(rootNode, "Object", document);
+            elemWithText(objectNode, "Key", key, document);
          }
 
-         Properties outputProperties = new Properties();
-         outputProperties.put(OutputKeys.OMIT_XML_DECLARATION, "yes");
-         content = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                rootBuilder.asString(outputProperties);
+         content = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + asString(document);
       } catch (ParserConfigurationException | TransformerException pce) {
          throw Throwables.propagate(pce);
       }
