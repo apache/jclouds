@@ -69,7 +69,7 @@ public class BindBucketLoggingToXmlPayload implements Binder {
             granteeBuilder.attr("xsi:type", "Group").elem("URI").text(grant.getGrantee().getIdentifier());
          } else if (grant.getGrantee() instanceof CanonicalUserGrantee) {
             CanonicalUserGrantee grantee = (CanonicalUserGrantee) grant.getGrantee();
-            granteeBuilder.attr("xsi:type", "CanonicalUser").elem("ID").text(grantee.getIdentifier()).up();
+            granteeBuilder.attr("xsi:type", "CanonicalUser").elem("ID").text(grantee.getIdentifier());
             if (grantee.getDisplayName() != null) {
                granteeBuilder.elem("DisplayName").text(grantee.getDisplayName());
             }

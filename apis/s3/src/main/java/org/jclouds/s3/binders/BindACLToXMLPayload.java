@@ -59,9 +59,9 @@ public class BindACLToXMLPayload implements Binder {
             S3Constants.S3_REST_API_XML_NAMESPACE);
       if (acl.getOwner() != null) {
          XMLBuilder ownerBuilder = rootBuilder.elem("Owner");
-         ownerBuilder.elem("ID").text(acl.getOwner().getId()).up();
+         ownerBuilder.elem("ID").text(acl.getOwner().getId());
          if (acl.getOwner().getDisplayName() != null) {
-            ownerBuilder.elem("DisplayName").text(acl.getOwner().getDisplayName()).up();
+            ownerBuilder.elem("DisplayName").text(acl.getOwner().getDisplayName());
          }
       }
       XMLBuilder grantsBuilder = rootBuilder.elem("AccessControlList");
@@ -74,7 +74,7 @@ public class BindACLToXMLPayload implements Binder {
             granteeBuilder.attr("xsi:type", "Group").elem("URI").text(grant.getGrantee().getIdentifier());
          } else if (grant.getGrantee() instanceof CanonicalUserGrantee) {
             CanonicalUserGrantee grantee = (CanonicalUserGrantee) grant.getGrantee();
-            granteeBuilder.attr("xsi:type", "CanonicalUser").elem("ID").text(grantee.getIdentifier()).up();
+            granteeBuilder.attr("xsi:type", "CanonicalUser").elem("ID").text(grantee.getIdentifier());
             if (grantee.getDisplayName() != null) {
                granteeBuilder.elem("DisplayName").text(grantee.getDisplayName());
             }
