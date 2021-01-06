@@ -82,7 +82,7 @@ public class BindACLToXMLPayload implements Binder {
             granteeBuilder.attr("xsi:type", "AmazonCustomerByEmail").elem("EmailAddress")
                   .text(grant.getGrantee().getIdentifier());
          }
-         grantBuilder.elem("Permission").text(grant.getPermission().toString());
+         grantBuilder.elem("Permission").text(grant.getPermission());
       }
       return grantsBuilder;
    }
