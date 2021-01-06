@@ -16,6 +16,7 @@
  */
 package org.jclouds.s3.binders;
 
+import java.util.Collection;
 import java.util.Properties;
 
 import javax.inject.Singleton;
@@ -60,7 +61,12 @@ public class BindBucketLoggingToXmlPayload implements Binder {
       rootBuilder.elem("TargetBucket").text(bucketLogging.getTargetBucket());
       rootBuilder.elem("TargetPrefix").text(bucketLogging.getTargetPrefix());
       XMLBuilder grantsBuilder = rootBuilder.elem("TargetGrants");
-      for (Grant grant : bucketLogging.getTargetGrants()) {
+      addGrants(grantsBuilder, bucketLogging.getTargetGrants());
+      return grantsBuilder;
+   }
+
+   static void addGrants(XMLBuilder grantsBuilder, Collection<Grant> grants) {
+      for (Grant grant : grants) {
          XMLBuilder grantBuilder = grantsBuilder.elem("Grant");
          XMLBuilder granteeBuilder = grantBuilder.elem("Grantee").attr("xmlns:xsi",
                "http://www.w3.org/2001/XMLSchema-instance");
@@ -79,7 +85,6 @@ public class BindBucketLoggingToXmlPayload implements Binder {
          }
          grantBuilder.elem("Permission").text(grant.getPermission());
       }
-      return grantsBuilder;
    }
 
 }
