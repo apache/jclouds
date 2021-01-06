@@ -44,11 +44,11 @@ public class BindACLToXMLPayload implements Binder {
          String stringPayload = generateBuilder(from).asString(outputProperties);
          request.setPayload(stringPayload);
          request.getPayload().getContentMetadata().setContentType(MediaType.TEXT_XML);
+         return request;
       } catch (Exception e) {
          Throwables.propagateIfPossible(e);
          throw new RuntimeException("error transforming acl: " + from, e);
       }
-      return request;
    }
 
    protected XMLBuilder generateBuilder(AccessControlList acl) throws ParserConfigurationException,
@@ -62,8 +62,7 @@ public class BindACLToXMLPayload implements Binder {
             ownerBuilder.elem("DisplayName").text(acl.getOwner().getDisplayName());
          }
       }
-      XMLBuilder grantsBuilder = rootBuilder.elem("AccessControlList");
-      addGrants(grantsBuilder, acl.getGrants());
-      return grantsBuilder;
+      addGrants(rootBuilder.elem("AccessControlList"), acl.getGrants());
+      return rootBuilder;
    }
 }

@@ -47,11 +47,11 @@ public class BindBucketLoggingToXmlPayload implements Binder {
          String stringPayload = generateBuilder(from).asString(outputProperties);
          request.setPayload(stringPayload);
          request.getPayload().getContentMetadata().setContentType(MediaType.TEXT_XML);
+         return request;
       } catch (Exception e) {
          Throwables.propagateIfPossible(e);
          throw new RuntimeException("error transforming bucketLogging: " + from, e);
       }
-      return request;
    }
 
    protected XMLBuilder generateBuilder(BucketLogging bucketLogging) throws ParserConfigurationException,
@@ -60,9 +60,8 @@ public class BindBucketLoggingToXmlPayload implements Binder {
             .attr("xmlns", S3Constants.S3_REST_API_XML_NAMESPACE).elem("LoggingEnabled");
       rootBuilder.elem("TargetBucket").text(bucketLogging.getTargetBucket());
       rootBuilder.elem("TargetPrefix").text(bucketLogging.getTargetPrefix());
-      XMLBuilder grantsBuilder = rootBuilder.elem("TargetGrants");
-      addGrants(grantsBuilder, bucketLogging.getTargetGrants());
-      return grantsBuilder;
+      addGrants(rootBuilder.elem("TargetGrants"), bucketLogging.getTargetGrants());
+      return rootBuilder;
    }
 
    static void addGrants(XMLBuilder grantsBuilder, Collection<Grant> grants) {
