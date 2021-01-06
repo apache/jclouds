@@ -56,9 +56,9 @@ public class BindBucketLoggingToXmlPayload implements Binder {
    protected XMLBuilder generateBuilder(BucketLogging bucketLogging) throws ParserConfigurationException,
          FactoryConfigurationError {
       XMLBuilder rootBuilder = XMLBuilder.create("BucketLoggingStatus")
-            .attr("xmlns", S3Constants.S3_REST_API_XML_NAMESPACE).e("LoggingEnabled");
-      rootBuilder.e("TargetBucket").t(bucketLogging.getTargetBucket());
-      rootBuilder.e("TargetPrefix").t(bucketLogging.getTargetPrefix());
+            .attr("xmlns", S3Constants.S3_REST_API_XML_NAMESPACE).elem("LoggingEnabled");
+      rootBuilder.elem("TargetBucket").text(bucketLogging.getTargetBucket());
+      rootBuilder.elem("TargetPrefix").text(bucketLogging.getTargetPrefix());
       XMLBuilder grantsBuilder = rootBuilder.elem("TargetGrants");
       for (Grant grant : bucketLogging.getTargetGrants()) {
          XMLBuilder grantBuilder = grantsBuilder.elem("Grant");
