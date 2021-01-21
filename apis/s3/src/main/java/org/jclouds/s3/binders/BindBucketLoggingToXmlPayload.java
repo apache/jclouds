@@ -16,6 +16,7 @@
  */
 package org.jclouds.s3.binders;
 
+import java.util.Collection;
 import java.util.Properties;
 
 import javax.inject.Singleton;
@@ -46,21 +47,25 @@ public class BindBucketLoggingToXmlPayload implements Binder {
          String stringPayload = generateBuilder(from).asString(outputProperties);
          request.setPayload(stringPayload);
          request.getPayload().getContentMetadata().setContentType(MediaType.TEXT_XML);
+         return request;
       } catch (Exception e) {
          Throwables.propagateIfPossible(e);
          throw new RuntimeException("error transforming bucketLogging: " + from, e);
       }
-      return request;
    }
 
    protected XMLBuilder generateBuilder(BucketLogging bucketLogging) throws ParserConfigurationException,
          FactoryConfigurationError {
       XMLBuilder rootBuilder = XMLBuilder.create("BucketLoggingStatus")
-            .attr("xmlns", S3Constants.S3_REST_API_XML_NAMESPACE).e("LoggingEnabled");
-      rootBuilder.e("TargetBucket").t(bucketLogging.getTargetBucket());
-      rootBuilder.e("TargetPrefix").t(bucketLogging.getTargetPrefix());
-      XMLBuilder grantsBuilder = rootBuilder.elem("TargetGrants");
-      for (Grant grant : bucketLogging.getTargetGrants()) {
+            .attr("xmlns", S3Constants.S3_REST_API_XML_NAMESPACE).elem("LoggingEnabled");
+      rootBuilder.elem("TargetBucket").text(bucketLogging.getTargetBucket());
+      rootBuilder.elem("TargetPrefix").text(bucketLogging.getTargetPrefix());
+      addGrants(rootBuilder.elem("TargetGrants"), bucketLogging.getTargetGrants());
+      return rootBuilder;
+   }
+
+   static void addGrants(XMLBuilder grantsBuilder, Collection<Grant> grants) {
+      for (Grant grant : grants) {
          XMLBuilder grantBuilder = grantsBuilder.elem("Grant");
          XMLBuilder granteeBuilder = grantBuilder.elem("Grantee").attr("xmlns:xsi",
                "http://www.w3.org/2001/XMLSchema-instance");
@@ -69,7 +74,7 @@ public class BindBucketLoggingToXmlPayload implements Binder {
             granteeBuilder.attr("xsi:type", "Group").elem("URI").text(grant.getGrantee().getIdentifier());
          } else if (grant.getGrantee() instanceof CanonicalUserGrantee) {
             CanonicalUserGrantee grantee = (CanonicalUserGrantee) grant.getGrantee();
-            granteeBuilder.attr("xsi:type", "CanonicalUser").elem("ID").text(grantee.getIdentifier()).up();
+            granteeBuilder.attr("xsi:type", "CanonicalUser").elem("ID").text(grantee.getIdentifier());
             if (grantee.getDisplayName() != null) {
                granteeBuilder.elem("DisplayName").text(grantee.getDisplayName());
             }
@@ -77,9 +82,8 @@ public class BindBucketLoggingToXmlPayload implements Binder {
             granteeBuilder.attr("xsi:type", "AmazonCustomerByEmail").elem("EmailAddress")
                   .text(grant.getGrantee().getIdentifier());
          }
-         grantBuilder.elem("Permission").text(grant.getPermission().toString());
+         grantBuilder.elem("Permission").text(grant.getPermission());
       }
-      return grantsBuilder;
    }
 
 }

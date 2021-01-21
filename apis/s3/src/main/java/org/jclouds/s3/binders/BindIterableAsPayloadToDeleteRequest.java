@@ -53,18 +53,15 @@ public class BindIterableAsPayloadToDeleteRequest implements Binder {
       try {
          XMLBuilder rootBuilder = XMLBuilder.create("Delete");
          for (String key : keys) {
-            XMLBuilder ownerBuilder = rootBuilder.elem("Object");
-            XMLBuilder keyBuilder = ownerBuilder.elem("Key").text(key);
+            rootBuilder.elem("Object").elem("Key").text(key);
          }
 
          Properties outputProperties = new Properties();
          outputProperties.put(OutputKeys.OMIT_XML_DECLARATION, "yes");
          content = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 rootBuilder.asString(outputProperties);
-      } catch (ParserConfigurationException pce) {
+      } catch (ParserConfigurationException | TransformerException pce) {
          throw Throwables.propagate(pce);
-      } catch (TransformerException te) {
-         throw Throwables.propagate(te);
       }
 
       Payload payload = Payloads.newStringPayload(content);

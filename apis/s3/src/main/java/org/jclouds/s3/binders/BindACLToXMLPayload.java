@@ -26,14 +26,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.Binder;
 import org.jclouds.s3.domain.AccessControlList;
-import org.jclouds.s3.domain.AccessControlList.CanonicalUserGrantee;
-import org.jclouds.s3.domain.AccessControlList.EmailAddressGrantee;
-import org.jclouds.s3.domain.AccessControlList.Grant;
-import org.jclouds.s3.domain.AccessControlList.GroupGrantee;
 import org.jclouds.s3.reference.S3Constants;
 
 import com.google.common.base.Throwables;
 import com.jamesmurty.utils.XMLBuilder;
+
+import static org.jclouds.s3.binders.BindBucketLoggingToXmlPayload.addGrants;
 
 @Singleton
 public class BindACLToXMLPayload implements Binder {
@@ -46,11 +44,11 @@ public class BindACLToXMLPayload implements Binder {
          String stringPayload = generateBuilder(from).asString(outputProperties);
          request.setPayload(stringPayload);
          request.getPayload().getContentMetadata().setContentType(MediaType.TEXT_XML);
+         return request;
       } catch (Exception e) {
          Throwables.propagateIfPossible(e);
          throw new RuntimeException("error transforming acl: " + from, e);
       }
-      return request;
    }
 
    protected XMLBuilder generateBuilder(AccessControlList acl) throws ParserConfigurationException,
@@ -59,32 +57,12 @@ public class BindACLToXMLPayload implements Binder {
             S3Constants.S3_REST_API_XML_NAMESPACE);
       if (acl.getOwner() != null) {
          XMLBuilder ownerBuilder = rootBuilder.elem("Owner");
-         ownerBuilder.elem("ID").text(acl.getOwner().getId()).up();
+         ownerBuilder.elem("ID").text(acl.getOwner().getId());
          if (acl.getOwner().getDisplayName() != null) {
-            ownerBuilder.elem("DisplayName").text(acl.getOwner().getDisplayName()).up();
+            ownerBuilder.elem("DisplayName").text(acl.getOwner().getDisplayName());
          }
       }
-      XMLBuilder grantsBuilder = rootBuilder.elem("AccessControlList");
-      for (Grant grant : acl.getGrants()) {
-         XMLBuilder grantBuilder = grantsBuilder.elem("Grant");
-         XMLBuilder granteeBuilder = grantBuilder.elem("Grantee").attr("xmlns:xsi",
-               "http://www.w3.org/2001/XMLSchema-instance");
-
-         if (grant.getGrantee() instanceof GroupGrantee) {
-            granteeBuilder.attr("xsi:type", "Group").elem("URI").text(grant.getGrantee().getIdentifier());
-         } else if (grant.getGrantee() instanceof CanonicalUserGrantee) {
-            CanonicalUserGrantee grantee = (CanonicalUserGrantee) grant.getGrantee();
-            granteeBuilder.attr("xsi:type", "CanonicalUser").elem("ID").text(grantee.getIdentifier()).up();
-            if (grantee.getDisplayName() != null) {
-               granteeBuilder.elem("DisplayName").text(grantee.getDisplayName());
-            }
-         } else if (grant.getGrantee() instanceof EmailAddressGrantee) {
-            granteeBuilder.attr("xsi:type", "AmazonCustomerByEmail").elem("EmailAddress")
-                  .text(grant.getGrantee().getIdentifier());
-         }
-         grantBuilder.elem("Permission").text(grant.getPermission().toString());
-      }
-      return grantsBuilder;
+      addGrants(rootBuilder.elem("AccessControlList"), acl.getGrants());
+      return rootBuilder;
    }
-
 }
