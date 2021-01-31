@@ -522,6 +522,11 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
    @Override
    public String putBlob(final String containerName, final Blob blob) throws IOException {
+      return putBlob(containerName, blob, BlobAccess.PRIVATE);
+   }
+
+   @Override
+   public String putBlob(final String containerName, final Blob blob, BlobAccess access) throws IOException {
       String blobKey = blob.getMetadata().getName();
       Payload payload = blob.getPayload();
       filesystemContainerNameValidator.validate(containerName);
@@ -579,7 +584,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
             }
          }
 
-         setBlobAccess(containerName, tmpBlobName, BlobAccess.PRIVATE);
+         setBlobAccess(containerName, tmpBlobName, access);
 
          if (!tmpFile.renameTo(outputFile)) {
             throw new IOException("Could not rename file " + tmpFile + " to " + outputFile);

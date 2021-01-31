@@ -789,8 +789,7 @@ public final class LocalBlobStore implements BlobStore {
       }
 
       try {
-         String eTag = storageStrategy.putBlob(containerName, blob);
-         setBlobAccess(containerName, blobKey, options.getBlobAccess());
+         String eTag = storageStrategy.putBlob(containerName, blob, options.getBlobAccess());
          return eTag;
       } catch (IOException e) {
          String message = e.getMessage();

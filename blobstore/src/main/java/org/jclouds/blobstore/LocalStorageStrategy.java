@@ -114,14 +114,18 @@ public interface LocalStorageStrategy {
      */
     Blob getBlob(String containerName, String blobName);
 
+    @Deprecated
+    String putBlob(String containerName, Blob blob) throws IOException;
+
     /**
      * Write a {@link Blob} into a file
      * @param container
      * @param blob
+     * @param access
      * @return etag of blob
      * @throws IOException
      */
-    String putBlob(String containerName, Blob blob) throws IOException;
+    String putBlob(String containerName, Blob blob, BlobAccess access) throws IOException;
 
     /**
      * Remove blob named by the given key
