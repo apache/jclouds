@@ -165,6 +165,11 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
 
    @Override
    public String putBlob(final String containerName, final Blob blob) throws IOException {
+      return putBlob(containerName, blob, BlobAccess.PRIVATE);
+   }
+
+   @Override
+   public String putBlob(final String containerName, final Blob blob, BlobAccess access) throws IOException {
       byte[] payload;
       HashCode actualHashCode;
       HashingInputStream input = new HashingInputStream(Hashing.md5(), blob.getPayload().openStream());
@@ -190,7 +195,7 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
       Map<String, Blob> map = containerToBlobs.get(containerName);
       String blobName = newBlob.getMetadata().getName();
       map.put(blobName, newBlob);
-      containerToBlobAccess.get(containerName).put(blobName, BlobAccess.PRIVATE);
+      containerToBlobAccess.get(containerName).put(blobName, access);
       return base16().lowerCase().encode(actualHashCode.asBytes());
    }
 
