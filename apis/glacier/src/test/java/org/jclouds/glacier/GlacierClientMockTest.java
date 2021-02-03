@@ -64,9 +64,9 @@ import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 
 /**
  * Mock test for Glacier.
@@ -125,8 +125,8 @@ public class GlacierClientMockTest {
    @BeforeMethod
    private void initServer() throws IOException {
       server = new MockWebServer();
-      server.play();
-      client = getGlacierClient(server.getUrl("/"));
+      server.start();
+      client = getGlacierClient(server.url("/").url());
    }
 
    @AfterMethod
@@ -148,7 +148,7 @@ public class GlacierClientMockTest {
       mr.addHeader(HttpHeaders.LOCATION, VAULT_LOCATION);
       server.enqueue(mr);
 
-      assertThat(client.createVault(VAULT_NAME)).isEqualTo(URI.create(server.getUrl("/") + VAULT_LOCATION.substring(1)));
+      assertThat(client.createVault(VAULT_NAME)).isEqualTo(URI.create(server.url("/") + VAULT_LOCATION.substring(1)));
 
       assertEquals(server.takeRequest().getRequestLine(), "PUT /-/vaults/" + VAULT_NAME + " " + HTTP);
    }
@@ -232,8 +232,8 @@ public class GlacierClientMockTest {
       RecordedRequest request = server.takeRequest();
       assertEquals(request.getRequestLine(), "POST /-/vaults/" + VAULT_NAME + "/archives " + HTTP);
       assertEquals(request.getHeader(GlacierHeaders.ARCHIVE_DESCRIPTION), DESCRIPTION);
-      assertNotNull(request.getHeaders(GlacierHeaders.TREE_HASH));
-      assertNotNull(request.getHeaders(GlacierHeaders.LINEAR_HASH));
+      assertNotNull(request.getHeader(GlacierHeaders.TREE_HASH));
+      assertNotNull(request.getHeader(GlacierHeaders.LINEAR_HASH));
    }
 
    @Test
@@ -407,7 +407,7 @@ public class GlacierClientMockTest {
 
       RecordedRequest request = server.takeRequest();
       Json json = new GsonWrapper(new Gson());
-      ArchiveRetrievalJobRequest job = json.fromJson(new String(request.getBody()), ArchiveRetrievalJobRequest.class);
+      ArchiveRetrievalJobRequest job = json.fromJson(request.getBody().readUtf8(), ArchiveRetrievalJobRequest.class);
       assertThat(job.getDescription()).isEqualTo(DESCRIPTION);
       assertThat(job.getRange()).isEqualTo(range);
       assertThat(job.getArchiveId()).isEqualTo(ARCHIVE_ID);
@@ -439,7 +439,7 @@ public class GlacierClientMockTest {
 
       RecordedRequest request = server.takeRequest();
       Json json = new GsonWrapper(new Gson());
-      job = json.fromJson(new String(request.getBody()), InventoryRetrievalJobRequest.class);
+      job = json.fromJson(request.getBody().readUtf8(), InventoryRetrievalJobRequest.class);
       assertThat(job.getFormat()).isEqualTo(format);
       assertThat(job.getParameters().getMarker()).isEqualTo(marker);
       assertThat(job.getParameters().getLimit()).isEqualTo(limit);

@@ -48,9 +48,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.hash.HashCode;
 import com.google.common.net.HttpHeaders;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 
 @Test(groups = {"mock"}, singleThreaded = true)
 public class MultipartUploadStrategyMockTest {
@@ -75,8 +75,8 @@ public class MultipartUploadStrategyMockTest {
    @BeforeMethod
    private void initServer() throws IOException {
       server = new MockWebServer();
-      server.play();
-      client = getGlacierClient(server.getUrl("/"));
+      server.start();
+      client = getGlacierClient(server.url("/").url());
    }
 
    @AfterMethod
