@@ -38,7 +38,6 @@ import org.jclouds.blobstore.strategy.internal.FetchBlobMetadata;
 import org.jclouds.blobstore.util.BlobUtils;
 import org.jclouds.collect.Memoized;
 import org.jclouds.domain.Location;
-import org.jclouds.io.PayloadSlicer;
 import org.jclouds.s3.blobstore.S3BlobStore;
 import org.jclouds.s3.blobstore.functions.BlobToObject;
 import org.jclouds.s3.blobstore.functions.BlobToObjectMetadata;
@@ -61,13 +60,13 @@ public class AWSS3BlobStore extends S3BlobStore {
 
    @Inject
    AWSS3BlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
-            @Memoized Supplier<Set<? extends Location>> locations, PayloadSlicer slicer, AWSS3Client sync,
+            @Memoized Supplier<Set<? extends Location>> locations, AWSS3Client sync,
             Function<Set<BucketMetadata>, PageSet<? extends StorageMetadata>> convertBucketsToStorageMetadata,
             ContainerToBucketListOptions container2BucketListOptions, BucketToResourceList bucket2ResourceList,
             ObjectToBlob object2Blob, BlobToHttpGetOptions blob2ObjectGetOptions, BlobToObject blob2Object,
             BlobToObjectMetadata blob2ObjectMetadata,
             ObjectToBlobMetadata object2BlobMd, Provider<FetchBlobMetadata> fetchBlobMetadataProvider) {
-      super(context, blobUtils, defaultLocation, locations, slicer, sync, convertBucketsToStorageMetadata,
+      super(context, blobUtils, defaultLocation, locations, sync, convertBucketsToStorageMetadata,
                container2BucketListOptions, bucket2ResourceList, object2Blob, blob2ObjectGetOptions, blob2Object,
                blob2ObjectMetadata, object2BlobMd, fetchBlobMetadataProvider);
       this.blob2Object = blob2Object;

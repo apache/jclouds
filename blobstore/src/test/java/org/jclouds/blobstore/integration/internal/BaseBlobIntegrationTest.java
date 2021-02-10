@@ -64,7 +64,7 @@ import org.jclouds.blobstore.domain.Tier;
 import org.jclouds.blobstore.options.CopyOptions;
 import org.jclouds.blobstore.options.GetOptions;
 import org.jclouds.blobstore.options.PutOptions;
-import org.jclouds.blobstore.strategy.internal.MultipartUploadSlicingAlgorithm;
+import org.jclouds.blobstore.strategy.internal.MultipartUploadChunkSizeCalculator;
 import org.jclouds.crypto.Crypto;
 import org.jclouds.encryption.internal.JCECrypto;
 import org.jclouds.http.HttpRequest;
@@ -686,13 +686,7 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
 
    @Test(groups = { "integration", "live" })
    public void testPutMultipartByteSource() throws Exception {
-      long length = Math.max(getMinimumMultipartBlobSize(), MultipartUploadSlicingAlgorithm.DEFAULT_PART_SIZE + 1);
-      BlobStore blobStore = view.getBlobStore();
-      MultipartUploadSlicingAlgorithm algorithm = new MultipartUploadSlicingAlgorithm(
-              blobStore.getMinimumMultipartPartSize(), blobStore.getMaximumMultipartPartSize(),
-              blobStore.getMaximumNumberOfParts());
-      // make sure that we are creating multiple parts
-      assertThat(algorithm.calculateChunkSize(length)).isLessThan(length);
+      long length = Math.max(getMinimumMultipartBlobSize(), MultipartUploadChunkSizeCalculator.DEFAULT_PART_SIZE + 1);
       ByteSource byteSource = TestUtils.randomByteSource().slice(0, length);
       Payload payload = new ByteSourcePayload(byteSource);
       HashCode hashCode = byteSource.hash(Hashing.md5());
@@ -701,13 +695,7 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
 
    @Test(groups = { "integration", "live" })
    public void testPutMultipartInputStream() throws Exception {
-      long length = Math.max(getMinimumMultipartBlobSize(), MultipartUploadSlicingAlgorithm.DEFAULT_PART_SIZE + 1);
-      BlobStore blobStore = view.getBlobStore();
-      MultipartUploadSlicingAlgorithm algorithm = new MultipartUploadSlicingAlgorithm(
-              blobStore.getMinimumMultipartPartSize(), blobStore.getMaximumMultipartPartSize(),
-              blobStore.getMaximumNumberOfParts());
-      // make sure that we are creating multiple parts
-      assertThat(algorithm.calculateChunkSize(length)).isLessThan(length);
+      long length = Math.max(getMinimumMultipartBlobSize(), MultipartUploadChunkSizeCalculator.DEFAULT_PART_SIZE + 1);
       ByteSource byteSource = TestUtils.randomByteSource().slice(0, length);
       Payload payload = new InputStreamPayload(byteSource.openStream());
       testPut(payload, null, new ByteSourcePayload(byteSource), length, new PutOptions().multipart(true));
@@ -856,7 +844,10 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
          assertThat(etag).isNotNull();
 
          Blob blob = blobStore.getBlob(container, blobName);
-         assertThat(blob.getMetadata().getContentMetadata().getContentLength()).isEqualTo(length);
+         Long contentLength = blob.getMetadata().getContentMetadata().getContentLength();
+         if (contentLength != null) {
+            assertThat(contentLength).isEqualTo(length);
+         }
 
          InputStream is = null;
          try {
