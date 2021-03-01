@@ -229,7 +229,6 @@
     <auto-factory.version>0.1-beta1</auto-factory.version>
     <auto-service.version>1.0-rc3</auto-service.version>
     <auto-value.version>1.4.1</auto-value.version>
-    <java-xmlbuilder.version>1.2</java-xmlbuilder.version>
 
     <jetty.version>8.1.8.v20121106</jetty.version>
     <javax.ws.rs-api.version>2.0.1</javax.ws.rs-api.version>
@@ -305,11 +304,6 @@
         <groupId>com.google.auto.value</groupId>
         <artifactId>auto-value</artifactId>
         <version>${auto-value.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.jamesmurty.utils</groupId>
-        <artifactId>java-xmlbuilder</artifactId>
-        <version>${java-xmlbuilder.version}</version>
       </dependency>
 
       <dependency>

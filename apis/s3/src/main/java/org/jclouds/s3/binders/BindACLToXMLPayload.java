@@ -16,33 +16,34 @@
  */
 package org.jclouds.s3.binders;
 
-import java.util.Properties;
+import static org.jclouds.s3.binders.BindBucketLoggingToXmlPayload.addGrants;
+import static org.jclouds.s3.binders.XMLHelper.asString;
+import static org.jclouds.s3.binders.XMLHelper.createDocument;
+import static org.jclouds.s3.binders.XMLHelper.elem;
+import static org.jclouds.s3.binders.XMLHelper.elemWithText;
 
 import javax.inject.Singleton;
 import javax.ws.rs.core.MediaType;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.Binder;
 import org.jclouds.s3.domain.AccessControlList;
 import org.jclouds.s3.reference.S3Constants;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.google.common.base.Throwables;
-import com.jamesmurty.utils.XMLBuilder;
-
-import static org.jclouds.s3.binders.BindBucketLoggingToXmlPayload.addGrants;
 
 @Singleton
 public class BindACLToXMLPayload implements Binder {
    @Override
    public <R extends HttpRequest> R bindToRequest(R request, Object payload) {
       AccessControlList from = (AccessControlList) payload;
-      Properties outputProperties = new Properties();
-      outputProperties.put(javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION, "yes");
       try {
-         String stringPayload = generateBuilder(from).asString(outputProperties);
-         request.setPayload(stringPayload);
+         request.setPayload(generatePayload(from));
          request.getPayload().getContentMetadata().setContentType(MediaType.TEXT_XML);
          return request;
       } catch (Exception e) {
@@ -51,18 +52,22 @@ public class BindACLToXMLPayload implements Binder {
       }
    }
 
-   protected XMLBuilder generateBuilder(AccessControlList acl) throws ParserConfigurationException,
-         FactoryConfigurationError {
-      XMLBuilder rootBuilder = XMLBuilder.create("AccessControlPolicy").attr("xmlns",
-            S3Constants.S3_REST_API_XML_NAMESPACE);
+   protected String generatePayload(AccessControlList acl)
+         throws ParserConfigurationException, FactoryConfigurationError, TransformerException {
+      Document document = createDocument();
+      Element rootNode = elem(document, "AccessControlPolicy", document);
+      rootNode.setAttribute("xmlns", S3Constants.S3_REST_API_XML_NAMESPACE);
       if (acl.getOwner() != null) {
-         XMLBuilder ownerBuilder = rootBuilder.elem("Owner");
-         ownerBuilder.elem("ID").text(acl.getOwner().getId());
-         if (acl.getOwner().getDisplayName() != null) {
-            ownerBuilder.elem("DisplayName").text(acl.getOwner().getDisplayName());
+         Element ownerNode = elem(rootNode, "Owner", document);
+         elemWithText(ownerNode, "ID", acl.getOwner().getId(), document);
+         String displayName = acl.getOwner().getDisplayName();
+         if (displayName != null) {
+            elemWithText(ownerNode, "DisplayName", displayName, document);
          }
       }
-      addGrants(rootBuilder.elem("AccessControlList"), acl.getGrants());
-      return rootBuilder;
+      addGrants(elem(rootNode, "AccessControlList", document),
+                acl.getGrants(),
+                document);
+      return asString(document);
    }
 }
