@@ -22,33 +22,32 @@ import java.io.IOException;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.functions.BaseHandlerTest;
+import org.jclouds.s3.domain.AccessControlList;
 import org.jclouds.s3.domain.AccessControlList.EmailAddressGrantee;
-import org.jclouds.s3.domain.AccessControlList.Grant;
 import org.jclouds.s3.domain.AccessControlList.Permission;
-import org.jclouds.s3.domain.BucketLogging;
+import org.jclouds.s3.domain.CanonicalUser;
 import org.jclouds.util.Strings2;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableSet;
-
 /**
- * Tests behavior of {@link #BindBucketLoggingToXmlPayload}
+ * Tests behavior of {@link #BindACLToXMLPayload}
  */
 //NOTE:without testName, this will not call @Before* and fail w/NPE during surefire
 @Test(groups = "unit", testName = "BindBucketLoggingToXmlPayloadTest")
-public class BindBucketLoggingToXmlPayloadTest  extends BaseHandlerTest {
-   public void testApplyInputStream() throws IOException {
-      BucketLogging bucketLogging = new BucketLogging("mylogs", "access_log-", ImmutableSet
-               .<Grant> of(new Grant(new EmailAddressGrantee("adrian@jclouds.org"),
-                        Permission.FULL_CONTROL)));
+public class BindACLToXMLPayloadTest  extends BaseHandlerTest {
+   public void testBindToRequest() throws IOException {
+	   AccessControlList acl = new AccessControlList();
+	   acl.setOwner(new CanonicalUser("jnrouvignac", "Jean-Noël Rouvignac"));
+	   acl.addPermission(new EmailAddressGrantee("adrian@jclouds.org"),
+                        Permission.FULL_CONTROL);
      
       String expected = Strings2.toStringAndClose(getClass().getResourceAsStream(
-               "/bucket_logging.xml"));
+               "/acl_to_xml.xml"));
       
       HttpRequest request = HttpRequest.builder().method("GET").endpoint("http://test").build();
-      BindBucketLoggingToXmlPayload binder = new BindBucketLoggingToXmlPayload();
+      BindACLToXMLPayload binder = new BindACLToXMLPayload();
 
-      binder.bindToRequest(request, bucketLogging);
+      binder.bindToRequest(request, acl);
       assertEquals(request.getPayload().getContentMetadata().getContentType(), "text/xml");
       assertEquals(request.getPayload().getRawContent(), expected);
    }
