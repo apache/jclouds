@@ -106,7 +106,7 @@ public class AsyncJob<S> {
    }
 
    public static <T> Builder<?, T> builder() {
-      return new ConcreteBuilder<T>();
+      return new ConcreteBuilder<>();
    }
 
    public Builder toBuilder() {
@@ -235,7 +235,7 @@ public class AsyncJob<S> {
       }
 
       public AsyncJob build() {
-         return new AsyncJob<S>(accountId, cmd, created, id, instanceId, instanceType, progress, result, resultCode,
+         return new AsyncJob<>(accountId, cmd, created, id, instanceId, instanceType, progress, result, resultCode,
                resultType, status, userId, error);
       }
 

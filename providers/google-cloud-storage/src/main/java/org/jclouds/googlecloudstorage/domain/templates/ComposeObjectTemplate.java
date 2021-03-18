@@ -93,7 +93,7 @@ public abstract class ComposeObjectTemplate {
       }
 
       public Builder fromGoogleCloudStorageObject(Collection<GoogleCloudStorageObject> objects) {
-         ImmutableList.Builder<SourceObject> sourceObjects = new ImmutableList.Builder<ComposeObjectTemplate.SourceObject>();
+         ImmutableList.Builder<SourceObject> sourceObjects = new ImmutableList.Builder<>();
          for (GoogleCloudStorageObject obj : objects) {
             sourceObjects.add(SourceObject.createWithPrecondition(obj.name(), obj.generation(), obj.generation()));
          }
@@ -102,7 +102,7 @@ public abstract class ComposeObjectTemplate {
       }
 
       public Builder fromNames(List<String> SourceObjectNames) {
-         ArrayList<SourceObject> sourceObjects = new ArrayList<SourceObject>();
+         ArrayList<SourceObject> sourceObjects = new ArrayList<>();
          for (String name : SourceObjectNames) {
             sourceObjects.add(SourceObject.nameOnly(name));
          }

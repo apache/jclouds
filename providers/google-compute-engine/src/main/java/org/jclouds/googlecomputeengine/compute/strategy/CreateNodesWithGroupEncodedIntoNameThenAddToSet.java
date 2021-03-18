@@ -248,7 +248,7 @@ public final class CreateNodesWithGroupEncodedIntoNameThenAddToSet extends
       if ((ports == null) || (ports.length == 0)) {
          return null;
       }
-      ArrayList<String> output = new ArrayList<String>();
+      ArrayList<String> output = new ArrayList<>();
       Arrays.sort(ports);
 
       int range_start = ports[0];

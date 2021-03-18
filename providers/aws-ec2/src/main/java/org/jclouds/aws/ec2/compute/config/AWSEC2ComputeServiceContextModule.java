@@ -142,7 +142,7 @@ public class AWSEC2ComputeServiceContextModule extends BaseComputeServiceContext
                   }
                }
             };
-            return new SetAndThrowAuthorizationExceptionSupplier<Image>(rawSupplier, authException).get();
+            return new SetAndThrowAuthorizationExceptionSupplier<>(rawSupplier, authException).get();
          }
 
       });

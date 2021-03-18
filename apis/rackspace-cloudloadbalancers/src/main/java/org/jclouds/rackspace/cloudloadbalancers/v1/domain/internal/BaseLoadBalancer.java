@@ -370,7 +370,7 @@ public class BaseLoadBalancer<N extends BaseNode<N>, T extends BaseLoadBalancer<
       }
 
       public BaseLoadBalancer<N, T> build() {
-         return new BaseLoadBalancer<N, T>(name, protocol, port, nodes, algorithm, timeout, halfClosed,
+         return new BaseLoadBalancer<>(name, protocol, port, nodes, algorithm, timeout, halfClosed,
                sessionPersistence, connectionLogging, connectionThrottle, healthMonitor);
       }
 
@@ -384,7 +384,7 @@ public class BaseLoadBalancer<N extends BaseNode<N>, T extends BaseLoadBalancer<
    }
 
    public static <N extends BaseNode<N>, T extends BaseLoadBalancer<N, T>> Builder<N, T> builder() {
-      return new Builder<N, T>();
+      return new Builder<>();
    }
 
    @SuppressWarnings("unchecked")

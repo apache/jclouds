@@ -129,7 +129,7 @@ public class BlobStoresTest {
       BlobStore blobStore = createMock(BlobStore.class);
       ListContainerOptions options = ListContainerOptions.NONE;
       StorageMetadata v1 = createMock(StorageMetadata.class);
-      PageSet<StorageMetadata> pageSet = new PageSetImpl<StorageMetadata>(ImmutableList.of(v1), null);
+      PageSet<StorageMetadata> pageSet = new PageSetImpl<>(ImmutableList.of(v1), null);
 
       EasyMock.<PageSet<? extends StorageMetadata>> expect(blobStore.list(containerName, options)).andReturn(pageSet)
                .once();
@@ -146,8 +146,8 @@ public class BlobStoresTest {
       ListContainerOptions options2 = ListContainerOptions.Builder.afterMarker("marker1");
       StorageMetadata v1 = createMock(StorageMetadata.class);
       StorageMetadata v2 = createMock(StorageMetadata.class);
-      PageSet<StorageMetadata> pageSet = new PageSetImpl<StorageMetadata>(ImmutableList.of(v1), "marker1");
-      PageSet<StorageMetadata> pageSet2 = new PageSetImpl<StorageMetadata>(ImmutableList.of(v2), null);
+      PageSet<StorageMetadata> pageSet = new PageSetImpl<>(ImmutableList.of(v1), "marker1");
+      PageSet<StorageMetadata> pageSet2 = new PageSetImpl<>(ImmutableList.of(v2), null);
 
       EasyMock.<PageSet<? extends StorageMetadata>> expect(blobStore.list(containerName, options)).andReturn(pageSet)
                .once();

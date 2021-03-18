@@ -137,7 +137,7 @@ public class ComputeServiceTimeoutsModule extends AbstractModule {
    private static class RetryablePredicateGuardingNull<T> implements Predicate<AtomicReference<T>> {
       
       private static <T> RetryablePredicateGuardingNull<T> create(Predicate<AtomicReference<T>> predicate, long maxWait, long period, long maxPeriod) {
-         return new RetryablePredicateGuardingNull<T>(predicate, maxWait, period, maxPeriod);
+         return new RetryablePredicateGuardingNull<>(predicate, maxWait, period, maxPeriod);
       }
       
       private class AtomicRefAndOrig {
@@ -156,7 +156,7 @@ public class ComputeServiceTimeoutsModule extends AbstractModule {
          Predicate<AtomicRefAndOrig> nonNullThingPredicate = new Predicate<AtomicRefAndOrig>() {
             @Override
             public boolean apply(AtomicRefAndOrig input) {
-               AtomicReference<T> ref = (input.ref.get() != null) ? input.ref : new AtomicReference<T>(input.orig);
+               AtomicReference<T> ref = (input.ref.get() != null) ? input.ref : new AtomicReference<>(input.orig);
                try {
                   return predicate.apply(ref);
                } finally {

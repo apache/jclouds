@@ -102,7 +102,7 @@ public class BundleFunctionLoader implements FunctionLoader {
    @SuppressModernizer  // for BundleContext.registerService(String, Object, Dictionary)
    private void registerFunction(String functions) {
       String[] className = { FunctionLoader.class.getName() };
-      Dictionary<String, Object> dictionary = new Hashtable<String, Object>(1);
+      Dictionary<String, Object> dictionary = new Hashtable<>(1);
       dictionary.put("function", functions);
       registration = bundleContext.registerService(className, this, dictionary);
    }

@@ -116,9 +116,9 @@ public class BindLoggersAnnotatedWithResource implements TypeListener {
         for (Field field : loggerFields) {
            if (field.isAnnotationPresent(Named.class)) {
               Named name = field.getAnnotation(Named.class);
-              encounter.register(new AssignLoggerToField<I>(loggerFactory.getLogger(name.value()), field));
+              encounter.register(new AssignLoggerToField<>(loggerFactory.getLogger(name.value()), field));
            } else {
-              encounter.register(new AssignLoggerToField<I>(logger, field));
+              encounter.register(new AssignLoggerToField<>(logger, field));
            }
         }
     }

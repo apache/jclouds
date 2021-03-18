@@ -136,7 +136,7 @@ public class BaseVirtualSystem<T extends BaseVirtualSystem<T>> extends Section<T
        */
       @Override
       public BaseVirtualSystem<T> build() {
-         return new BaseVirtualSystem<T>(id, info, name, operatingSystem, virtualHardwareSections, productSections,
+         return new BaseVirtualSystem<>(id, info, name, operatingSystem, virtualHardwareSections, productSections,
                   additionalSections);
       }
 

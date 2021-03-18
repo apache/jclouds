@@ -67,7 +67,7 @@ public class AccountNameEnumerationResultsHandlerTest extends BaseHandlerTest {
                .create("http://myaccount.blob.core.windows.net/textfiles"), dateService
                .rfc822DateParse("Wed, 15 Aug 2008 20:39:39 GMT"), "0x8CACB9BD7BACAC3", Maps
                .<String, String> newHashMap(), PublicAccess.PRIVATE));
-      BoundedSet<ContainerProperties> list = new BoundedHashSet<ContainerProperties>(contents, URI
+      BoundedSet<ContainerProperties> list = new BoundedHashSet<>(contents, URI
                .create("http://myaccount.blob.core.windows.net/"), null, null, 3, "video");
 
       BoundedSet<ContainerProperties> result = factory.create(
@@ -91,7 +91,7 @@ public class AccountNameEnumerationResultsHandlerTest extends BaseHandlerTest {
                .rfc822DateParse("Wed, 15 Aug 2008 20:39:39 GMT"), "0x8CACB9BD7BACAC3", Maps
                .<String, String> newHashMap(), PublicAccess.PRIVATE));
       InputStream is = getClass().getResourceAsStream("/test_list_containers_options.xml");
-      BoundedSet<ContainerProperties> list = new BoundedHashSet<ContainerProperties>(contents, URI
+      BoundedSet<ContainerProperties> list = new BoundedHashSet<>(contents, URI
                .create("http://myaccount.blob.core.windows.net"), "prefix", "marker", 1, "video");
       BoundedSet<ContainerProperties> result = factory.create(
                injector.getInstance(AccountNameEnumerationResultsHandler.class)).parse(is);

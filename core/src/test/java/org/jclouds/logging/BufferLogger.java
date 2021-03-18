@@ -30,7 +30,7 @@ public class BufferLogger extends BaseLogger {
 
    final String category;
    Level level = Level.INFO;
-   List<Record> messages = Collections.synchronizedList(new ArrayList<Record>());
+   List<Record> messages = Collections.synchronizedList(new ArrayList<>());
 
    public static class Record {
       Level level;

@@ -34,7 +34,7 @@ public class AnonymousHttpApiMetadata<A> extends BaseHttpApiMetadata<A> {
 
    @Override
    public Builder<A> toBuilder() {
-      return new Builder<A>(getApi()).fromApiMetadata(this);
+      return new Builder<>(getApi()).fromApiMetadata(this);
    }
 
    private AnonymousHttpApiMetadata(Builder<A> builder) {
@@ -54,7 +54,7 @@ public class AnonymousHttpApiMetadata<A> extends BaseHttpApiMetadata<A> {
 
       @Override
       public AnonymousHttpApiMetadata<A> build() {
-         return new AnonymousHttpApiMetadata<A>(this);
+         return new AnonymousHttpApiMetadata<>(this);
       }
 
       @Override

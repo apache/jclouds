@@ -352,7 +352,7 @@ public abstract class BaseBlobStore implements BlobStore {
 
    @Beta
    protected String putMultipartBlob(String container, Blob blob, PutOptions overrides, ListeningExecutorService executor) {
-      ArrayList<ListenableFuture<MultipartPart>> parts = new ArrayList<ListenableFuture<MultipartPart>>();
+      ArrayList<ListenableFuture<MultipartPart>> parts = new ArrayList<>();
       MultipartUpload mpu = initiateMultipartUpload(container, blob.getMetadata(), overrides);
       // Cannot slice InputStream Payload since slice and close mutate the
       // underlying stream.  Also issue synchronous uploads to avoid buffering

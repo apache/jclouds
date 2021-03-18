@@ -130,7 +130,7 @@ public class AzureComputeSecurityGroupExtension implements SecurityGroupExtensio
          throw new IllegalArgumentException("Node " + nodeId + " was not found");
       }
       List<NetworkInterface> networkInterfaces = vm.properties().networkProfile().networkInterfaces();
-      List<NetworkSecurityGroup> networkGroups = new ArrayList<NetworkSecurityGroup>();
+      List<NetworkSecurityGroup> networkGroups = new ArrayList<>();
 
       for (NetworkInterface networkInterfaceCardIdReference : networkInterfaces) {
          String nicName = extractName(networkInterfaceCardIdReference.id());

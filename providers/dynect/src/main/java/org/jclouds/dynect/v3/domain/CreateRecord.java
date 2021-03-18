@@ -92,7 +92,7 @@ public class CreateRecord<D extends Map<String, Object>> {
    }
 
    public static <D extends Map<String, Object>> Builder<D> builder() {
-      return new Builder<D>();
+      return new Builder<>();
    }
 
    public Builder<D> toBuilder() {
@@ -139,7 +139,7 @@ public class CreateRecord<D extends Map<String, Object>> {
       }
 
       public CreateRecord<D> build() {
-         return new CreateRecord<D>(fqdn, type, ttl, rdata);
+         return new CreateRecord<>(fqdn, type, ttl, rdata);
       }
 
       public <Y extends D> Builder<D> from(CreateRecord<Y> in) {

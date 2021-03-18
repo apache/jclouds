@@ -85,8 +85,7 @@ public class AccountNameEnumerationResultsHandler extends
    }
 
    public BoundedSet<ContainerProperties> getResult() {
-      return new BoundedHashSet<ContainerProperties>(containerMetadata, accountUrl, prefix, marker,
-               maxResults, nextMarker);
+      return new BoundedHashSet<>(containerMetadata, accountUrl, prefix, marker, maxResults, nextMarker);
    }
 
    public void endElement(String uri, String name, String qName) {

@@ -68,7 +68,7 @@ public class CreateSecurityGroupIfNeeded extends CacheLoader<ResourceGroupAndNam
 
       Map<Integer, Integer> portRanges = getPortRangesFromList(inboundPorts);
 
-      List<NetworkSecurityRule> rules = new ArrayList<NetworkSecurityRule>();
+      List<NetworkSecurityRule> rules = new ArrayList<>();
 
       int startPriority = 100;
       for (Map.Entry<Integer, Integer> portRange : portRanges.entrySet()) {

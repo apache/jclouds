@@ -83,7 +83,7 @@ public class BindLoggersAnnotatedWithResourceTest {
       Logger logger = createMock(Logger.class);
       A a = new A();
       Field field = A.class.getDeclaredField("logger");
-      AssignLoggerToField<A> assigner = new AssignLoggerToField<A>(logger, field);
+      AssignLoggerToField<A> assigner = new AssignLoggerToField<>(logger, field);
       assigner.afterInjection(a);
       assert field.get(a).equals(logger);
    }

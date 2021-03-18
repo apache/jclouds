@@ -231,7 +231,7 @@ public abstract class BaseAWSReservationHandler<T> extends HandlerForGeneratedRe
       String region = getRequest() != null ? AWSUtils.findRegionInArgsOrNull(getRequest()) : null;
       if (region == null)
          region = defaultRegion.get();
-      Reservation<? extends RunningInstance> info = new Reservation<RunningInstance>(region,
+      Reservation<? extends RunningInstance> info = new Reservation<>(region,
             reservationGroupIdToNames.values(), instances, ownerId, requesterId, reservationId);
       this.reservationGroupIdToNames = Maps.newLinkedHashMap();
       this.instances = Sets.newLinkedHashSet();

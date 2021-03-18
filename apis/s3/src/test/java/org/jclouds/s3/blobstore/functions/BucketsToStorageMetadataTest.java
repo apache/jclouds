@@ -20,7 +20,6 @@ import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorS
 import static org.testng.Assert.assertEquals;
 
 import org.jclouds.blobstore.domain.MutableStorageMetadata;
-import org.jclouds.blobstore.domain.StorageMetadata;
 import org.jclouds.blobstore.domain.StorageType;
 import org.jclouds.blobstore.domain.internal.MutableStorageMetadataImpl;
 import org.jclouds.blobstore.domain.internal.PageSetImpl;
@@ -59,7 +58,6 @@ public class BucketsToStorageMetadataTest {
       
       assertEquals(
                fn.apply(ImmutableSet.of(new BucketMetadata("mycontainer", null, null))).toString(),
-               new PageSetImpl<StorageMetadata>(ImmutableSet.<StorageMetadata> of(expected), null).toString());
-
+               new PageSetImpl<>(ImmutableSet.of(expected), null).toString());
    }
 }

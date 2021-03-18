@@ -180,7 +180,7 @@ public class AzureComputeServiceAdapter implements ComputeServiceAdapter<Virtual
       // the node with the default credentials from the image, or the ones in
       // the options, if provided.
       ResourceGroupAndName resourceGroupAndName = fromResourceGroupAndName(resourceGroupName, name);
-      return new NodeAndInitialCredentials<VirtualMachine>(virtualMachine, resourceGroupAndName.slashEncode(), null);
+      return new NodeAndInitialCredentials<>(virtualMachine, resourceGroupAndName.slashEncode(), null);
    }
 
    @Override
@@ -478,7 +478,7 @@ public class AzureComputeServiceAdapter implements ComputeServiceAdapter<Virtual
     * Create the network profile and configure the first NIC as primary.
     */
    private NetworkProfile createNetworkProfile(List<NetworkInterfaceCard> nics) {
-      List<NetworkInterface> nicAttachments = new ArrayList<NetworkInterface>(nics.size());
+      List<NetworkInterface> nicAttachments = new ArrayList<>(nics.size());
       for (int i = 0; i < nics.size(); i++) {
          nicAttachments.add(NetworkInterface.create(nics.get(i).id(), NetworkInterfaceProperties.create(i == 0)));
       }
@@ -486,7 +486,7 @@ public class AzureComputeServiceAdapter implements ComputeServiceAdapter<Virtual
    }
    
    private static List<IpOptions> publicIpsFirst(List<IpOptions> ipOptions) {
-      List<IpOptions> sorted = new ArrayList<IpOptions>(ipOptions);
+      List<IpOptions> sorted = new ArrayList<>(ipOptions);
       Collections.sort(sorted, new Comparator<IpOptions>() {
          @Override
          public int compare(IpOptions o1, IpOptions o2) {

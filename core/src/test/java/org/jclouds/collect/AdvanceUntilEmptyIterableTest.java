@@ -43,7 +43,7 @@ public class AdvanceUntilEmptyIterableTest {
 
       EasyMock.replay(nextIterable);
 
-      AdvanceUntilEmptyIterable<String> iterable = new AdvanceUntilEmptyIterable<String>(nextIterable);
+      AdvanceUntilEmptyIterable<String> iterable = new AdvanceUntilEmptyIterable<>(nextIterable);
 
       Assert.assertSame(iterable.get(0), initial);
 
@@ -60,11 +60,11 @@ public class AdvanceUntilEmptyIterableTest {
       expect(nextIterable.get()).andReturn(FluentIterable.from(ImmutableSet.of("boo", "baz")));
 
       expect(nextIterable.get()).andReturn(FluentIterable.from(ImmutableSet.of("ham", "cheeze")));
-      expect(nextIterable.get()).andReturn(FluentIterable.from(ImmutableSet.<String>of()));
+      expect(nextIterable.get()).andReturn(FluentIterable.from(ImmutableSet.of()));
 
       EasyMock.replay(nextIterable);
 
-      AdvanceUntilEmptyIterable<String> iterable = new AdvanceUntilEmptyIterable<String>(nextIterable);
+      AdvanceUntilEmptyIterable<String> iterable = new AdvanceUntilEmptyIterable<>(nextIterable);
 
       Assert.assertEquals(iterable.concat().toSet(),
             ImmutableSet.of("foo", "bar", "boo", "baz", "ham", "cheeze"));

@@ -55,7 +55,7 @@ public class ComputeUtils {
       Map<NodeMetadata, ListenableFuture<Void>> responses = newLinkedHashMap();
       for (NodeMetadata node : runningNodes) {
          responses.put(node, userExecutor.submit(customizeNodeAndAddToGoodMapOrPutExceptionIntoBadMapFactory.create(
-                  options, new AtomicReference<NodeMetadata>(node), goodNodes, badNodes, customizationResponses)));
+                  options, new AtomicReference<>(node), goodNodes, badNodes, customizationResponses)));
       }
       return responses;
    }

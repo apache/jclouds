@@ -38,13 +38,13 @@ import com.google.common.collect.UnmodifiableIterator;
 public class AdvanceUntilEmptyIterable<E> extends FluentIterable<FluentIterable<E>> {
 
    public static <E> AdvanceUntilEmptyIterable<E> create(Supplier<FluentIterable<E>> nextIterable) {
-      return new AdvanceUntilEmptyIterable<E>(nextIterable);
+      return new AdvanceUntilEmptyIterable<>(nextIterable);
    }
 
    private final AdvanceUntilEmptyIterator<E> iterator;
 
    protected AdvanceUntilEmptyIterable(Supplier<FluentIterable<E>> nextIterable) {
-      this.iterator = new AdvanceUntilEmptyIterator<E>(checkNotNull(nextIterable, "next iterable"));
+      this.iterator = new AdvanceUntilEmptyIterator<>(checkNotNull(nextIterable, "next iterable"));
    }
 
    @Override

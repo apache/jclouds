@@ -742,7 +742,7 @@ public class BaseContainerIntegrationTest extends BaseBlobStoreIntegrationTest {
    }
 
    private void checkEqualNames(Set<String> expectedSet, PageSet<? extends StorageMetadata> results) {
-      Set<String> names = new HashSet<String>();
+      Set<String> names = new HashSet<>();
       for (StorageMetadata sm : results) {
          names.add(sm.getName());
       }

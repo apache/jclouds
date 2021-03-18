@@ -128,7 +128,7 @@ public class CleanupResources {
    }
 
    public boolean cleanupManagedDisks(VirtualMachine virtualMachine) {
-      Map<String, URI> deleteJobs = new HashMap<String, URI>();
+      Map<String, URI> deleteJobs = new HashMap<>();
 
       OSDisk osDisk = virtualMachine.properties().storageProfile().osDisk();
       deleteManagedDisk(osDisk.managedDiskParameters(), deleteJobs);

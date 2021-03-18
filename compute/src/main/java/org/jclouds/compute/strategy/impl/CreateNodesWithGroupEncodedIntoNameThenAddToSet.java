@@ -80,7 +80,7 @@ public class CreateNodesWithGroupEncodedIntoNameThenAddToSet implements CreateNo
                MoreObjects.firstNonNull(template.getHardware().getProviderId(), template.getHardware().getId()));
          node = addNodeWithGroupStrategy.createNodeWithGroupEncodedIntoName(group, name, template);
          logger.debug("<< %s node(%s)", formatStatus(node), node.getId());
-         return new AtomicReference<NodeMetadata>(node);
+         return new AtomicReference<>(node);
       }
 
       public String toString() {

@@ -33,7 +33,7 @@ import com.google.common.collect.Sets;
 public class BaseEnvelope<V extends BaseVirtualSystem<V>, E extends BaseEnvelope<V, E>> {
 
    public static <V extends BaseVirtualSystem<V>, E extends BaseEnvelope<V, E>> Builder<V, E> builder() {
-      return new Builder<V, E>();
+      return new Builder<>();
    }
 
    public Builder<V, E> toBuilder() {

@@ -52,12 +52,12 @@ public class BucketToResourceList implements
 
    public PageSet<? extends StorageMetadata> apply(ListBucketResponse from) {
       // S3 lists keys in sorted order; use sorted set to order relative paths correctly
-      SortedSet<StorageMetadata> contents = Sets.<StorageMetadata> newTreeSet(Iterables.transform(from,
+      SortedSet<StorageMetadata> contents = Sets.newTreeSet(Iterables.transform(from,
                object2blobMd));
 
       for (String prefix : from.getCommonPrefixes()) {
          contents.add(prefix2ResourceMd.apply(prefix));
       }
-      return new PageSetImpl<StorageMetadata>(contents, from.getNextMarker());
+      return new PageSetImpl<>(contents, from.getNextMarker());
    }
 }

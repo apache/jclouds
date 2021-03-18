@@ -58,7 +58,7 @@ public class CustomLoginPortFromImage implements LoginPortForContainer {
       // - owner/redis:12
       // - registry:5000/owner/redis:12
       // We consider the longest match first, as it is the more accurate one
-      List<String> sortedImages = new ArrayList<String>(matchingFunctions.keySet());
+      List<String> sortedImages = new ArrayList<>(matchingFunctions.keySet());
       Collections.sort(sortedImages, LongestStringFirst);
 
       for (String currentImage : sortedImages) {

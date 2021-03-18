@@ -81,7 +81,7 @@ public class CloudStackParserModule extends AbstractModule {
          private final IterableTypeAdapter<E> delegate;
 
          public Adapter(TypeAdapter<E> elementAdapter) {
-            this.delegate = new IterableTypeAdapter<E>(elementAdapter);
+            this.delegate = new IterableTypeAdapter<>(elementAdapter);
             nullSafe();
          }
 

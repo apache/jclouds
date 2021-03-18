@@ -37,7 +37,7 @@ import com.google.common.collect.Maps;
 public class BatchResult<V> extends ForwardingMap<String, V> {
 
    public static <V> Builder<V> builder() {
-      return new Builder<V>();
+      return new Builder<>();
    }
 
    public Builder<V> toBuilder() {

@@ -105,7 +105,7 @@ public class CustomizeNodeAndAddToGoodMapOrPutExceptionIntoBadMap implements Cal
          @Assisted Set<NodeMetadata> goodNodes, @Assisted Map<NodeMetadata, Exception> badNodes,
          @Assisted Multimap<NodeMetadata, CustomizationResponse> customizationResponses) {
       this(pollNodeRunning, openSocketFinder, nodeAndTemplateOptionsToStatement, initScriptRunnerFactory, options,
-            new AtomicReference<NodeMetadata>(null), goodNodes, badNodes, customizationResponses);
+            new AtomicReference<>(null), goodNodes, badNodes, customizationResponses);
    }
 
    @Override

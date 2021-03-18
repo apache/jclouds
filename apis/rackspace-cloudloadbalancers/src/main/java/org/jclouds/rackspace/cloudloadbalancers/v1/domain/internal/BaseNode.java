@@ -239,7 +239,7 @@ public class BaseNode<T extends BaseNode<T>> implements Comparable<BaseNode<T>> 
       }
 
       public BaseNode<T> build() {
-         return new BaseNode<T>(address, port, condition, type, weight);
+         return new BaseNode<>(address, port, condition, type, weight);
       }
 
       public Builder<T> from(T in) {
@@ -249,7 +249,7 @@ public class BaseNode<T extends BaseNode<T>> implements Comparable<BaseNode<T>> 
    }
 
    public static <T extends BaseNode<T>> Builder<T> builder() {
-      return new Builder<T>();
+      return new Builder<>();
    }
 
    @SuppressWarnings("unchecked")

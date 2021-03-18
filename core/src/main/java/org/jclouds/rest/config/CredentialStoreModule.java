@@ -49,7 +49,7 @@ public class CredentialStoreModule extends AbstractModule {
    }
 
    public CredentialStoreModule() {
-      this(new ConcurrentHashMap<String, ByteSource>());
+      this(new ConcurrentHashMap<>());
    }
 
    @Override
@@ -101,7 +101,6 @@ public class CredentialStoreModule extends AbstractModule {
    protected final Map<String, Credentials> provideCredentialStore(Map<String, ByteSource> backing,
          Function<Credentials, ByteSource> credentialsSerializer,
          Function<ByteSource, Credentials> credentialsDeserializer) {
-      return new TransformingMap<String, ByteSource, Credentials>(backing, credentialsDeserializer,
-            credentialsSerializer);
+      return new TransformingMap<>(backing, credentialsDeserializer, credentialsSerializer);
    }
 }

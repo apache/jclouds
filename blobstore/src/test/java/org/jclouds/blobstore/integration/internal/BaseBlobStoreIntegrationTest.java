@@ -97,7 +97,7 @@ public class BaseBlobStoreIntegrationTest extends BaseViewLiveTest<BlobStoreCont
    /**
     * two test groups integration and live.
     */
-   private static volatile BlockingQueue<String> containerNames = new ArrayBlockingQueue<String>(containerCount);
+   private static volatile BlockingQueue<String> containerNames = new ArrayBlockingQueue<>(containerCount);
 
    protected static final int AWAIT_CONSISTENCY_TIMEOUT_SECONDS = Integer.parseInt(System.getProperty(
          "test.blobstore.await-consistency-timeout-seconds", "10"));

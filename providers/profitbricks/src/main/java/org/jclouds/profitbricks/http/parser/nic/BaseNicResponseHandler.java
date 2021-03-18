@@ -32,12 +32,11 @@ public abstract class BaseNicResponseHandler<T> extends BaseProfitBricksResponse
 
    protected boolean useFirewallParser = false;
    protected Nic.Builder builder;
-   protected List<String> ips;
+   protected final List<String> ips = new ArrayList<>();
 
    BaseNicResponseHandler(FirewallResponseHandler firewallResponseHandler) {
       this.builder = Nic.builder();
       this.firewallResponseHandler = firewallResponseHandler;
-      this.ips = new ArrayList<String>();
    }
 
    @Override

@@ -308,7 +308,7 @@ public class CloudStackComputeServiceAdapter implements
           }
           throw re;
       }
-      return new NodeAndInitialCredentials<VirtualMachine>(vm, vm.getId() + "", credentials);
+      return new NodeAndInitialCredentials<>(vm, vm.getId() + "", credentials);
    }
 
    @Override
