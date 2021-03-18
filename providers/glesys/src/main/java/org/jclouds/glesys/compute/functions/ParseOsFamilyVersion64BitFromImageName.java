@@ -55,7 +55,7 @@ public class ParseOsFamilyVersion64BitFromImageName implements Function<String, 
       boolean is64Bit = containsPattern("64").apply(input);
       String version = "";
 
-      if (input.indexOf("Windows") != -1) {
+      if (input.contains("Windows")) {
          Matcher matcher = Pattern.compile(".*(20[01][0-9] R[1-9]).*").matcher(input);
          if (matcher.find()) {
             version = matcher.group(1);

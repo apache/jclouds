@@ -46,7 +46,7 @@ public class OperatingSystemPredicates {
                }
             }
             for (String toMatch : searchStrings(os))
-               if (toMatch != null && toMatch.toLowerCase().indexOf("windows") != -1)
+               if (toMatch != null && toMatch.toLowerCase().contains("windows"))
                   return false;
             return true;
          }
@@ -74,8 +74,8 @@ public class OperatingSystemPredicates {
                }
             }
             for (String toMatch : searchStrings(os))
-               if (toMatch != null && (toMatch.toLowerCase().indexOf("ubuntu") != -1
-                        || toMatch.toLowerCase().indexOf("debian") != -1))
+               if (toMatch != null && (toMatch.toLowerCase().contains("ubuntu")
+                        || toMatch.toLowerCase().contains("debian")))
                   return true;
             return false;
          }
@@ -106,9 +106,9 @@ public class OperatingSystemPredicates {
             }
 
             for (String toMatch : searchStrings(os))
-               if (toMatch.toLowerCase().indexOf("centos") != -1 || toMatch.toLowerCase().indexOf("rhel") != -1
-                        || toMatch.toLowerCase().replace(" ", "").indexOf("redhate") != -1
-                        || toMatch.toLowerCase().indexOf("fedora") != -1)
+               if (toMatch.toLowerCase().contains("centos") || toMatch.toLowerCase().contains("rhel")
+                        || toMatch.toLowerCase().replace(" ", "").contains("redhate")
+                        || toMatch.toLowerCase().contains("fedora"))
                   return true;
             return false;
          }
@@ -135,7 +135,7 @@ public class OperatingSystemPredicates {
                }
             }
             for (String toMatch : searchStrings(os))
-               if (toMatch != null && toMatch.toLowerCase().indexOf("suse") != -1)
+               if (toMatch != null && toMatch.toLowerCase().contains("suse"))
                   return true;
             return false;
          }

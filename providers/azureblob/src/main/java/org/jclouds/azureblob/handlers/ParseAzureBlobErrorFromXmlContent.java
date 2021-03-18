@@ -54,7 +54,7 @@ public class ParseAzureBlobErrorFromXmlContent extends ParseAzureStorageErrorFro
                if (!parts.isEmpty()) {
                   String container = parts.remove(0);
                   String query = command.getCurrentRequest().getEndpoint().getQuery();
-                  if (query != null && query.indexOf("container") != -1) {
+                  if (query != null && query.contains("container")) {
                      exception = new ContainerNotFoundException(container, message);
                   } else {
                      exception = new KeyNotFoundException(container, Joiner.on('/').join(parts), message);

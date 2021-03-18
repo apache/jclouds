@@ -20,6 +20,7 @@ import static org.jclouds.compute.domain.OsFamily.AMZN_LINUX;
 import static org.jclouds.compute.util.ComputeServiceUtils.getCores;
 import static org.jclouds.http.internal.TrackingJavaUrlHttpCommandExecutorService.getInvokerOfRequestAtIndex;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
@@ -80,8 +81,8 @@ public class AWSEC2TemplateBuilderLiveTest extends EC2TemplateBuilderLiveTest {
             .imageDescriptionMatches("^(?!.*(daily|testing)).*ubuntu-images.*$").osFamily(OsFamily.UBUNTU).build();
 
       assert template.getImage().getProviderId().startsWith("ami-") : template;
-      assert template.getImage().getDescription().indexOf("test") == -1 : template;
-      assert template.getImage().getDescription().indexOf("daily") == -1 : template;
+      assert !template.getImage().getDescription().contains("test") : template;
+      assert !template.getImage().getDescription().contains("daily") : template;
       assertEquals(template.getImage().getVersion(), "20100224");
       assertEquals(template.getImage().getOperatingSystem().getVersion(), "10.04");
       assertEquals(template.getImage().getOperatingSystem().is64Bit(), false);
@@ -107,10 +108,10 @@ public class AWSEC2TemplateBuilderLiveTest extends EC2TemplateBuilderLiveTest {
             .imageDescriptionMatches("^(?!.*(daily|testing)).*ubuntu-images.*$").osFamily(OsFamily.UBUNTU).build();
 
       assert template.getImage().getProviderId().startsWith("ami-") : template;
-      assert template.getImage().getDescription().indexOf("test") == -1 : template;
-      assert template.getImage().getDescription().indexOf("daily") == -1 : template;
+      assert !template.getImage().getDescription().contains("test") : template;
+      assert !template.getImage().getDescription().contains("daily") : template;
       assertEquals(template.getImage().getOperatingSystem().getVersion(), "10.04");
-      assertEquals(template.getImage().getOperatingSystem().is64Bit(), false);
+      assertFalse(template.getImage().getOperatingSystem().is64Bit());
       assertEquals(template.getImage().getOperatingSystem().getFamily(), OsFamily.UBUNTU);
       assertEquals(template.getImage().getUserMetadata().get("rootDeviceType"), "instance-store");
       assertEquals(template.getLocation().getId(), "us-east-1");

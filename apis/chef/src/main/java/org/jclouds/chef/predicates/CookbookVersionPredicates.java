@@ -56,7 +56,7 @@ public class CookbookVersionPredicates {
       checkNotNull(recipes, "recipes must be defined");
       final Multimap<String, String> search = LinkedListMultimap.create();
       for (String recipe : recipes) {
-         if (recipe.indexOf("::") != -1) {
+         if (recipe.contains("::")) {
             Iterable<String> nameRecipe = Splitter.on("::").split(recipe);
             search.put(get(nameRecipe, 0), get(nameRecipe, 1) + ".rb");
          } else {

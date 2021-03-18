@@ -312,8 +312,8 @@ public class JschSshClient implements SshClient {
 
                @Override
                public boolean apply(Throwable arg0) {
-                  return (arg0.toString().indexOf(input) != -1)
-                           || (arg0.getMessage() != null && arg0.getMessage().indexOf(input) != -1);
+                  return (arg0.toString().contains(input))
+                           || (arg0.getMessage() != null && arg0.getMessage().contains(input));
                }
 
             });
@@ -328,7 +328,7 @@ public class JschSshClient implements SshClient {
 
    SshException propagate(Exception e, String message) {
       message += ": " + e.getMessage();
-      if (e.getMessage() != null && e.getMessage().indexOf("Auth fail") != -1)
+      if (e.getMessage() != null && e.getMessage().contains("Auth fail"))
          throw new AuthorizationException("(" + toString() + ") " + message, e);
       throw e instanceof SshException ? SshException.class.cast(e) : new SshException(
                "(" + toString() + ") " + message, e);

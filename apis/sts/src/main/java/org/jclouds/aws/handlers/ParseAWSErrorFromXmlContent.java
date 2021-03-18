@@ -69,7 +69,7 @@ public class ParseAWSErrorFromXmlContent implements HttpErrorHandler {
          String message = data != null ? new String(data, StandardCharsets.UTF_8) : null;
          if (response.getPayload() != null) {
             String contentType = response.getPayload().getContentMetadata().getContentType();
-            if (contentType != null && (contentType.indexOf("xml") != -1 || contentType.indexOf("unknown") != -1)) {
+            if (contentType != null && (contentType.contains("xml") || contentType.contains("unknown"))) {
                error = utils.parseAWSErrorFromContent(command.getCurrentRequest(), response);
                if (error != null) {
                   message = error.getMessage();
@@ -105,17 +105,17 @@ public class ParseAWSErrorFromXmlContent implements HttpErrorHandler {
                exception = new InsufficientResourcesException(message, exception);
             else if ("TooManyBuckets".equals(errorCode))
                exception = new InsufficientResourcesException(message, exception);
-            else if (errorCode != null && (errorCode.indexOf("NotFound") != -1 || errorCode.endsWith(".Unknown")))
+            else if (errorCode != null && (errorCode.contains("NotFound") || errorCode.endsWith(".Unknown")))
                exception = new ResourceNotFoundException(message, exception);
             else if ("IncorrectState".equals(errorCode)
                      || (errorCode != null && (error.getCode().endsWith(".Duplicate") 
                               || error.getCode().endsWith(".InUse") || error.getCode().equals("DependencyViolation")))
-                     || (message != null && (message.indexOf("already exists") != -1 || message.indexOf("is in use") != -1)))
+                     || (message != null && (message.contains("already exists") || message.contains("is in use"))))
                exception = new IllegalStateException(message, exception);
-            else if (errorCode != null && errorCode.indexOf("AuthFailure") != -1)
+            else if (errorCode != null && errorCode.contains("AuthFailure"))
                exception = new AuthorizationException(message, exception);
             else if (message != null
-                     && (message.indexOf("Invalid id") != -1 || message.indexOf("Failed to bind") != -1))
+                     && (message.contains("Invalid id") || message.contains("Failed to bind")))
                exception = new IllegalArgumentException(message, exception);
             break;
          case 401:

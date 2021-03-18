@@ -141,7 +141,7 @@ public class ComputeServiceUtils {
    public static org.jclouds.compute.domain.OsFamily parseOsFamilyOrUnrecognized(String in) {
       org.jclouds.compute.domain.OsFamily myOs = null;
       for (org.jclouds.compute.domain.OsFamily os : org.jclouds.compute.domain.OsFamily.proritisedValues()) {
-         if (in.toLowerCase().replaceAll("\\s", "").indexOf(os.toString()) != -1) {
+         if (in.toLowerCase().replaceAll("\\s", "").contains(os.toString())) {
             myOs = os;
          }
       }
@@ -149,7 +149,7 @@ public class ComputeServiceUtils {
          return myOs;
       }
       for (org.jclouds.compute.domain.OsFamily os : org.jclouds.compute.domain.OsFamily.nonProritisedValues()) {
-         if (in.toLowerCase().replaceAll("\\s", "").indexOf(os.toString()) != -1) {
+         if (in.toLowerCase().replaceAll("\\s", "").contains(os.toString())) {
             myOs = os;
          }
       }
@@ -261,7 +261,7 @@ public class ComputeServiceUtils {
       public boolean apply(String input) {
          if ("".equals(input))
             return false;
-         return in.indexOf(input) != -1;
+         return in.contains(input);
       }
 
       @Override

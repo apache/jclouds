@@ -54,7 +54,7 @@ public class UltraDNSWSErrorHandler implements HttpErrorHandler {
          if (message != null) {
             exception = new HttpResponseException(command, response, message);
             String contentType = response.getPayload().getContentMetadata().getContentType();
-            if (contentType != null && (contentType.indexOf("xml") != -1 || contentType.indexOf("unknown") != -1)) {
+            if (contentType != null && (contentType.contains("xml") || contentType.contains("unknown"))) {
                UltraDNSWSError error = factory.create(handlers.get()).parse(message);
                if (error != null) {
                   exception = refineException(new UltraDNSWSResponseException(command, response, error));

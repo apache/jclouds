@@ -56,7 +56,7 @@ public class ElasticStackErrorHandler implements HttpErrorHandler {
          switch (response.getStatusCode()) {
          case 400:
             if ((command.getCurrentRequest().getEndpoint().getPath().endsWith("/info"))
-                  || (message != null && message.indexOf("could not be found") != -1))
+                  || (message != null && message.contains("could not be found")))
                exception = new ResourceNotFoundException(message, exception);
             else
                exception = new IllegalArgumentException(message, exception);

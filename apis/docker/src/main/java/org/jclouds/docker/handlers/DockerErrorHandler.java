@@ -55,9 +55,9 @@ public class DockerErrorHandler implements HttpErrorHandler {
          switch (response.getStatusCode()) {
             case 400:
                if ((command.getCurrentRequest().getEndpoint().getPath().endsWith("/info"))
-                       || (message != null && message.indexOf("could not be found") != -1))
+                       || (message != null && message.contains("could not be found")))
                   exception = new ResourceNotFoundException(message, exception);
-               else if (message != null && message.indexOf("currently in use") != -1)
+               else if (message != null && message.contains("currently in use"))
                   exception = new IllegalStateException(message, exception);
                else
                   exception = new IllegalArgumentException(message, exception);

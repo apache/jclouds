@@ -62,10 +62,10 @@ public class Route53ErrorHandler implements HttpErrorHandler {
          String message = data != null ? new String(data) : null;
          if (message != null) {
             exception = new HttpResponseException(command, response, message);
-            if (message.indexOf("ErrorResponse") != -1) {
+            if (message.contains("ErrorResponse")) {
                AWSError error = factory.create(handlers.get()).parse(message);
                exception = refineException(new AWSResponseException(command, response, error));
-            } else if (message.indexOf("InvalidChangeBatch") != -1) {
+            } else if (message.contains("InvalidChangeBatch")) {
                ImmutableList<String> errors = factory.create(batchHandlers.get()).parse(message);
                exception = new InvalidChangeBatchException(errors, new HttpResponseException(command, response));
             }
@@ -88,7 +88,7 @@ public class Route53ErrorHandler implements HttpErrorHandler {
             return new UnsupportedOperationException(message, in);
          else if ("Throttling".equals(errorCode))
             return new InsufficientResourcesException(message, in);
-         else if (message.indexOf("not found") != -1)
+         else if (message.contains("not found"))
             return new ResourceNotFoundException(message, in);
          return new IllegalArgumentException(message, in);
       }

@@ -63,7 +63,7 @@ public class ServerImageToImage implements Function<ServerImage, Image> {
       String osArch = from.getArchitecture().getDescription();
       String osVersion = null;
       String osDescription = from.getOs().getDescription();
-      boolean is64Bit = from.getOs().getName().indexOf("64") != -1 || from.getDescription().indexOf("64") != -1;
+      boolean is64Bit = from.getOs().getName().contains("64") || from.getDescription().contains("64");
 
       if (osName.startsWith("Windows")) {
          osFamily = OsFamily.WINDOWS;

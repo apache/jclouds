@@ -943,7 +943,7 @@ public abstract class BaseComputeServiceLiveTest extends BaseComputeServiceConte
          ExecResponse hello = ssh.exec("echo hello");
          assertEquals(hello.getOutput().trim(), "hello");
          ExecResponse exec = ssh.exec("java -version");
-         assert exec.getError().indexOf("OpenJDK") != -1 || exec.getOutput().indexOf("OpenJDK") != -1 : exec
+         assert exec.getError().contains("OpenJDK") || exec.getOutput().contains("OpenJDK") : exec
                + "\n"
                + ssh.exec("cat /tmp/" + taskName + "/" + taskName + ".sh /tmp/" + taskName + "/stdout.log /tmp/"
                      + taskName + "/stderr.log");

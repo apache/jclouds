@@ -72,7 +72,7 @@ public class ImageToOperatingSystem implements Function<Image, OperatingSystem> 
 
       boolean is64Bit = true;
 
-      if (imageName.indexOf("Windows") != -1) {
+      if (imageName.contains("Windows")) {
          osFamily = OsFamily.WINDOWS;
          Matcher matcher = WINDOWS_PATTERN.matcher(from.getName());
          if (matcher.find()) {

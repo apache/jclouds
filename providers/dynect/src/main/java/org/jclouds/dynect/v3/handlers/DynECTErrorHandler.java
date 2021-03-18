@@ -38,11 +38,11 @@ public class DynECTErrorHandler implements HttpErrorHandler {
          String message = data != null ? new String(data) : null;
          if (message != null) {
             exception = new HttpResponseException(command, response, message);
-            if (message.indexOf(JOB_STILL_RUNNING) != -1)
+            if (message.contains(JOB_STILL_RUNNING))
                exception = new JobStillRunningException(JOB_STILL_RUNNING, exception);
-            else if (message.indexOf(OPERATION_BLOCKED) != -1)
+            else if (message.contains(OPERATION_BLOCKED))
                exception = new JobStillRunningException(OPERATION_BLOCKED, exception);
-            else if (message.indexOf(TARGET_EXISTS) != -1)
+            else if (message.contains(TARGET_EXISTS))
                exception = new TargetExistsException(TARGET_EXISTS, exception);
          } else {
             exception = new HttpResponseException(command, response);

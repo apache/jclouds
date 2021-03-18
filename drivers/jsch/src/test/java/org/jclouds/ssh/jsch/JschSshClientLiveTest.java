@@ -177,7 +177,7 @@ public class JschSshClientLiveTest {
    public void testGetEtcPassword() throws IOException {
       Payload input = setupClient().get("/etc/passwd");
       String contents = Strings2.toStringAndClose(input.openStream());
-      assert contents.indexOf("root") >= 0 : "no root in " + contents;
+      assert contents.contains("root") : "no root in " + contents;
    }
 
    @Test

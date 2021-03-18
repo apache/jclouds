@@ -914,9 +914,9 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
    }
 
    protected void checkContentEncoding(Blob blob, String contentEncoding) {
-      assert blob.getPayload().getContentMetadata().getContentEncoding().indexOf(contentEncoding) != -1 : blob
+      assert blob.getPayload().getContentMetadata().getContentEncoding().contains(contentEncoding) : blob
                .getPayload().getContentMetadata().getContentEncoding();
-      assert blob.getMetadata().getContentMetadata().getContentEncoding().indexOf(contentEncoding) != -1 : blob
+      assert blob.getMetadata().getContentMetadata().getContentEncoding().contains(contentEncoding) : blob
                .getMetadata().getContentMetadata().getContentEncoding();
    }
 

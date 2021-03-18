@@ -87,11 +87,11 @@ public class NovaErrorHandler implements HttpErrorHandler {
       String message = content != null ? content : String.format("%s -> %s", requestLine, response.getStatusLine());
       switch (response.getStatusCode()) {
          case 400:
-            if (message.indexOf("quota exceeded") != -1)
+            if (message.contains("quota exceeded"))
                exception = new InsufficientResourcesException(message, exception);
-            else if (message.indexOf("has no fixed_ips") != -1)
+            else if (message.contains("has no fixed_ips"))
                exception = new IllegalStateException(message, exception);
-            else if (message.indexOf("already exists") != -1)
+            else if (message.contains("already exists"))
                exception = new IllegalStateException(message, exception);
             break;
          case 401:
@@ -106,8 +106,8 @@ public class NovaErrorHandler implements HttpErrorHandler {
          case 500:
             // this is needed as FloatingIPApi.allocateFromPool returns 500 when floating ips are over quota
             if (command.getCurrentRequest().getMethod().equals("POST") &&
-                    message.indexOf("The server has either erred or is incapable of performing the requested operation.") != -1 &&
-                    command.getCurrentRequest().getEndpoint().getPath().indexOf("os-floating-ips") != -1) {
+                    message.contains("The server has either erred or is incapable of performing the requested operation.") &&
+                    command.getCurrentRequest().getEndpoint().getPath().contains("os-floating-ips")) {
              exception = new InsufficientResourcesException(message, exception);
            }
            break;

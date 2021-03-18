@@ -53,10 +53,10 @@ public class ChefApiErrorRetryHandler implements HttpRetryHandler {
       if (command.getFailureCount() > retryCountLimit)
          return false;
       if (response.getStatusCode() == 400 && command.getCurrentRequest().getMethod().equals("PUT")
-            && command.getCurrentRequest().getEndpoint().getPath().indexOf("sandboxes") != -1) {
+            && command.getCurrentRequest().getEndpoint().getPath().contains("sandboxes")) {
          if (response.getPayload() != null) {
             String error = new String(closeClientButKeepContentStream(response));
-            if (error != null && error.indexOf("was not uploaded") != -1) {
+            if (error.contains("was not uploaded")) {
                return backoffLimitedRetryHandler.shouldRetryRequest(command, response);
             }
          }

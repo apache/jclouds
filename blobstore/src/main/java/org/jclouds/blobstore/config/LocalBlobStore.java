@@ -480,7 +480,7 @@ public final class LocalBlobStore implements BlobStore {
       public boolean apply(StorageMetadata metadata) {
          String name = metadata.getName();
          if (prefix == null || prefix.isEmpty()) {
-            return name.indexOf(delimiter) == -1;
+            return !name.contains(delimiter);
          }
          if (name.startsWith(prefix)) {
             String unprefixedName = name.substring(prefix.length());
@@ -488,7 +488,7 @@ public final class LocalBlobStore implements BlobStore {
                // a blob that matches the prefix should also be returned
                return true;
             }
-            return unprefixedName.indexOf(delimiter) == -1;
+            return !unprefixedName.contains(delimiter);
          }
          return false;
       }
@@ -513,7 +513,7 @@ public final class LocalBlobStore implements BlobStore {
                return NO_PREFIX;
             }
          }
-         if (working.indexOf(delimiter) >= 0) {
+         if (working.contains(delimiter)) {
             // include the delimiter in the result
             return working.substring(0, working.indexOf(delimiter));
          } else {

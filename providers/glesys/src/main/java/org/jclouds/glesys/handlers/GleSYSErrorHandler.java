@@ -51,19 +51,19 @@ public class GleSYSErrorHandler implements HttpErrorHandler {
             exception = new AuthorizationException(message, exception);
             break;
          case 400:
-            if (message.indexOf("not find") != -1) {
+            if (message.contains("not find")) {
                exception = new ResourceNotFoundException(message, exception);
             }
             break;
          case 404:
-            if (message.indexOf("Not supported") != -1) {
+            if (message.contains("Not supported")) {
                exception = new UnsupportedOperationException(message, exception);
             } else {
                exception = new ResourceNotFoundException(message, exception);
             }
             break;
          case 500:
-            if (message.indexOf("Locked") != -1) {
+            if (message.contains("Locked")) {
                exception = new IllegalStateException(message, exception);
             }
             break;

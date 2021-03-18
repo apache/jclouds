@@ -139,7 +139,7 @@ public class Pems {
                if (line.indexOf(':') >= 0) { // skip headers
                   continue;
                }
-               if (line.indexOf(END + type) != -1) {
+               if (line.contains(END + type)) {
                   reachedEnd = true;
                   break;
                }

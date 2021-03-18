@@ -42,12 +42,12 @@ public class DescribeRegionsResponseHandler extends ParseSax.HandlerWithResult<M
    public void endElement(String uri, String name, String qName) {
       if (qName.equals("regionName")) {
          String pending = currentText.toString().trim();
-         if (pending.indexOf("Walrus") == -1)
+         if (!pending.contains("Walrus"))
             region = pending;
          // Nova uses regionUrl
       } else if (qName.equals("regionEndpoint") || qName.equals("regionUrl")) {
          String pending = currentText.toString().trim();
-         if (pending.indexOf("Walrus") == -1)
+         if (!pending.contains("Walrus"))
             regionEndpoint = URI.create(pending.startsWith("http") ? pending : String.format("https://%s", pending));
       } else if (qName.equals("item") && region != null && regionEndpoint != null) {
          regionEndpoints.put(region, regionEndpoint);

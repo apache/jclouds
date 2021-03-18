@@ -297,7 +297,7 @@ public class CloudApplicationArchitecturesEC2ApiLiveTest extends BaseComputeServ
       try {
          ssh.connect();
          ExecResponse uptime = ssh.exec("uptime");
-         assert uptime.getOutput().indexOf("0 min") != -1 : "reboot didn't work: " + uptime;
+         assert uptime.getOutput().contains("0 min") : "reboot didn't work: " + uptime;
       } finally {
          if (ssh != null)
             ssh.disconnect();

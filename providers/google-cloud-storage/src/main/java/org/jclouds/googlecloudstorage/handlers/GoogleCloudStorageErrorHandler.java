@@ -49,7 +49,7 @@ public class GoogleCloudStorageErrorHandler implements HttpErrorHandler {
          case 308:
             return;
          case 400:
-            if (message.indexOf("<Code>ExpiredToken</Code>") != -1) {
+            if (message.contains("<Code>ExpiredToken</Code>")) {
                exception = new AuthorizationException(message, exception);
             }
             break;

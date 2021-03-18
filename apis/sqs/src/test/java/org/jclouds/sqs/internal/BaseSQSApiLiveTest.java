@@ -83,7 +83,7 @@ public class BaseSQSApiLiveTest extends BaseApiLiveTest<SQSApi> {
       assertEventually(new Runnable() {
          public void run() {
             String policy = api.getQueueApi().getAttribute(queue, "Policy");
-            assertTrue(policy == null || policy.indexOf("\"Statement\":[]") != -1, policy);
+            assertTrue(policy == null || policy.contains("\"Statement\":[]"), policy);
          }
       });
    }

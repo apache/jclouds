@@ -46,7 +46,7 @@ public class ETagFromHttpResponseViaRegex implements Function<HttpResponse, Stri
          Matcher matcher = PATTERN.matcher(content);
          if (matcher.find()) {
             value = matcher.group(1);
-            if (value.indexOf(ESCAPED_QUOTE) != -1) {
+            if (value.contains(ESCAPED_QUOTE)) {
                value = value.replace(ESCAPED_QUOTE, "\"");
             }
          }

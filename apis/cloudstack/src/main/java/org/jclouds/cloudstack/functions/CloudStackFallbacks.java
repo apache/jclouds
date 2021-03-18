@@ -34,7 +34,7 @@ public final class CloudStackFallbacks {
       @Override
       public Void createOrPropagate(Throwable t) throws Exception {
          IllegalStateException e = getFirstThrowableOfType(checkNotNull(t, "throwable"), IllegalStateException.class);
-         if (e != null && e.getMessage().indexOf("Unable to find account owner for") != -1) {
+         if (e != null && e.getMessage().contains("Unable to find account owner for")) {
             return null;
          } else {
             return valOnNotFoundOr404(null, t);

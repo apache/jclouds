@@ -104,7 +104,7 @@ public final class SessionManager extends BackoffLimitedRetryHandler implements 
       try {
          byte[] data = closeClientButKeepContentStream(response);
          String message = data != null ? new String(data) : null;
-         if (response.getStatusCode() == 401 || (message != null && message.indexOf(IP_MISMATCH) != -1)) {
+         if (response.getStatusCode() == 401 || (message != null && message.contains(IP_MISMATCH))) {
             logger.debug("invalidating session");
             sessionCache.invalidateAll();
             retry = super.shouldRetryRequest(command, response);
