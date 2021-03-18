@@ -31,7 +31,6 @@ import static org.testng.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -864,12 +863,7 @@ public class FilesystemBlobStoreTest {
             options.inDirectory(inDirectory);
 
         PageSet<? extends StorageMetadata> blobsRetrieved = blobStore.list(containerName, options);
-        for (Iterator<? extends StorageMetadata> it = blobsRetrieved.iterator(); it.hasNext();) {
-           // TODO: FluentIterable
-           if (it.next().getType() != StorageType.BLOB) {
-              it.remove();
-           }
-        }
+        blobsRetrieved.removeIf(storageMetadata -> storageMetadata.getType() != StorageType.BLOB);
 
         // nothing expected
         if (null == expectedBlobKeys || 0 == expectedBlobKeys.size()) {

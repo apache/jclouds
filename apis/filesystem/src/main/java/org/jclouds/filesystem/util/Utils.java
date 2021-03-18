@@ -162,12 +162,8 @@ public class Utils {
             .lookupPrincipalByName(WINDOWS_EVERYONE);
       AclFileAttributeView aclFileAttributes = java.nio.file.Files.getFileAttributeView(
             path, AclFileAttributeView.class);
-      CopyOnWriteArrayList<AclEntry> aclList = new CopyOnWriteArrayList(aclFileAttributes.getAcl());
-      for (AclEntry aclEntry : aclList) {
-         if (aclEntry.principal().equals(everyone) && aclEntry.type().equals(AclEntryType.ALLOW)) {
-            aclList.remove(aclEntry);
-         }
-      }
+      CopyOnWriteArrayList<AclEntry> aclList = new CopyOnWriteArrayList<>(aclFileAttributes.getAcl());
+      aclList.removeIf(aclEntry -> aclEntry.principal().equals(everyone) && aclEntry.type().equals(AclEntryType.ALLOW));
       aclFileAttributes.setAcl(aclList);
    }
 
