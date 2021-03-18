@@ -131,7 +131,7 @@ public final class GoogleCloudStorageBlobRequestSigner implements BlobRequestSig
          request.addHeader(entry.getKey(), entry.getValue());
       }
 
-      return (HttpRequest) request
+      return request
             .addQueryParam("Expires", String.valueOf(expires))
             .addQueryParam("GoogleAccessId", creds.get().identity)
             .addQueryParam("Signature", signature)
@@ -140,13 +140,11 @@ public final class GoogleCloudStorageBlobRequestSigner implements BlobRequestSig
 
    private String createStringToSign(HttpRequest request, long expires) {
       utils.logRequest(signatureLog, request, ">>");
-      StringBuilder buffer = new StringBuilder();
-      buffer.append(request.getMethod()).append("\n");
-      buffer.append(Strings.nullToEmpty(request.getFirstHeaderOrNull(HttpHeaders.CONTENT_MD5))).append("\n");
-      buffer.append(Strings.nullToEmpty(request.getFirstHeaderOrNull(HttpHeaders.CONTENT_TYPE))).append("\n");
-      buffer.append(String.valueOf(expires)).append("\n");
-      // TODO: extension headers
-      buffer.append(request.getEndpoint().getPath());
-      return buffer.toString();
+      return request.getMethod() + "\n" +
+              Strings.nullToEmpty(request.getFirstHeaderOrNull(HttpHeaders.CONTENT_MD5)) + "\n" +
+              Strings.nullToEmpty(request.getFirstHeaderOrNull(HttpHeaders.CONTENT_TYPE)) + "\n" +
+              expires + "\n" +
+              // TODO: extension headers
+              request.getEndpoint().getPath();
    }
 }

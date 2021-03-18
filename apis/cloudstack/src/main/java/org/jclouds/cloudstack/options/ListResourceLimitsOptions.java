@@ -65,7 +65,7 @@ public class ListResourceLimitsOptions extends BaseHttpRequestOptions {
     * @return ListResourceLimitsOptions
     */
    public ListResourceLimitsOptions projectId(String projectId) {
-      this.queryParameters.replaceValues("projectid", ImmutableSet.of(String.valueOf(projectId + "")));
+      this.queryParameters.replaceValues("projectid", ImmutableSet.of(projectId));
       return this;
    }
 

@@ -276,7 +276,7 @@ public final class CreateNodesWithGroupEncodedIntoNameThenAddToSet extends
          return Integer.toString(start);
       }
       else {
-         return String.format("%s-%s", Integer.toString(start), Integer.toString(finish));
+         return String.format("%s-%s", start, finish);
       }
    }
 

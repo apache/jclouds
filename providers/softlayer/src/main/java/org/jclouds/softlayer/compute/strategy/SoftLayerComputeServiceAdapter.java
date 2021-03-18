@@ -238,7 +238,7 @@ public class SoftLayerComputeServiceAdapter implements
          api.getVirtualGuestApi().deleteVirtualGuest(result.getId());
          throw new IllegalStateException(format("VirtualGuest(%s) is being destroyed as it doesn't have login details" +
                  " after %sms. Please, try by increasing `jclouds.softlayer.virtualguest.login_details_delay` and " +
-                 " try again", result, Long.toString(guestLoginDelay)));
+                 " try again", result, guestLoginDelay));
       }
       result = api.getVirtualGuestApi().getVirtualGuest(result.getId());
       Password pwd = get(result.getOperatingSystem().getPasswords(), 0);
