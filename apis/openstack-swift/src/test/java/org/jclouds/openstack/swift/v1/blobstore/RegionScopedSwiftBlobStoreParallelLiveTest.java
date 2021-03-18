@@ -65,7 +65,7 @@ public class RegionScopedSwiftBlobStoreParallelLiveTest extends BaseBlobStoreInt
                MoreExecutors.getExitingExecutorService(
                      new ThreadPoolExecutor(5, 5,
                            5000L, TimeUnit.MILLISECONDS,
-                           new ArrayBlockingQueue<Runnable>(10, true), new ThreadPoolExecutor.CallerRunsPolicy())));
+                           new ArrayBlockingQueue<>(10, true), new ThreadPoolExecutor.CallerRunsPolicy())));
 
    private static final String CONTAINER = "jcloudsparalleltest" + UUID.randomUUID();
 

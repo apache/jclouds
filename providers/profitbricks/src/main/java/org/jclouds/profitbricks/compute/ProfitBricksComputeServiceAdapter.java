@@ -239,7 +239,7 @@ public class ProfitBricksComputeServiceAdapter implements ComputeServiceAdapter<
 
       Server server = getNode(serverId);
 
-      return new NodeAndInitialCredentials<Server>(server, serverId, serverCredentials);
+      return new NodeAndInitialCredentials<>(server, serverId, serverCredentials);
    }
 
    @Override

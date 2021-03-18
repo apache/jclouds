@@ -65,7 +65,7 @@ public class StubComputeServiceDependenciesModule extends AbstractModule {
 
                @Override
                public ConcurrentMap<String, NodeMetadata> load(String arg0) throws Exception {
-                  return new ConcurrentHashMap<String, NodeMetadata>();
+                  return new ConcurrentHashMap<>();
                }
 
             });
@@ -82,7 +82,7 @@ public class StubComputeServiceDependenciesModule extends AbstractModule {
 
                @Override
                public ConcurrentMap<String, SecurityGroup> load(String arg0) throws Exception {
-                  return new ConcurrentHashMap<String, SecurityGroup>();
+                  return new ConcurrentHashMap<>();
                }
 
             });

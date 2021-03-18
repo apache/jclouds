@@ -73,7 +73,7 @@ public class RoleTest {
    public void envRunListOnNewlyBuiltRoleIsImmutable() {
       String env = "env";
       Role role = Role.builder().envRunListElement(env, env + "1").build();
-      role.getEnvRunList().put("does.not.matter", new ArrayList<String>());
+      role.getEnvRunList().put("does.not.matter", new ArrayList<>());
    }
 
    @Test(expectedExceptions = UnsupportedOperationException.class)

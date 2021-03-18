@@ -24,7 +24,7 @@ import org.jclouds.javax.annotation.Nullable;
 public class Section<T extends Section<T>> {
 
    public static <T extends Section<T>> Builder<T> builder() {
-      return new Builder<T>();
+      return new Builder<>();
    }
 
    public Builder<T> toBuilder() {
@@ -43,7 +43,7 @@ public class Section<T extends Section<T>> {
       }
 
       public Section<T> build() {
-         return new Section<T>(info);
+         return new Section<>(info);
       }
 
       public Builder<T> fromSection(Section<T> in) {

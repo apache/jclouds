@@ -38,7 +38,7 @@ import com.google.common.collect.Ordering;
 public class Reservation<T extends RunningInstance> extends ForwardingSet<T> implements Comparable<Reservation<T>> {
 
    public static <T extends RunningInstance> Builder<T> builder() {
-      return new Builder<T>();
+      return new Builder<>();
    }
 
    public Builder<T> toBuilder() {
@@ -51,8 +51,8 @@ public class Reservation<T extends RunningInstance> extends ForwardingSet<T> imp
       private String requesterId;
       private String reservationId;
 
-      private ImmutableSet.Builder<T> instances = ImmutableSet.<T> builder();
-      private ImmutableSet.Builder<String> groupNames = ImmutableSet.<String> builder();
+      private ImmutableSet.Builder<T> instances = ImmutableSet.builder();
+      private ImmutableSet.Builder<String> groupNames = ImmutableSet.builder();
 
       /**
        * @see Reservation#getRegion()
@@ -119,7 +119,7 @@ public class Reservation<T extends RunningInstance> extends ForwardingSet<T> imp
       }
 
       public Reservation<T> build() {
-         return new Reservation<T>(region, groupNames.build(), instances.build(), ownerId, requesterId, reservationId);
+         return new Reservation<>(region, groupNames.build(), instances.build(), ownerId, requesterId, reservationId);
       }
 
       public Builder<T> fromReservation(Reservation<T> in) {

@@ -218,14 +218,13 @@ public class Pems {
    public static KeySpec privateKeySpec(ByteSource supplier) throws IOException {
       return fromPem(
             supplier,
-            new PemProcessor<KeySpec>(ImmutableMap.<String, PemProcessor.ResultParser<KeySpec>> of(
+            new PemProcessor<>(ImmutableMap.of(
                   PRIVATE_PKCS1_MARKER, DecodeRSAPrivateCrtKeySpec.INSTANCE, PRIVATE_PKCS8_MARKER,
                   new PemProcessor.ResultParser<KeySpec>() {
                      @Override
                      public KeySpec parseResult(byte[] bytes) throws IOException {
                         return new PKCS8EncodedKeySpec(bytes);
                      }
-
                   })));
    }
 
@@ -274,7 +273,7 @@ public class Pems {
    public static KeySpec publicKeySpec(ByteSource supplier) throws IOException {
       return fromPem(
             supplier,
-            new PemProcessor<KeySpec>(ImmutableMap.<String, PemProcessor.ResultParser<KeySpec>> of(PUBLIC_PKCS1_MARKER,
+            new PemProcessor<>(ImmutableMap.of(PUBLIC_PKCS1_MARKER,
                   DecodeRSAPublicKeySpec.INSTANCE, PUBLIC_X509_MARKER, new PemProcessor.ResultParser<KeySpec>() {
 
                      @Override
@@ -337,7 +336,7 @@ public class Pems {
       try {
          return fromPem(
                supplier,
-               new PemProcessor<X509Certificate>(ImmutableMap.<String, PemProcessor.ResultParser<X509Certificate>> of(
+               new PemProcessor<>(ImmutableMap.of(
                      CERTIFICATE_X509_MARKER, new PemProcessor.ResultParser<X509Certificate>() {
 
                         @Override

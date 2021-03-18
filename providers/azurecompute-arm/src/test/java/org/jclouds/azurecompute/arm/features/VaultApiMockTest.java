@@ -423,7 +423,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
       server.enqueue(jsonResponse("/vaultcreatekey.json").setResponseCode(200));
       final VaultApi vaultApi = api.getVaultApi(resourceGroup);
       KeyAttributes keyAttr = KeyAttributes.create(true, null, null, null, null, null);
-      List<String> keyOps = new ArrayList<String>();
+      List<String> keyOps = new ArrayList<>();
       keyOps.add("encrypt");
       JsonWebKey keyInfo = JsonWebKey.create(
               null,
@@ -536,7 +536,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
    public void updateKey() throws InterruptedException {
       server.enqueue(jsonResponse("/vaultupdatekey.json").setResponseCode(200));
       final VaultApi vaultApi = api.getVaultApi(resourceGroup);
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("purpose", "testing");
       KeyBundle updatedKey = vaultApi.updateKey(vaultUri, KEY_NAME, null, null, null, tags);
 
@@ -551,7 +551,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
       server.enqueue(jsonResponse("/vaultupdatekeywithversion.json").setResponseCode(200));
       final VaultApi vaultApi = api.getVaultApi(resourceGroup);
       String keyVersion = "bd6566ec707e4ad89f4ab9577d9d0bef";
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("purpose", "testing");
       KeyBundle updatedKey = vaultApi.updateKey(vaultUri, KEY_NAME, keyVersion, null, null, tags);
 
@@ -884,7 +884,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
    public void updateSecret() throws InterruptedException {
       server.enqueue(jsonResponse("/vaultupdatekey.json").setResponseCode(200));
       final VaultApi vaultApi = api.getVaultApi(resourceGroup);
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("purpose", "testing");
       SecretBundle updatedSecret = vaultApi.updateSecret(vaultUri, SECRET_NAME, null, null, null, tags);
 
@@ -899,7 +899,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
       server.enqueue(jsonResponse("/vaultupdatesecretwithversion.json").setResponseCode(200));
       final VaultApi vaultApi = api.getVaultApi(resourceGroup);
       String secretVersion = "b936ececbc674f3bb1367ae50d28ada0";
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("purpose", "testing again");
       SecretBundle updatedSecret = vaultApi.updateSecret(vaultUri, SECRET_NAME,  secretVersion, null, null, tags);
 
@@ -1214,7 +1214,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
    public void updateCertificate() throws InterruptedException {
       server.enqueue(jsonResponse("/vaultupdatecertificate.json").setResponseCode(200));
       final VaultApi vaultApi = api.getVaultApi(resourceGroup);
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("selfsigned", "true");
       CertificatePolicy policy = CertificatePolicy.create(null,
               CERTIFICATE_NAME,
@@ -1375,7 +1375,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
               "Guy",
               "867-5309"
       );
-      List<AdministrationDetails> adminDetails = new ArrayList<AdministrationDetails>();
+      List<AdministrationDetails> adminDetails = new ArrayList<>();
       adminDetails.add(adminDetail);
       OrganizationDetails orgDetails = OrganizationDetails.create(
               adminDetails,
@@ -1457,7 +1457,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
               "Guy",
               "867-5309"
       );
-      List<AdministrationDetails> adminDetails = new ArrayList<AdministrationDetails>();
+      List<AdministrationDetails> adminDetails = new ArrayList<>();
       adminDetails.add(adminDetail);
       OrganizationDetails orgDetails = OrganizationDetails.create(
               adminDetails,
@@ -1534,7 +1534,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
    public void setCertificateContacts() throws InterruptedException {
       server.enqueue(jsonResponse("/vaultsetcertificatecontacts.json").setResponseCode(200));
       final VaultApi vaultApi = api.getVaultApi(resourceGroup);
-      List<Contact> contactsIn = new ArrayList<Contact>();
+      List<Contact> contactsIn = new ArrayList<>();
       contactsIn.add(Contact.create("foo@bar.com", "Foo bar", "867-5309"));
       Contacts contacts = vaultApi.setCertificateContacts(vaultUri, contactsIn);
 

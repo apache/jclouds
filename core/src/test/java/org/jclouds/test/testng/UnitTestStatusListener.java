@@ -33,8 +33,8 @@ public class UnitTestStatusListener implements ITestListener {
    /**
     * Holds test classes actually running in all threads.
     */
-   private ThreadLocal<IClass> threadTestClass = new ThreadLocal<IClass>();
-   private ThreadLocal<Long> threadTestStart = new ThreadLocal<Long>();
+   private ThreadLocal<IClass> threadTestClass = new ThreadLocal<>();
+   private ThreadLocal<Long> threadTestStart = new ThreadLocal<>();
 
    private AtomicInteger failed = new AtomicInteger(0);
    private AtomicInteger succeded = new AtomicInteger(0);

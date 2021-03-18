@@ -342,7 +342,7 @@ public class VirtualMachineApiMockTest extends BaseAzureComputeApiMockTest {
       OSProfile osProfile = OSProfile.create("windowsmachine", "azureuser", "password", "", linuxConfig, windowsConfig, secrets);
       NetworkInterface networkInterface = NetworkInterface.create("/subscriptions/SUBSCRIPTIONID"
             + "/resourceGroups/groupname/providers/Microsoft.Network/networkInterfaces/" + "windowsmachine167", null);
-      List<NetworkInterface> networkInterfaces = new ArrayList<NetworkInterface>();
+      List<NetworkInterface> networkInterfaces = new ArrayList<>();
       networkInterfaces.add(networkInterface);
       NetworkProfile networkProfile = NetworkProfile.create(networkInterfaces);
       DiagnosticsProfile.BootDiagnostics bootDiagnostics = DiagnosticsProfile.BootDiagnostics.create(true,
@@ -380,7 +380,7 @@ public class VirtualMachineApiMockTest extends BaseAzureComputeApiMockTest {
       OSProfile osProfile = OSProfile.create("windowsmachine", "azureuser", "password", "", linuxConfig, windowsConfig, secrets);
       NetworkInterface networkInterface = NetworkInterface.create("/subscriptions/SUBSCRIPTIONID"
             + "/resourceGroups/groupname/providers/Microsoft.Network/networkInterfaces/" + "windowsmachine167", null);
-      List<NetworkInterface> networkInterfaces = new ArrayList<NetworkInterface>();
+      List<NetworkInterface> networkInterfaces = new ArrayList<>();
       networkInterfaces.add(networkInterface);
       NetworkProfile networkProfile = NetworkProfile.create(networkInterfaces);
       DiagnosticsProfile.BootDiagnostics bootDiagnostics = DiagnosticsProfile.BootDiagnostics.create(true,
@@ -410,7 +410,7 @@ public class VirtualMachineApiMockTest extends BaseAzureComputeApiMockTest {
    }
 
    private VirtualMachineInstance getVMInstance() {
-      List<Status> statuses = new ArrayList<Status>();
+      List<Status> statuses = new ArrayList<>();
       String testDate = "Wed May 04 01:38:52 PDT 2016";
       DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
       Date date = null;
@@ -432,7 +432,7 @@ public class VirtualMachineApiMockTest extends BaseAzureComputeApiMockTest {
    }
 
    private List<VirtualMachine> getVMList() {
-      List<VirtualMachine> list = new ArrayList<VirtualMachine>();
+      List<VirtualMachine> list = new ArrayList<>();
       VirtualMachineProperties propertiesWithManagedDisks = getVMWithManagedDisksProperties();
       VirtualMachine machineWithManagedDisks = VirtualMachine.create("/subscriptions/SUBSCRIPTIONID/" + ""
             + "resourceGroups/groupname/providers/Microsoft.Compute/virtualMachines/windowsmachine", "windowsmachine",
@@ -447,7 +447,7 @@ public class VirtualMachineApiMockTest extends BaseAzureComputeApiMockTest {
    }
 
    private List<VirtualMachine> getVMListAll() {
-      List<VirtualMachine> list = new ArrayList<VirtualMachine>();
+      List<VirtualMachine> list = new ArrayList<>();
       VirtualMachineProperties propertiesWithManagedDisks = getVMWithManagedDisksProperties();
       VirtualMachine machineWithManagedDisks = VirtualMachine.create("/subscriptions/SUBSCRIPTIONID/" + ""
                   + "resourceGroups/groupname/providers/Microsoft.Compute/virtualMachines/windowsmachine",
@@ -473,7 +473,7 @@ public class VirtualMachineApiMockTest extends BaseAzureComputeApiMockTest {
    }
 
    private List<VirtualMachine> getVMListByLocation() {
-      List<VirtualMachine> list = new ArrayList<VirtualMachine>();
+      List<VirtualMachine> list = new ArrayList<>();
       VirtualMachineProperties propertiesWithManagedDisks = getVMWithManagedDisksProperties();
       VirtualMachine machineWithManagedDisks = VirtualMachine.create("/subscriptions/SUBSCRIPTIONID/" + ""
                   + "resourceGroups/groupname/providers/Microsoft.Compute/virtualMachines/windowsmachine",

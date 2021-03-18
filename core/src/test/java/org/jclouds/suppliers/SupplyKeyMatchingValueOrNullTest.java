@@ -48,20 +48,20 @@ public class SupplyKeyMatchingValueOrNullTest {
    }
 
    public void testReturnsNullIfEmptyMap() {
-      SupplyKeyMatchingValueOrNull<String, String> supplier = new SupplyKeyMatchingValueOrNull<String, String>(
-            Suppliers.<Map<String, Supplier<String>>> ofInstance(ImmutableMap.<String, Supplier<String>> of()),
+      SupplyKeyMatchingValueOrNull<String, String> supplier = new SupplyKeyMatchingValueOrNull<>(
+            Suppliers.ofInstance(ImmutableMap.of()),
             valueSupplier);
       assertNull(supplier.get());
    }
 
    private static SupplyKeyMatchingValueOrNull<String, String> supplier(String k1, String v1, String k2, String v2,
          String k3, String v3) {
-      return new SupplyKeyMatchingValueOrNull<String, String>(map(k1, v1, k2, v2, k3, v3), valueSupplier);
+      return new SupplyKeyMatchingValueOrNull<>(map(k1, v1, k2, v2, k3, v3), valueSupplier);
    }
 
    private static Supplier<Map<String, Supplier<String>>> map(String k1, String v1, String k2, String v2, String k3,
          String v3) {
-      return Suppliers.<Map<String, Supplier<String>>> ofInstance(ImmutableMap.of(k1, Suppliers.ofInstance(v1), k2,
+      return Suppliers.ofInstance(ImmutableMap.of(k1, Suppliers.ofInstance(v1), k2,
             Suppliers.ofInstance(v2), k3, Suppliers.ofInstance(v3)));
    }
 }

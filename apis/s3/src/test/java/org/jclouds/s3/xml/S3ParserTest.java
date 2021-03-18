@@ -84,7 +84,7 @@ public class S3ParserTest extends PerformanceTest {
 
    @Test
    void testParseListAllMyBucketsParallelResponseTime() throws InterruptedException, ExecutionException {
-      CompletionService<Set<BucketMetadata>> completer = new ExecutorCompletionService<Set<BucketMetadata>>(exec);
+      CompletionService<Set<BucketMetadata>> completer = new ExecutorCompletionService<>(exec);
       for (int i = 0; i < LOOP_COUNT; i++)
          completer.submit(new Callable<Set<BucketMetadata>>() {
             public Set<BucketMetadata> call() throws IOException, SAXException, HttpException {
@@ -162,7 +162,7 @@ public class S3ParserTest extends PerformanceTest {
 
    @Test
    void testParseListContainerResultParallelResponseTime() throws InterruptedException, ExecutionException {
-      CompletionService<ListBucketResponse> completer = new ExecutorCompletionService<ListBucketResponse>(exec);
+      CompletionService<ListBucketResponse> completer = new ExecutorCompletionService<>(exec);
       for (int i = 0; i < LOOP_COUNT; i++)
          completer.submit(new Callable<ListBucketResponse>() {
             public ListBucketResponse call() throws IOException, SAXException, HttpException {

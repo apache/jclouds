@@ -30,7 +30,7 @@ import com.google.inject.Provider;
  */
 public class SetCaller {
 
-   private final ThreadLocal<Invocation> caller = new ThreadLocal<Invocation>();
+   private final ThreadLocal<Invocation> caller = new ThreadLocal<>();
 
    public void enter(Invocation caller) {
       checkState(this.caller.get() == null, "A scoping block is already in progress");

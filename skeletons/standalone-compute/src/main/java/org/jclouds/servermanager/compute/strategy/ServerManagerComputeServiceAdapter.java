@@ -54,7 +54,7 @@ public class ServerManagerComputeServiceAdapter implements ComputeServiceAdapter
       Server from = client.createServerInDC(template.getLocation().getId(), name,
             Integer.parseInt(template.getImage().getProviderId()),
             Integer.parseInt(template.getHardware().getProviderId()));
-      return new NodeAndInitialCredentials<Server>(from, from.id + "", LoginCredentials.builder().user(from.loginUser)
+      return new NodeAndInitialCredentials<>(from, from.id + "", LoginCredentials.builder().user(from.loginUser)
             .password(from.password).build());
    }
 

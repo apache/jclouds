@@ -864,7 +864,7 @@ public class RestAnnotationProcessor implements Function<Invocation, HttpRequest
             if (paramValue.get() instanceof Iterable) {
                @SuppressWarnings("unchecked")
                Iterable<String> iterableStrings = transform(Iterable.class.cast(paramValue.get()), toStringFunction());
-               List<QueryValue> values = new ArrayList<QueryValue>();
+               List<QueryValue> values = new ArrayList<>();
                for (String stringValue : iterableStrings) {
                   values.add(new QueryValue(replaceTokens(stringValue, tokenValues), encoded));
                }

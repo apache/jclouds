@@ -69,7 +69,7 @@ public abstract class PerformanceTest {
     */
    protected void executeMultiThreadedPerformanceTest(String performanceTestName,
             List<Runnable> tasks) throws InterruptedException, ExecutionException, Throwable {
-      CompletionService<Throwable> completer = new ExecutorCompletionService<Throwable>(exec);
+      CompletionService<Throwable> completer = new ExecutorCompletionService<>(exec);
       final CountDownLatch startGate = new CountDownLatch(1);
       final CountDownLatch endGate = new CountDownLatch(THREAD_COUNT);
 

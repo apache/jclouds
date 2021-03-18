@@ -94,6 +94,6 @@ public class ParseGoogleCloudStorageObjectListTest extends BaseGoogleCloudStorag
    @Consumes(MediaType.APPLICATION_JSON)
    public ListPageWithPrefixes<GoogleCloudStorageObject> expected() {
       List<GoogleCloudStorageObject> items = ImmutableList.of(object1, object2);
-      return new ListPageWithPrefixes<GoogleCloudStorageObject>(items, null, null);
+      return new ListPageWithPrefixes<>(items, null, null);
    }
 }

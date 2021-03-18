@@ -56,7 +56,7 @@ public class SaxParserModule extends AbstractModule {
             saxParser = factory.newSAXParser();
             XMLReader parser = saxParser.getXMLReader();
             // TODO: switch to @AssistedInject
-            ParseSax<T> returnVal = new ParseSax<T>(parser, handler);
+            ParseSax<T> returnVal = new ParseSax<>(parser, handler);
             i.injectMembers(returnVal);
             return returnVal;
          } catch (Exception e) {

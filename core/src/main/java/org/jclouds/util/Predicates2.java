@@ -52,7 +52,7 @@ public class Predicates2 {
     */
    public static <T> Predicate<T> retry(Predicate<T> findOrBreak, long timeout, long period, long maxPeriod,
          TimeUnit unit) {
-      return new RetryablePredicate<T>(findOrBreak, timeout, period, maxPeriod, unit);
+      return new RetryablePredicate<>(findOrBreak, timeout, period, maxPeriod, unit);
    }
 
    /**

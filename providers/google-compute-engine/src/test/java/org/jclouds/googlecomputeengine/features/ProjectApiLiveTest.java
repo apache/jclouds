@@ -77,7 +77,7 @@ public class ProjectApiLiveTest extends BaseGoogleComputeEngineApiLiveTest {
 
    @Test(groups = "live", dependsOnMethods = "getProject")
    public void testSetUsageExportBucket() {
-      AtomicReference<Operation> o = new AtomicReference<Operation>(api.project().setUsageExportBucket(
+      AtomicReference<Operation> o = new AtomicReference<>(api.project().setUsageExportBucket(
             "unexisting-bucket", "test-"));
 
       retry(new Predicate<AtomicReference<Operation>>() {

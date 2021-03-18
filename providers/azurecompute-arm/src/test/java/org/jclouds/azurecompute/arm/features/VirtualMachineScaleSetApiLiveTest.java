@@ -104,7 +104,7 @@ public class VirtualMachineScaleSetApiLiveTest extends BaseAzureComputeApiLiveTe
    @Test
    public void testCreate() {
       VirtualMachineScaleSet vmss = api().createOrUpdate(vmssName, LOCATIONDESCRIPTION, getSKU(),
-         Collections.<String, String>emptyMap(), getProperties());
+         Collections.emptyMap(), getProperties());
       assertTrue(!vmss.name().isEmpty());
 //      waitUntilReady(vmssName);
    }
@@ -182,8 +182,8 @@ public class VirtualMachineScaleSetApiLiveTest extends BaseAzureComputeApiLiveTe
       assertNotNull(nic);
       NetworkProfile.NetworkInterface.create(nic.id(), NetworkProfile.NetworkInterface.NetworkInterfaceProperties.create(true));
 
-      List<NetworkInterfaceConfiguration> networkInterfaceConfigurations = new ArrayList<NetworkInterfaceConfiguration>();
-      List<VirtualMachineScaleSetIpConfiguration> virtualMachineScaleSetIpConfigurations = new ArrayList<VirtualMachineScaleSetIpConfiguration>();
+      List<NetworkInterfaceConfiguration> networkInterfaceConfigurations = new ArrayList<>();
+      List<VirtualMachineScaleSetIpConfiguration> virtualMachineScaleSetIpConfigurations = new ArrayList<>();
 
 
       VirtualMachineScaleSetPublicIPAddressConfiguration publicIPAddressConfiguration =
@@ -202,7 +202,7 @@ public class VirtualMachineScaleSetApiLiveTest extends BaseAzureComputeApiLiveTe
 
       VirtualMachineScaleSetNetworkSecurityGroup networkSecurityGroup = null;
 
-      ArrayList<String> dnsList = new ArrayList<String>();
+      ArrayList<String> dnsList = new ArrayList<>();
       dnsList.add("8.8.8.8");
       VirtualMachineScaleSetDNSSettings dnsSettings =  VirtualMachineScaleSetDNSSettings.create(dnsList);
 
@@ -216,13 +216,13 @@ public class VirtualMachineScaleSetApiLiveTest extends BaseAzureComputeApiLiveTe
 
 
    private ExtensionProfile getExtensionProfile() {
-      List<Extension> extensions = new ArrayList<Extension>();
+      List<Extension> extensions = new ArrayList<>();
 
-      List<String> uris = new ArrayList<String>();
+      List<String> uris = new ArrayList<>();
       uris.add("https://mystorage1.blob.core.windows.net/winvmextekfacnt/SampleCmd_1.cmd");
       ExtensionProfileSettings extensionProfileSettings = ExtensionProfileSettings.create(uris, "SampleCmd_1.cmd");
 
-      Map<String, String> protectedSettings = new HashMap<String, String>();
+      Map<String, String> protectedSettings = new HashMap<>();
       protectedSettings.put("StorageAccountKey", "jclouds-accountkey");
 
       ExtensionProperties extensionProperties = ExtensionProperties.create("Microsoft.compute", "CustomScriptExtension",

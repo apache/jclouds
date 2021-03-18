@@ -173,7 +173,7 @@ public class RegionScopedSwiftBlobStore implements BlobStore {
       // TODO: there may eventually be >10k containers..
       FluentIterable<StorageMetadata> containers = api.getContainerApi(regionId).list()
             .transform(toResourceMetadata);
-      return new PageSetImpl<StorageMetadata>(containers, null);
+      return new PageSetImpl<>(containers, null);
    }
 
    @Override
@@ -234,8 +234,8 @@ public class RegionScopedSwiftBlobStore implements BlobStore {
       ObjectApi objectApi = api.getObjectApi(regionId, container);
       ObjectList objects = objectApi.list(toListContainerOptions.apply(options));
       if (objects == null) {
-         containerCache.put(container, Optional.<Container> absent());
-         return new PageSetImpl<StorageMetadata>(ImmutableList.<StorageMetadata> of(), null);
+         containerCache.put(container, Optional.absent());
+         return new PageSetImpl<>(ImmutableList.of(), null);
       } else {
          containerCache.put(container, Optional.of(objects.getContainer()));
          List<? extends StorageMetadata> list = transform(objects, toBlobMetadata(container));
@@ -637,7 +637,7 @@ public class RegionScopedSwiftBlobStore implements BlobStore {
 
    @Beta
    protected String putMultipartBlob(String container, Blob blob, PutOptions overrides, ListeningExecutorService executor) {
-      ArrayList<ListenableFuture<MultipartPart>> parts = new ArrayList<ListenableFuture<MultipartPart>>();
+      ArrayList<ListenableFuture<MultipartPart>> parts = new ArrayList<>();
 
       long contentLength = checkNotNull(blob.getMetadata().getContentMetadata().getContentLength(),
             "must provide content-length to use multi-part upload");
@@ -705,7 +705,7 @@ public class RegionScopedSwiftBlobStore implements BlobStore {
          // Loop through ranges within the file
          long from;
          long to;
-         List<ListenableFuture<Void>> results = new ArrayList<ListenableFuture<Void>>();
+         List<ListenableFuture<Void>> results = new ArrayList<>();
 
          for (from = 0; from < contentLength; from = from + partSize) {
             to = (from + partSize >= contentLength) ? contentLength - 1 : from + partSize - 1;
@@ -840,7 +840,7 @@ public class RegionScopedSwiftBlobStore implements BlobStore {
       final long partSize = getMinimumMultipartPartSize();
 
       // Used to communicate between the producer and consumer threads
-      final LinkedBlockingQueue<ListenableFuture<byte[]>> results = new LinkedBlockingQueue<ListenableFuture<byte[]>>();
+      final LinkedBlockingQueue<ListenableFuture<byte[]>> results = new LinkedBlockingQueue<>();
 
       listeningExecutor.submit(new Runnable() {
          @Override

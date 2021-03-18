@@ -39,7 +39,7 @@ public class PublicURLOrInternal extends BaseEndpointResolutionStrategy {
 
    @Override
    public Supplier<URI> apply(Collection<ServiceEndpoint> input) {
-      List<ServiceEndpoint> publicEndpointsFirst = new ArrayList<ServiceEndpoint>(input);
+      List<ServiceEndpoint> publicEndpointsFirst = new ArrayList<>(input);
       Collections.sort(publicEndpointsFirst, PublicInterfacesFirst);
       return super.apply(publicEndpointsFirst);
    }

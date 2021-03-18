@@ -71,7 +71,7 @@ public class ParseSearchDatabagFromJson implements Function<HttpResponse, Search
          }
       });
 
-      return new SearchResult<DatabagItem>(returnVal.start, items);
+      return new SearchResult<>(returnVal.start, items);
    }
 
 }

@@ -238,30 +238,30 @@ public class StorageAccountApiMockTest extends BaseAzureComputeApiMockTest {
 
    private List<StorageService> expected() throws MalformedURLException {
       DateService DATE_SERVICE = new SimpleDateFormatDateService();
-      Map<String, String> endpoints = new HashMap<String, String>();
+      Map<String, String> endpoints = new HashMap<>();
       endpoints.put("blob", "https://TESTSTORAGE.blob.core.windows.net/");
       endpoints.put("file", "https://TESTSTORAGE.file.core.windows.net/");
       endpoints.put("queue", "https://TESTSTORAGE.queue.core.windows.net/");
       endpoints.put("table", "https://TESTSTORAGE.table.core.windows.net/");
-      Map<String, String> secondaryEndpoints = new HashMap<String, String>();
+      Map<String, String> secondaryEndpoints = new HashMap<>();
       secondaryEndpoints.put("blob", "https://TESTSTORAGE-secondary.blob.core.windows.net/");
       secondaryEndpoints.put("queue", "https://TESTSTORAGE-secondary.queue.core.windows.net/");
       secondaryEndpoints.put("table", "https://TESTSTORAGE-secondary.table.core.windows.net/");
-      Map<String, String> endpoints2 = new HashMap<String, String>();
+      Map<String, String> endpoints2 = new HashMap<>();
       endpoints2.put("blob", "https://TESTSTORAGE2.blob.core.windows.net/");
       endpoints2.put("file", "https://TESTSTORAGE2.file.core.windows.net/");
       endpoints2.put("queue", "https://TESTSTORAGE2.queue.core.windows.net/");
       endpoints2.put("table", "https://TESTSTORAGE2.table.core.windows.net/");
-      Map<String, String> secondaryEndpoints2 = new HashMap<String, String>();
+      Map<String, String> secondaryEndpoints2 = new HashMap<>();
       secondaryEndpoints2.put("blob", "https://TESTSTORAGE2-secondary.blob.core.windows.net/");
       secondaryEndpoints2.put("queue", "https://TESTSTORAGE2-secondary.queue.core.windows.net/");
       secondaryEndpoints2.put("table", "https://TESTSTORAGE2-secondary.table.core.windows.net/");
-      Map<String, String> endpoints3 = new HashMap<String, String>();
+      Map<String, String> endpoints3 = new HashMap<>();
       endpoints3.put("blob", "https://TESTSTORAGE3.blob.core.windows.net/");
       endpoints3.put("file", "https://TESTSTORAGE3.file.core.windows.net/");
       endpoints3.put("queue", "https://TESTSTORAGE3.queue.core.windows.net/");
       endpoints3.put("table", "https://TESTSTORAGE3.table.core.windows.net/");
-      Map<String, String> secondaryEndpoints3 = new HashMap<String, String>();
+      Map<String, String> secondaryEndpoints3 = new HashMap<>();
       secondaryEndpoints3.put("blob", "https://TESTSTORAGE3-secondary.blob.core.windows.net/");
       secondaryEndpoints3.put("queue", "https://TESTSTORAGE3-secondary.queue.core.windows.net/");
       secondaryEndpoints3.put("table", "https://TESTSTORAGE3-secondary.table.core.windows.net/");

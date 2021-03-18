@@ -61,7 +61,7 @@ public class Record<D extends Map<String, Object>> extends RecordId {
    }
 
    public static <D extends Map<String, Object>> Builder<D, ?> builder() {
-      return new ConcreteBuilder<D>();
+      return new ConcreteBuilder<>();
    }
 
    public Builder<D, ?> toBuilder() {
@@ -90,7 +90,7 @@ public class Record<D extends Map<String, Object>> extends RecordId {
       }
 
       public Record<D> build() {
-         return new Record<D>(zone, fqdn, type, id, ttl, rdata);
+         return new Record<>(zone, fqdn, type, id, ttl, rdata);
       }
 
       @Override

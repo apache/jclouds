@@ -242,7 +242,7 @@ public class SoftLayerComputeServiceAdapter implements
       }
       result = api.getVirtualGuestApi().getVirtualGuest(result.getId());
       Password pwd = get(result.getOperatingSystem().getPasswords(), 0);
-      return new NodeAndInitialCredentials<VirtualGuest>(result, result.getId() + "",
+      return new NodeAndInitialCredentials<>(result, result.getId() + "",
               LoginCredentials.builder().user(pwd.getUsername()).password(pwd.getPassword()).build());
    }
 

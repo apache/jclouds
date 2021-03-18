@@ -135,6 +135,6 @@ public class PagedIterables {
       if (!initial.nextMarker().isPresent()) {
          return ImmutableSet.of(initial).iterator();
       }
-      return new AdvancingIterator<T>(initial, markerToNext);
+      return new AdvancingIterator<>(initial, markerToNext);
    }
 }

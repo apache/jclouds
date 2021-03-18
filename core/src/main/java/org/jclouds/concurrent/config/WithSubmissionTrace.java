@@ -60,7 +60,7 @@ public class WithSubmissionTrace {
 
       @Override
       public <T> com.google.common.util.concurrent.ListenableFuture<T> submit(Callable<T> task) {
-         return new ListenableFuture<T>(delegate().submit(task));
+         return new ListenableFuture<>(delegate().submit(task));
       }
 
       @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -71,7 +71,7 @@ public class WithSubmissionTrace {
 
       @Override
       public <T> com.google.common.util.concurrent.ListenableFuture<T> submit(Runnable task, T result) {
-         return new ListenableFuture<T>(delegate().submit(task, result));
+         return new ListenableFuture<>(delegate().submit(task, result));
       }
    }
 
@@ -164,7 +164,7 @@ public class WithSubmissionTrace {
 
       @Override
       public <T> ListenableFuture<T> submit(Callable<T> task) {
-         return new ListenableFuture<T>(delegate().submit(task));
+         return new ListenableFuture<>(delegate().submit(task));
       }
 
       @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -175,7 +175,7 @@ public class WithSubmissionTrace {
 
       @Override
       public <T> ListenableFuture<T> submit(Runnable task, T result) {
-         return new ListenableFuture<T>(delegate().submit(task, result));
+         return new ListenableFuture<>(delegate().submit(task, result));
       }
 
       @SuppressWarnings({ "rawtypes", "unchecked" })

@@ -42,7 +42,6 @@ import org.jclouds.azurecompute.arm.domain.NetworkInterfaceConfiguration;
 import org.jclouds.azurecompute.arm.domain.NetworkInterfaceConfigurationProperties;
 import org.jclouds.azurecompute.arm.domain.NetworkProfile;
 import org.jclouds.azurecompute.arm.domain.OSDisk;
-import org.jclouds.azurecompute.arm.domain.Secrets;
 import org.jclouds.azurecompute.arm.domain.StorageProfile;
 import org.jclouds.azurecompute.arm.domain.Subnet;
 import org.jclouds.azurecompute.arm.domain.VirtualMachineScaleSet;
@@ -61,7 +60,6 @@ import org.jclouds.azurecompute.arm.internal.BaseAzureComputeApiMockTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMap;
-
 
 @Test(groups = "unit", testName = "VirtualMachineScaleSetAPIMockTest", singleThreaded = true)
 public class VirtualMachineScaleSetApiMockTest extends BaseAzureComputeApiMockTest {
@@ -266,7 +264,7 @@ public class VirtualMachineScaleSetApiMockTest extends BaseAzureComputeApiMockTe
                                               false,
                                               null),
                                       null,
-                                      new ArrayList<Secrets>()),
+                                      new ArrayList<>()),
                               getNetworkProfile(),
                               getExtensionProfile()
 
@@ -284,10 +282,8 @@ public class VirtualMachineScaleSetApiMockTest extends BaseAzureComputeApiMockTe
               nic.id(),
               NetworkProfile.NetworkInterface.NetworkInterfaceProperties.create(true));
 
-      List<NetworkInterfaceConfiguration> networkInterfaceConfigurations =
-              new ArrayList<NetworkInterfaceConfiguration>();
-      List<VirtualMachineScaleSetIpConfiguration> virtualMachineScaleSetIpConfigurations =
-              new ArrayList<VirtualMachineScaleSetIpConfiguration>();
+      List<NetworkInterfaceConfiguration> networkInterfaceConfigurations = new ArrayList<>();
+      List<VirtualMachineScaleSetIpConfiguration> virtualMachineScaleSetIpConfigurations = new ArrayList<>();
 
 
       VirtualMachineScaleSetPublicIPAddressConfiguration publicIPAddressConfiguration =
@@ -314,7 +310,7 @@ public class VirtualMachineScaleSetApiMockTest extends BaseAzureComputeApiMockTe
 
       virtualMachineScaleSetIpConfigurations.add(virtualMachineScaleSetIpConfiguration);
 
-      ArrayList<String> dnsList = new ArrayList<String>();
+      ArrayList<String> dnsList = new ArrayList<>();
       dnsList.add("8.8.8.8");
       VirtualMachineScaleSetDNSSettings dnsSettings =  VirtualMachineScaleSetDNSSettings.create(dnsList);
 
@@ -375,12 +371,12 @@ public class VirtualMachineScaleSetApiMockTest extends BaseAzureComputeApiMockTe
    }
 
    private ExtensionProfile getExtensionProfile() {
-      List<Extension> extensions = new ArrayList<Extension>();
+      List<Extension> extensions = new ArrayList<>();
 
-      List<String> uris = new ArrayList<String>();
+      List<String> uris = new ArrayList<>();
       uris.add("https://mystorage1.blob.core.windows.net/winvmextekfacnt/SampleCmd_1.cmd");
 
-      Map<String, String> protectedSettings = new HashMap<String, String>();
+      Map<String, String> protectedSettings = new HashMap<>();
       protectedSettings.put("StorageAccountKey", "jclouds-accountkey");
 
       Extension extension = Extension.create(

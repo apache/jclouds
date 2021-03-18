@@ -59,10 +59,10 @@ import com.google.common.io.ByteStreams;
 import com.google.common.net.HttpHeaders;
 
 public class TransientStorageStrategy implements LocalStorageStrategy {
-   private final ConcurrentMap<String, ConcurrentSkipListMap<String, Blob>> containerToBlobs = new ConcurrentHashMap<String, ConcurrentSkipListMap<String, Blob>>();
-   private final ConcurrentMap<String, ConcurrentMap<String, BlobAccess>> containerToBlobAccess = new ConcurrentHashMap<String, ConcurrentMap<String, BlobAccess>>();
-   private final ConcurrentMap<String, StorageMetadata> containerMetadata = new ConcurrentHashMap<String, StorageMetadata>();
-   private final ConcurrentMap<String, ContainerAccess> containerAccessMap = new ConcurrentHashMap<String, ContainerAccess>();
+   private final ConcurrentMap<String, ConcurrentSkipListMap<String, Blob>> containerToBlobs = new ConcurrentHashMap<>();
+   private final ConcurrentMap<String, ConcurrentMap<String, BlobAccess>> containerToBlobAccess = new ConcurrentHashMap<>();
+   private final ConcurrentMap<String, StorageMetadata> containerMetadata = new ConcurrentHashMap<>();
+   private final ConcurrentMap<String, ContainerAccess> containerAccessMap = new ConcurrentHashMap<>();
    private final Supplier<Location> defaultLocation;
    private final DateService dateService;
    private final Factory blobFactory;
@@ -90,11 +90,11 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
    @Override
    public boolean createContainerInLocation(String containerName, Location location, CreateContainerOptions options) {
       ConcurrentMap<String, Blob> origValue = containerToBlobs.putIfAbsent(
-            containerName, new ConcurrentSkipListMap<String, Blob>());
+            containerName, new ConcurrentSkipListMap<>());
       if (origValue != null) {
          return false;
       }
-      containerToBlobAccess.putIfAbsent(containerName, new ConcurrentHashMap<String, BlobAccess>());
+      containerToBlobAccess.putIfAbsent(containerName, new ConcurrentHashMap<>());
 
       MutableStorageMetadata metadata = new MutableStorageMetadataImpl();
       metadata.setName(containerName);

@@ -74,7 +74,7 @@ public class TemplateToAvailabilitySet implements Function<Template, Availabilit
             checkArgument(location.equals(availabilitySet.location()), "The availability set %s does not belong to location %s",
                   options.getAvailabilitySet().name(), location);
          } else {
-            Map<String, String> tags = new HashMap<String, String>();
+            Map<String, String> tags = new HashMap<>();
             if (options.getAvailabilitySet().tags() != null) {
                tags.putAll(options.getAvailabilitySet().tags());
             }

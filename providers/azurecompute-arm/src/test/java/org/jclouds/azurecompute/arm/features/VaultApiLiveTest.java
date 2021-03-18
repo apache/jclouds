@@ -259,7 +259,7 @@ public class VaultApiLiveTest extends BaseAzureComputeApiLiveTest {
    @Test(dependsOnMethods = "testCreateKey")
    public void testImportKey() {
       KeyAttributes keyAttr = KeyAttributes.create(true, null, null, null, null, null);
-      List<String> keyOps = new ArrayList<String>();
+      List<String> keyOps = new ArrayList<>();
       keyOps.add("encrypt");
       JsonWebKey keyInfo = JsonWebKey.create(
               null,
@@ -309,7 +309,7 @@ public class VaultApiLiveTest extends BaseAzureComputeApiLiveTest {
 
    @Test(dependsOnMethods = "testGetKey")
    public void testUpdateKey() {
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("purpose", "testing");
       KeyBundle updatedKey = api().updateKey(vaultUri, KEY_NAME, "", null, null, tags);
       assertNotNull(updatedKey.tags());
@@ -335,7 +335,7 @@ public class VaultApiLiveTest extends BaseAzureComputeApiLiveTest {
       assertNotNull(key);
       final String version = key.kid().substring(key.kid().lastIndexOf("/") + 1).trim();
 
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("purpose", "testing again");
       KeyBundle updatedKey = api().updateKey(vaultUri, KEY_NAME, version, null, null, tags);
       assertNotNull(updatedKey);
@@ -537,7 +537,7 @@ public class VaultApiLiveTest extends BaseAzureComputeApiLiveTest {
 
    @Test(dependsOnMethods = "testGetSecret")
    public void testUpdateSecret() {
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("purpose", "testing");
       SecretBundle updatedSecret = api().updateSecret(vaultUri, SECRET_NAME, "", null, null, tags);
       assertNotNull(updatedSecret.tags());
@@ -584,7 +584,7 @@ public class VaultApiLiveTest extends BaseAzureComputeApiLiveTest {
       assertNotNull(secret);
       String version = secret.id().substring(secret.id().lastIndexOf("/") + 1).trim();
 
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("purpose", "testing again");
       SecretBundle updatedSecret = api().updateSecret(vaultUri, SECRET_NAME, version, null, null, tags);
       assertNotNull(updatedSecret);
@@ -768,7 +768,7 @@ public class VaultApiLiveTest extends BaseAzureComputeApiLiveTest {
 
    @Test(dependsOnMethods = "testGetCertificatePolicy")
    public void testUpdateCertificate() {
-      Map<String, String> tags = new HashMap<String, String>();
+      Map<String, String> tags = new HashMap<>();
       tags.put("selfsigned", "true");
       CertificatePolicy policy = api().getCertificatePolicy(
               vaultUri,
@@ -860,7 +860,7 @@ public class VaultApiLiveTest extends BaseAzureComputeApiLiveTest {
               "Guy",
               "867-5309"
       );
-      List<AdministrationDetails> adminDetails = new ArrayList<AdministrationDetails>();
+      List<AdministrationDetails> adminDetails = new ArrayList<>();
       adminDetails.add(adminDetail);
       OrganizationDetails orgDetails = OrganizationDetails.create(
               adminDetails,
@@ -899,7 +899,7 @@ public class VaultApiLiveTest extends BaseAzureComputeApiLiveTest {
               "Guy",
               "867-5309"
       );
-      List<AdministrationDetails> adminDetails = new ArrayList<AdministrationDetails>();
+      List<AdministrationDetails> adminDetails = new ArrayList<>();
       adminDetails.add(adminDetail);
       OrganizationDetails orgDetails = OrganizationDetails.create(
               adminDetails,
@@ -927,7 +927,7 @@ public class VaultApiLiveTest extends BaseAzureComputeApiLiveTest {
 
    @Test(dependsOnMethods = "testDeleteCertificateIssuer")
    public void testSetCertificateContacts() {
-      List<Contact> contactsIn = new ArrayList<Contact>();
+      List<Contact> contactsIn = new ArrayList<>();
       contactsIn.add(Contact.create("foo@bar.com", "Foo bar", "867-5309"));
       Contacts contacts = api().setCertificateContacts(vaultUri, contactsIn);
       assertNotNull(contacts);

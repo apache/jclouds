@@ -101,7 +101,7 @@ public class PacketComputeServiceAdapter implements ComputeServiceAdapter<Device
       // Safe to pass null credentials here, as jclouds will default populate
       // the node with the default credentials from the image, or the ones in
       // the options, if provided.
-      return new NodeAndInitialCredentials<Device>(device, device.id(), null);
+      return new NodeAndInitialCredentials<>(device, device.id(), null);
    }
 
    @Override

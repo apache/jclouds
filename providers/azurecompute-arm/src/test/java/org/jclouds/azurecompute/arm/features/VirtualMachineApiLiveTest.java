@@ -332,7 +332,7 @@ public class VirtualMachineApiLiveTest extends BaseAzureComputeApiLiveTest {
             NetworkInterface.create("/subscriptions/" + subscriptionid +
                       "/resourceGroups/" + resourceGroupName + "/providers/Microsoft.Network/networkInterfaces/"
                       + nic, NetworkInterfaceProperties.create(true));
-      List<NetworkInterface> networkInterfaces = new ArrayList<NetworkInterface>();
+      List<NetworkInterface> networkInterfaces = new ArrayList<>();
       networkInterfaces.add(networkInterface);
       NetworkProfile networkProfile = NetworkProfile.create(networkInterfaces);
       VirtualMachineProperties properties = VirtualMachineProperties.create(null,

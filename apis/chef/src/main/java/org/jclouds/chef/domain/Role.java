@@ -51,7 +51,7 @@ public class Role {
       // envRunList is a nested set of collections. The Immutable* classes in google collections don't appear to
       // support this nested immutability, so the builder will utilize native collections as the envRunList is
       // assembled. An immutable, nested map of collections will be assembled in the build() method.
-      private Map<String, List<String>> envRunList = new HashMap<String, List<String>>();
+      private Map<String, List<String>> envRunList = new HashMap<>();
 
       public Builder name(String name) {
          this.name = checkNotNull(name, "name");
@@ -108,7 +108,7 @@ public class Role {
          checkNotNull(value, "value");
          List<String> runList = this.envRunList.get(name);
          if (runList == null) {
-            runList = new ArrayList<String>();
+            runList = new ArrayList<>();
             this.envRunList.put(name, runList);
          }
          runList.add(value);

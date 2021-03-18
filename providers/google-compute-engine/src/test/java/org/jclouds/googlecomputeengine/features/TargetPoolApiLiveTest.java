@@ -98,7 +98,7 @@ public class TargetPoolApiLiveTest extends BaseGoogleComputeEngineApiLiveTest {
             )));
 
       Instance instance = instanceApi.get(INSTANCE_NAME);
-      instances = new ArrayList<URI>();
+      instances = new ArrayList<>();
       instances.add(instance.selfLink());
 
       // Create a healthCheck
@@ -109,7 +109,7 @@ public class TargetPoolApiLiveTest extends BaseGoogleComputeEngineApiLiveTest {
          .buildWithDefaults();
       assertOperationDoneSuccessfully(httpHealthCheckApi.insert(HEALTHCHECK_NAME, options));
       HttpHealthCheck healthCheck = httpHealthCheckApi.get(HEALTHCHECK_NAME);
-      httpHealthChecks = new ArrayList<URI>();
+      httpHealthChecks = new ArrayList<>();
       httpHealthChecks.add(healthCheck.selfLink());
 
       // Create a forwarding rule
