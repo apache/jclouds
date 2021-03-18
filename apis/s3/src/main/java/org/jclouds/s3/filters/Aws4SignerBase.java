@@ -32,7 +32,6 @@ import java.security.InvalidKeyException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.SortedMap;
@@ -298,9 +297,7 @@ public abstract class Aws4SignerBase {
       if (params == null) {
          return "";
       }
-      Iterator<Map.Entry<String, String>> pairs = params.entries().iterator();
-      while (pairs.hasNext()) {
-         Map.Entry<String, String> pair = pairs.next();
+      for (Map.Entry<String, String> pair : params.entries()) {
          String key = pair.getKey();
          String value = pair.getValue();
          sorted.put(urlEncode(key), urlEncode(value));

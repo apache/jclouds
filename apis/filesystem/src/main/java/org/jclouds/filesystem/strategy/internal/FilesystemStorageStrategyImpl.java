@@ -836,9 +836,9 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
       String normalizedToken = removeFileSeparatorFromBorders(normalize(baseDirectory), true);
       StringBuilder completePath = new StringBuilder(normalizedToken);
       if (pathTokens != null && pathTokens.length > 0) {
-         for (int i = 0; i < pathTokens.length; i++) {
-            if (pathTokens[i] != null) {
-               normalizedToken = removeFileSeparatorFromBorders(normalize(pathTokens[i]), false);
+         for (String pathToken : pathTokens) {
+            if (pathToken != null) {
+               normalizedToken = removeFileSeparatorFromBorders(normalize(pathToken), false);
                completePath.append(File.separator).append(normalizedToken);
             }
          }

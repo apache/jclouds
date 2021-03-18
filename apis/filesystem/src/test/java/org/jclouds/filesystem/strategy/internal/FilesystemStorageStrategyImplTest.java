@@ -321,9 +321,8 @@ public class FilesystemStorageStrategyImplTest {
 
       List<String> containers = Lists.newArrayList();
       resultList = storageStrategy.getAllContainerNames();
-      Iterator<String> containersIterator = resultList.iterator();
-      while (containersIterator.hasNext()) {
-         containers.add(containersIterator.next());
+      for (String s : resultList) {
+         containers.add(s);
       }
       assertEquals(containers.size(), 3, "Different containers number");
       assertTrue(containers.contains(CONTAINER_NAME + "1"), "Containers doesn't exist");
@@ -613,9 +612,8 @@ public class FilesystemStorageStrategyImplTest {
 
       List<String> retrievedBlobKeys = Lists.newArrayList();
       resultList = storageStrategy.getBlobKeysInsideContainer(CONTAINER_NAME, null);
-      Iterator<String> containersIterator = resultList.iterator();
-      while (containersIterator.hasNext()) {
-         retrievedBlobKeys.add(containersIterator.next());
+      for (String s : resultList) {
+         retrievedBlobKeys.add(s);
       }
       int expectedBlobs = retrievedBlobKeys.size() - 2;  // ignore two directories
       assertEquals(expectedBlobs, createBlobKeys.size(), "Different blobs number");

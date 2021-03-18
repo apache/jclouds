@@ -66,8 +66,7 @@ public abstract class Metadata implements Cloneable {
    public Map<String, String> asMap() {
       Map<String, String> result = new LinkedHashMap<String, String>();
       ArrayList<KeyValuePair> items = items();
-      for (int i = 0, length = items.size(); i < length; i++) {
-         KeyValuePair item = items.get(i);
+      for (KeyValuePair item : items) {
          result.put(item.key(), item.value());
       }
       return result;
@@ -76,8 +75,7 @@ public abstract class Metadata implements Cloneable {
    /** Returns the value with the supplied key, or null. */
    @Nullable public String get(String key) {
       ArrayList<KeyValuePair> items = items();
-      for (int i = 0, length = items.size(); i < length; i++) {
-         KeyValuePair item = items.get(i);
+      for (KeyValuePair item : items) {
          if (item.key().equals(key)) {
             return item.value();
          }
