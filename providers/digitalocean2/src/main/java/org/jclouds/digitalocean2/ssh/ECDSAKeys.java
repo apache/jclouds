@@ -64,14 +64,14 @@ public class ECDSAKeys {
    private static final String NISTP384 = "nistp384";
    private static final String NISTP521 = "nistp521";
 
-   private static final Map<String, ECParameterSpec> CURVES = new TreeMap<String, ECParameterSpec>();
+   private static final Map<String, ECParameterSpec> CURVES = new TreeMap<>();
    static {
       CURVES.put(NISTP256, EllipticCurves.nistp256);
       CURVES.put(NISTP384, EllipticCurves.nistp384);
       CURVES.put(NISTP521, EllipticCurves.nistp521);
    }
 
-   private static final Map<Integer, String> CURVE_SIZES = new TreeMap<Integer, String>();
+   private static final Map<Integer, String> CURVE_SIZES = new TreeMap<>();
    static {
       CURVE_SIZES.put(256, NISTP256);
       CURVE_SIZES.put(384, NISTP384);

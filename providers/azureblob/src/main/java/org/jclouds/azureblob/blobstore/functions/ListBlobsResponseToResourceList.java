@@ -53,12 +53,12 @@ public class ListBlobsResponseToResourceList implements
 
    public PageSet<? extends StorageMetadata> apply(ListBlobsResponse from) {
       // use sorted set to order relative paths correctly
-      SortedSet<StorageMetadata> contents = Sets.<StorageMetadata> newTreeSet(Iterables.transform(from,
+      SortedSet<StorageMetadata> contents = Sets.newTreeSet(Iterables.transform(from,
                object2blobMd));
 
       for (String prefix : from.getBlobPrefixes()) {
          contents.add(prefix2ResourceMd.apply(prefix));
       }
-      return new PageSetImpl<StorageMetadata>(contents, from.getNextMarker());
+      return new PageSetImpl<>(contents, from.getNextMarker());
    }
 }

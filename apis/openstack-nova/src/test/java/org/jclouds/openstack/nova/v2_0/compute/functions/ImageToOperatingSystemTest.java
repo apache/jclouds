@@ -46,8 +46,7 @@ public class ImageToOperatingSystemTest {
 
       Image imageToConvert = Image.builder().id("id-" + family.name()).name(family.name()).build();
 
-      ImageToOperatingSystem converter = new ImageToOperatingSystem(
-            new HashMap<OsFamily, Map<String, String>>());
+      ImageToOperatingSystem converter = new ImageToOperatingSystem(new HashMap<>());
 
       OperatingSystem convertedOs = converter.apply(imageToConvert);
 
@@ -118,8 +117,7 @@ public class ImageToOperatingSystemTest {
 
       Image imageToConvert = Image.builder().id("id-" + name).name(name).build();
 
-      ImageToOperatingSystem converter = new ImageToOperatingSystem(
-            new HashMap<OsFamily, Map<String, String>>());
+      ImageToOperatingSystem converter = new ImageToOperatingSystem(new HashMap<>());
 
       OperatingSystem convertedOs = converter.apply(imageToConvert);
 
@@ -137,8 +135,7 @@ public class ImageToOperatingSystemTest {
 
       Image imageToConvert = Image.builder().id("id-" + name).name(name).build();
 
-      ImageToOperatingSystem converter = new ImageToOperatingSystem(
-            new HashMap<OsFamily, Map<String, String>>());
+      ImageToOperatingSystem converter = new ImageToOperatingSystem(new HashMap<>());
 
       OperatingSystem convertedOs = converter.apply(imageToConvert);
 

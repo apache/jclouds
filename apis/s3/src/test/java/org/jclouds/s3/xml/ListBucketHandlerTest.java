@@ -106,7 +106,7 @@ public class ListBucketHandlerTest extends BaseHandlerTest {
                         .lastModified(dateService.iso8601DateParse("2009-05-07T18:27:10.000Z")).eTag(
                                  "\"cd8a19b26fea8a827276df0ad11c580d\"").owner(owner).contentMD5(
                                  base16().lowerCase().decode("cd8a19b26fea8a827276df0ad11c580d")).contentLength(8L).build()),
-               "apps/", null, null, 1000, null, false, new TreeSet<String>());
+               "apps/", null, null, 1000, null, false, new TreeSet<>());
       return expected;
    }
 

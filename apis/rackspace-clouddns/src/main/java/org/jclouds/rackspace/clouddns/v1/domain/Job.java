@@ -76,7 +76,7 @@ public class Job<T> {
    }
    
    public static <T> Builder<T> builder() {
-      return new Builder<T>();
+      return new Builder<>();
    }
 
    public static class Builder<T> {
@@ -106,7 +106,7 @@ public class Job<T> {
       }
       
       public Job<T> build() {
-         return new Job<T>(id, status, error, resource);
+         return new Job<>(id, status, error, resource);
       }
    }
 

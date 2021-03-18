@@ -136,7 +136,7 @@ public class GleSYSComputeServiceAdapter implements ComputeServiceAdapter<Server
             createServerOptions);
       logger.trace("<< server(%s)", result.getId());
 
-      return new NodeAndInitialCredentials<ServerDetails>(result, result.getId() + "", LoginCredentials.builder()
+      return new NodeAndInitialCredentials<>(result, result.getId() + "", LoginCredentials.builder()
             .password(password).build());
    }
 

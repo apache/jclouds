@@ -64,7 +64,7 @@ public abstract class Metadata implements Cloneable {
 
    /** Copies the metadata into a new mutable map. */
    public Map<String, String> asMap() {
-      Map<String, String> result = new LinkedHashMap<String, String>();
+      Map<String, String> result = new LinkedHashMap<>();
       ArrayList<KeyValuePair> items = items();
       for (KeyValuePair item : items) {
          result.put(item.key(), item.value());
@@ -111,6 +111,6 @@ public abstract class Metadata implements Cloneable {
    }
 
    @Override public Metadata clone() {
-      return Metadata.create(fingerprint(), new ArrayList<KeyValuePair>(items()));
+      return Metadata.create(fingerprint(), new ArrayList<>(items()));
    }
 }

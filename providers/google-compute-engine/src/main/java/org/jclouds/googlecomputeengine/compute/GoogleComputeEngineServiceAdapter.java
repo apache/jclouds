@@ -215,7 +215,7 @@ public final class GoogleComputeEngineServiceAdapter
                           .password(password)
                           .build();
          }
-      return new NodeAndInitialCredentials<Instance>(instance.get(), instance.get().selfLink().toString(), credentials);
+      return new NodeAndInitialCredentials<>(instance.get(), instance.get().selfLink().toString(), credentials);
    }
 
    @Override public Iterable<MachineType> listHardwareProfiles() {

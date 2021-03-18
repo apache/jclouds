@@ -80,8 +80,8 @@ public class EC2CreateNodesInGroupThenAddToSetTest {
       ElasticIPAddressApi ipClient = createMock(ElasticIPAddressApi.class);
       RunInstancesOptions ec2Options = createMock(RunInstancesOptions.class);
       RunningInstance instance = createMock(RunningInstance.class);
-      Reservation<? extends RunningInstance> reservation = new Reservation<RunningInstance>(region,
-            ImmutableSet.<String> of(), ImmutableSet.<RunningInstance> of(instance), "ownerId", "requesterId",
+      Reservation<? extends RunningInstance> reservation = new Reservation<>(region,
+            ImmutableSet.of(), ImmutableSet.of(instance), "ownerId", "requesterId",
             "reservationId");
 
       // enable auto-allocation
@@ -191,8 +191,8 @@ public class EC2CreateNodesInGroupThenAddToSetTest {
       InstanceApi instanceClient = createMock(InstanceApi.class);
       RunInstancesOptions ec2Options = createMock(RunInstancesOptions.class);
       RunningInstance instance = createMock(RunningInstance.class);
-      Reservation<? extends RunningInstance> reservation = new Reservation<RunningInstance>(region,
-            ImmutableSet.<String> of(), ImmutableSet.<RunningInstance> of(instance), "ownerId", "requesterId",
+      Reservation<? extends RunningInstance> reservation = new Reservation<>(region,
+            ImmutableSet.of(), ImmutableSet.of(instance), "ownerId", "requesterId",
             "reservationId");
 
       // setup expectations

@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 @Test(groups = "unit", testName = "GetProvisioningStateResponseHandlerTest")
 public class GetProvisioningStateResponseHandlerTest extends BaseResponseHandlerTest<ProvisioningState> {
 
-   private final Map<ProvisioningState, String> sampleResponses = new LinkedHashMap<ProvisioningState, String>();
+   private final Map<ProvisioningState, String> sampleResponses = new LinkedHashMap<>();
 
    GetProvisioningStateResponseHandlerTest() {
       sampleResponses.put(ProvisioningState.INACTIVE,

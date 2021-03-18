@@ -129,7 +129,7 @@ public class NetworkApiLiveTest extends BaseSoftLayerApiLiveTest {
               .name("dal10.pod01")
               .build();
 
-      List<Object> parameters = new ArrayList<Object>();
+      List<Object> parameters = new ArrayList<>();
       parameters.add(createSubnet);
       parameters.add(createDatacenterName);
 
@@ -157,7 +157,7 @@ public class NetworkApiLiveTest extends BaseSoftLayerApiLiveTest {
               .build();
 
 
-      List<Subnet.DeleteSubnet> parameters = new ArrayList<Subnet.DeleteSubnet>();
+      List<Subnet.DeleteSubnet> parameters = new ArrayList<>();
       parameters.add(deleteSubnet);
 
       boolean deletion = networkApi.deleteSubnet(network.id(), parameters);

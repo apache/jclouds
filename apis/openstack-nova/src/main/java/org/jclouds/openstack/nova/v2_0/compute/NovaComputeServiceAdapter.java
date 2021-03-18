@@ -155,8 +155,7 @@ public class NovaComputeServiceAdapter implements
       if (lightweightServer.getAdminPass().isPresent()) {
          credentialsBuilder.password(lightweightServer.getAdminPass().get());
       }
-      return new NodeAndInitialCredentials<ServerInRegion>(serverInRegion, serverInRegion.slashEncode(), credentialsBuilder
-               .build());
+      return new NodeAndInitialCredentials<>(serverInRegion, serverInRegion.slashEncode(), credentialsBuilder.build());
    }
 
   @Override

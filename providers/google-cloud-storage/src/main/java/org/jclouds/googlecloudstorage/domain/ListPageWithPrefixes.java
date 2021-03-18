@@ -34,7 +34,7 @@ public final class ListPageWithPrefixes<T> extends ForwardingList<T> implements 
    private final List<String> prefixes;
 
    public static <T> ListPageWithPrefixes<T> create(List<T> items, String nextPageToken, List<String> prefixes) {
-      return new ListPageWithPrefixes<T>(items, nextPageToken, prefixes);
+      return new ListPageWithPrefixes<>(items, nextPageToken, prefixes);
    }
 
    @ConstructorProperties({ "items", "nextPageToken", "prefixes" })

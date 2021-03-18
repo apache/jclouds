@@ -46,13 +46,13 @@ public class ObjectListToStorageMetadata
          from = ListPageWithPrefixes.create(null, null, null);
       }
 
-      SortedSet<StorageMetadata> results = Sets.<StorageMetadata> newTreeSet(Iterables.transform(from, object2blobMd));
+      SortedSet<StorageMetadata> results = Sets.newTreeSet(Iterables.transform(from, object2blobMd));
       for (String prefix : from.prefixes()) {
           MutableStorageMetadata metadata = new MutableStorageMetadataImpl();
           metadata.setType(StorageType.RELATIVE_PATH);
           metadata.setName(prefix);
           results.add(metadata);
       }
-      return new PageSetImpl<StorageMetadata>(results, from.nextPageToken());
+      return new PageSetImpl<>(results, from.nextPageToken());
    }
 }

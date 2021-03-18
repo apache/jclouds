@@ -54,7 +54,7 @@ public class ExpandProperties implements Function<Properties, Properties> {
             });
 
       boolean pendingReplacements = true;
-      Map<String, String> propertiesToResolve = new HashMap<String, String>(stringProperties);
+      Map<String, String> propertiesToResolve = new HashMap<>(stringProperties);
 
       while (pendingReplacements) {
          Map<String, String> leafs = leafs(propertiesToResolve);
@@ -97,7 +97,7 @@ public class ExpandProperties implements Function<Properties, Properties> {
             String var = match.substring(2, match.length() - 1);
             // Avoid recursive properties. Only get he value if the variable
             // is different than the current key
-            Optional<String> value = var.equals(key) ? Optional.<String> absent() : Optional.fromNullable(variables
+            Optional<String> value = var.equals(key) ? Optional.absent() : Optional.fromNullable(variables
                   .get(var));
             // Replace by the value or leave the original value
             m.appendReplacement(sb, value.or("\\" + match));

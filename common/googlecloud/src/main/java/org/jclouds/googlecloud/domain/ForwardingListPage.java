@@ -36,7 +36,7 @@ public final class ForwardingListPage<T> extends ForwardingList<T> implements Li
    }
 
    public static <T> ListPage<T> create(List<T> items, String nextPageToken) {
-      return new ForwardingListPage<T>(items, nextPageToken);
+      return new ForwardingListPage<>(items, nextPageToken);
    }
 
    @Override @Nullable public String nextPageToken() {

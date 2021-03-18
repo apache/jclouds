@@ -314,7 +314,7 @@ public final class LocalBlobStore implements BlobStore {
          }
       }
 
-      return new PageSetImpl<StorageMetadata>(contents, marker);
+      return new PageSetImpl<>(contents, marker);
    }
 
    private SortedSet<StorageMetadata> filterDirectory(SortedSet<StorageMetadata> contents, ListContainerOptions
@@ -433,10 +433,10 @@ public final class LocalBlobStore implements BlobStore {
 
    @Override
    public PageSet<? extends StorageMetadata> list() {
-      ArrayList<String> containers = new ArrayList<String>(storageStrategy.getAllContainerNames());
+      ArrayList<String> containers = new ArrayList<>(storageStrategy.getAllContainerNames());
       Collections.sort(containers);
 
-      return new PageSetImpl<StorageMetadata>(FluentIterable
+      return new PageSetImpl<>(FluentIterable
             .from(containers)
             .transform(new Function<String, StorageMetadata>() {
                @Override

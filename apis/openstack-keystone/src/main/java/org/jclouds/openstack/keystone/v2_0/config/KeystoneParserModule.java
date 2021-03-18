@@ -62,7 +62,7 @@ public class KeystoneParserModule extends AbstractModule {
          private final SetTypeAdapter<E> delegate;
 
          public Adapter(TypeAdapter<E> elementAdapter) {
-            this.delegate = new SetTypeAdapter<E>(elementAdapter);
+            this.delegate = new SetTypeAdapter<>(elementAdapter);
             nullSafe();
          }
 

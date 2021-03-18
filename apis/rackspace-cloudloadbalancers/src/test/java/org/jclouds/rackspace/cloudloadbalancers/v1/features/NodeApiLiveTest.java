@@ -57,7 +57,7 @@ public class NodeApiLiveTest extends BaseCloudLoadBalancersApiLiveTest {
          LoadBalancer lb = api.getLoadBalancerApi(region).create(
                   CreateLoadBalancer.builder().name(prefix + "-" + region).protocol("HTTP").port(80).virtualIPType(
                            Type.PUBLIC).node(AddNode.builder().address("192.168.1.1").port(8080).build()).build());
-         nodes.put(lb, new HashSet<Node>());
+         nodes.put(lb, new HashSet<>());
 
          assertTrue(awaitAvailable(api.getLoadBalancerApi(lb.getRegion())).apply(lb));
       }
@@ -71,7 +71,7 @@ public class NodeApiLiveTest extends BaseCloudLoadBalancersApiLiveTest {
          String region = lb.getRegion();
          Logger.getAnonymousLogger().info("starting node on loadbalancer " + lb.getId() + " in region " + region);
          Set<Node> newNodes = api.getNodeApi(region, lb.getId()).add(
-                  ImmutableSet.<AddNode> of(AddNode.builder().address("192.168.1.2").port(8080).build()));
+                  ImmutableSet.of(AddNode.builder().address("192.168.1.2").port(8080).build()));
 
          for (Node n : newNodes) {
             assertEquals(n.getStatus(), Node.Status.ONLINE);
@@ -139,7 +139,7 @@ public class NodeApiLiveTest extends BaseCloudLoadBalancersApiLiveTest {
       for (Entry<LoadBalancer, Set<Node>> entry : nodes.entrySet()) {
          LoadBalancer lb = entry.getKey();
          Node node = entry.getValue().iterator().next();
-         Map<String, String> metadataMap = ImmutableMap.<String, String> of(
+         Map<String, String> metadataMap = ImmutableMap.of(
                "key1", "value1",
                "key2", "value2",
                "key3", "value3");
@@ -162,7 +162,7 @@ public class NodeApiLiveTest extends BaseCloudLoadBalancersApiLiveTest {
          assertNull(metadata.get("key1"));
 
          assertTrue(api.getNodeApi(lb.getRegion(), lb.getId()).deleteMetadata(node.getId(),
-               ImmutableList.<Integer> of(metadata.getId("key2"), metadata.getId("key3"))));
+               ImmutableList.of(metadata.getId("key2"), metadata.getId("key3"))));
          assertTrue(awaitAvailable(api.getLoadBalancerApi(lb.getRegion())).apply(lb));
          metadata = api.getNodeApi(lb.getRegion(), lb.getId()).getMetadata(node.getId());
          assertEquals(metadata.size(), 0);

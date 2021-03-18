@@ -27,8 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class DynamicExecutors {
 
    /**
-    * Creates a thread pool, same as in {@link #newScalingThreadPool(int, int, long)}, using the provided ThreadFactory
-    * to create new threads when needed.
+    * Creates a thread pool, using the provided ThreadFactory to create new threads when needed.
     * 
     * @param min
     *           the number of threads to keep in the pool, even if they are idle.
@@ -42,7 +41,7 @@ public class DynamicExecutors {
     * @return the newly created thread pool
     */
    public static ExecutorService newScalingThreadPool(int min, int max, long keepAliveTime, ThreadFactory threadFactory) {
-      DynamicThreadPoolExecutor.DynamicQueue<Runnable> queue = new DynamicThreadPoolExecutor.DynamicQueue<Runnable>();
+      DynamicThreadPoolExecutor.DynamicQueue<Runnable> queue = new DynamicThreadPoolExecutor.DynamicQueue<>();
       ThreadPoolExecutor executor = new DynamicThreadPoolExecutor(min, max, keepAliveTime,
                TimeUnit.MILLISECONDS, queue, threadFactory);
       executor.setRejectedExecutionHandler(new DynamicThreadPoolExecutor.ForceQueuePolicy());

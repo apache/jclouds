@@ -39,7 +39,6 @@ import org.jclouds.compute.domain.HardwareBuilder;
 import org.jclouds.compute.domain.Image;
 import org.jclouds.compute.domain.Processor;
 import org.jclouds.compute.domain.Template;
-import org.jclouds.compute.domain.Volume;
 import org.jclouds.compute.domain.internal.VolumeImpl;
 import org.jclouds.compute.reference.ComputeServiceConstants;
 import org.jclouds.domain.Location;
@@ -143,7 +142,7 @@ public class ElasticStackComputeServiceAdapter implements
 
       client.startServer(from.getUuid());
       from = client.getServerInfo(from.getUuid());
-      return new NodeAndInitialCredentials<ServerInfo>(from, from.getUuid(), LoginCredentials.builder()
+      return new NodeAndInitialCredentials<>(from, from.getUuid(), LoginCredentials.builder()
             .password(defaultVncPassword).build());
    }
 
@@ -168,7 +167,7 @@ public class ElasticStackComputeServiceAdapter implements
                }
 
             }).ids(id).ram(ram).processors(ImmutableList.of(new Processor(1, cpu))).hypervisor("kvm")
-                  .volumes(ImmutableList.<Volume> of(new VolumeImpl(size, true, true))).build());
+                  .volumes(ImmutableList.of(new VolumeImpl(size, true, true))).build());
          }
       return hardware.build();
    }
@@ -204,7 +203,7 @@ public class ElasticStackComputeServiceAdapter implements
 
    @Override
    public Iterable<ServerInfo> listNodes() {
-      return (Iterable<ServerInfo>) client.listServerInfo();
+      return client.listServerInfo();
    }
 
    @Override
@@ -221,7 +220,7 @@ public class ElasticStackComputeServiceAdapter implements
    @Override
    public Iterable<Location> listLocations() {
       // Not using the adapter to determine locations
-      return ImmutableSet.<Location>of();
+      return ImmutableSet.of();
    }
 
    @Override

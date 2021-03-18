@@ -184,7 +184,7 @@ public class NetworkApiMockTest extends BaseSoftLayerMockTest {
               .name("dal10.pod01")
               .build();
 
-      List<Object> parameters = new ArrayList<Object>();
+      List<Object> parameters = new ArrayList<>();
       parameters.add(createSubnet);
       parameters.add(createDatacenterName);
 
@@ -212,7 +212,7 @@ public class NetworkApiMockTest extends BaseSoftLayerMockTest {
               .name("dal10.pod01")
               .build();
 
-      List<Object> parameters = new ArrayList<Object>();
+      List<Object> parameters = new ArrayList<>();
       parameters.add(createSubnet);
       parameters.add(createDatacenterName);
 
@@ -265,7 +265,7 @@ public class NetworkApiMockTest extends BaseSoftLayerMockTest {
               .id(1592631)
               .build();
 
-      List<Subnet.DeleteSubnet> parameters = new ArrayList<Subnet.DeleteSubnet>();
+      List<Subnet.DeleteSubnet> parameters = new ArrayList<>();
       parameters.add(deleteSubnet);
       boolean deletion = api.deleteSubnet(153001, parameters);
 
@@ -287,7 +287,7 @@ public class NetworkApiMockTest extends BaseSoftLayerMockTest {
               .id(1592631)
               .build();
 
-      List<Subnet.DeleteSubnet> parameters = new ArrayList<Subnet.DeleteSubnet>();
+      List<Subnet.DeleteSubnet> parameters = new ArrayList<>();
       parameters.add(deleteSubnet);
       boolean deletion = api.deleteSubnet(153001, parameters);
 

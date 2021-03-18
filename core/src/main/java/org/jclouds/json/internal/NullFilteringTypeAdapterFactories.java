@@ -174,7 +174,7 @@ public class NullFilteringTypeAdapterFactories {
       private final IterableTypeAdapter<E> delegate;
 
       public SetTypeAdapter(TypeAdapter<E> elementAdapter) {
-         this.delegate = new IterableTypeAdapter<E>(elementAdapter);
+         this.delegate = new IterableTypeAdapter<>(elementAdapter);
          nullSafe();
       }
 
@@ -183,7 +183,7 @@ public class NullFilteringTypeAdapterFactories {
       }
 
       public Set<E> read(JsonReader in) throws IOException {
-         return delegate.readAndBuild(in, ImmutableSet.<E> builder());
+         return delegate.readAndBuild(in, ImmutableSet.builder());
       }
 
       @Override
@@ -233,7 +233,7 @@ public class NullFilteringTypeAdapterFactories {
       private final IterableTypeAdapter<E> delegate;
 
       public FluentIterableTypeAdapter(TypeAdapter<E> elementAdapter) {
-         this.delegate = new IterableTypeAdapter<E>(elementAdapter);
+         this.delegate = new IterableTypeAdapter<>(elementAdapter);
          nullSafe();
       }
 

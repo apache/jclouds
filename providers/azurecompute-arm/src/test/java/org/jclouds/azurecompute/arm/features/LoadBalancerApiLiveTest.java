@@ -293,7 +293,7 @@ public class LoadBalancerApiLiveTest extends BaseComputeServiceContextLiveTest {
       nicNames = createVirtualMachinesInGroupAndGetNicRefs(group, 2);
 
       // Add the first IP of each node to the pool
-      List<NetworkInterfaceCard> attachedNics = new ArrayList<NetworkInterfaceCard>();
+      List<NetworkInterfaceCard> attachedNics = new ArrayList<>();
       BackendAddressPool targetPool = lb.properties().backendAddressPools().get(0);
       for (String nicName : nicNames) {
          attachedNics.add(attachNicToBackendPool(nicName, targetPool));
@@ -398,7 +398,7 @@ public class LoadBalancerApiLiveTest extends BaseComputeServiceContextLiveTest {
       Set<? extends NodeMetadata> nodes = view.getComputeService().createNodesInGroup(group, count,
             availabilitySet(as).resourceGroup(this.group));
 
-      List<String> nicNames = new ArrayList<String>();
+      List<String> nicNames = new ArrayList<>();
       for (NodeMetadata node : nodes) {
          ResourceGroupAndName resourceGroupAndName = ResourceGroupAndName.fromSlashEncoded(node.getId());
          VirtualMachine vm = api.getVirtualMachineApi(resourceGroupAndName.resourceGroup()).get(

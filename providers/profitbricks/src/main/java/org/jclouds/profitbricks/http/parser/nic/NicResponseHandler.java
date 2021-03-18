@@ -46,7 +46,7 @@ public class NicResponseHandler extends BaseNicResponseHandler<Nic> {
             done = true;
             builder.ips(ips)
                     .firewall(firewallResponseHandler.getResult());
-            ips = new ArrayList<String>();
+            ips = new ArrayList<>();
             firewallResponseHandler.reset();
          }
          clearTextBuffer();

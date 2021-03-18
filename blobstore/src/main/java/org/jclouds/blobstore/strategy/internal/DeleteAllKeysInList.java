@@ -406,8 +406,7 @@ public class DeleteAllKeysInList implements ClearListStrategy, ClearContainerStr
        * to it. This is important because this code can generate an unbounded
        * number of futures.
        */
-      final Set<ListenableFuture<Void>> outstandingFutures = Collections
-            .synchronizedSet(new HashSet<ListenableFuture<Void>>());
+      final Set<ListenableFuture<Void>> outstandingFutures = Collections.synchronizedSet(new HashSet<>());
       // TODO: Remove this retry loop.
       while (retries > 0) {
          deleteFailure.set(false);

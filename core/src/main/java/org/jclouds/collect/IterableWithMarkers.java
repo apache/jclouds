@@ -58,7 +58,7 @@ public class IterableWithMarkers {
 
          @Override
          protected IterableWithMarker<T> delegate() {
-            return new ForwardedIterableWithMarker<T>(elements, marker);
+            return new ForwardedIterableWithMarker<>(elements, marker);
          }
 
       };

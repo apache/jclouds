@@ -50,7 +50,7 @@ public class NicListResponseHandler extends BaseNicResponseHandler<List<Nic>> {
                     .firewall(firewallResponseHandler.getResult())
                     .build());
             builder = Nic.builder();
-            ips = new ArrayList<String>();
+            ips = new ArrayList<>();
             firewallResponseHandler.reset();
          }
          clearTextBuffer();
@@ -62,7 +62,7 @@ public class NicListResponseHandler extends BaseNicResponseHandler<List<Nic>> {
 
    @Override
    public void reset() {
-      this.ips = new ArrayList<String>();
+      this.ips = new ArrayList<>();
       this.nics = Lists.newArrayList();
    }
 

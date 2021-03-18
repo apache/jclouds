@@ -116,8 +116,8 @@ public class MemoizedRetryOnTimeOutButNotOnAuthorizationExceptionSupplier<T> ext
 
    public static <T> MemoizedRetryOnTimeOutButNotOnAuthorizationExceptionSupplier<T> create(
          AtomicReference<AuthorizationException> authException, Supplier<T> delegate, long duration, TimeUnit unit) {
-      return new MemoizedRetryOnTimeOutButNotOnAuthorizationExceptionSupplier<T>(authException, delegate, duration,
-            unit, new ValueLoadedCallback.NoOpCallback<T>());
+      return new MemoizedRetryOnTimeOutButNotOnAuthorizationExceptionSupplier<>(authException, delegate, duration,
+            unit, new ValueLoadedCallback.NoOpCallback<>());
    }
    
    /**
@@ -126,7 +126,7 @@ public class MemoizedRetryOnTimeOutButNotOnAuthorizationExceptionSupplier<T> ext
    public static <T> MemoizedRetryOnTimeOutButNotOnAuthorizationExceptionSupplier<T> create(
          AtomicReference<AuthorizationException> authException, Supplier<T> delegate, long duration, TimeUnit unit,
          ValueLoadedCallback<T> valueLoadedCallback) {
-      return new MemoizedRetryOnTimeOutButNotOnAuthorizationExceptionSupplier<T>(authException, delegate, duration,
+      return new MemoizedRetryOnTimeOutButNotOnAuthorizationExceptionSupplier<>(authException, delegate, duration,
             unit, valueLoadedCallback);
    }
    
@@ -136,7 +136,7 @@ public class MemoizedRetryOnTimeOutButNotOnAuthorizationExceptionSupplier<T> ext
       this.duration = duration;
       this.unit = unit;
       this.cache = CacheBuilder.newBuilder().expireAfterWrite(duration, unit)
-            .build(new SetAndThrowAuthorizationExceptionSupplierBackedLoader<T>(delegate, authException, valueLoadedCallback));
+            .build(new SetAndThrowAuthorizationExceptionSupplierBackedLoader<>(delegate, authException, valueLoadedCallback));
    }
 
    @Override

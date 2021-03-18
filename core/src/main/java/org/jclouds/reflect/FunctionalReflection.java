@@ -78,12 +78,12 @@ public final class FunctionalReflection {
    public static <T> T newProxy(TypeToken<T> enclosingType, Function<Invocation, Object> invocationFunction) {
       checkNotNull(enclosingType, "enclosingType");
       checkNotNull(invocationFunction, "invocationFunction");
-      return newProxy(enclosingType.getRawType(), new FunctionalInvocationHandler<T>(enclosingType, invocationFunction));
+      return newProxy(enclosingType.getRawType(), new FunctionalInvocationHandler<>(enclosingType, invocationFunction));
    }
 
    public static <T> T newProxy(Class<T> enclosingType, Function<Invocation, Object> invocationFunction) {
       checkNotNull(invocationFunction, "invocationFunction");
-      return newProxy(enclosingType, new FunctionalInvocationHandler<T>(typeToken(enclosingType), invocationFunction));
+      return newProxy(enclosingType, new FunctionalInvocationHandler<>(typeToken(enclosingType), invocationFunction));
    }
 
    @SuppressWarnings("unchecked")

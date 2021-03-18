@@ -116,7 +116,7 @@ public class EC2ComputeServiceContextModule extends BaseComputeServiceContextMod
                   }
                }
             };
-            return new SetAndThrowAuthorizationExceptionSupplier<Image>(rawSupplier, authException).get();
+            return new SetAndThrowAuthorizationExceptionSupplier<>(rawSupplier, authException).get();
          }
 
       });

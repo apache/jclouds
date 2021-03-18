@@ -43,7 +43,7 @@ public class DynamicThreadPoolExecutorTest {
       DynamicThreadPoolExecutor executor = newExecutor(new DynamicThreadPoolExecutor.ForceQueuePolicy());
       try {
          List<Task> tasks = ImmutableList.of(new Task(2), new Task(2), new Task(2), new Task(2));
-         List<Future<?>> futures = new ArrayList<Future<?>>();
+         List<Future<?>> futures = new ArrayList<>();
          for (Task task : tasks) {
             futures.add(executor.submit(task));
          }
@@ -73,7 +73,7 @@ public class DynamicThreadPoolExecutorTest {
       DynamicThreadPoolExecutor executor = newExecutor(new DynamicThreadPoolExecutor.TimedBlockingPolicy(5000));
       try {
          List<Task> tasks = ImmutableList.of(new Task(2), new Task(2), new Task(2), new Task(2));
-         List<Future<?>> futures = new ArrayList<Future<?>>();
+         List<Future<?>> futures = new ArrayList<>();
          for (Task task : tasks) {
             futures.add(executor.submit(task));
          }
@@ -128,7 +128,7 @@ public class DynamicThreadPoolExecutorTest {
    }
 
    public DynamicThreadPoolExecutor newExecutor(RejectedExecutionHandler rejectionPolicy) {
-      DynamicThreadPoolExecutor.DynamicQueue<Runnable> queue = new DynamicThreadPoolExecutor.DynamicQueue<Runnable>();
+      DynamicThreadPoolExecutor.DynamicQueue<Runnable> queue = new DynamicThreadPoolExecutor.DynamicQueue<>();
       DynamicThreadPoolExecutor executor = new DynamicThreadPoolExecutor(1, 1, 60000, TimeUnit.MILLISECONDS, queue,
             namedThreadFactory("dyn-pool-test"));
       executor.setRejectedExecutionHandler(rejectionPolicy);

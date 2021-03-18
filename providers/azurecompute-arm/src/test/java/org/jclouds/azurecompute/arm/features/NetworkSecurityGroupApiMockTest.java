@@ -57,7 +57,7 @@ public class NetworkSecurityGroupApiMockTest extends BaseAzureComputeApiMockTest
                       .direction(NetworkSecurityRuleProperties.Direction.Outbound)
                       .provisioningState("Succeeded")
                       .build());
-      ArrayList<NetworkSecurityRule> ruleList = new ArrayList<NetworkSecurityRule>();
+      ArrayList<NetworkSecurityRule> ruleList = new ArrayList<>();
       ruleList.add(rule);
       NetworkSecurityGroup nsg = NetworkSecurityGroup.create("id", "samplensg", "westus", null,
               NetworkSecurityGroupProperties.builder()

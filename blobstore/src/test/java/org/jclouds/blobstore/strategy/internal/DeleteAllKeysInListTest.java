@@ -180,8 +180,7 @@ public class DeleteAllKeysInListTest {
             blobstore, retryHandler, maxParallelDeletes).createMock();
       final AtomicBoolean deleteFailure = new AtomicBoolean();
       final Semaphore semaphore = createMock(Semaphore.class);
-      final Set<ListenableFuture<Void>> outstandingFutures = Collections
-            .synchronizedSet(new HashSet<ListenableFuture<Void>>());
+      final Set<ListenableFuture<Void>> outstandingFutures = Collections.synchronizedSet(new HashSet<>());
       final ListenableFuture<Void> blobDelFuture = createMock(ListenableFuture.class);
       try {
 

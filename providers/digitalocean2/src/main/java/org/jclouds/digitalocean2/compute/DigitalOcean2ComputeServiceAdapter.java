@@ -124,7 +124,7 @@ public class DigitalOcean2ComputeServiceAdapter implements ComputeServiceAdapter
       LoginCredentials defaultCredentials = LoginCredentials.builder().user("root")
             .privateKey(templateOptions.getLoginPrivateKey()).build();
 
-      return new NodeAndInitialCredentials<Droplet>(droplet, String.valueOf(droplet.id()), defaultCredentials);
+      return new NodeAndInitialCredentials<>(droplet, String.valueOf(droplet.id()), defaultCredentials);
    }
 
    @Override
