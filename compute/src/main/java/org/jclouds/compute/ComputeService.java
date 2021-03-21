@@ -18,6 +18,7 @@ package org.jclouds.compute;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import org.jclouds.compute.domain.ComputeMetadata;
 import org.jclouds.compute.domain.ExecResponse;
@@ -37,7 +38,6 @@ import org.jclouds.scriptbuilder.domain.Statement;
 import com.google.common.annotations.Beta;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.ImplementedBy;
 
 /**
@@ -357,10 +357,10 @@ public interface ComputeService {
     * @see org.jclouds.scriptbuilder.domain.Statements
     */
    @Beta
-   ListenableFuture<ExecResponse> submitScriptOnNode(String id, String runScript, RunScriptOptions options);
+   CompletableFuture<ExecResponse> submitScriptOnNode(String id, String runScript, RunScriptOptions options);
 
    @Beta
-   ListenableFuture<ExecResponse> submitScriptOnNode(String id, Statement runScript, RunScriptOptions options);
+   CompletableFuture<ExecResponse> submitScriptOnNode(String id, Statement runScript, RunScriptOptions options);
    
    /**
     * @see #runScriptOnNode(String, Statement, RunScriptOptions)

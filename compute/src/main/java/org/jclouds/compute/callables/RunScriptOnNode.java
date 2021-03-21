@@ -17,6 +17,7 @@
 package org.jclouds.compute.callables;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 
 import org.jclouds.compute.domain.ExecResponse;
 import org.jclouds.compute.domain.NodeMetadata;
@@ -24,7 +25,6 @@ import org.jclouds.compute.options.RunScriptOptions;
 import org.jclouds.scriptbuilder.domain.Statement;
 
 import com.google.common.annotations.Beta;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.ImplementedBy;
 
 /**
@@ -38,7 +38,7 @@ public interface RunScriptOnNode extends Callable<ExecResponse> {
 
       RunScriptOnNode create(NodeMetadata node, Statement script, RunScriptOptions options);
 
-      ListenableFuture<ExecResponse> submit(NodeMetadata node, Statement script, RunScriptOptions options);
+      CompletableFuture<ExecResponse> submit(NodeMetadata node, Statement script, RunScriptOptions options);
    }
 
    /**

@@ -25,6 +25,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.jclouds.ContextBuilder;
@@ -58,7 +59,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.ListenableFuture;
 
 @Test(groups = "live", singleThreaded = true, testName = "AWSEC2ComputeServiceLiveTest")
 public class AWSEC2ComputeServiceLiveTest extends EC2ComputeServiceLiveTest {
@@ -142,7 +142,7 @@ public class AWSEC2ComputeServiceLiveTest extends EC2ComputeServiceLiveTest {
          assertEquals(instance.getMonitoringState(), MonitoringState.ENABLED);
 
          // generate some load
-         ListenableFuture<ExecResponse> future = client.submitScriptOnNode(first.getId(), Statements
+         CompletableFuture<ExecResponse> future = client.submitScriptOnNode(first.getId(), Statements
                   .exec("while true; do true; done"), runAsRoot(false).nameTask("cpuSpinner"));
 
          // monitoring granularity for free tier is 5 minutes, so lets make sure we have data.

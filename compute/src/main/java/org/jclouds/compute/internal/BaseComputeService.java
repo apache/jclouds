@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -637,7 +638,7 @@ public class BaseComputeService implements ComputeService {
     * {@inheritDoc}
     */
    @Override
-   public ListenableFuture<ExecResponse> submitScriptOnNode(String id, String runScript, RunScriptOptions options) {
+   public CompletableFuture<ExecResponse> submitScriptOnNode(String id, String runScript, RunScriptOptions options) {
       return submitScriptOnNode(id, Statements.literal(checkNotNull(runScript, "runScript")), options);
    }
 
@@ -645,7 +646,7 @@ public class BaseComputeService implements ComputeService {
     * {@inheritDoc}
     */
    @Override
-   public ListenableFuture<ExecResponse> submitScriptOnNode(String id, final Statement runScript,
+   public CompletableFuture<ExecResponse> submitScriptOnNode(String id, final Statement runScript,
          RunScriptOptions options) {
       NodeMetadata node = this.getNodeMetadata(id);
       if (node == null)
@@ -655,13 +656,10 @@ public class BaseComputeService implements ComputeService {
                + " needs to be running before executing a script on it. current state: " + formatStatus(node));
       initAdminAccess.visit(runScript);
       final NodeMetadata node1 = updateNodeWithCredentialsIfPresent(node, options);
-      ListenableFuture<ExecResponse> response = runScriptOnNodeFactory.submit(node1, runScript, options);
-      response.addListener(new Runnable() {
-         public void run() {
-            persistNodeCredentials.ifAdminAccess(runScript).apply(node1);
-         }
+      CompletableFuture<ExecResponse> response = runScriptOnNodeFactory.submit(node1, runScript, options);
+      return response.whenCompleteAsync((v, t) -> {
+         persistNodeCredentials.ifAdminAccess(runScript).apply(node1);
       }, userExecutor);
-      return response;
    }
 
    private Iterable<RunScriptOnNode> transformNodesIntoInitializedScriptRunners(
