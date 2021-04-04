@@ -39,6 +39,7 @@ public class ListAllMyBucketsHandler extends ParseSax.HandlerWithResult<Set<Buck
 
    private Set<BucketMetadata> buckets = Sets.newLinkedHashSet();
    private CanonicalUser currentOwner;
+   private String currentDisplayName;
    private StringBuilder currentText = new StringBuilder();
 
    private final DateService dateParser;
@@ -48,6 +49,7 @@ public class ListAllMyBucketsHandler extends ParseSax.HandlerWithResult<Set<Buck
    @Inject
    public ListAllMyBucketsHandler(DateService dateParser) {
       this.dateParser = dateParser;
+      this.currentOwner =  new CanonicalUser();
    }
 
    public Set<BucketMetadata> getResult() {
@@ -56,7 +58,7 @@ public class ListAllMyBucketsHandler extends ParseSax.HandlerWithResult<Set<Buck
 
    public void endElement(String uri, String name, String qName) {
       if (qName.equals("ID")) { // owner stuff
-         currentOwner = new CanonicalUser(currentOrNull(currentText));
+         currentOwner.setId(currentOrNull(currentText));
       } else if (qName.equals("DisplayName")) {
          currentOwner.setDisplayName(currentOrNull(currentText));
       } else if (qName.equals("Bucket")) {

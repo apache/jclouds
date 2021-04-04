@@ -23,8 +23,10 @@ package org.jclouds.s3.domain;
  * <p/>
  */
 public class CanonicalUser {
-   private final String id;
+   private String id;
    private String displayName;
+
+   public CanonicalUser() {}
 
    public CanonicalUser(String id) {
       this.id = id;
@@ -43,6 +45,8 @@ public class CanonicalUser {
    public String getId() {
       return id;
    }
+
+   public void setId(String id) { this.id = id; }
 
    /**
     * read-only as is maintained by Amazon.
