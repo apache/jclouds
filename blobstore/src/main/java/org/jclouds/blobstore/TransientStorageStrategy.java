@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.io.BaseEncoding.base16;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -55,6 +56,7 @@ import com.google.common.collect.Multimaps;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
+import com.google.common.io.ByteSource;
 import com.google.common.io.ByteStreams;
 import com.google.common.net.HttpHeaders;
 
@@ -243,7 +245,7 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
       checkNotNull(in, "blob");
       checkNotNull(input, "input");
       checkNotNull(contentMd5, "contentMd5");
-      Payload payload = Payloads.newByteArrayPayload(input);
+      Payload payload = createPayload(input);
       MutableContentMetadata oldMd = in.getPayload().getContentMetadata();
       HttpUtils.copy(oldMd, payload.getContentMetadata());
       payload.getContentMetadata().setContentMD5(contentMd5);
@@ -262,6 +264,52 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
       copyPayloadHeadersToBlob(payload, blob);
       blob.getAllHeaders().putAll(Multimaps.forMap(blob.getMetadata().getUserMetadata()));
       return blob;
+   }
+
+   private static final class RepeatingByteSource extends ByteSource {
+      private final byte ch;
+
+      RepeatingByteSource(byte ch) {
+         this.ch = ch;
+      }
+
+      @Override
+      public InputStream openStream() {
+         return new RepeatingInputStream(ch);
+      }
+   }
+
+   /** @return Payload of input, possibly optimized for sparse regions (ASCII NULs) */
+   private static Payload createPayload(byte[] input) {
+      for (int i = 0; i < input.length; ++i) {
+         if (input[i] != (byte) 0) {
+            return Payloads.newByteArrayPayload(input);
+         }
+      }
+
+      // all bytes are NUL
+      return Payloads.newByteSourcePayload(new RepeatingByteSource((byte) 0).slice(0, input.length));
+   }
+
+   private static final class RepeatingInputStream extends InputStream {
+      private final byte ch;
+
+      RepeatingInputStream(byte ch) {
+         this.ch = ch;
+      }
+
+      @Override
+      public int read() throws IOException {
+         return ch;
+      }
+
+      @Override
+      public int read(byte[] b, int off, int len) {
+         for (int i = 0; i < len; ++i) {
+            b[off + i] = ch;
+         }
+         return len;
+      }
    }
 
    private void copyPayloadHeadersToBlob(Payload payload, Blob blob) {
