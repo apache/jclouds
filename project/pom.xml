@@ -252,7 +252,6 @@
     <easymock.version>3.4</easymock.version>
 
     <!-- Static analysis dependency versions -->
-    <error_prone.version>2.1.0</error_prone.version>
     <jsr305.version>1.3.9</jsr305.version>
 
     <http.proxyHost />
@@ -404,11 +403,6 @@
 
       <!-- Static analysis dependencies -->
       <dependency>
-        <groupId>com.google.errorprone</groupId>
-        <artifactId>error_prone_annotations</artifactId>
-        <version>${error_prone.version}</version>
-      </dependency>
-      <dependency>
         <groupId>com.google.code.findbugs</groupId>
         <artifactId>jsr305</artifactId>
         <version>${jsr305.version}</version>
@@ -441,11 +435,6 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-guava</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.errorprone</groupId>
-      <artifactId>error_prone_annotations</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -662,8 +651,6 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
           <configuration>
-            <compilerId>javac-with-errorprone</compilerId>
-            <forceJavacCompilerUse>true</forceJavacCompilerUse>
             <encoding>${project.build.sourceEncoding}</encoding>
             <source>${maven.compile.source}</source>
             <target>${maven.compile.target}</target>
@@ -676,136 +663,8 @@
               <compilerArg>-Xlint:-rawtypes</compilerArg>
               <compilerArg>-Xlint:-serial</compilerArg>
               <compilerArg>-Xlint:-unchecked</compilerArg>
-
-              <!-- on by default: warning -->
-              <compilerArg>-Xep:CannotMockFinalClass:ERROR</compilerArg>
-              <compilerArg>-Xep:ElementsCountedInLoop:ERROR</compilerArg>
-              <compilerArg>-Xep:EqualsHashCode:ERROR</compilerArg>
-              <compilerArg>-Xep:Finally:ERROR</compilerArg>
-              <compilerArg>-Xep:IncompatibleModifiers:ERROR</compilerArg>
-              <compilerArg>-Xep:JUnitAmbiguousTestClass:ERROR</compilerArg>
-              <compilerArg>-Xep:NonAtomicVolatileUpdate:OFF</compilerArg>  <!-- noisy -->
-              <compilerArg>-Xep:NonCanonicalStaticMemberImport:ERROR</compilerArg>
-              <compilerArg>-Xep:NonOverridingEquals:ERROR</compilerArg>
-              <compilerArg>-Xep:PreconditionsInvalidPlaceholder:ERROR</compilerArg>
-              <compilerArg>-Xep:ProtoFieldPreconditionsCheckNotNull:ERROR</compilerArg>
-              <compilerArg>-Xep:RequiredModifiers:ERROR</compilerArg>
-              <compilerArg>-Xep:StaticAccessedFromInstance:ERROR</compilerArg>
-              <compilerArg>-Xep:StringEquality:ERROR</compilerArg>
-              <compilerArg>-Xep:SynchronizeOnNonFinalField:ERROR</compilerArg>
-              <compilerArg>-Xep:TypeParameterUnusedInFormals:OFF</compilerArg>  <!-- noisy -->
-              <compilerArg>-Xep:UnnecessaryStaticImport:ERROR</compilerArg>
-              <compilerArg>-Xep:WaitNotInLoop:ERROR</compilerArg>
-
-              <!-- on by default: error -->
-              <compilerArg>-Xep:ArrayEquals:ERROR</compilerArg>
-              <compilerArg>-Xep:ArrayHashCode:ERROR</compilerArg>
-              <compilerArg>-Xep:ArrayToString:ERROR</compilerArg>
-              <compilerArg>-Xep:ArrayToStringCompoundAssignment:ERROR</compilerArg>
-              <compilerArg>-Xep:ArrayToStringConcatenation:ERROR</compilerArg>
-              <compilerArg>-Xep:AsyncFunctionReturnsNull:ERROR</compilerArg>
-              <compilerArg>-Xep:BadShiftAmount:ERROR</compilerArg>
-              <compilerArg>-Xep:ChainingConstructorIgnoresParameter:ERROR</compilerArg>
-              <compilerArg>-Xep:CheckReturnValue:ERROR</compilerArg>
-              <compilerArg>-Xep:ClassName:ERROR</compilerArg>
-              <compilerArg>-Xep:ComparisonOutOfRange:ERROR</compilerArg>
-              <compilerArg>-Xep:CompileTimeConstant:ERROR</compilerArg>
-              <compilerArg>-Xep:DeadException:ERROR</compilerArg>
-              <compilerArg>-Xep:DepAnn:ERROR</compilerArg>
-              <compilerArg>-Xep:DoubleCheckedLocking:ERROR</compilerArg>
-              <compilerArg>-Xep:EqualsNaN:ERROR</compilerArg>
-              <compilerArg>-Xep:ForOverride:ERROR</compilerArg>
-              <compilerArg>-Xep:GetClassOnClass:ERROR</compilerArg>
-              <compilerArg>-Xep:GuardedByChecker:ERROR</compilerArg>
-              <compilerArg>-Xep:GuiceAssistedInjectScoping:ERROR</compilerArg>
-              <compilerArg>-Xep:HashtableContains:ERROR</compilerArg>
-              <compilerArg>-Xep:InvalidPatternSyntax:ERROR</compilerArg>
-              <compilerArg>-Xep:IsInstanceOfClass:ERROR</compilerArg>
-              <compilerArg>-Xep:JUnit3TestNotRun:ERROR</compilerArg>
-              <compilerArg>-Xep:JUnit4SetUpNotRun:ERROR</compilerArg>
-              <compilerArg>-Xep:JUnit4TearDownNotRun:ERROR</compilerArg>
-              <compilerArg>-Xep:JUnit4TestNotRun:ERROR</compilerArg>
-              <compilerArg>-Xep:LongLiteralLowerCaseSuffix:ERROR</compilerArg>
-              <compilerArg>-Xep:MisusedWeekYear:ERROR</compilerArg>
-              <compilerArg>-Xep:NarrowingCompoundAssignment:ERROR</compilerArg>
-              <compilerArg>-Xep:NonCanonicalStaticImport:ERROR</compilerArg>
-              <compilerArg>-Xep:NonFinalCompileTimeConstant:ERROR</compilerArg>
-              <compilerArg>-Xep:Overrides:ERROR</compilerArg>
-              <!-- Disabled because of internal error on Windows with 2.0.5, see https://github.com/google/error-prone/issues/432 -->
-              <!-- <compilerArg>-Xep:PackageLocation:WARNING</compilerArg> -->
-              <compilerArg>-Xep:PreconditionsCheckNotNull:ERROR</compilerArg>
-              <compilerArg>-Xep:PreconditionsCheckNotNullPrimitive:ERROR</compilerArg>
-              <compilerArg>-Xep:ProtoFieldNullComparison:ERROR</compilerArg>
-              <compilerArg>-Xep:ReturnValueIgnored:ERROR</compilerArg>
-              <compilerArg>-Xep:SelfAssignment:ERROR</compilerArg>
-              <compilerArg>-Xep:SelfEquals:ERROR</compilerArg>
-              <compilerArg>-Xep:SizeGreaterThanOrEqualsZero:ERROR</compilerArg>
-              <compilerArg>-Xep:StringBuilderInitWithChar:ERROR</compilerArg>
-              <compilerArg>-Xep:SuppressWarningsDeprecated:ERROR</compilerArg>
-              <compilerArg>-Xep:TryFailThrowable:ERROR</compilerArg>
-              <compilerArg>-Xep:UnnecessaryTypeArgument:ERROR</compilerArg>
-              <compilerArg>-Xep:UnusedAnonymousClass:ERROR</compilerArg>
-
-              <!-- experimental: warning -->
-              <compilerArg>-Xep:AssertFalse:ERROR</compilerArg>
-              <compilerArg>-Xep:AssistedInjectAndInjectOnConstructors:ERROR</compilerArg>
-              <compilerArg>-Xep:CollectionIncompatibleType:ERROR</compilerArg>
-              <compilerArg>-Xep:GuiceInjectOnFinalField:ERROR</compilerArg>
-              <compilerArg>-Xep:MissingFail:ERROR</compilerArg>
-              <compilerArg>-Xep:NullablePrimitive:ERROR</compilerArg>
-              <compilerArg>-Xep:OverridesGuiceInjectableMethod:OFF</compilerArg>  <!-- internal error with 2.0.5 -->
-              <compilerArg>-Xep:PreconditionsErrorMessageEagerEvaluation:OFF</compilerArg>  <!-- internal error with 2.0.5 -->
-              <compilerArg>-Xep:PrimitiveArrayPassedToVarargsMethod:ERROR</compilerArg>
-
-              <!-- experimental: not a problem -->
-              <compilerArg>-Xep:FallthroughSuppression</compilerArg>
-
-              <!-- experimental: error -->
-              <compilerArg>-Xep:ArraysAsListPrimitiveArray:ERROR</compilerArg>
-              <compilerArg>-Xep:AssistedInjectAndInjectOnSameConstructor:ERROR</compilerArg>
-              <compilerArg>-Xep:ClassCanBeStatic:ERROR</compilerArg>
-              <compilerArg>-Xep:DivZero:ERROR</compilerArg>
-              <compilerArg>-Xep:EmptyIf:ERROR</compilerArg>
-              <compilerArg>-Xep:GuardedByValidator:ERROR</compilerArg>
-              <compilerArg>-Xep:GuiceAssistedParameters:ERROR</compilerArg>
-              <compilerArg>-Xep:InjectInvalidTargetingOnScopingAnnotation:ERROR</compilerArg>
-              <compilerArg>-Xep:InjectMoreThanOneQualifier:OFF</compilerArg>  <!-- noisy -->
-              <compilerArg>-Xep:InjectMoreThanOneScopeAnnotationOnClass:ERROR</compilerArg>
-              <compilerArg>-Xep:InjectScopeAnnotationOnInterfaceOrAbstractClass:ERROR</compilerArg>
-              <compilerArg>-Xep:InjectScopeOrQualifierAnnotationRetention:ERROR</compilerArg>
-              <compilerArg>-Xep:InjectedConstructorAnnotations:ERROR</compilerArg>
-              <compilerArg>-Xep:JMockTestWithoutRunWithOrRuleAnnotation:ERROR</compilerArg>
-              <compilerArg>-Xep:JavaxInjectOnAbstractMethod:ERROR</compilerArg>
-              <compilerArg>-Xep:JavaxInjectOnFinalField:ERROR</compilerArg>
-              <compilerArg>-Xep:LockMethodChecker:ERROR</compilerArg>
-              <compilerArg>-Xep:MalformedFormatString:ERROR</compilerArg>
-              <compilerArg>-Xep:MissingCasesInEnumSwitch:OFF</compilerArg>  <!-- noisy -->
-              <compilerArg>-Xep:ModifyingCollectionWithItself:ERROR</compilerArg>
-              <compilerArg>-Xep:MoreThanOneInjectableConstructor:OFF</compilerArg>  <!-- internal error with 2.0.5 -->
-              <compilerArg>-Xep:NoAllocation:ERROR</compilerArg>
-              <compilerArg>-Xep:NonRuntimeAnnotation:ERROR</compilerArg>
-              <compilerArg>-Xep:NumericEquality:ERROR</compilerArg>
-              <compilerArg>-Xep:OverlappingQualifierAndScopeAnnotation:ERROR</compilerArg>
-              <compilerArg>-Xep:OverridesJavaxInjectableMethod:OFF</compilerArg>  <!-- internal error with 2.0.5 -->
-              <compilerArg>-Xep:ParameterPackage:OFF</compilerArg>  <!-- internal error with 2.0.5 -->
-              <compilerArg>-Xep:ProtoStringFieldReferenceEquality:ERROR</compilerArg>
-              <compilerArg>-Xep:SelfEquality:ERROR</compilerArg>
-              <compilerArg>-Xep:UnlockMethod:ERROR</compilerArg>
-              <compilerArg>-Xep:WildcardImport:ERROR</compilerArg>
             </compilerArgs>
           </configuration>
-          <dependencies>
-            <dependency>
-              <groupId>org.codehaus.plexus</groupId>
-              <artifactId>plexus-compiler-javac-errorprone</artifactId>
-              <version>2.6</version>
-            </dependency>
-            <dependency>
-              <groupId>com.google.errorprone</groupId>
-              <artifactId>error_prone_core</artifactId>
-              <version>2.0.5</version>
-            </dependency>
-          </dependencies>
         </plugin>
         <plugin>
           <artifactId>maven-archetype-plugin</artifactId>
