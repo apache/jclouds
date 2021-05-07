@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jclouds.azurecompute.arm.compute.extensions.AzureComputeImageExtension;
+import org.jclouds.azurecompute.arm.compute.options.AzureTemplateOptions;
 import org.jclouds.azurecompute.arm.domain.Plan;
 import org.jclouds.azurecompute.arm.domain.VMImage;
 import org.jclouds.collect.Memoized;
@@ -39,6 +40,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Supplier;
+import com.google.common.base.Strings;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
@@ -101,12 +103,45 @@ public class VMImageToImage implements Function<VMImage, Image> {
                plan.product()));
       }
    }
-   
+
+   /**
+    * In case that image is offered from Azure Marketplace then it requires to provide "Plan Information" (publisher/name/product)
+    * when creating VM from such an image. This method first tries to get this information from image but also allows to
+    * override those values by information passed in Azure template options (@see AzureTemplateOptions).
+    *
+    * In case there is used custom image which was created from Marketplace image then plan information is missing as this image
+    * cannot be referenced in format "location/publisher/offer/sku" from which Plan Information is normally parsed.
+    * In this case user can provide plan information (planPublisher/planName/planProduct) in template otherwise VM creation fails with error.
+    * It's allowed to override any of the original "image" plan information but only if those were present.
+    *
+    * @param image image
+    * @param templateOptions Azure template options
+    * @return Plan Information (publisher, plan name, product) or null if any of publisher/name/product not defined
+    */
    @Nullable
-   public static Plan getMarketplacePlanFromImageMetadata(Image image) {
+   public static Plan createMarketplacePlanIfPresent(Image image, AzureTemplateOptions templateOptions) {
       Map<String, String> imageMetadata = image.getUserMetadata();
-      return imageMetadata.containsKey("product") ? Plan.create(imageMetadata.get("publisher"),
-            imageMetadata.get("name"), imageMetadata.get("product")) : null;
+
+      String planPublisher = getFirstNonEmptyOrReturnNull(templateOptions.getPlanPublisher(), imageMetadata.get("publisher"));
+      String planName = getFirstNonEmptyOrReturnNull(templateOptions.getPlanName(), imageMetadata.get("name"));
+      String planProduct = getFirstNonEmptyOrReturnNull(templateOptions.getPlanProduct(), imageMetadata.get("product"));
+
+      if (Strings.isNullOrEmpty(planPublisher) || Strings.isNullOrEmpty(planName) || Strings.isNullOrEmpty(planProduct)) {
+         return null;
+      } else {
+         return Plan.create(planPublisher, planName, planProduct);
+      }
+   }
+
+   @Nullable
+   private static String getFirstNonEmptyOrReturnNull(String first, String second)   {
+      if (!Strings.isNullOrEmpty(first))   {
+         return first;
+      } else if (!Strings.isNullOrEmpty(second))   {
+         return second;
+      } else {
+         return null;
+      }
    }
 
    public static Function<VMImage, OperatingSystem.Builder> osFamily() {

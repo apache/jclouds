@@ -45,6 +45,9 @@ public class AzureTemplateOptions extends TemplateOptions implements Cloneable {
    private List<Secrets> secrets = ImmutableList.of();
    private String customData;
    private StorageAccountType osDiskStorageType = StorageAccountType.STANDARD_LRS;
+   private String planPublisher;
+   private String planName;
+   private String planProduct;
 
    /**
     * Sets the availability set where the nodes will be configured. If it does
@@ -145,6 +148,21 @@ public class AzureTemplateOptions extends TemplateOptions implements Cloneable {
       return this;
    }
 
+   public AzureTemplateOptions planPublisher(String planPublisher) {
+      this.planPublisher = planPublisher;
+      return this;
+   }
+
+   public AzureTemplateOptions planName(String planName) {
+      this.planName = planName;
+      return this;
+   }
+
+   public AzureTemplateOptions planProduct(String planProduct) {
+      this.planProduct = planProduct;
+      return this;
+   }
+
    public AvailabilitySet getAvailabilitySet() {
       return availabilitySet;
    }
@@ -181,6 +199,18 @@ public class AzureTemplateOptions extends TemplateOptions implements Cloneable {
       return osDiskStorageType;
    }
 
+   public String getPlanPublisher() {
+      return planPublisher;
+   }
+
+   public String getPlanName() {
+      return planName;
+   }
+
+   public String getPlanProduct() {
+      return planProduct;
+   }
+
    @Override
    public AzureTemplateOptions clone() {
       AzureTemplateOptions options = new AzureTemplateOptions();
@@ -202,6 +232,9 @@ public class AzureTemplateOptions extends TemplateOptions implements Cloneable {
          eTo.secrets(secrets);
          eTo.customData(customData);
          eTo.osDiskStorageType(osDiskStorageType);
+         eTo.planPublisher(planPublisher);
+         eTo.planName(planName);
+         eTo.planProduct(planProduct);
       }
    }
 
@@ -220,13 +253,16 @@ public class AzureTemplateOptions extends TemplateOptions implements Cloneable {
             && Objects.equal(resourceGroup, that.resourceGroup) && Objects.equal(availabilitySet, that.availabilitySet)
             && Objects.equal(dataDisks, that.dataDisks) && Objects.equal(ipOptions, that.ipOptions)
             && Objects.equal(windowsConfiguration, that.windowsConfiguration) && Objects.equal(secrets, that.secrets)
-            && Objects.equal(this.customData, that.customData);
+            && Objects.equal(this.customData, that.customData)
+            && Objects.equal(this.planPublisher, that.planPublisher)
+            && Objects.equal(this.planName, that.planName)
+            && Objects.equal(this.planProduct, that.planProduct);
    }
 
    @Override
    public int hashCode() {
       return Objects.hashCode(super.hashCode(), availabilitySet, availabilitySetName, dataDisks, resourceGroup,
-            ipOptions, customData);
+            ipOptions, customData, planPublisher, planName, planProduct);
    }
 
    @Override
@@ -248,6 +284,12 @@ public class AzureTemplateOptions extends TemplateOptions implements Cloneable {
          toString.add("secrets", secrets);
       if (customData != null)
          toString.add("customData", customData);
+      if (planPublisher != null)
+         toString.add("publisher", planPublisher);
+      if (planName != null)
+         toString.add("planName", planName);
+      if (planProduct != null)
+         toString.add("planProduct", planProduct);
       return toString;
    }
 
@@ -339,6 +381,30 @@ public class AzureTemplateOptions extends TemplateOptions implements Cloneable {
       public static AzureTemplateOptions osDiskStorageType(StorageAccountType osDiskStorageType) {
          AzureTemplateOptions options = new AzureTemplateOptions();
          return options.osDiskStorageType(osDiskStorageType);
+      }
+
+      /**
+       * @see AzureTemplateOptions#planPublisher(String)
+       */
+      public static AzureTemplateOptions planPublisher(String planPublisher) {
+         AzureTemplateOptions options = new AzureTemplateOptions();
+         return options.planPublisher(planPublisher);
+      }
+
+      /**
+       * @see AzureTemplateOptions#planName(String)
+       */
+      public static AzureTemplateOptions planName(String planName) {
+         AzureTemplateOptions options = new AzureTemplateOptions();
+         return options.planName(planName);
+      }
+
+      /**
+       * @see AzureTemplateOptions#planProduct(String)
+       */
+      public static AzureTemplateOptions planProduct(String planProduct) {
+         AzureTemplateOptions options = new AzureTemplateOptions();
+         return options.planProduct(planProduct);
       }
    }
 }

@@ -25,7 +25,7 @@ import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.jclouds.azurecompute.arm.compute.domain.LocationAndName.fromSlashEncoded;
 import static org.jclouds.azurecompute.arm.compute.domain.ResourceGroupAndName.fromResourceGroupAndName;
-import static org.jclouds.azurecompute.arm.compute.functions.VMImageToImage.getMarketplacePlanFromImageMetadata;
+import static org.jclouds.azurecompute.arm.compute.functions.VMImageToImage.createMarketplacePlanIfPresent;
 import static org.jclouds.azurecompute.arm.config.AzureComputeProperties.IMAGE_PUBLISHERS;
 import static org.jclouds.azurecompute.arm.domain.IdReference.extractName;
 import static org.jclouds.azurecompute.arm.domain.IdReference.extractResourceGroup;
@@ -171,7 +171,7 @@ public class AzureComputeServiceAdapter implements ComputeServiceAdapter<Virtual
       // custom names in the configured group
       templateOptions.getUserMetadata().put(GROUP_KEY, group);
       Map<String, String> metadataAndTags = metadataAndTagsAsCommaDelimitedValue(templateOptions);
-      Plan plan = getMarketplacePlanFromImageMetadata(image);
+      Plan plan = createMarketplacePlanIfPresent(image, templateOptions);
 
       VirtualMachine virtualMachine = api.getVirtualMachineApi(resourceGroupName).createOrUpdate(name, locationName,
             virtualMachineProperties, metadataAndTags, plan);
