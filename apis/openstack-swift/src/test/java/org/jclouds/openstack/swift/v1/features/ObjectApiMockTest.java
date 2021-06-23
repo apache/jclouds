@@ -333,7 +333,7 @@ public class ObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
       server.enqueue(addCommonHeaders(objectResponse()
             // note silly casing
             .addHeader(OBJECT_METADATA_PREFIX + "Apiname", "swift")
-            .addHeader(OBJECT_METADATA_PREFIX + "Apiversion", "v1.1")));
+            .addHeader(OBJECT_METADATA_PREFIX.toLowerCase() + "apiversion", "v1.1")));
 
       try {
          SwiftApi api = api(server.url("/").toString(), "openstack-swift");
@@ -346,6 +346,7 @@ public class ObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
                object.getPayload().getContentMetadata().getContentMD5AsHashCode().asBytes());
 
          assertEquals(object.getLastModified(), dates.rfc822DateParse("Fri, 12 Jun 2010 13:40:18 GMT"));
+         assertEquals(object.getMetadata().size(), 2);
          for (Entry<String, String> entry : object.getMetadata().entrySet()) {
             assertEquals(object.getMetadata().get(entry.getKey().toLowerCase()), entry.getValue());
          }
