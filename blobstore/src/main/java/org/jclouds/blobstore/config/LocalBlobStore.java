@@ -682,10 +682,13 @@ public final class LocalBlobStore implements BlobStore {
 
             // Try to convert payload to ByteSource, otherwise wrap it.
             ByteSource byteSource;
-            try {
-               byteSource = (ByteSource) blob.getPayload().getRawContent();
-            } catch (ClassCastException cce) {
-               // This should not happen; both FilesystemStorageStrategyImpl and TransientStorageStrategy return ByteSource
+            Object object = blob.getPayload().getRawContent();
+            if (object instanceof ByteSource) {
+               byteSource = (ByteSource) object;
+            } else if (object instanceof byte[]) {
+               byteSource = ByteSource.wrap((byte[]) object);
+            } else {
+               // This should not happen.
                try {
                   byteSource = ByteSource.wrap(ByteStreams2.toByteArrayAndClose(blob.getPayload().openStream()));
                } catch (IOException e) {
