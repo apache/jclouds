@@ -27,6 +27,8 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -65,6 +67,11 @@ public class ProxyForURI implements Function<URI, Proxy> {
    public Proxy apply(URI endpoint) {
       if (!useProxyForSockets && "socket".equals(endpoint.getScheme())) {
          return Proxy.NO_PROXY;
+      }
+      for (Pattern proxyExcludedUriPattern : config.getProxyExcludedPatterns()) {
+         if (proxyExcludedUriPattern.matcher(endpoint.toString()).matches()) {
+            return Proxy.NO_PROXY;
+         }
       }
       if (config.getProxy().isPresent()) {
          SocketAddress addr = new InetSocketAddress(config.getProxy().get().getHost(), config.getProxy().get()

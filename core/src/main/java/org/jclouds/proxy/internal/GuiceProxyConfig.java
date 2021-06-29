@@ -27,6 +27,8 @@ import static org.jclouds.Constants.PROPERTY_PROXY_USER;
 
 import java.net.Proxy;
 import java.net.Proxy.Type;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -39,6 +41,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.net.HostAndPort;
 import com.google.inject.Inject;
+import org.jclouds.proxy.ProxyExcludePatterns;
 
 /**
  * Configuration derived from Guice properties.
@@ -69,6 +72,8 @@ public class GuiceProxyConfig implements ProxyConfig {
    @Inject(optional = true)
    @Named(PROPERTY_PROXY_TYPE)
    private Proxy.Type type = Proxy.Type.HTTP;
+   @Inject(optional = true)
+   private ProxyExcludePatterns proxyExcludePatterns;
 
    @Override
    public Optional<HostAndPort> getProxy() {
@@ -98,6 +103,11 @@ public class GuiceProxyConfig implements ProxyConfig {
             PROPERTY_PROXY_PASSWORD, user)));
    }
 
+   @Override
+   public Set<Pattern> getProxyExcludedPatterns() {
+      return proxyExcludePatterns.getExcludeUrisPatterns();
+   }
+
    private static String checkNotEmpty(String nullableString, String message, Object... args) {
       checkArgument(Strings.emptyToNull(nullableString) != null, message, args);
       return nullableString;
@@ -123,9 +133,11 @@ public class GuiceProxyConfig implements ProxyConfig {
     */
    @Override
    public String toString() {
-      return MoreObjects.toStringHelper(this).omitNullValues().add("systemProxies", systemProxies ? "true" : null)
+      return MoreObjects.toStringHelper(this).omitNullValues()
+            .add("systemProxies", systemProxies ? "true" : null)
             .add("jvmProxyEnabled", jvmProxyEnabled ? "true" : "false")
-            .add("proxyHostPort", getProxy().orNull()).add("user", user).add("type", host != null ? type : null).toString();
+            .add("proxyExcludePatterns", proxyExcludePatterns.getExcludeUrisPatterns())
+            .add("proxyHostPort", getProxy().orNull()).add("user", user)
+            .add("type", host != null ? type : null).toString();
    }
-
 }

@@ -183,6 +183,11 @@ public final class Constants {
    public static final String PROPERTY_PROXY_FOR_SOCKETS = "jclouds.proxy-for-sockets";
 
    /**
+    * List of URI patterns for which the defined proxy will not be used.
+    */
+   public static final String PROPERTY_PROXY_EXCLUDE_URI_PATTERN_PREFIX = "jclouds.proxy-exclude-uri-pattern.";
+
+   /**
     * Integer property.
     * <p/>
     * Commands are retried, if the problem on the server side was a resolvable conflict. However,
