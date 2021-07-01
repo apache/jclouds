@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package org.jclouds.compute.callables;
+
 import static org.easymock.EasyMock.createMockBuilder;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
@@ -24,6 +25,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -37,7 +39,6 @@ import org.testng.annotations.Test;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.eventbus.EventBus;
-import com.google.common.util.concurrent.AbstractFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 
@@ -45,7 +46,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 public class BlockUntilInitScriptStatusIsZeroThenReturnOutputTest {
 
    public void testloopUntilTrueOrThrowCancellationExceptionReturnsWhenPredicateIsTrue() {
-      AbstractFuture<ExecResponse> future = new AbstractFuture<ExecResponse>() {
+      CompletableFuture<ExecResponse> future = new CompletableFuture<ExecResponse>() {
 
          @Override
          public boolean isCancelled() {
@@ -61,7 +62,7 @@ public class BlockUntilInitScriptStatusIsZeroThenReturnOutputTest {
    }
 
    public void testloopUntilTrueOrThrowCancellationExceptionReturnsWhenPredicateIsTrueSecondTimeWhileNotCancelled() {
-      AbstractFuture<ExecResponse> future = new AbstractFuture<ExecResponse>() {
+      CompletableFuture<ExecResponse> future = new CompletableFuture<ExecResponse>() {
 
          @Override
          public boolean isCancelled() {
@@ -87,7 +88,7 @@ public class BlockUntilInitScriptStatusIsZeroThenReturnOutputTest {
 
    // need to break the loop when cancelled.
    public void testloopUntilTrueOrThrowCancellationExceptionSkipsAndReturnsFalseOnCancelled() {
-      AbstractFuture<ExecResponse> future = new AbstractFuture<ExecResponse>() {
+      CompletableFuture<ExecResponse> future = new CompletableFuture<ExecResponse>() {
 
          @Override
          public boolean isCancelled() {

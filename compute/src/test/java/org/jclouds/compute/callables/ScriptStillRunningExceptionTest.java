@@ -18,19 +18,17 @@ package org.jclouds.compute.callables;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.jclouds.compute.domain.ExecResponse;
 import org.testng.annotations.Test;
 
-import com.google.common.util.concurrent.AbstractFuture;
-import com.google.common.util.concurrent.ListenableFuture;
-
 @Test(groups = "unit", singleThreaded = true, testName = "ScriptStillRunningExceptionTest")
 public class ScriptStillRunningExceptionTest {
 
    public void simpleMessage() {
-      ListenableFuture<ExecResponse> future = new AbstractFuture<ExecResponse>() {
+      CompletableFuture<ExecResponse> future = new CompletableFuture<ExecResponse>() {
          @Override
          public String toString() {
             return "task for foo";

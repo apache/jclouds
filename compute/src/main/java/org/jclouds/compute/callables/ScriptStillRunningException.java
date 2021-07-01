@@ -19,31 +19,31 @@ package org.jclouds.compute.callables;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.jclouds.compute.domain.ExecResponse;
 
 import com.google.common.base.Supplier;
-import com.google.common.util.concurrent.ListenableFuture;
 
-public class ScriptStillRunningException extends TimeoutException implements Supplier<ListenableFuture<ExecResponse>> {
+public class ScriptStillRunningException extends TimeoutException implements Supplier<CompletableFuture<ExecResponse>> {
 
-   private final ListenableFuture<ExecResponse> delegate;
+   private final CompletableFuture<ExecResponse> delegate;
 
-   public ScriptStillRunningException(long timeout, TimeUnit unit, ListenableFuture<ExecResponse> delegate) {
+   public ScriptStillRunningException(long timeout, TimeUnit unit, CompletableFuture<ExecResponse> delegate) {
       this(format("time up waiting %ds for %s to complete."
                + " call get() on this exception to get access to the task in progress", TimeUnit.SECONDS.convert(
                timeout, unit), delegate), delegate);
    }
 
-   public ScriptStillRunningException(String message, ListenableFuture<ExecResponse> delegate) {
+   public ScriptStillRunningException(String message, CompletableFuture<ExecResponse> delegate) {
       super(checkNotNull(message, "message"));
       this.delegate = checkNotNull(delegate, "delegate");
    }
 
    @Override
-   public ListenableFuture<ExecResponse> get() {
+   public CompletableFuture<ExecResponse> get() {
       return delegate;
    }
 

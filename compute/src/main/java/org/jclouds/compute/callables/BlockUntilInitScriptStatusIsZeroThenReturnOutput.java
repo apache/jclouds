@@ -21,6 +21,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.jclouds.util.Predicates2.retry;
 
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -41,7 +42,6 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.eventbus.EventBus;
 import com.google.common.primitives.Ints;
-import com.google.common.util.concurrent.AbstractFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -50,7 +50,7 @@ import com.google.inject.name.Named;
 /**
  * A future that works in tandem with a task that was invoked by {@link InitScript}
  */
-public class BlockUntilInitScriptStatusIsZeroThenReturnOutput extends AbstractFuture<ExecResponse> implements Runnable {
+public class BlockUntilInitScriptStatusIsZeroThenReturnOutput extends CompletableFuture<ExecResponse> implements Runnable {
 
    public interface Factory {
       BlockUntilInitScriptStatusIsZeroThenReturnOutput create(SudoAwareInitManager commandRunner);
@@ -109,7 +109,7 @@ public class BlockUntilInitScriptStatusIsZeroThenReturnOutput extends AbstractFu
     * being consumed on dead tasks
     */
    static Predicate<String> loopUntilTrueOrThrowCancellationException(Predicate<String> predicate, long period, long maxPeriod,
-         final AbstractFuture<ExecResponse> futureWhichMightBeCancelled) {
+         final CompletableFuture<ExecResponse> futureWhichMightBeCancelled) {
       return retry(Predicates.<String> and(predicate, new Predicate<String>() {
          public boolean apply(String in) {
             if (futureWhichMightBeCancelled.isCancelled())
@@ -141,28 +141,31 @@ public class BlockUntilInitScriptStatusIsZeroThenReturnOutput extends AbstractFu
          } while (!isCancelled() && exec.getExitStatus() == -1);
          logger.debug("<< complete(%s) status(%s)", commandRunner.getStatement().getInstanceName(), exec
                   .getExitStatus());
-         set(exec);
+         complete(exec);
       } catch (Exception e) {
-         setException(e);
+         completeExceptionally(e);
       }
    }
 
    @Override
-   protected boolean set(ExecResponse value) {
+   public boolean complete(ExecResponse value) {
       eventBus.post(new StatementOnNodeCompletion(getCommandRunner().getStatement(), getCommandRunner().getNode(),
                value));
-      return super.set(value);
+      return super.complete(value);
    }
 
    @Override
-   protected void interruptTask() {
-      logger.debug("<< cancelled(%s)", commandRunner.getStatement().getInstanceName());
-      ExecResponse returnVal = commandRunner.refreshAndRunAction("stop");
-      CancellationException e = new CancellationException(String.format(
-               "cancelled %s on node: %s; stop command had exit status: %s", getCommandRunner().getStatement()
-                        .getInstanceName(), getCommandRunner().getNode().getId(), returnVal));
-      eventBus.post(new StatementOnNodeFailure(getCommandRunner().getStatement(), getCommandRunner().getNode(), e));
-      super.interruptTask();
+   public boolean cancel(boolean mayInterruptIfRunning) {
+      if (mayInterruptIfRunning) {
+         logger.debug("<< cancelled(%s)", commandRunner.getStatement().getInstanceName());
+         ExecResponse returnVal = commandRunner.refreshAndRunAction("stop");
+         CancellationException e = new CancellationException(String.format(
+                  "cancelled %s on node: %s; stop command had exit status: %s", getCommandRunner().getStatement()
+                           .getInstanceName(), getCommandRunner().getNode().getId(), returnVal));
+         eventBus.post(new StatementOnNodeFailure(getCommandRunner().getStatement(), getCommandRunner().getNode(), e));
+         return super.cancel(mayInterruptIfRunning);
+      }
+      return false;
    }
 
    @Override

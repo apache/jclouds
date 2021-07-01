@@ -62,6 +62,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -250,7 +251,7 @@ public abstract class BaseComputeServiceLiveTest extends BaseComputeServiceConte
 
          // test adding AdminAccess later changes the default boot user, in this
          // case to foo, with home dir /over/ridden/foo
-         ListenableFuture<ExecResponse> future = client.submitScriptOnNode(node.getId(), AdminAccess.builder()
+         CompletableFuture<ExecResponse> future = client.submitScriptOnNode(node.getId(), AdminAccess.builder()
                .adminUsername("foo").adminHome("/over/ridden/foo").build(), nameTask("adminUpdate"));
 
          response = future.get(3, TimeUnit.MINUTES);
@@ -306,7 +307,7 @@ public abstract class BaseComputeServiceLiveTest extends BaseComputeServiceConte
 
    @Test(enabled = false)
    protected void weCanCancelTasks(NodeMetadata node) throws InterruptedException, ExecutionException {
-      ListenableFuture<ExecResponse> future = client.submitScriptOnNode(node.getId(), "sleep 300",
+      CompletableFuture<ExecResponse> future = client.submitScriptOnNode(node.getId(), "sleep 300",
             nameTask("sleeper").runAsRoot(false));
       ExecResponse response = null;
       try {
