@@ -322,6 +322,18 @@
       </dependency>
 
       <dependency>
+        <groupId>javax.annotation</groupId>
+        <artifactId>javax.annotation-api</artifactId>
+        <version>1.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>2.3.3</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.gaul</groupId>
         <artifactId>modernizer-maven-annotations</artifactId>
         <version>${modernizer-maven-annotations.version}</version>
