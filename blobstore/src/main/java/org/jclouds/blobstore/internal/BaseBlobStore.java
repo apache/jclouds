@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PushbackInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -48,7 +49,7 @@ import org.jclouds.blobstore.domain.StorageMetadata;
 import org.jclouds.blobstore.options.CopyOptions;
 import org.jclouds.blobstore.options.ListContainerOptions;
 import org.jclouds.blobstore.options.PutOptions;
-import org.jclouds.blobstore.strategy.internal.MultipartUploadSlicingAlgorithm;
+import org.jclouds.blobstore.strategy.internal.MultipartUploadChunkSizeCalculator;
 import org.jclouds.blobstore.util.BlobUtils;
 import org.jclouds.collect.Memoized;
 import org.jclouds.domain.Location;
@@ -59,7 +60,7 @@ import org.jclouds.http.HttpResponseException;
 import org.jclouds.io.ContentMetadata;
 import org.jclouds.io.Payload;
 import org.jclouds.io.Payloads;
-import org.jclouds.io.PayloadSlicer;
+import org.jclouds.io.payloads.BaseMutableContentMetadata;
 import org.jclouds.util.Closeables2;
 
 import com.google.common.annotations.Beta;
@@ -67,6 +68,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicate;
 import com.google.common.base.Supplier;
 import com.google.common.base.Throwables;
+import com.google.common.io.ByteStreams;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -77,15 +79,13 @@ public abstract class BaseBlobStore implements BlobStore {
    protected final BlobUtils blobUtils;
    protected final Supplier<Location> defaultLocation;
    protected final Supplier<Set<? extends Location>> locations;
-   protected final PayloadSlicer slicer;
 
    protected BaseBlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
-         @Memoized Supplier<Set<? extends Location>> locations, PayloadSlicer slicer) {
+         @Memoized Supplier<Set<? extends Location>> locations) {
       this.context = checkNotNull(context, "context");
       this.blobUtils = checkNotNull(blobUtils, "blobUtils");
       this.defaultLocation = checkNotNull(defaultLocation, "defaultLocation");
       this.locations = checkNotNull(locations, "locations");
-      this.slicer = checkNotNull(slicer, "slicer");
    }
 
    @Override
@@ -354,49 +354,53 @@ public abstract class BaseBlobStore implements BlobStore {
    protected String putMultipartBlob(String container, Blob blob, PutOptions overrides, ListeningExecutorService executor) {
       ArrayList<ListenableFuture<MultipartPart>> parts = new ArrayList<ListenableFuture<MultipartPart>>();
       MultipartUpload mpu = initiateMultipartUpload(container, blob.getMetadata(), overrides);
-      // Cannot slice InputStream Payload since slice and close mutate the
-      // underlying stream.  Also issue synchronous uploads to avoid buffering
-      // arbitrary amounts of data in-memory.
       Payload payload = blob.getPayload();
-      boolean repeatable = blob.getPayload().isRepeatable();
-      if (!repeatable) {
-         payload = Payloads.newInputStreamPayload(new FilterInputStream((InputStream) payload.getRawContent()) {
+      boolean repeatable = payload.isRepeatable();
+      MultipartUploadChunkSizeCalculator calculator = new MultipartUploadChunkSizeCalculator(
+          getMinimumMultipartPartSize(), getMaximumMultipartPartSize());
+      long partSize = calculator.getPartSize();
+      int partNumber = 1;
+      int read;
+
+      try (PushbackInputStream is = new PushbackInputStream(payload.openStream())) {
+         InputStream wrapper = new FilterInputStream(is) {
             @Override
             public long skip(long offset) throws IOException {
-               // intentionally not implemented
+               if (repeatable) {
+                  return in.skip(offset);
+               }
                return offset;
             }
 
             @Override
-            public void close() throws IOException {
-               // intentionally not implemented
+            public void close() {
+               //do not close the underlying stream
             }
-         });
-      }
+         };
 
-      try {
-         long contentLength = blob.getMetadata().getContentMetadata().getContentLength();
-         // TODO: inject MultipartUploadSlicingAlgorithm to override default part size
-         MultipartUploadSlicingAlgorithm algorithm = new MultipartUploadSlicingAlgorithm(
-               getMinimumMultipartPartSize(), getMaximumMultipartPartSize(), getMaximumNumberOfParts());
-         long partSize = algorithm.calculateChunkSize(contentLength);
-         int partNumber = 1;
-         while (partNumber <= algorithm.getParts()) {
-            Payload slice = slicer.slice(payload, algorithm.getCopied(), partSize);
+         while ((read = is.read()) > -1) {
+            is.unread(read);
+            Payload slice = createPayloadSlice(wrapper, partSize);
             BlobUploader b = new BlobUploader(mpu, partNumber++, slice);
             parts.add(repeatable ? executor.submit(b) : Futures.immediateFuture(b.call()));
-            algorithm.addCopied(partSize);
+            wrapper.skip(partSize);
+            partSize = calculator.getPartSize();
          }
-         if (algorithm.getRemaining() != 0) {
-            Payload slice = slicer.slice(payload, algorithm.getCopied(), algorithm.getRemaining());
-            BlobUploader b = new BlobUploader(mpu, partNumber, slice);
-            parts.add(repeatable ? executor.submit(b) : Futures.immediateFuture(b.call()));
-         }
+
          return completeMultipartUpload(mpu, Futures.getUnchecked(Futures.allAsList(parts)));
-      } catch (RuntimeException re) {
+      } catch (IOException e) {
          abortMultipartUpload(mpu);
-         throw re;
+         throw new RuntimeException(e.getMessage(), e);
       }
+   }
+
+   private Payload createPayloadSlice(InputStream content, long partSize) {
+      Payload slice = Payloads.newInputStreamPayload(ByteStreams.limit(content, partSize));
+      BaseMutableContentMetadata metadata = new BaseMutableContentMetadata();
+      metadata.setContentLength(partSize);
+      metadata.setContentType("application/octet-stream");
+      slice.setContentMetadata(metadata);
+      return slice;
    }
 
    private final class BlobUploader implements Callable<MultipartPart> {

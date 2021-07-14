@@ -52,7 +52,6 @@ import org.jclouds.domain.Location;
 import org.jclouds.http.options.GetOptions;
 import org.jclouds.io.ContentMetadata;
 import org.jclouds.io.Payload;
-import org.jclouds.io.PayloadSlicer;
 import org.jclouds.s3.S3Client;
 import org.jclouds.s3.blobstore.functions.BlobToObject;
 import org.jclouds.s3.blobstore.functions.BlobToObjectMetadata;
@@ -95,13 +94,13 @@ public class S3BlobStore extends BaseBlobStore {
 
    @Inject
    protected S3BlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
-            @Memoized Supplier<Set<? extends Location>> locations, PayloadSlicer slicer, S3Client sync,
+            @Memoized Supplier<Set<? extends Location>> locations, S3Client sync,
             Function<Set<BucketMetadata>, PageSet<? extends StorageMetadata>> convertBucketsToStorageMetadata,
             ContainerToBucketListOptions container2BucketListOptions, BucketToResourceList bucket2ResourceList,
             ObjectToBlob object2Blob, BlobToHttpGetOptions blob2ObjectGetOptions, BlobToObject blob2Object,
             BlobToObjectMetadata blob2ObjectMetadata,
             ObjectToBlobMetadata object2BlobMd, Provider<FetchBlobMetadata> fetchBlobMetadataProvider) {
-      super(context, blobUtils, defaultLocation, locations, slicer);
+      super(context, blobUtils, defaultLocation, locations);
       this.blob2ObjectGetOptions = checkNotNull(blob2ObjectGetOptions, "blob2ObjectGetOptions");
       this.sync = checkNotNull(sync, "sync");
       this.convertBucketsToStorageMetadata = checkNotNull(convertBucketsToStorageMetadata, "convertBucketsToStorageMetadata");

@@ -26,10 +26,12 @@ import static org.jclouds.location.predicates.LocationPredicates.idEquals;
 import static org.jclouds.openstack.swift.v1.options.PutOptions.Builder.metadata;
 
 import java.io.File;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.PushbackInputStream;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.nio.MappedByteBuffer;
@@ -74,12 +76,13 @@ import org.jclouds.blobstore.options.GetOptions;
 import org.jclouds.blobstore.options.ListContainerOptions;
 import org.jclouds.blobstore.options.PutOptions;
 import org.jclouds.blobstore.strategy.ClearListStrategy;
-import org.jclouds.blobstore.strategy.internal.MultipartUploadSlicingAlgorithm;
+import org.jclouds.blobstore.strategy.internal.MultipartUploadChunkSizeCalculator;
 import org.jclouds.collect.Memoized;
 import org.jclouds.domain.Location;
 import org.jclouds.io.ContentMetadata;
 import org.jclouds.io.Payload;
-import org.jclouds.io.PayloadSlicer;
+import org.jclouds.io.Payloads;
+import org.jclouds.io.payloads.BaseMutableContentMetadata;
 import org.jclouds.io.payloads.ByteSourcePayload;
 import org.jclouds.logging.Logger;
 import org.jclouds.openstack.swift.v1.SwiftApi;
@@ -129,13 +132,12 @@ public class RegionScopedSwiftBlobStore implements BlobStore {
    @Inject
    protected RegionScopedSwiftBlobStore(Injector baseGraph, BlobStoreContext context, SwiftApi api,
          @Memoized Supplier<Set<? extends Location>> locations, @Assisted String regionId,
-         PayloadSlicer slicer, @Named(PROPERTY_USER_THREADS) ListeningExecutorService userExecutor) {
+         @Named(PROPERTY_USER_THREADS) ListeningExecutorService userExecutor) {
       checkNotNull(regionId, "regionId");
       Optional<? extends Location> found = tryFind(locations.get(), idEquals(regionId));
       checkArgument(found.isPresent(), "region %s not in %s", regionId, locations.get());
       this.region = found.get();
       this.regionId = regionId;
-      this.slicer = slicer;
       this.toResourceMetadata = new ToResourceMetadata(found.get());
       this.context = context;
       this.api = api;
@@ -157,7 +159,6 @@ public class RegionScopedSwiftBlobStore implements BlobStore {
    private final BlobToHttpGetOptions toGetOptions = new BlobToHttpGetOptions();
    private final ToListContainerOptions toListContainerOptions = new ToListContainerOptions();
    private final ToResourceMetadata toResourceMetadata;
-   protected final PayloadSlicer slicer;
    protected final ListeningExecutorService userExecutor;
 
    @Resource
@@ -638,22 +639,54 @@ public class RegionScopedSwiftBlobStore implements BlobStore {
    @Beta
    protected String putMultipartBlob(String container, Blob blob, PutOptions overrides, ListeningExecutorService executor) {
       ArrayList<ListenableFuture<MultipartPart>> parts = new ArrayList<ListenableFuture<MultipartPart>>();
+      MultipartUpload mpu = initiateMultipartUpload(container, blob.getMetadata(), overrides);
+      Payload payload = blob.getPayload();
+      boolean repeatable = payload.isRepeatable();
+      MultipartUploadChunkSizeCalculator calculator = new MultipartUploadChunkSizeCalculator(
+          getMinimumMultipartPartSize(), getMaximumMultipartPartSize());
+      long partSize = calculator.getPartSize();
+      int partNumber = 1;
+      int read;
 
-      long contentLength = checkNotNull(blob.getMetadata().getContentMetadata().getContentLength(),
-            "must provide content-length to use multi-part upload");
-      MultipartUploadSlicingAlgorithm algorithm = new MultipartUploadSlicingAlgorithm(
-            getMinimumMultipartPartSize(), getMaximumMultipartPartSize(), getMaximumNumberOfParts());
-      long partSize = algorithm.calculateChunkSize(contentLength);
-      MultipartUpload mpu = initiateMultipartUpload(container, blob.getMetadata(), partSize, overrides);
-      int partNumber = 0;
+      try (PushbackInputStream is = new PushbackInputStream(payload.openStream())) {
+         InputStream wrapper = new FilterInputStream(is) {
+            @Override
+            public long skip(long offset) throws IOException {
+               if (repeatable) {
+                  return in.skip(offset);
+               }
+               return offset;
+            }
 
-      for (Payload payload : slicer.slice(blob.getPayload(), partSize)) {
-         BlobUploader b =
-               new BlobUploader(mpu, partNumber++, payload);
-         parts.add(executor.submit(b));
+            @Override
+            public void close() {
+               //do not close the underlying stream
+            }
+         };
+
+         while ((read = is.read()) > -1) {
+            is.unread(read);
+            Payload slice = createPayloadSlice(wrapper, partSize);
+            BlobUploader b = new BlobUploader(mpu, partNumber++, slice);
+            parts.add(repeatable ? executor.submit(b) : Futures.immediateFuture(b.call()));
+            wrapper.skip(partSize);
+            partSize = calculator.getPartSize();
+         }
+
+         return completeMultipartUpload(mpu, Futures.getUnchecked(Futures.allAsList(parts)));
+      } catch (IOException e) {
+         abortMultipartUpload(mpu);
+         throw new RuntimeException(e.getMessage(), e);
       }
+   }
 
-      return completeMultipartUpload(mpu, Futures.getUnchecked(Futures.allAsList(parts)));
+   private Payload createPayloadSlice(InputStream content, long partSize) {
+      Payload slice = Payloads.newInputStreamPayload(ByteStreams.limit(content, partSize));
+      BaseMutableContentMetadata metadata = new BaseMutableContentMetadata();
+      metadata.setContentLength(partSize);
+      metadata.setContentType("application/octet-stream");
+      slice.setContentMetadata(metadata);
+      return slice;
    }
 
    private final class BlobUploader implements Callable<MultipartPart> {

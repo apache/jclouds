@@ -70,7 +70,6 @@ import org.jclouds.googlecloudstorage.options.ListObjectOptions;
 import org.jclouds.http.HttpResponseException;
 import org.jclouds.io.ContentMetadata;
 import org.jclouds.io.Payload;
-import org.jclouds.io.PayloadSlicer;
 import org.jclouds.util.Strings2;
 
 import com.google.common.base.Function;
@@ -91,14 +90,14 @@ public final class GoogleCloudStorageBlobStore extends BaseBlobStore {
    private final BlobToHttpGetOptions blob2ObjectGetOptions;
 
    @Inject GoogleCloudStorageBlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
-            @Memoized Supplier<Set<? extends Location>> locations, PayloadSlicer slicer, GoogleCloudStorageApi api,
+            @Memoized Supplier<Set<? extends Location>> locations, GoogleCloudStorageApi api,
             BucketToStorageMetadata bucketToStorageMetadata, ObjectToBlobMetadata objectToBlobMetadata,
             ObjectListToStorageMetadata objectListToStorageMetadata,
             BlobMetadataToObjectTemplate blobMetadataToObjectTemplate,
             BlobStoreListContainerOptionsToListObjectOptions listContainerOptionsToListObjectOptions,
             @CurrentProject Supplier<String> projectId,
             BlobToHttpGetOptions blob2ObjectGetOptions) {
-      super(context, blobUtils, defaultLocation, locations, slicer);
+      super(context, blobUtils, defaultLocation, locations);
       this.api = api;
       this.bucketToStorageMetadata = bucketToStorageMetadata;
       this.objectToBlobMetadata = objectToBlobMetadata;
@@ -209,9 +208,7 @@ public final class GoogleCloudStorageBlobStore extends BaseBlobStore {
 
    @Override
    public String putBlob(String container, Blob blob, PutOptions options) {
-      long length = checkNotNull(blob.getPayload().getContentMetadata().getContentLength());
-
-      if (length != 0 && options.isMultipart()) {
+      if (options.isMultipart()) {
          // JCLOUDS-912 prevents using single-part uploads with InputStream payloads.
          // Work around this with multi-part upload which buffers parts in-memory.
          return putMultipartBlob(container, blob, options);

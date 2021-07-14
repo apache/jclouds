@@ -74,7 +74,6 @@ import org.jclouds.domain.Location;
 import org.jclouds.http.options.GetOptions;
 import org.jclouds.io.ContentMetadata;
 import org.jclouds.io.MutableContentMetadata;
-import org.jclouds.io.PayloadSlicer;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
@@ -99,13 +98,13 @@ public class AzureBlobStore extends BaseBlobStore {
 
    @Inject
    AzureBlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
-            @Memoized Supplier<Set<? extends Location>> locations, PayloadSlicer slicer, AzureBlobClient sync,
+            @Memoized Supplier<Set<? extends Location>> locations, AzureBlobClient sync,
             ContainerToResourceMetadata container2ResourceMd,
             ListOptionsToListBlobsOptions blobStore2AzureContainerListOptions,
             ListBlobsResponseToResourceList azure2BlobStoreResourceList, AzureBlobToBlob azureBlob2Blob,
             BlobToAzureBlob blob2AzureBlob, BlobPropertiesToBlobMetadata blob2BlobMd,
             BlobToHttpGetOptions blob2ObjectGetOptions) {
-      super(context, blobUtils, defaultLocation, locations, slicer);
+      super(context, blobUtils, defaultLocation, locations);
       this.sync = checkNotNull(sync, "sync");
       this.container2ResourceMd = checkNotNull(container2ResourceMd, "container2ResourceMd");
       this.blobStore2AzureContainerListOptions = checkNotNull(blobStore2AzureContainerListOptions,

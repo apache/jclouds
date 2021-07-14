@@ -74,7 +74,6 @@ import org.jclouds.io.ContentMetadata;
 import org.jclouds.io.ContentMetadataBuilder;
 import org.jclouds.io.MutableContentMetadata;
 import org.jclouds.io.Payload;
-import org.jclouds.io.PayloadSlicer;
 import org.jclouds.io.payloads.BaseMutableContentMetadata;
 
 import com.google.common.base.Preconditions;
@@ -96,9 +95,9 @@ public final class B2BlobStore extends BaseBlobStore {
 
    @Inject
    B2BlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
-            @Memoized Supplier<Set<? extends Location>> locations, PayloadSlicer slicer, final B2Api api,
+            @Memoized Supplier<Set<? extends Location>> locations, final B2Api api,
             BlobToHttpGetOptions blob2ObjectGetOptions, @Memoized Supplier<Authorization> auth) {
-      super(context, blobUtils, defaultLocation, locations, slicer);
+      super(context, blobUtils, defaultLocation, locations);
       this.api = api;
       this.blob2ObjectGetOptions = blob2ObjectGetOptions;
       this.auth = auth;
@@ -229,9 +228,7 @@ public final class B2BlobStore extends BaseBlobStore {
          throw new UnsupportedOperationException("B2 only supports private access blobs");
       }
 
-      long contentLength = Preconditions.checkNotNull(blob.getMetadata().getContentMetadata().getContentLength(),
-            "must provide content-length to use multi-part upload");
-      if (options.isMultipart() && contentLength >= auth.get().recommendedPartSize()) {
+      if (options.isMultipart()) {
          return putMultipartBlob(container, blob, options);
       } else {
          String name = blob.getMetadata().getName();
