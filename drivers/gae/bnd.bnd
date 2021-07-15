@@ -1,2 +1,0 @@
-Export-Package: \
-    org.jclouds.gae.*;version="${project.version}";-noimport:=true
