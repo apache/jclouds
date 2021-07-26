@@ -28,9 +28,9 @@ import com.google.common.base.Function;
 @Singleton
 public class URIParser implements Function<HttpResponse, URI> {
    public URI apply(final HttpResponse from) {
-      if (from.getStatusCode() == 202 && from.getHeaders().containsKey("Location")){
-         String uri = from.getFirstHeaderOrNull("Location");
-         return URI.create(uri);
+      String locationUri;
+      if (from.getStatusCode() == 202 && (locationUri = from.getFirstHeaderOrNull("Location")) != null){
+         return URI.create(locationUri);
 
       } else if (from.getStatusCode() == 200 || from.getStatusCode() == 204){
          return null;
