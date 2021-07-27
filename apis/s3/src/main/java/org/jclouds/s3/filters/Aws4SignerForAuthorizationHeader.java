@@ -124,9 +124,9 @@ public class Aws4SignerForAuthorizationHeader extends Aws4SignerBase {
       signedHeadersBuilder.put(HttpHeaders.HOST.toLowerCase(), host);
 
       // user-agent
-      if (request.getHeaders().containsKey(HttpHeaders.USER_AGENT)) {
-         signedHeadersBuilder.put(HttpHeaders.USER_AGENT.toLowerCase(),
-               request.getFirstHeaderOrNull(HttpHeaders.USER_AGENT));
+      String userAgent = request.getFirstHeaderOrNull(HttpHeaders.USER_AGENT);
+      if (userAgent != null) {
+         signedHeadersBuilder.put(HttpHeaders.USER_AGENT.toLowerCase(), userAgent);
       }
 
       // all x-amz-* headers

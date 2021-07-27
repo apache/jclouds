@@ -114,8 +114,8 @@ public final class FormSignerV4 implements FormSigner {
     */
    @Override
    public HttpRequest filter(HttpRequest request) throws HttpException {
-      checkArgument(request.getHeaders().containsKey(HOST), "request is not ready to sign; host not present");
       String host = request.getFirstHeaderOrNull(HOST);
+      checkArgument(host != null, "request is not ready to sign; host not present");
       String form = request.getPayload().getRawContent().toString();
       Multimap<String, String> decodedParams = queryParser().apply(form);
       checkArgument(decodedParams.containsKey(ACTION), "request is not ready to sign; Action not present %s", form);
