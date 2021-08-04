@@ -16,9 +16,18 @@
  */
 package org.jclouds.blobstore.integration;
 
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
+import com.google.common.io.BaseEncoding;
+import org.jclouds.blobstore.domain.Blob;
+import org.jclouds.blobstore.domain.MultipartPart;
 import org.jclouds.blobstore.integration.internal.BaseBlobIntegrationTest;
 import org.testng.annotations.Test;
 import org.testng.SkipException;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Test(groups = { "integration" })
 public class TransientBlobIntegrationTest extends BaseBlobIntegrationTest {
@@ -30,5 +39,21 @@ public class TransientBlobIntegrationTest extends BaseBlobIntegrationTest {
    @Test(groups = { "integration", "live" })
    public void testSetBlobAccess() throws Exception {
       throw new SkipException("transient does not support anonymous access");
+   }
+
+   @Override
+   protected void checkMPUParts(Blob blob, List<MultipartPart> parts) {
+      assertThat(blob.getMetadata().getETag()).endsWith(String.format("-%d\"", parts.size()));
+      Hasher eTagHasher = Hashing.md5().newHasher();
+      for (MultipartPart part : parts) {
+         eTagHasher.putBytes(BaseEncoding.base16().lowerCase().decode(part.partETag()));
+      }
+      String expectedETag = new StringBuilder("\"")
+              .append(eTagHasher.hash())
+              .append("-")
+              .append(parts.size())
+              .append("\"")
+              .toString();
+      assertThat(blob.getMetadata().getETag()).isEqualTo(expectedETag);
    }
 }
