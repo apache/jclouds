@@ -193,7 +193,14 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
          Closeables2.closeQuietly(input);
       }
 
-      Blob newBlob = createUpdatedCopyOfBlobInContainer(containerName, blob, payload, actualHashCode);
+      String eTag = null;
+      if (blob.getMetadata() != null) {
+         eTag = blob.getMetadata().getETag();
+      }
+      if (eTag == null) {
+         eTag = base16().lowerCase().encode(actualHashCode.asBytes());
+      }
+      Blob newBlob = createUpdatedCopyOfBlobInContainer(containerName, blob, payload, actualHashCode, eTag);
       Map<String, Blob> map = containerToBlobs.get(containerName);
       String blobName = newBlob.getMetadata().getName();
       map.put(blobName, newBlob);
@@ -240,11 +247,12 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
       return "/";
    }
 
-   private Blob createUpdatedCopyOfBlobInContainer(String containerName, Blob in, byte[] input, HashCode contentMd5) {
+   private Blob createUpdatedCopyOfBlobInContainer(String containerName, Blob in, byte[] input, HashCode contentMd5, String eTag) {
       checkNotNull(containerName, "containerName");
       checkNotNull(in, "blob");
       checkNotNull(input, "input");
       checkNotNull(contentMd5, "contentMd5");
+      checkNotNull(eTag, "eTag");
       Payload payload = createPayload(input);
       MutableContentMetadata oldMd = in.getPayload().getContentMetadata();
       HttpUtils.copy(oldMd, payload.getContentMetadata());
@@ -255,7 +263,6 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
       blob.getMetadata().setContainer(containerName);
       blob.getMetadata().setLastModified(new Date());
       blob.getMetadata().setSize((long) input.length);
-      String eTag = base16().lowerCase().encode(contentMd5.asBytes());
       blob.getMetadata().setETag(eTag);
       // Set HTTP headers to match metadata
       blob.getAllHeaders().replaceValues(HttpHeaders.LAST_MODIFIED,
