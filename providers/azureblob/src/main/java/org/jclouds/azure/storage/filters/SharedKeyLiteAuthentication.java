@@ -35,6 +35,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.jclouds.Constants;
+import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azure.storage.util.storageurl.StorageUrlSupplier;
 import org.jclouds.crypto.Crypto;
 import org.jclouds.date.TimeStamp;
@@ -47,6 +48,7 @@ import org.jclouds.http.Uris;
 import org.jclouds.http.Uris.UriBuilder;
 import org.jclouds.http.internal.SignatureWire;
 import org.jclouds.logging.Logger;
+import org.jclouds.oauth.v2.filters.OAuthFilter;
 import org.jclouds.util.Strings2;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -80,6 +82,8 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
    private final HttpUtils utils;
    private final URI storageUrl;
    private final boolean isSAS;
+   private final AuthType authType;
+   private final OAuthFilter oAuthFilter;
 
    @Resource
    @Named(Constants.LOGGER_SIGNATURE)
@@ -88,8 +92,9 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
    @Inject
    public SharedKeyLiteAuthentication(SignatureWire signatureWire,
          @org.jclouds.location.Provider Supplier<Credentials> creds, @TimeStamp Provider<String> timeStampProvider,
-         Crypto crypto, HttpUtils utils, @Named("sasAuth") boolean sasAuthentication, 
-         StorageUrlSupplier storageUrlSupplier) {
+         Crypto crypto, HttpUtils utils, @Named("sasAuth") boolean sasAuthentication,
+         StorageUrlSupplier storageUrlSupplier, AuthType authType,
+         OAuthFilter oAuthFilter) {
       this.crypto = crypto;
       this.utils = utils;
       this.signatureWire = signatureWire;
@@ -98,6 +103,8 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
       this.credential = creds.get().credential;
       this.timeStampProvider = timeStampProvider;
       this.isSAS = sasAuthentication;
+      this.authType = authType;
+      this.oAuthFilter = oAuthFilter;
    }
    
    /** 
@@ -105,11 +112,15 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
     * is used and applies the right filtering.  
     */
    public HttpRequest filter(HttpRequest request) throws HttpException {
-      request = this.isSAS ? filterSAS(request, this.credential) : filterKey(request);
+      if (this.authType == AuthType.AZURE_AD) {
+         request = this.oAuthFilter.filter(request);
+      } else {
+         request = this.isSAS ? filterSAS(request, this.credential) : filterKey(request);
+      }
       utils.logRequest(signatureLog, request, "<<");
       return request;
    }
-   
+
    /** 
     * this filter method is applied only for the cases with SAS Authentication. 
     */

@@ -17,12 +17,15 @@
 package org.jclouds.azure.storage.util.storageurl;
 
 import com.google.common.base.Supplier;
+import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.domain.Credentials;
 import org.jclouds.location.Provider;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.net.URI;
+import static org.jclouds.azure.storage.config.AzureStorageProperties.ACCOUNT;
 import static org.jclouds.azure.storage.util.storageurl.TrailingSlashUtil.ensureTrailingSlash;
 
 @Singleton
@@ -30,11 +33,18 @@ public class StorageAccountInVhost implements StorageUrlSupplier {
 
    private final Supplier<URI> endpointSupplier;
    private final Supplier<Credentials> credentialsSupplier;
+   private final AuthType authType;
+   private final String account;
 
    @Inject
-   public StorageAccountInVhost(@Provider Supplier<URI> endpointSupplier, @Provider Supplier<Credentials> credentialsSupplier) {
+   public StorageAccountInVhost(@Provider Supplier<URI> endpointSupplier,
+                                @Provider Supplier<Credentials> credentialsSupplier,
+                                AuthType authType,
+                                @Named(ACCOUNT) String account) {
       this.endpointSupplier = endpointSupplier;
       this.credentialsSupplier = credentialsSupplier;
+      this.authType = authType;
+      this.account = account;
    }
 
    @Override
@@ -49,7 +59,10 @@ public class StorageAccountInVhost implements StorageUrlSupplier {
    }
 
    private String buildUri() {
-      return "https://" + credentialsSupplier.get().identity + ".blob.core.windows.net/";
+      String account = this.account;
+      if (account == null) {
+         account = credentialsSupplier.get().identity;
+      }
+      return "https://" + account + ".blob.core.windows.net/";
    }
-
 }

@@ -30,6 +30,8 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import com.google.inject.Scopes;
+import org.jclouds.azure.storage.config.AzureStorageOAuthConfigFactory;
 import org.jclouds.azure.storage.handlers.AzureStorageClientErrorRetryHandler;
 import org.jclouds.azureblob.AzureBlobClient;
 import org.jclouds.azureblob.handlers.ParseAzureBlobErrorFromXmlContent;
@@ -42,6 +44,8 @@ import org.jclouds.http.annotation.Redirection;
 import org.jclouds.http.annotation.ServerError;
 import org.jclouds.json.config.GsonModule.DateAdapter;
 import org.jclouds.json.config.GsonModule.Iso8601DateAdapter;
+import org.jclouds.oauth.v2.config.OAuthConfigFactory;
+import org.jclouds.oauth.v2.config.OAuthScopes;
 import org.jclouds.rest.ConfiguresHttpApi;
 import org.jclouds.rest.config.HttpApiModule;
 import org.jclouds.domain.Credentials;
@@ -55,11 +59,12 @@ import com.google.inject.Provides;
  */
 @ConfiguresHttpApi
 public class AzureBlobHttpApiModule extends HttpApiModule<AzureBlobClient> {
-
    @Override
    protected void configure() {
       install(new AzureBlobModule());
       bind(DateAdapter.class).to(Iso8601DateAdapter.class);
+      bind(OAuthScopes.class).toInstance(OAuthScopes.NoScopes.create());
+      bind(OAuthConfigFactory.class).to(AzureStorageOAuthConfigFactory.class).in(Scopes.SINGLETON);
       super.configure();
    }
 
@@ -77,7 +82,7 @@ public class AzureBlobHttpApiModule extends HttpApiModule<AzureBlobClient> {
     * checks which Authentication type is used 
     */
    @Named("sasAuth")
-   @Provides 
+   @Provides
    protected boolean authSAS(@org.jclouds.location.Provider Supplier<Credentials> creds) {
       String credential = creds.get().credential;
       String formattedCredential = credential.startsWith("?") ? credential.substring(1) : credential;
