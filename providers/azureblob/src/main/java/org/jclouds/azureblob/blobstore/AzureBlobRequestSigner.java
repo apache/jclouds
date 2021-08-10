@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azure.storage.filters.SharedKeyLiteAuthentication;
 import org.jclouds.azure.storage.util.storageurl.StorageUrlSupplier;
 import org.jclouds.blobstore.BlobRequestSigner;
@@ -57,13 +58,14 @@ public class AzureBlobRequestSigner implements BlobRequestSigner {
    private final SharedKeyLiteAuthentication auth;
    private final String credential;
    private final boolean isSAS;
+   private final AuthType authType;
 
    @Inject
    public AzureBlobRequestSigner(
          BlobToHttpGetOptions blob2HttpGetOptions, @TimeStamp Provider<String> timeStampProvider,
          DateService dateService, SharedKeyLiteAuthentication auth,
          @org.jclouds.location.Provider Supplier<Credentials> creds, @Named("sasAuth") boolean sasAuthentication,
-         StorageUrlSupplier storageUriSupplier)
+         StorageUrlSupplier storageUriSupplier, AuthType authType)
          throws SecurityException, NoSuchMethodException {
       this.identity = creds.get().identity;
       this.credential = creds.get().credential;
@@ -73,6 +75,7 @@ public class AzureBlobRequestSigner implements BlobRequestSigner {
       this.dateService = checkNotNull(dateService, "dateService");
       this.auth = auth;
       this.isSAS = sasAuthentication;
+      this.authType = authType;
    }
 
    @Override
@@ -192,12 +195,30 @@ public class AzureBlobRequestSigner implements BlobRequestSigner {
             .replaceHeader(HttpHeaders.DATE, nowString);
       request = setHeaders(request, method, options, contentLength, contentType);
       return request.build();
-   }  
+   }
+
+   private HttpRequest signAD(String method, String container, String name,
+                              @Nullable GetOptions options, long expires,
+                              @Nullable Long contentLength, @Nullable String contentType) {
+      checkNotNull(method, "method");
+      checkNotNull(container, "container");
+      checkNotNull(name, "name");
+      String nowString = timeStampProvider.get();
+      HttpRequest.Builder request = HttpRequest.builder()
+              .method(method)
+              .endpoint(Uris.uriBuilder(storageUrl).appendPath(container).appendPath(name).build())
+              .replaceHeader(HttpHeaders.DATE, nowString);
+      request = setHeaders(request, method, options, contentLength, contentType);
+      return request.build();
+   }
    
    /**
     * modified sign() method, which acts depending on the Auth input. 
     */
    public HttpRequest sign(String method, String container, String name, @Nullable GetOptions options, long expires, @Nullable Long contentLength, @Nullable String contentType) {
+      if (authType == AuthType.AZURE_AD) {
+         return signAD(method, container, name, options, expires, contentLength, contentType);
+      }
       if (isSAS) {
          return signSAS(method, container, name, options, expires, contentLength, contentType);
       }

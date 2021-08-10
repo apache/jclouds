@@ -22,6 +22,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
+import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azureblob.AzureBlobClient;
 import org.jclouds.azureblob.blobstore.AzureBlobRequestSigner;
 import org.jclouds.azureblob.blobstore.AzureBlobStore;
@@ -46,12 +47,12 @@ public class AzureBlobStoreContextModule extends AbstractModule {
 
    @Provides
    @Singleton
-   protected final LoadingCache<String, PublicAccess> containerAcls(final AzureBlobClient client, @Named("sasAuth") final boolean sasAuthentication) {
+   protected final LoadingCache<String, PublicAccess> containerAcls(final AzureBlobClient client, @Named("sasAuth") final boolean sasAuthentication, AuthType authType) {
       return CacheBuilder.newBuilder().expireAfterWrite(30, TimeUnit.SECONDS).build(
                new CacheLoader<String, PublicAccess>() {
                   @Override
                   public PublicAccess load(String container) throws CacheLoader.InvalidCacheLoadException {
-                     if (!sasAuthentication) {
+                     if (!sasAuthentication && authType == AuthType.AZURE_KEY) {
                         return client.getPublicAccessForContainer(container);
                      }
                      throw new InsufficientAccessRightsException("SAS Authentication does not support getAcl and setAcl calls.");

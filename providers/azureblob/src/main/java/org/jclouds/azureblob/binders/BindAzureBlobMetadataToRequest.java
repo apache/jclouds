@@ -77,7 +77,7 @@ public class BindAzureBlobMetadataToRequest implements Binder {
          break;
       case BLOCK_BLOB:
          // see https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs
-         // see AzureBlobApiMetadata#version (current API version used is 2017-04-17)
+         // see AzureBlobApiMetadata#version (current API version used is 2017-11-09)
          checkArgument(
                checkNotNull(blob.getPayload().getContentMetadata().getContentLength(), "blob.getContentLength()") <= 256L * 1024 * 1024,
                "maximum size for put Blob is 256MB");

@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
 import org.jclouds.ContextBuilder;
+import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azureblob.config.AppendAccountToEndpointModule;
 import org.jclouds.domain.Credentials;
 import org.jclouds.logging.config.NullLoggingModule;
@@ -40,7 +41,9 @@ public class StorageAccountInVhostTest {
 
       StorageAccountInVhost target = new StorageAccountInVhost(
             () -> null,
-            () -> new Credentials(ACCOUNT, "creds")
+            () -> new Credentials(ACCOUNT, "creds"),
+            AuthType.AZURE_KEY,
+            null
       );
       
       assertEquals(target.get().toString(), "https://foo.blob.core.windows.net/");
@@ -51,7 +54,9 @@ public class StorageAccountInVhostTest {
 
       StorageAccountInVhost target = new StorageAccountInVhost(
             () -> URI.create("https://foo2.blob.core.windows.net/"),
-            () -> new Credentials(ACCOUNT, "creds")
+            () -> new Credentials(ACCOUNT, "creds"),
+            AuthType.AZURE_KEY,
+            ""
       );
 
       assertEquals(target.get().toString(), "https://foo2.blob.core.windows.net/");
@@ -62,7 +67,9 @@ public class StorageAccountInVhostTest {
 
       StorageAccountInVhost target = new StorageAccountInVhost(
             () -> URI.create("https://foo2.blob.core.windows.net/"),
-            () -> new Credentials(ACCOUNT, "creds")
+            () -> new Credentials(ACCOUNT, "creds"),
+            AuthType.AZURE_KEY,
+            ""
       );
 
       assertEquals(target.get().toString(), "https://foo2.blob.core.windows.net/");
