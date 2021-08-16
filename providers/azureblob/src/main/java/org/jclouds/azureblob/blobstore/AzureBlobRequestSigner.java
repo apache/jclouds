@@ -47,7 +47,7 @@ import com.google.inject.Provider;
 @Singleton
 public class AzureBlobRequestSigner implements BlobRequestSigner {
    private static final int DEFAULT_EXPIRY_SECONDS = 15 * 60;
-   private static final String API_VERSION = "2017-04-17";
+   private static final String API_VERSION = "2017-11-09";
 
    private final String identity;
    private final URI storageUrl;
