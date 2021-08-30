@@ -186,7 +186,7 @@ public abstract class Deployment {
       public abstract ContentLink templateLink();
 
       @Nullable
-      public abstract Map<String, Value> parameters();
+      public abstract Map<String, JsonBall> parameters();
 
       @Nullable
       public abstract ContentLink parametersLink();
@@ -209,7 +209,7 @@ public abstract class Deployment {
                                                 final List<Dependency> dependencies,
                                                 final Map<String, JsonBall> template,
                                                 final ContentLink templateLink,
-                                                final Map<String, Value> parameters,
+                                                final Map<String, JsonBall> parameters,
                                                 final ContentLink parametersLink,
                                                 final String mode,
                                                 final String duration,
@@ -222,7 +222,7 @@ public abstract class Deployment {
                                                               dependencies == null ? null : copyOf(dependencies),
                                                               template == null ? ImmutableMap.<String, JsonBall>builder().build() : ImmutableMap.copyOf(template),
                                                               templateLink,
-                                                              parameters == null ? ImmutableMap.<String, Value>builder().build() : ImmutableMap.copyOf(parameters),
+                                                              parameters == null ? ImmutableMap.<String, JsonBall>builder().build() : ImmutableMap.copyOf(parameters),
                                                               parametersLink,
                                                               mode,
                                                               duration,
