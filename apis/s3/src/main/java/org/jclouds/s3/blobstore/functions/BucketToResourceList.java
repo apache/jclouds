@@ -21,14 +21,15 @@ import java.util.SortedSet;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
+
 import org.jclouds.blobstore.domain.PageSet;
 import org.jclouds.blobstore.domain.StorageMetadata;
 import org.jclouds.blobstore.domain.internal.PageSetImpl;
 import org.jclouds.s3.domain.ListBucketResponse;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import org.jclouds.s3.domain.ListVersionsResponse;
 
 @Singleton
 public class BucketToResourceList implements
@@ -45,7 +46,7 @@ public class BucketToResourceList implements
 
    @Inject
    public BucketToResourceList(ObjectToBlobMetadata object2blobMd,
-            CommonPrefixesToResourceMetadata prefix2ResourceMd) {
+                               CommonPrefixesToResourceMetadata prefix2ResourceMd) {
       this.object2blobMd = object2blobMd;
       this.prefix2ResourceMd = prefix2ResourceMd;
    }
@@ -54,6 +55,17 @@ public class BucketToResourceList implements
       // S3 lists keys in sorted order; use sorted set to order relative paths correctly
       SortedSet<StorageMetadata> contents = Sets.<StorageMetadata> newTreeSet(Iterables.transform(from,
                object2blobMd));
+
+      for (String prefix : from.getCommonPrefixes()) {
+         contents.add(prefix2ResourceMd.apply(prefix));
+      }
+      return new PageSetImpl<StorageMetadata>(contents, from.getNextMarker());
+   }
+
+   public PageSet<? extends StorageMetadata> apply(ListVersionsResponse from) {
+      // S3 lists keys in sorted order; use sorted set to order relative paths correctly
+      SortedSet<StorageMetadata> contents = Sets.<StorageMetadata> newTreeSet(Iterables.transform(from,
+          object2blobMd));
 
       for (String prefix : from.getCommonPrefixes()) {
          contents.add(prefix2ResourceMd.apply(prefix));

@@ -29,6 +29,13 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.blobstore.ContainerNotFoundException;
 import org.jclouds.blobstore.domain.Blob;
@@ -67,18 +74,12 @@ import org.jclouds.s3.domain.BucketMetadata;
 import org.jclouds.s3.domain.CannedAccessPolicy;
 import org.jclouds.s3.domain.ListMultipartUploadResponse;
 import org.jclouds.s3.domain.ListMultipartUploadsResponse;
+import org.jclouds.s3.options.BucketConfigOptions;
 import org.jclouds.s3.options.CopyObjectOptions;
 import org.jclouds.s3.options.ListBucketOptions;
 import org.jclouds.s3.options.PutBucketOptions;
 import org.jclouds.s3.options.PutObjectOptions;
 import org.jclouds.s3.util.S3Utils;
-
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 
 @Singleton
 public class S3BlobStore extends BaseBlobStore {
@@ -95,12 +96,12 @@ public class S3BlobStore extends BaseBlobStore {
 
    @Inject
    protected S3BlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
-            @Memoized Supplier<Set<? extends Location>> locations, PayloadSlicer slicer, S3Client sync,
-            Function<Set<BucketMetadata>, PageSet<? extends StorageMetadata>> convertBucketsToStorageMetadata,
-            ContainerToBucketListOptions container2BucketListOptions, BucketToResourceList bucket2ResourceList,
-            ObjectToBlob object2Blob, BlobToHttpGetOptions blob2ObjectGetOptions, BlobToObject blob2Object,
-            BlobToObjectMetadata blob2ObjectMetadata,
-            ObjectToBlobMetadata object2BlobMd, Provider<FetchBlobMetadata> fetchBlobMetadataProvider) {
+                         @Memoized Supplier<Set<? extends Location>> locations, PayloadSlicer slicer, S3Client sync,
+                         Function<Set<BucketMetadata>, PageSet<? extends StorageMetadata>> convertBucketsToStorageMetadata,
+                         ContainerToBucketListOptions container2BucketListOptions, BucketToResourceList bucket2ResourceList,
+                         ObjectToBlob object2Blob, BlobToHttpGetOptions blob2ObjectGetOptions, BlobToObject blob2Object,
+                         BlobToObjectMetadata blob2ObjectMetadata,
+                         ObjectToBlobMetadata object2BlobMd, Provider<FetchBlobMetadata> fetchBlobMetadataProvider) {
       super(context, blobUtils, defaultLocation, locations, slicer);
       this.blob2ObjectGetOptions = checkNotNull(blob2ObjectGetOptions, "blob2ObjectGetOptions");
       this.sync = checkNotNull(sync, "sync");
@@ -131,6 +132,20 @@ public class S3BlobStore extends BaseBlobStore {
    @Override
    public boolean containerExists(String container) {
       return sync.bucketExists(container);
+   }
+
+   public String getBucketConfiguration(String bucketName, BucketConfigOptions httpOptions ) {
+      String response = sync.getBucketConfiguration(bucketName, httpOptions);
+      return response;
+   }
+
+   public String getBucketConfiguration(String bucketName, Blob blob, BucketConfigOptions httpOptions ) {
+      String response = sync.getBucketConfiguration(bucketName, blob2Object.apply(blob), httpOptions);
+      return response;
+   }
+
+   public String putBucketConfiguration(String container, Blob blob, BucketConfigOptions httpOptions) {
+      return sync.putBucketConfiguration(container, blob2Object.apply(blob), httpOptions);
    }
 
    /**
@@ -174,7 +189,12 @@ public class S3BlobStore extends BaseBlobStore {
    @Override
    public PageSet<? extends StorageMetadata> list(String container, ListContainerOptions options) {
       ListBucketOptions httpOptions = container2BucketListOptions.apply(options);
-      PageSet<? extends StorageMetadata> list = bucket2ResourceList.apply(sync.listBucket(container, httpOptions));
+      PageSet<? extends StorageMetadata> list = null;
+      if (httpOptions.getVersions()){
+         list = bucket2ResourceList.apply(sync.listVersions(container, httpOptions));
+      }else{
+         list = bucket2ResourceList.apply(sync.listBucket(container, httpOptions));
+      }
       return options.isDetailed() ? fetchBlobMetadataProvider.get().setContainerName(container).apply(list) : list;
    }
 

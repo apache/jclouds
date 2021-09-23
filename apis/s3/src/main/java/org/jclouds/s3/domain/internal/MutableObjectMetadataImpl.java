@@ -19,6 +19,9 @@ package org.jclouds.s3.domain.internal;
 import java.net.URI;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
+
+import com.google.common.collect.Maps;
 
 import org.jclouds.http.HttpUtils;
 import org.jclouds.io.MutableContentMetadata;
@@ -26,8 +29,6 @@ import org.jclouds.io.payloads.BaseMutableContentMetadata;
 import org.jclouds.s3.domain.CanonicalUser;
 import org.jclouds.s3.domain.MutableObjectMetadata;
 import org.jclouds.s3.domain.ObjectMetadata;
-
-import com.google.common.collect.Maps;
 
 /**
  * Allows you to manipulate metadata.
@@ -39,6 +40,8 @@ public class MutableObjectMetadataImpl implements MutableObjectMetadata {
    private URI uri;
    private Date lastModified;
    private String eTag;
+   private String versionId;
+   private String isLatest;
    private CanonicalUser owner;
    private StorageClass storageClass;
    private String cacheControl;
@@ -132,6 +135,16 @@ public class MutableObjectMetadataImpl implements MutableObjectMetadata {
       return eTag;
    }
 
+   @Override
+   public String getVersionId() {
+      return versionId;
+   }
+
+   @Override
+   public String getIsLatest() {
+      return isLatest;
+   }
+
    /**
     *{@inheritDoc}
     */
@@ -164,6 +177,17 @@ public class MutableObjectMetadataImpl implements MutableObjectMetadata {
    public void setETag(String eTag) {
       this.eTag = eTag;
    }
+
+   @Override
+   public void setVersionId(String versionId) {
+      this.versionId = versionId;
+   }
+
+   @Override
+   public void setIsLatest(String isLatest) {
+      this.isLatest = isLatest;
+   }
+
 
    /**
     *{@inheritDoc}
@@ -231,28 +255,58 @@ public class MutableObjectMetadataImpl implements MutableObjectMetadata {
 
    @Override
    public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((uri == null) ? 0 : uri.hashCode());
-      return result;
+      return Objects.hash(key, bucket, uri, lastModified, eTag, versionId,
+          isLatest, owner, storageClass, cacheControl, userMetadata,
+          contentMetadata);
    }
 
    @Override
-   public boolean equals(Object obj) {
-      if (this == obj)
+   public boolean equals(Object o) {
+      if (this == o) {
          return true;
-      if (obj == null)
+      }
+      if (o == null || getClass() != o.getClass()) {
          return false;
-      if (getClass() != obj.getClass())
-         return false;
-      MutableObjectMetadataImpl other = (MutableObjectMetadataImpl) obj;
-      if (uri == null) {
-         if (other.uri != null)
-            return false;
-      } else if (!uri.equals(other.uri))
-         return false;
-      return true;
+      }
+      MutableObjectMetadataImpl that = (MutableObjectMetadataImpl) o;
+      return Objects.equals(key, that.key) &&
+          Objects.equals(bucket, that.bucket) &&
+          Objects.equals(uri, that.uri) &&
+          Objects.equals(lastModified, that.lastModified) &&
+          Objects.equals(eTag, that.eTag) &&
+          Objects.equals(versionId, that.versionId) &&
+          Objects.equals(isLatest, that.isLatest) &&
+          Objects.equals(owner, that.owner) &&
+          storageClass == that.storageClass &&
+          Objects.equals(cacheControl, that.cacheControl) &&
+          Objects.equals(userMetadata, that.userMetadata) &&
+          Objects.equals(contentMetadata, that.contentMetadata);
    }
+
+//   @Override
+//   public int hashCode() {
+//      final int prime = 31;
+//      int result = 1;
+//      result = prime * result + ((uri == null) ? 0 : uri.hashCode());
+//      return result;
+//   }
+
+//   @Override
+//   public boolean equals(Object obj) {
+//      if (this == obj)
+//         return true;
+//      if (obj == null)
+//         return false;
+//      if (getClass() != obj.getClass())
+//         return false;
+//      MutableObjectMetadataImpl other = (MutableObjectMetadataImpl) obj;
+//      if (uri == null) {
+//         if (other.uri != null)
+//            return false;
+//      } else if (!uri.equals(other.uri))
+//         return false;
+//      return true;
+//   }
 
    @Override
    public String toString() {

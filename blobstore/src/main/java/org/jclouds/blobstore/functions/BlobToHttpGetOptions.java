@@ -20,9 +20,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.inject.Singleton;
 
-import org.jclouds.http.options.GetOptions;
-
 import com.google.common.base.Function;
+
+import org.jclouds.http.options.GetOptions;
 
 @Singleton
 public class BlobToHttpGetOptions implements Function<org.jclouds.blobstore.options.GetOptions, GetOptions> {
@@ -53,6 +53,9 @@ public class BlobToHttpGetOptions implements Function<org.jclouds.blobstore.opti
             httpOptions.tail(Long.parseLong(firstLast[1]));
          else
             httpOptions.startAt(Long.parseLong(firstLast[0]));
+      }
+      if (from.getVersionId() != null) {
+         httpOptions.versionId(from.getVersionId());
       }
       return httpOptions;
    }

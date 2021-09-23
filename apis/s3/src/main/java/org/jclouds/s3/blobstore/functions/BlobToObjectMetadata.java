@@ -45,6 +45,7 @@ public class BlobToObjectMetadata implements Function<BlobMetadata, MutableObjec
       to.setKey(from.getName());
       to.setBucket(bucket);
       to.setLastModified(from.getLastModified());
+      to.setVersionId(from.getVersionId());
       if (from.getUserMetadata() != null) {
          for (Entry<String, String> entry : from.getUserMetadata().entrySet())
             to.getUserMetadata().put(entry.getKey().toLowerCase(), entry.getValue());

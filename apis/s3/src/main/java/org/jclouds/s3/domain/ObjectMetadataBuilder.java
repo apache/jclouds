@@ -20,12 +20,12 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
+
 import org.jclouds.io.ContentMetadataBuilder;
 import org.jclouds.io.payloads.BaseMutableContentMetadata;
 import org.jclouds.s3.domain.ObjectMetadata.StorageClass;
 import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Allows you to create {@link ObjectMetadata} objects.
@@ -44,6 +44,8 @@ public class ObjectMetadataBuilder {
    private StorageClass storageClass = StorageClass.STANDARD;
    private Date lastModified;
    private String eTag;
+   private String versionId;
+   private String isLatest;
    private CanonicalUser owner;
    private Map<String, String> userMetadata = ImmutableMap.of();
 
@@ -64,6 +66,16 @@ public class ObjectMetadataBuilder {
 
    public ObjectMetadataBuilder eTag(String eTag) {
       this.eTag = eTag;
+      return this;
+   }
+
+   public ObjectMetadataBuilder versionId(String versionId) {
+      this.versionId = versionId;
+      return this;
+   }
+
+   public ObjectMetadataBuilder isLatest(String isLatest) {
+      this.isLatest = isLatest;
       return this;
    }
 
@@ -133,6 +145,8 @@ public class ObjectMetadataBuilder {
       toReturn.setBucket(bucket);
       toReturn.setUri(uri);
       toReturn.setETag(eTag);
+      toReturn.setVersionId(versionId);
+      toReturn.setIsLatest(isLatest);
       toReturn.setOwner(owner);
       toReturn.setStorageClass(storageClass);
       toReturn.setUserMetadata(userMetadata);

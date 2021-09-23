@@ -50,4 +50,8 @@ public interface MutableStorageMetadata extends MutableResourceMetadata<StorageT
    void setSize(@Nullable Long size);
 
    void setTier(Tier tier);
+
+   void setVersionId(String versionId);
+
+   void setIsLatest(String isLatest);
 }

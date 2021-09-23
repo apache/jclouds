@@ -47,6 +47,7 @@ public class GetOptions {
    private Date ifUnmodifiedSince;
    private String ifMatch;
    private String ifNoneMatch;
+   private String versionId;
 
    /**
     * download the specified range of the object.
@@ -80,6 +81,14 @@ public class GetOptions {
       return this;
    }
 
+   public GetOptions versionId(String versionId) {
+      this.versionId = checkNotNull(versionId, "versionId");
+      return this;
+   }
+
+   public String getVersionId() {
+      return this.versionId;
+   }
    /**
     * Only return the object if it has changed since this time.
     * <p />

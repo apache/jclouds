@@ -78,6 +78,10 @@ public interface StorageMetadata extends ResourceMetadata<StorageType> {
     */
    String getETag();
 
+   String getVersionId();
+
+   String getIsLatest();
+
    /**
     * Creation date of the resource, possibly null.
     */

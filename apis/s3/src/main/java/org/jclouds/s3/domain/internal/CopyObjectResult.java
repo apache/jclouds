@@ -20,12 +20,12 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
+
 import org.jclouds.io.ContentMetadata;
 import org.jclouds.io.payloads.BaseImmutableContentMetadata;
 import org.jclouds.s3.domain.CanonicalUser;
 import org.jclouds.s3.domain.ObjectMetadata;
-
-import com.google.common.collect.ImmutableMap;
 
 /**
  * Returns the metadata parsable from a bucket listing
@@ -35,10 +35,22 @@ public class CopyObjectResult implements ObjectMetadata {
    private final Date lastModified;
    private final String eTag;
    private final BaseImmutableContentMetadata contentMetadata;
+   private final String versionId;
+   private final String isLatest;
 
    public CopyObjectResult(Date lastModified, String eTag) {
       this.lastModified = lastModified;
       this.eTag = eTag;
+      this.versionId=null;
+      this.isLatest=null;
+      this.contentMetadata = new BaseImmutableContentMetadata(null, null, null, null, null, null, null);
+   }
+
+   public CopyObjectResult(Date lastModified, String eTag, String version) {
+      this.lastModified = lastModified;
+      this.eTag = eTag;
+      this.versionId = version;
+      this.isLatest = null;
       this.contentMetadata = new BaseImmutableContentMetadata(null, null, null, null, null, null, null);
    }
 
@@ -104,6 +116,16 @@ public class CopyObjectResult implements ObjectMetadata {
    @Override
    public String getETag() {
       return eTag;
+   }
+
+   @Override
+   public String getVersionId() {
+      return versionId;
+   }
+
+   @Override
+   public String getIsLatest() {
+      return isLatest;
    }
 
    /**

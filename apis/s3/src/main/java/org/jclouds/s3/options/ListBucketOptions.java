@@ -96,6 +96,13 @@ public class ListBucketOptions extends BaseHttpRequestOptions implements Cloneab
       return getFirstQueryOrNull("delimiter");
    }
 
+   public ListBucketOptions versions(Boolean versions) {
+      this.queryParameters.put("versions", checkNotNull(versions, "versions") + "");
+      return this;
+   }
+
+   public Boolean getVersions() { return Boolean.valueOf(getFirstQueryOrNull("versions"));  }
+
    public static class Builder {
 
       /**
@@ -128,6 +135,10 @@ public class ListBucketOptions extends BaseHttpRequestOptions implements Cloneab
       public static ListBucketOptions delimiter(String delimiter) {
          ListBucketOptions options = new ListBucketOptions();
          return options.delimiter(delimiter);
+      }
+
+      public ListBucketOptions versions(Boolean versions) {
+         return new ListBucketOptions().versions(versions);
       }
 
    }

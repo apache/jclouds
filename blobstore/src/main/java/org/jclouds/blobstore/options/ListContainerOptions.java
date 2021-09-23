@@ -44,18 +44,24 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
    private String prefix;
    private boolean recursive;
    private boolean detailed;
+   private boolean versions;
 
    public ListContainerOptions() {
    }
 
    ListContainerOptions(Integer maxKeys, String marker, String dir, boolean recursive,
-            boolean detailed, String prefix, String delimiter) {
+                        boolean detailed, String prefix, String delimiter) {
       super(maxKeys, marker);
       this.dir = dir;
       this.recursive = recursive;
       this.detailed = detailed;
       this.prefix = prefix;
       this.delimiter = delimiter;
+   }
+   ListContainerOptions(Integer maxKeys, String marker, String dir, boolean recursive,
+                        boolean detailed, String prefix, String delimiter, boolean versions) {
+      this(maxKeys, marker, dir, recursive, detailed, prefix, delimiter);
+      this.versions = versions;
    }
 
    public static class ImmutableListContainerOptions extends ListContainerOptions {
@@ -89,6 +95,12 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
       public boolean isRecursive() {
          return delegate.isRecursive();
       }
+
+      @Override
+      public boolean isVersions() {
+         return delegate.isVersions();
+      }
+
 
       @Override
       public ListContainerOptions maxResults(int maxKeys) {
@@ -163,6 +175,8 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
       return detailed;
    }
 
+   public boolean isVersions() { return versions; }
+
    public String getPrefix() {
       return prefix;
    }
@@ -231,6 +245,15 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
       return this;
    }
 
+   /**
+    * return a listing of all objects inside the store, recursively.
+    */
+   public ListContainerOptions versions() {
+      // checkArgument(path == null, "path and recursive combination currently not supported");
+      this.versions = true;
+      return this;
+   }
+
    public static class Builder {
 
       /**
@@ -268,6 +291,13 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
       }
 
       /**
+       * @see ListContainerOptions#versions()
+       */
+      public static ListContainerOptions versions() {
+         ListContainerOptions options = new ListContainerOptions();
+         return options.versions();
+      }
+      /**
        * @see ListContainerOptions#withDetails()
        */
       public static ListContainerOptions withDetails() {
@@ -293,7 +323,7 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
 
    @Override
    public ListContainerOptions clone() {
-      return new ListContainerOptions(getMaxResults(), getMarker(), dir, recursive, detailed, prefix, delimiter);
+      return new ListContainerOptions(getMaxResults(), getMarker(), dir, recursive, detailed, prefix, delimiter, versions);
    }
 
    @Override
@@ -301,12 +331,13 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
       return "[dir=" + dir + ", recursive=" + recursive + ", detailed=" + detailed
                + ", prefix=" + prefix + ", marker=" + getMarker()
                + ", delimiter=" + delimiter
-               + ", maxResults=" + getMaxResults() + "]";
+               + ", maxResults=" + getMaxResults()
+               + ", versions=" + versions+ "]";
    }
 
    @Override
    public int hashCode() {
-      return Objects.hashCode(detailed, recursive, dir, getMarker(), getMaxResults());
+      return Objects.hashCode(detailed, recursive, dir, getMarker(), getMaxResults(),versions);
    }
 
    @Override
@@ -320,6 +351,7 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
       ListContainerOptions other = (ListContainerOptions) obj;
       return (detailed == other.detailed) &&
                recursive == other.recursive &&
+               versions == other.versions &&
                Objects.equal(dir, other.dir) &&
                Objects.equal(prefix, other.prefix) &&
                Objects.equal(getMarker(), other.getMarker()) &&

@@ -20,10 +20,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.inject.Singleton;
 
+import com.google.common.base.Function;
+
 import org.jclouds.blobstore.options.ListContainerOptions;
 import org.jclouds.s3.options.ListBucketOptions;
-
-import com.google.common.base.Function;
 
 @Singleton
 public class ContainerToBucketListOptions implements
@@ -62,6 +62,10 @@ public class ContainerToBucketListOptions implements
       }
       if (from.getMaxResults() != null) {
          httpOptions.maxResults(from.getMaxResults());
+      }
+      if (from.isVersions()) {
+            httpOptions.versions(from.isVersions());
+         System.out.println("PAVAN ContainerToBucketListOptions -> applyupdating the httpOptions versions to:"+httpOptions.getVersions());
       }
       return httpOptions;
    }

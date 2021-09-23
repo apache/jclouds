@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package org.jclouds.http.options;
+
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.net.HttpHeaders.IF_MATCH;
@@ -26,12 +27,12 @@ import static com.google.common.net.HttpHeaders.RANGE;
 import java.util.Date;
 import java.util.List;
 
-import org.jclouds.date.DateService;
-import org.jclouds.date.internal.SimpleDateFormatDateService;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+
+import org.jclouds.date.DateService;
+import org.jclouds.date.internal.SimpleDateFormatDateService;
 
 /**
  * Contains options supported for HTTP GET operations. <h2>
@@ -99,6 +100,15 @@ public class GetOptions extends BaseHttpRequestOptions {
       return (!ranges.isEmpty()) ? String.format("bytes=%s", Joiner.on(",").join(ranges)) : null;
    }
 
+   public GetOptions versionId(String versionId) {
+      this.queryParameters.put("versionId",
+          checkNotNull(versionId, "versionId"));
+      return this;
+   }
+
+   public String getVersionId() {
+      return this.getVersionId();
+   }
    /**
     * Only return the object if it has changed since this time.
     * <p />
@@ -232,6 +242,11 @@ public class GetOptions extends BaseHttpRequestOptions {
       public static GetOptions tail(long count) {
          GetOptions options = new GetOptions();
          return options.tail(count);
+      }
+
+      public static GetOptions versionId(String versionId) {
+         GetOptions options = new GetOptions();
+         return options.versionId(versionId);
       }
 
       /**

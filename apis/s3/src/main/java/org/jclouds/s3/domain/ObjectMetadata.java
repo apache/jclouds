@@ -27,7 +27,7 @@ import org.jclouds.io.ContentMetadata;
 
 /**
  * Amazon S3 is designed to store objects. Objects are stored in {@link S3BucketListing buckets}
- * and consist of a {@link org.jclouds.s3.domain.S3Object#getData() value}, a
+ * and consist of a {@link S3Object#getData() value}, a
  * {@link S3Object#getKey key}, {@link ObjectMetadata#getUserMetadata() metadata}, and an access
  * control policy.
  */
@@ -100,6 +100,10 @@ public interface ObjectMetadata extends Comparable<ObjectMetadata> {
    Date getLastModified();
 
    String getETag();
+
+   String getVersionId();
+
+   String getIsLatest();
 
    Map<String, String> getUserMetadata();
 

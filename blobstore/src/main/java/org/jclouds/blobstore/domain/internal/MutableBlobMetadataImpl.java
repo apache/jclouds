@@ -18,13 +18,14 @@ package org.jclouds.blobstore.domain.internal;
 
 import java.net.URI;
 
-import com.google.common.base.Objects;
 import com.google.common.base.MoreObjects.ToStringHelper;
+import com.google.common.base.Objects;
 
 import org.jclouds.blobstore.domain.BlobMetadata;
 import org.jclouds.blobstore.domain.MutableBlobMetadata;
 import org.jclouds.blobstore.domain.StorageType;
 import org.jclouds.blobstore.domain.Tier;
+import org.jclouds.domain.ResourceMetadata;
 import org.jclouds.http.HttpUtils;
 import org.jclouds.io.MutableContentMetadata;
 import org.jclouds.io.payloads.BaseMutableContentMetadata;
@@ -109,6 +110,11 @@ public class MutableBlobMetadataImpl extends MutableStorageMetadataImpl implemen
    @Override
    public void setTier(Tier tier) {
       this.tier = tier;
+   }
+
+   @Override
+   public int compareTo(ResourceMetadata<StorageType> o) {
+      return (this == o) ? 0 : (this.equals(o))? 0 : (this.hashCode()-o.hashCode());
    }
 
    @Override

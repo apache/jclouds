@@ -18,8 +18,8 @@ package org.jclouds.blobstore.domain.internal;
 
 import java.util.Date;
 
-import com.google.common.base.Objects;
 import com.google.common.base.MoreObjects.ToStringHelper;
+import com.google.common.base.Objects;
 
 import org.jclouds.blobstore.domain.MutableStorageMetadata;
 import org.jclouds.blobstore.domain.StorageMetadata;
@@ -38,6 +38,8 @@ public class MutableStorageMetadataImpl extends MutableResourceMetadataImpl<Stor
    private Date lastModified;
    private Long size;
    private Tier tier;
+   private String versionId;
+   private String isLatest;
 
    public MutableStorageMetadataImpl() {
       super();
@@ -49,6 +51,8 @@ public class MutableStorageMetadataImpl extends MutableResourceMetadataImpl<Stor
       this.lastModified = from.getLastModified();
       this.size = from.getSize();
       this.tier = from.getTier();
+      this.versionId = from.getVersionId();
+      this.isLatest = from.getIsLatest();
    }
 
    /**
@@ -57,6 +61,16 @@ public class MutableStorageMetadataImpl extends MutableResourceMetadataImpl<Stor
    @Override
    public String getETag() {
       return eTag;
+   }
+
+   @Override
+   public String getVersionId() {
+      return versionId;
+   }
+
+   @Override
+   public String getIsLatest() {
+      return isLatest;
    }
 
    @Override
@@ -94,6 +108,16 @@ public class MutableStorageMetadataImpl extends MutableResourceMetadataImpl<Stor
    }
 
    @Override
+   public void setVersionId(String versionId) {
+      this.versionId = versionId;
+   }
+
+   @Override
+   public void setIsLatest(String isLatest) {
+   this.isLatest = isLatest;
+   }
+
+   @Override
    public Long getSize() {
       return size;
    }
@@ -124,6 +148,8 @@ public class MutableStorageMetadataImpl extends MutableResourceMetadataImpl<Stor
       MutableStorageMetadataImpl that = (MutableStorageMetadataImpl) object;
       return super.equals(that) &&
             Objects.equal(eTag, that.eTag) &&
+            Objects.equal(versionId, that.versionId) &&
+            Objects.equal(isLatest, that.isLatest) &&
             Objects.equal(creationDate, that.creationDate) &&
             Objects.equal(lastModified, that.lastModified) &&
             Objects.equal(size, that.size) &&
@@ -132,13 +158,14 @@ public class MutableStorageMetadataImpl extends MutableResourceMetadataImpl<Stor
 
    @Override
    public int hashCode() {
-      return Objects.hashCode(super.hashCode(), eTag, creationDate, lastModified, size, tier);
+      return Objects.hashCode(super.hashCode(), eTag, versionId, isLatest, creationDate, lastModified, size, tier);
    }
 
    @Override
    protected ToStringHelper string() {
       return super.string()
             .add("eTag", eTag)
+            .add("versionId", versionId)
             .add("creationDate", creationDate)
             .add("lastModified", lastModified)
             .add("size", size)

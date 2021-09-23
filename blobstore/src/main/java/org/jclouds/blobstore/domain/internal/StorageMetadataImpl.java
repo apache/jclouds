@@ -22,8 +22,8 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
-import com.google.common.base.Objects;
 import com.google.common.base.MoreObjects.ToStringHelper;
+import com.google.common.base.Objects;
 
 import org.jclouds.blobstore.domain.StorageMetadata;
 import org.jclouds.blobstore.domain.StorageType;
@@ -40,6 +40,10 @@ public class StorageMetadataImpl extends ResourceMetadataImpl<StorageType> imple
    @Nullable
    private final String eTag;
    @Nullable
+   private final String versionId;
+   @Nullable
+   private final String isLatest;
+   @Nullable
    private final Date creationDate;
    @Nullable
    private final Date lastModified;
@@ -50,9 +54,9 @@ public class StorageMetadataImpl extends ResourceMetadataImpl<StorageType> imple
    private final Tier tier;
 
    public StorageMetadataImpl(StorageType type, @Nullable String id, @Nullable String name,
-         @Nullable Location location, @Nullable URI uri, @Nullable String eTag,
-         @Nullable Date creationDate, @Nullable Date lastModified,
-         Map<String, String> userMetadata, @Nullable Long size, Tier tier) {
+                              @Nullable Location location, @Nullable URI uri, @Nullable String eTag,
+                              @Nullable Date creationDate, @Nullable Date lastModified,
+                              Map<String, String> userMetadata, @Nullable Long size, Tier tier) {
       super(id, name, location, uri, userMetadata);
       this.eTag = eTag;
       this.creationDate = creationDate;
@@ -60,23 +64,40 @@ public class StorageMetadataImpl extends ResourceMetadataImpl<StorageType> imple
       this.type = checkNotNull(type, "type");
       this.size = size;
       this.tier = tier;
+      this.versionId = null;
+      this.isLatest= null;
+   }
+
+   public StorageMetadataImpl(StorageType type, @Nullable String id, @Nullable String name,
+                              @Nullable Location location, @Nullable URI uri, @Nullable String eTag,
+                              @Nullable Date creationDate, @Nullable Date lastModified,
+                              Map<String, String> userMetadata, @Nullable Long size, Tier tier, @Nullable String versionId) {
+      super(id, name, location, uri, userMetadata);
+      this.eTag = eTag;
+      this.creationDate = creationDate;
+      this.lastModified = lastModified;
+      this.type = checkNotNull(type, "type");
+      this.size = size;
+      this.tier = tier;
+      this.versionId = versionId;
+      this.isLatest= null;
    }
 
    /** @deprecated call StorageMetadataImpl(StorageType.class, String.class, String.class, Location.class, URI.class, String.class, Date.class, Date.class, Map.class, Long.class, Tier.class) */
    @Deprecated
    public StorageMetadataImpl(StorageType type, @Nullable String id, @Nullable String name,
-         @Nullable Location location, @Nullable URI uri, @Nullable String eTag,
-         @Nullable Date creationDate, @Nullable Date lastModified,
-         Map<String, String> userMetadata, @Nullable Long size) {
+                              @Nullable Location location, @Nullable URI uri, @Nullable String eTag,
+                              @Nullable Date creationDate, @Nullable Date lastModified,
+                              Map<String, String> userMetadata, @Nullable Long size) {
       this(type, id, name, location, uri, eTag, creationDate, lastModified, userMetadata, size, null);
    }
 
    /** @deprecated call StorageMetadataImpl(StorageType.class, String.class, String.class, Location.class, URI.class, String.class, Date.class, Date.class, Map.class, Long.class) */
    @Deprecated
    public StorageMetadataImpl(StorageType type, @Nullable String id, @Nullable String name,
-         @Nullable Location location, @Nullable URI uri, @Nullable String eTag,
-         @Nullable Date creationDate, @Nullable Date lastModified,
-         Map<String, String> userMetadata) {
+                              @Nullable Location location, @Nullable URI uri, @Nullable String eTag,
+                              @Nullable Date creationDate, @Nullable Date lastModified,
+                              Map<String, String> userMetadata) {
       this(type, id, name, location, uri, eTag, creationDate, lastModified, userMetadata, null);
    }
 
@@ -90,7 +111,7 @@ public class StorageMetadataImpl extends ResourceMetadataImpl<StorageType> imple
 
    @Override
    public int hashCode() {
-      return Objects.hashCode(super.hashCode(), eTag, creationDate,
+      return Objects.hashCode(super.hashCode(), eTag, versionId, creationDate,
             lastModified, type, size, tier);
    }
 
@@ -104,6 +125,7 @@ public class StorageMetadataImpl extends ResourceMetadataImpl<StorageType> imple
          return false;
       StorageMetadataImpl other = (StorageMetadataImpl) obj;
       if (!Objects.equal(eTag, other.eTag)) { return false; }
+      if (!Objects.equal(versionId, other.versionId)) { return false; }
       if (!Objects.equal(creationDate, other.creationDate)) { return false; }
       if (!Objects.equal(lastModified, other.lastModified)) { return false; }
       if (!Objects.equal(type, other.type)) { return false; }
@@ -116,6 +138,7 @@ public class StorageMetadataImpl extends ResourceMetadataImpl<StorageType> imple
    protected ToStringHelper string() {
       return super.string()
             .add("eTag", eTag)
+            .add("versionId", versionId)
             .add("creationDate", creationDate)
             .add("lastModified", lastModified)
             .add("type", type)
@@ -129,6 +152,16 @@ public class StorageMetadataImpl extends ResourceMetadataImpl<StorageType> imple
    @Override
    public String getETag() {
       return eTag;
+   }
+
+   @Override
+   public String getVersionId() {
+      return versionId;
+   }
+
+   @Override
+   public String getIsLatest() {
+      return isLatest;
    }
 
    @Override
