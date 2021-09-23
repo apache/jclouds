@@ -65,7 +65,6 @@ public class ContainerToBucketListOptions implements
       }
       if (from.isVersions()) {
             httpOptions.versions(from.isVersions());
-         System.out.println("PAVAN ContainerToBucketListOptions -> applyupdating the httpOptions versions to:"+httpOptions.getVersions());
       }
       return httpOptions;
    }
