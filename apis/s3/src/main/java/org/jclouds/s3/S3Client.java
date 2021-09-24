@@ -659,13 +659,12 @@ public interface S3Client extends Closeable {
        BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName,
                                     BucketConfigOptions... options);
 
-   @Named("GetBucketConfiguration")
-   @GET
+   @Named("DeleteBucketConfiguration")
+   @DELETE
    @Path("/")
    @ResponseParser(BucketConfigurationHandler.class)
-   String getBucketConfiguration(@Bucket @EndpointParam(parser = AssignCorrectHostnameForBucket.class) @BinderParam(
-       BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName, @BinderParam(BindS3ObjectMetadataToRequest.class)
-       S3Object object, BucketConfigOptions... options);
+   String deleteBucketConfiguration(@Bucket @EndpointParam(parser = AssignCorrectHostnameForBucket.class) @BinderParam(
+       BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName, BucketConfigOptions... options);
 
    @Named("PutBucketConfiguration")
    @PUT

@@ -139,8 +139,8 @@ public class S3BlobStore extends BaseBlobStore {
       return response;
    }
 
-   public String getBucketConfiguration(String bucketName, Blob blob, BucketConfigOptions httpOptions ) {
-      String response = sync.getBucketConfiguration(bucketName, blob2Object.apply(blob), httpOptions);
+   public String deleteBucketConfiguration(String bucketName, BucketConfigOptions httpOptions ) {
+      String response = sync.deleteBucketConfiguration(bucketName, httpOptions);
       return response;
    }
 

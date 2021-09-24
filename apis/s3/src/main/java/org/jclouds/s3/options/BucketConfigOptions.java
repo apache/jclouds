@@ -24,11 +24,11 @@ public class BucketConfigOptions extends BaseHttpRequestOptions {
         return this;
     }
     public BucketConfigOptions encryption() {
-        this.queryParameters.put("encryption", "");
+        this.queryParameters.put("encryption", "true");
         return this;
     }
     public BucketConfigOptions lifecycle() {
-        this.queryParameters.put("lifecycle", "");
+        this.queryParameters.put("lifecycle", "true");
         return this;
     }
 
