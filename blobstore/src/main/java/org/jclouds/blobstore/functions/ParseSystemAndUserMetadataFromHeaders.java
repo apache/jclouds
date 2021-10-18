@@ -71,7 +71,7 @@ public class ParseSystemAndUserMetadataFromHeaders implements Function<HttpRespo
       addETagTo(from, to);
       parseLastModifiedOrThrowException(from, to);
       addUserMetadataTo(from, to);
-      addVersionIdTo(from,to);
+      addVersionIdTo(from, to);
       return to;
    }
 

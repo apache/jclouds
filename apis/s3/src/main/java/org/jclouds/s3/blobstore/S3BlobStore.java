@@ -192,7 +192,7 @@ public class S3BlobStore extends BaseBlobStore {
       PageSet<? extends StorageMetadata> list = null;
       if (httpOptions.getVersions()){
          list = bucket2ResourceList.apply(sync.listVersions(container, httpOptions));
-      }else{
+      } else {
          list = bucket2ResourceList.apply(sync.listBucket(container, httpOptions));
       }
       return options.isDetailed() ? fetchBlobMetadataProvider.get().setContainerName(container).apply(list) : list;

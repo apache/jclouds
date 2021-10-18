@@ -48,7 +48,6 @@ import org.jclouds.s3.S3Client;
 import org.jclouds.s3.blobstore.functions.BucketsToStorageMetadata;
 import org.jclouds.s3.domain.BucketMetadata;
 import org.jclouds.s3.filters.RequestAuthorizeSignature;
-import org.jclouds.s3.filters.RequestAuthorizeSignatureV2;
 import org.jclouds.s3.filters.RequestAuthorizeSignatureV4;
 import org.jclouds.s3.functions.GetRegionForBucket;
 import org.jclouds.s3.handlers.ParseS3ErrorFromXmlContent;

@@ -52,7 +52,7 @@ public class BucketListObjectMetadata implements ObjectMetadata {
       this.uri = checkNotNull(uri, "uri");
       this.lastModified = lastModified;
       this.eTag = eTag;
-      this.versionId=null;
+      this.versionId = null;
       this.isLatest = null;
       this.owner = owner;
       this.contentMetadata = new BaseImmutableContentMetadata(null, contentLength, md5, null, null, null, null);

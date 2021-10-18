@@ -41,8 +41,8 @@ public class CopyObjectResult implements ObjectMetadata {
    public CopyObjectResult(Date lastModified, String eTag) {
       this.lastModified = lastModified;
       this.eTag = eTag;
-      this.versionId=null;
-      this.isLatest=null;
+      this.versionId = null;
+      this.isLatest = null;
       this.contentMetadata = new BaseImmutableContentMetadata(null, null, null, null, null, null, null);
    }
 

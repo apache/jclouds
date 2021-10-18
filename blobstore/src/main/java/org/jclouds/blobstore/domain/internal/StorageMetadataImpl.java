@@ -65,7 +65,7 @@ public class StorageMetadataImpl extends ResourceMetadataImpl<StorageType> imple
       this.size = size;
       this.tier = tier;
       this.versionId = null;
-      this.isLatest= null;
+      this.isLatest = null;
    }
 
    public StorageMetadataImpl(StorageType type, @Nullable String id, @Nullable String name,
@@ -80,7 +80,7 @@ public class StorageMetadataImpl extends ResourceMetadataImpl<StorageType> imple
       this.size = size;
       this.tier = tier;
       this.versionId = versionId;
-      this.isLatest= null;
+      this.isLatest = null;
    }
 
    /** @deprecated call StorageMetadataImpl(StorageType.class, String.class, String.class, Location.class, URI.class, String.class, Date.class, Date.class, Map.class, Long.class, Tier.class) */

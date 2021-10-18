@@ -332,12 +332,12 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
                + ", prefix=" + prefix + ", marker=" + getMarker()
                + ", delimiter=" + delimiter
                + ", maxResults=" + getMaxResults()
-               + ", versions=" + versions+ "]";
+               + ", versions=" + versions + "]";
    }
 
    @Override
    public int hashCode() {
-      return Objects.hashCode(detailed, recursive, dir, getMarker(), getMaxResults(),versions);
+      return Objects.hashCode(detailed, recursive, dir, getMarker(), getMaxResults(), versions);
    }
 
    @Override
