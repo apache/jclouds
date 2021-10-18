@@ -114,7 +114,7 @@ public class MutableBlobMetadataImpl extends MutableStorageMetadataImpl implemen
 
    @Override
    public int compareTo(ResourceMetadata<StorageType> o) {
-      return (this == o) ? 0 : (this.equals(o))? 0 : (this.hashCode()-o.hashCode());
+      return super.compareTo(o);
    }
 
    @Override
