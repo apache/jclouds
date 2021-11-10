@@ -64,7 +64,7 @@ public class ContainerToBucketListOptions implements
          httpOptions.maxResults(from.getMaxResults());
       }
       if (from.isVersions()) {
-            httpOptions.versions(from.isVersions());
+         httpOptions.versions(from.isVersions());
       }
       return httpOptions;
    }
