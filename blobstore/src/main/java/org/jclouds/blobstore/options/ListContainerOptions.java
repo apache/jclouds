@@ -214,7 +214,6 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
     * return a listing of all objects inside the store, recursively.
     */
    public ListContainerOptions recursive() {
-      // checkArgument(path == null, "path and recursive combination currently not supported");
       this.recursive = true;
       return this;
    }

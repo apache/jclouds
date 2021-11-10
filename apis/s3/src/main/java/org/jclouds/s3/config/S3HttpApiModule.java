@@ -184,7 +184,6 @@ public class S3HttpApiModule<S extends S3Client> extends AWSHttpApiModule<S> {
    }
 
    protected void bindRequestSigner() {
-//      bind(RequestAuthorizeSignature.class).to(RequestAuthorizeSignatureV2.class).in(Scopes.SINGLETON);
       bind(RequestAuthorizeSignature.class).to(RequestAuthorizeSignatureV4.class).in(Scopes.SINGLETON);
    }
 
