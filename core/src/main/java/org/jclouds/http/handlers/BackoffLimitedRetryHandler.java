@@ -90,11 +90,19 @@ public class BackoffLimitedRetryHandler implements HttpRetryHandler, IOException
    protected Logger logger = Logger.NULL;
 
    public boolean shouldRetryRequest(HttpCommand command, IOException error) {
-      return ifReplayableBackoffAndReturnTrue(command);
+      boolean status = ifReplayableBackoffAndReturnTrue(command);
+      if (!status) {
+         logger.error("server error : %1$s", error);
+      }
+      return status;
    }
 
    public boolean shouldRetryRequest(HttpCommand command, HttpResponse response) {
-      return ifReplayableBackoffAndReturnTrue(command);
+      boolean status = ifReplayableBackoffAndReturnTrue(command);
+      if (!status) {
+         logger.error("server response statusCode : %1$d and message %2$s", response.getStatusCode(), response.getMessage());
+      }
+      return status;
    }
 
    private boolean ifReplayableBackoffAndReturnTrue(HttpCommand command) {
