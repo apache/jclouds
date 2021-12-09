@@ -30,6 +30,7 @@ import javax.inject.Singleton;
 import org.jclouds.aws.domain.AWSError;
 import org.jclouds.aws.handlers.ParseAWSErrorFromXmlContent;
 import org.jclouds.aws.util.AWSUtils;
+import org.jclouds.blobstore.ConfigurationNotFoundException;
 import org.jclouds.blobstore.ContainerNotFoundException;
 import org.jclouds.blobstore.KeyNotFoundException;
 import org.jclouds.http.HttpCommand;
@@ -86,7 +87,12 @@ public class ParseS3ErrorFromXmlContent extends ParseAWSErrorFromXmlContent {
                   String path = command.getCurrentRequest().getEndpoint().getPath().substring(servicePath.length());
                   List<String> parts = newArrayList(Splitter.on('/').omitEmptyStrings().split(path));
                   if (parts.size() == 1) {
-                     exception = new ContainerNotFoundException(parts.get(0), message);
+                     if (message.contains("configuration")) {
+                        exception = new ConfigurationNotFoundException(parts.get(0), message);
+                     }
+                     else {
+                        exception = new ContainerNotFoundException(parts.get(0), message);
+                     }
                   } else if (parts.size() > 1) {
                      exception = new KeyNotFoundException(parts.remove(0), Joiner.on('/').join(parts), message);
                   }
