@@ -236,7 +236,7 @@
     <modernizer-maven-annotations.version>1.8.0</modernizer-maven-annotations.version>
 
     <!-- Log dependency versions -->
-    <log4j.version>1.2.17</log4j.version>
+    <log4j.version>2.16.0</log4j.version>
     <logback.version>1.1.2</logback.version>
 
     <!-- OSGi dependency versions -->
@@ -336,8 +336,8 @@
 
       <!-- Log dependencies -->
       <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
         <version>${log4j.version}</version>
       </dependency>
       <dependency>
