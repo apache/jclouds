@@ -16,9 +16,6 @@
  */
 package org.jclouds.logging.log4j;
 
-import static org.apache.log4j.Level.ERROR;
-import static org.apache.log4j.Level.WARN;
-
 import org.jclouds.logging.BaseLogger;
 import org.jclouds.logging.Logger;
 
@@ -26,17 +23,17 @@ import org.jclouds.logging.Logger;
  * {@link org.apache.log4j.Logger} implementation of {@link Logger}.
  */
 public class Log4JLogger extends BaseLogger {
-    private final org.apache.log4j.Logger logger;
+    private final org.apache.logging.log4j.Logger logger;
     private final String category;
 
     public static class Log4JLoggerFactory implements LoggerFactory {
 	public Logger getLogger(String category) {
-	    return new Log4JLogger(category, org.apache.log4j.Logger
+	    return new Log4JLogger(category, org.apache.logging.log4j.LogManager
 		    .getLogger(category));
 	}
     }
 
-    public Log4JLogger(String category, org.apache.log4j.Logger logger) {
+    public Log4JLogger(String category, org.apache.logging.log4j.Logger logger) {
 	this.category = category;
 	this.logger = logger;
     }
@@ -79,7 +76,7 @@ public class Log4JLogger extends BaseLogger {
     }
 
     public boolean isWarnEnabled() {
-	return logger.isEnabledFor(WARN);
+	return logger.isWarnEnabled();
     }
 
     @Override
@@ -93,7 +90,7 @@ public class Log4JLogger extends BaseLogger {
     }
 
     public boolean isErrorEnabled() {
-	return logger.isEnabledFor(ERROR);
+	return logger.isErrorEnabled();
     }
 
     public String getCategory() {
