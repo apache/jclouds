@@ -39,6 +39,7 @@
     <module>ec2</module>
     <module>elasticstack</module>
     <module>filesystem</module>
+    <module>glacier</module>
     <module>oauth</module>
     <module>openstack-cinder</module>
     <module>openstack-keystone</module>
