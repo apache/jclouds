@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.glacier.*;version="${project.version}";-noimport:=true
