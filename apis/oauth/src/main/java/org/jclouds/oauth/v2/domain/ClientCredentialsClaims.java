@@ -54,7 +54,7 @@ public abstract class ClientCredentialsClaims {
     public abstract String jti();
 
     @SerializedNames({ "iss", "sub", "aud", "exp", "nbf", "jti" })
-    public static ClientCredentialsClaims create(String iss, String sub, String aud, long exp, long nbf, String jti) {
+    public static ClientCredentialsClaims create(String iss, String sub, String aud, long exp, long nbf, @Nullable String jti) {
         return new AutoValue_ClientCredentialsClaims(iss, sub, aud, exp, nbf, jti);
     }
 
