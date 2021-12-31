@@ -32,8 +32,8 @@ import org.jclouds.s3.predicates.validators.BucketNameValidator;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
+import com.google.inject.Injector;
 import com.google.inject.Provides;
-import com.google.inject.Scopes;
 
 /**
  * Configures the S3 connection.
@@ -57,8 +57,8 @@ public class AWSS3HttpApiModule extends S3HttpApiModule<AWSS3Client> {
    }
 
    @Override
-   protected void bindRequestSigner() {
-      bind(RequestAuthorizeSignature.class).to(AWSRequestAuthorizeSignatureV4.class).in(Scopes.SINGLETON);
+   protected RequestAuthorizeSignature providesRequestAuthorizeSignature(Injector i, int version) {
+      return i.getInstance(AWSRequestAuthorizeSignatureV4.class);
    }
 
    @Singleton

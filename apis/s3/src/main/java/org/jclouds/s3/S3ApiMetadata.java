@@ -26,6 +26,7 @@ import static org.jclouds.reflect.Reflection2.typeToken;
 import static org.jclouds.s3.reference.S3Constants.PROPERTY_JCLOUDS_S3_CHUNKED_SIZE;
 import static org.jclouds.s3.reference.S3Constants.PROPERTY_S3_SERVICE_PATH;
 import static org.jclouds.s3.reference.S3Constants.PROPERTY_S3_VIRTUAL_HOST_BUCKETS;
+import static org.jclouds.s3.reference.S3Constants.PROPERTY_SIGNER_VERSION;
 
 import java.net.URI;
 import java.util.Properties;
@@ -81,6 +82,7 @@ public class S3ApiMetadata extends BaseHttpApiMetadata {
       properties.setProperty(PROPERTY_BLOBSTORE_DIRECTORY_SUFFIX, "/");
       properties.setProperty(PROPERTY_USER_METADATA_PREFIX, String.format("x-${%s}-meta-", PROPERTY_HEADER_TAG));
       properties.setProperty(PROPERTY_IDEMPOTENT_METHODS, "DELETE,GET,HEAD,OPTIONS,POST,PUT");
+      properties.setProperty(PROPERTY_SIGNER_VERSION, "2");
 
       // Chunk size must be at least 8 KB. We recommend a chunk size of a least 64 KB for better performance.
       properties.setProperty(PROPERTY_JCLOUDS_S3_CHUNKED_SIZE, String.valueOf(64 * 1024));
