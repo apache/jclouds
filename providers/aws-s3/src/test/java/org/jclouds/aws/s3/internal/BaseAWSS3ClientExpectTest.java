@@ -27,8 +27,8 @@ import org.jclouds.rest.internal.BaseRestApiExpectTest;
 import org.jclouds.s3.filters.RequestAuthorizeSignature;
 
 import com.google.common.base.Supplier;
+import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.Scopes;
 
 /**
  * Base class for writing Expect tests for AWS-S3
@@ -56,8 +56,8 @@ public class BaseAWSS3ClientExpectTest extends BaseRestApiExpectTest<AWSS3Client
 
       // subclass expects v2 signatures
       @Override
-      protected void bindRequestSigner() {
-         bind(RequestAuthorizeSignature.class).to(AWSRequestAuthorizeSignature.class).in(Scopes.SINGLETON);
+      protected RequestAuthorizeSignature providesRequestAuthorizeSignature(Injector i, int version) {
+         return i.getInstance(AWSRequestAuthorizeSignature.class);
       }
    }
 

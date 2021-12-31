@@ -49,9 +49,11 @@ import org.jclouds.s3.blobstore.functions.BucketsToStorageMetadata;
 import org.jclouds.s3.domain.BucketMetadata;
 import org.jclouds.s3.filters.RequestAuthorizeSignature;
 import org.jclouds.s3.filters.RequestAuthorizeSignatureV2;
+import org.jclouds.s3.filters.RequestAuthorizeSignatureV4;
 import org.jclouds.s3.functions.GetRegionForBucket;
 import org.jclouds.s3.handlers.ParseS3ErrorFromXmlContent;
 import org.jclouds.s3.handlers.S3RedirectionRetryHandler;
+import org.jclouds.s3.reference.S3Constants;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -61,8 +63,8 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Iterables;
+import com.google.inject.Injector;
 import com.google.inject.Provides;
-import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
 
 /**
@@ -169,7 +171,6 @@ public class S3HttpApiModule<S extends S3Client> extends AWSHttpApiModule<S> {
       super.configure();
       install(new S3ObjectModule());
       install(new S3ParserModule());
-      bindRequestSigner();
       bind(new TypeLiteral<Function<String, Optional<String>>>() {
       }).annotatedWith(Bucket.class).to(GetRegionForBucket.class);
       bind(new TypeLiteral<Function<Set<BucketMetadata>, PageSet<? extends StorageMetadata>>>() {
@@ -183,8 +184,21 @@ public class S3HttpApiModule<S extends S3Client> extends AWSHttpApiModule<S> {
       bind(HttpErrorHandler.class).annotatedWith(ServerError.class).to(ParseS3ErrorFromXmlContent.class);
    }
 
-   protected void bindRequestSigner() {
-      bind(RequestAuthorizeSignature.class).to(RequestAuthorizeSignatureV2.class).in(Scopes.SINGLETON);
+   @Provides
+   @Singleton
+   protected final RequestAuthorizeSignature provideRequestAuthorizeSignature(Injector i, @Named(S3Constants.PROPERTY_SIGNER_VERSION) int version) {
+      return providesRequestAuthorizeSignature(i, version);
+   }
+
+   protected RequestAuthorizeSignature providesRequestAuthorizeSignature(Injector i, int version) {
+      switch (version) {
+      case 2:
+         return i.getInstance(RequestAuthorizeSignatureV2.class);
+      case 4:
+         return i.getInstance(RequestAuthorizeSignatureV4.class);
+      default:
+         throw new IllegalStateException("version must be 2 or 4, was: " + version);
+      }
    }
 
    @Provides

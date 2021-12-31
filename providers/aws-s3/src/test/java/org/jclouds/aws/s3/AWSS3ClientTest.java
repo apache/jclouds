@@ -52,8 +52,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.Invokable;
+import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.Scopes;
 
 // NOTE:without testName, this will not call @Before* and fail w/NPE during
 // surefire
@@ -197,8 +197,8 @@ public class AWSS3ClientTest extends S3ClientTest<AWSS3Client> {
 
       // subclass expects v2 signatures
       @Override
-      protected void bindRequestSigner() {
-         bind(RequestAuthorizeSignature.class).to(AWSRequestAuthorizeSignature.class).in(Scopes.SINGLETON);
+      protected RequestAuthorizeSignature providesRequestAuthorizeSignature(Injector i, int version) {
+         return i.getInstance(AWSRequestAuthorizeSignature.class);
       }
    }
 
