@@ -19,14 +19,14 @@ package org.jclouds.s3.blobstore.functions;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.common.base.Function;
-
 import org.jclouds.blobstore.domain.MutableBlobMetadata;
 import org.jclouds.blobstore.domain.StorageType;
 import org.jclouds.blobstore.domain.internal.MutableBlobMetadataImpl;
 import org.jclouds.domain.Location;
 import org.jclouds.http.HttpUtils;
 import org.jclouds.s3.domain.ObjectMetadata;
+
+import com.google.common.base.Function;
 
 @Singleton
 public class ObjectToBlobMetadata implements Function<ObjectMetadata, MutableBlobMetadata> {

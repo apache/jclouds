@@ -101,7 +101,10 @@ public class ListBucketOptions extends BaseHttpRequestOptions implements Cloneab
       return this;
    }
 
-   public Boolean getVersions() { return Boolean.valueOf(getFirstQueryOrNull("versions"));  }
+   public Boolean getVersions() {
+      String versions = getFirstQueryOrNull("versions");
+      return Boolean.valueOf(versions);
+   }
 
    public static class Builder {
 

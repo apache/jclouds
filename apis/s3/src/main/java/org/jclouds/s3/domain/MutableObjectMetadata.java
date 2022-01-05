@@ -20,10 +20,11 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
-import com.google.inject.ImplementedBy;
-
 import org.jclouds.io.MutableContentMetadata;
+import org.jclouds.s3.domain.ObjectMetadata.StorageClass;
 import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl;
+
+import com.google.inject.ImplementedBy;
 
 /**
  * /** Amazon S3 is designed to store objects. Objects are stored in {@link ListBucketResponse buckets}

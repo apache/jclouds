@@ -19,13 +19,14 @@ package org.jclouds.s3.domain.internal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 
 import org.jclouds.s3.domain.ListVersionsResponse;
 import org.jclouds.s3.domain.ObjectMetadata;
 
 public class ListVersionsResponseImpl extends LinkedHashSet<ObjectMetadata>
-    implements ListVersionsResponse {
+        implements ListVersionsResponse {
 
     protected final String name;
     protected final String prefix;
@@ -44,7 +45,7 @@ public class ListVersionsResponseImpl extends LinkedHashSet<ObjectMetadata>
                                     String nextMarker, int maxKeys,
                                     String delimiter, boolean truncated,
                                     Set<String> commonPrefixes
-                                    ) {
+    ) {
         Iterables.addAll(this, version);
         this.name = name;
         this.prefix = prefix;
@@ -135,74 +136,25 @@ public class ListVersionsResponseImpl extends LinkedHashSet<ObjectMetadata>
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result +
-            ((commonPrefixes == null) ? 0 : commonPrefixes.hashCode());
-        result =
-            prime * result + ((delimiter == null) ? 0 : delimiter.hashCode());
-        result = prime * result + ((marker == null) ? 0 : marker.hashCode());
-        result = prime * result + maxKeys;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
-        result = prime * result + (truncated ? 1231 : 1237);
-        return result;
+        return Objects.hashCode(commonPrefixes, delimiter, marker, maxKeys, name, prefix, truncated);
     }
 
     @Override
     public boolean equals(Object obj) {
-       if (this == obj) {
-          return true;
-       }
-       if (!super.equals(obj)) {
-          return false;
-       }
-       if (getClass() != obj.getClass()) {
-          return false;
-       }
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         ListVersionsResponseImpl other = (ListVersionsResponseImpl) obj;
-        if (commonPrefixes == null) {
-           if (other.commonPrefixes != null) {
-              return false;
-           }
-        } else if (!commonPrefixes.equals(other.commonPrefixes)) {
-           return false;
-        }
-        if (delimiter == null) {
-           if (other.delimiter != null) {
-              return false;
-           }
-        } else if (!delimiter.equals(other.delimiter)) {
-           return false;
-        }
-        if (marker == null) {
-           if (other.marker != null) {
-              return false;
-           }
-        } else if (!marker.equals(other.marker)) {
-           return false;
-        }
-       if (maxKeys != other.maxKeys) {
-          return false;
-       }
-        if (name == null) {
-           if (other.name != null) {
-              return false;
-           }
-        } else if (!name.equals(other.name)) {
-           return false;
-        }
-        if (prefix == null) {
-           if (other.prefix != null) {
-              return false;
-           }
-        } else if (!prefix.equals(other.prefix)) {
-           return false;
-        }
-       if (truncated != other.truncated) {
-          return false;
-       }
-        return true;
-    }
+        return (truncated == other.truncated) &&
+                maxKeys == other.maxKeys &&
+                Objects.equal(name, other.name) &&
+                Objects.equal(prefix, other.prefix) &&
+                Objects.equal(marker, other.marker) &&
+                Objects.equal(delimiter, other.delimiter) &&
+                Objects.equal(commonPrefixes, other.commonPrefixes);
 
+    }
 }
