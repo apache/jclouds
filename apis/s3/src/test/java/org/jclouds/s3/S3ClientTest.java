@@ -16,13 +16,13 @@
  */
 package org.jclouds.s3;
 
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.reflect.Invokable;
-import com.google.inject.Module;
+import static org.jclouds.reflect.Reflection2.method;
+import static org.testng.Assert.assertEquals;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
+
 import org.jclouds.Fallbacks.VoidOnNotFoundOr404;
 import org.jclouds.aws.domain.Region;
 import org.jclouds.blobstore.BlobStoreFallbacks.FalseOnContainerNotFound;
@@ -45,15 +45,15 @@ import org.jclouds.rest.internal.GeneratedHttpRequest;
 import org.jclouds.s3.S3Fallbacks.TrueOn404OrNotFoundFalseOnIllegalState;
 import org.jclouds.s3.config.S3HttpApiModule;
 import org.jclouds.s3.domain.AccessControlList;
+import org.jclouds.s3.domain.AccessControlList.EmailAddressGrantee;
+import org.jclouds.s3.domain.AccessControlList.Grant;
+import org.jclouds.s3.domain.AccessControlList.Permission;
 import org.jclouds.s3.domain.BucketLogging;
 import org.jclouds.s3.domain.CannedAccessPolicy;
 import org.jclouds.s3.domain.ObjectMetadata;
 import org.jclouds.s3.domain.ObjectMetadataBuilder;
 import org.jclouds.s3.domain.Payer;
 import org.jclouds.s3.domain.S3Object;
-import org.jclouds.s3.domain.AccessControlList.EmailAddressGrantee;
-import org.jclouds.s3.domain.AccessControlList.Grant;
-import org.jclouds.s3.domain.AccessControlList.Permission;
 import org.jclouds.s3.fallbacks.FalseIfBucketAlreadyOwnedByYouOrOperationAbortedWhenBucketExists;
 import org.jclouds.s3.functions.ETagFromHttpResponseViaRegex;
 import org.jclouds.s3.functions.ParseObjectFromHeadersAndHttpContent;
@@ -69,20 +69,22 @@ import org.jclouds.s3.xml.AccessControlListHandler;
 import org.jclouds.s3.xml.BucketConfigurationHandler;
 import org.jclouds.s3.xml.BucketLoggingHandler;
 import org.jclouds.s3.xml.CopyObjectHandler;
-import org.jclouds.s3.xml.LocationConstraintHandler;
-import org.jclouds.s3.xml.ListBucketHandler;
 import org.jclouds.s3.xml.ListAllMyBucketsHandler;
+import org.jclouds.s3.xml.ListBucketHandler;
 import org.jclouds.s3.xml.ListMultipartUploadsHandler;
+import org.jclouds.s3.xml.LocationConstraintHandler;
 import org.jclouds.s3.xml.PayerHandler;
 import org.jclouds.util.Strings2;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
+import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.reflect.Invokable;
+import com.google.inject.Module;
 
-import static org.jclouds.reflect.Reflection2.method;
-import static org.testng.Assert.assertEquals;
 /**
  * Tests behavior of {@code S3Client}
  */
