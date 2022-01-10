@@ -29,10 +29,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Function;
-import com.google.common.net.HttpHeaders;
-
 import org.jclouds.blobstore.domain.MutableBlobMetadata;
 import org.jclouds.date.DateService;
 import org.jclouds.http.HttpException;
@@ -41,6 +37,10 @@ import org.jclouds.http.HttpResponse;
 import org.jclouds.http.HttpUtils;
 import org.jclouds.rest.InvocationContext;
 import org.jclouds.rest.internal.GeneratedHttpRequest;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Function;
+import com.google.common.net.HttpHeaders;
 
 public class ParseSystemAndUserMetadataFromHeaders implements Function<HttpResponse, MutableBlobMetadata>,
          InvocationContext<ParseSystemAndUserMetadataFromHeaders> {
@@ -53,7 +53,7 @@ public class ParseSystemAndUserMetadataFromHeaders implements Function<HttpRespo
 
    @Inject
    public ParseSystemAndUserMetadataFromHeaders(Provider<MutableBlobMetadata> metadataFactory, DateService dateParser,
-                                                @Named(PROPERTY_USER_METADATA_PREFIX) String metadataPrefix) {
+            @Named(PROPERTY_USER_METADATA_PREFIX) String metadataPrefix) {
       this.metadataFactory = checkNotNull(metadataFactory, "metadataFactory");
       this.dateParser = checkNotNull(dateParser, "dateParser");
       this.metadataPrefix = checkNotNull(metadataPrefix, "metadataPrefix").toLowerCase();
@@ -112,10 +112,10 @@ public class ParseSystemAndUserMetadataFromHeaders implements Function<HttpRespo
    }
 
    protected void addVersionIdTo(HttpResponse from, MutableBlobMetadata metadata) {
-      String versionId = from.getFirstHeaderOrNull("x-amz-version-id");
-      if (metadata.getVersionId() == null && versionId != null) {
-         metadata.setVersionId(versionId);
-      }
+	  String versionId = from.getFirstHeaderOrNull("x-amz-version-id");
+	  if (metadata.getVersionId() == null && versionId != null) {
+	     metadata.setVersionId(versionId);
+	  }
    }
 
    public ParseSystemAndUserMetadataFromHeaders setContext(HttpRequest request) {

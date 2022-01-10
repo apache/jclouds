@@ -35,9 +35,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import com.google.common.annotations.Beta;
-import com.google.inject.Provides;
-
 import org.jclouds.Fallbacks.VoidOnNotFoundOr404;
 import org.jclouds.blobstore.BlobStoreFallbacks.FalseOnContainerNotFound;
 import org.jclouds.blobstore.BlobStoreFallbacks.FalseOnKeyNotFound;
@@ -114,6 +111,9 @@ import org.jclouds.s3.xml.LocationConstraintHandler;
 import org.jclouds.s3.xml.PartIdsFromHttpResponse;
 import org.jclouds.s3.xml.PartIdsFromHttpResponseFull;
 import org.jclouds.s3.xml.PayerHandler;
+
+import com.google.common.annotations.Beta;
+import com.google.inject.Provides;
 
 /**
  * Provides access to S3 via their REST API.
@@ -264,7 +264,7 @@ public interface S3Client extends Closeable {
     * @return ETag of the content uploaded
     * @throws org.jclouds.http.HttpResponseException
     *            if the conditions requested set are not satisfied by the object on the server.
-    * @see CannedAccessPolicy#PRIVATE
+    * @see org.jclouds.s3.domain.CannedAccessPolicy#PRIVATE
     */
    @Named("PutObject")
    @PUT
@@ -358,8 +358,9 @@ public interface S3Client extends Closeable {
    @Path("/")
    @XMLResponseParser(ListVersionHandler.class)
    ListVersionsResponse listVersions(@Bucket @EndpointParam(parser = AssignCorrectHostnameForBucket.class) @BinderParam(
-       BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName,
-                                           ListBucketOptions... options);
+         BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName,
+         ListBucketOptions... options);
+
    /**
     * Returns a list of all of the buckets owned by the authenticated sender of the request.
     * 
@@ -379,17 +380,17 @@ public interface S3Client extends Closeable {
     * in Amazon S3.
     * <p/>
     * When copying an object, you can preserve all metadata (default) or
-    * {@link CopyObjectOptions#overrideMetadataWith(Map)} specify new
+    * {@link CopyObjectOptions#overrideMetadataWith(java.util.Map)} specify new
     * metadata}. However, the ACL is not preserved and is set to private for the user making the
     * request. To override the default ACL setting,
-    * {@link CopyObjectOptions#overrideAcl(CannedAccessPolicy) specify a
+    * {@link CopyObjectOptions#overrideAcl(org.jclouds.s3.domain.CannedAccessPolicy) specify a
     * new ACL} when generating a copy request.
     * 
     * @return metadata populated with lastModified and eTag of the new object
     * @throws org.jclouds.http.HttpResponseException
     *            if the conditions requested set are not satisfied by the object on the server.
     * @see CopyObjectOptions
-    * @see CannedAccessPolicy
+    * @see org.jclouds.s3.domain.CannedAccessPolicy
     */
    @Named("PutObject")
    @PUT
@@ -656,24 +657,24 @@ public interface S3Client extends Closeable {
    @Path("/")
    @ResponseParser(BucketConfigurationHandler.class)
    String getBucketConfiguration(@Bucket @EndpointParam(parser = AssignCorrectHostnameForBucket.class) @BinderParam(
-       BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName,
-                                    BucketConfigOptions... options);
+         BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName,
+         BucketConfigOptions... options);
 
    @Named("DeleteBucketConfiguration")
    @DELETE
    @Path("/")
    @ResponseParser(BucketConfigurationHandler.class)
    String deleteBucketConfiguration(@Bucket @EndpointParam(parser = AssignCorrectHostnameForBucket.class) @BinderParam(
-       BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName, BucketConfigOptions... options);
+         BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName, BucketConfigOptions... options);
 
    @Named("PutBucketConfiguration")
    @PUT
    @Path("/")
    @ResponseParser(BucketConfigurationHandler.class)
    String putBucketConfiguration(@Bucket @EndpointParam(parser = AssignCorrectHostnameForBucket.class) @BinderParam(
-       BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName,
-                    @BinderParam(BindS3ObjectMetadataToRequest.class)
-                        S3Object object, BucketConfigOptions... options);
+         BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName,
+         @BinderParam(BindS3ObjectMetadataToRequest.class)
+         S3Object object, BucketConfigOptions... options);
 
    /**
     * This operation initiates a multipart upload and returns an upload ID. This upload ID is used

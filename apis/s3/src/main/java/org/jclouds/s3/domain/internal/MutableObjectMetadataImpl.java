@@ -19,9 +19,6 @@ package org.jclouds.s3.domain.internal;
 import java.net.URI;
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
-
-import com.google.common.collect.Maps;
 
 import org.jclouds.http.HttpUtils;
 import org.jclouds.io.MutableContentMetadata;
@@ -29,6 +26,8 @@ import org.jclouds.io.payloads.BaseMutableContentMetadata;
 import org.jclouds.s3.domain.CanonicalUser;
 import org.jclouds.s3.domain.MutableObjectMetadata;
 import org.jclouds.s3.domain.ObjectMetadata;
+
+import com.google.common.collect.Maps;
 
 /**
  * Allows you to manipulate metadata.
@@ -188,7 +187,6 @@ public class MutableObjectMetadataImpl implements MutableObjectMetadata {
       this.isLatest = isLatest;
    }
 
-
    /**
     *{@inheritDoc}
     */
@@ -255,32 +253,27 @@ public class MutableObjectMetadataImpl implements MutableObjectMetadata {
 
    @Override
    public int hashCode() {
-      return Objects.hash(key, bucket, uri, lastModified, eTag, versionId,
-          isLatest, owner, storageClass, cacheControl, userMetadata,
-          contentMetadata);
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + ((uri == null) ? 0 : uri.hashCode());
+      return result;
    }
 
    @Override
-   public boolean equals(Object o) {
-      if (this == o) {
+   public boolean equals(Object obj) {
+      if (this == obj)
          return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
+      if (obj == null)
          return false;
-      }
-      MutableObjectMetadataImpl that = (MutableObjectMetadataImpl) o;
-      return Objects.equals(key, that.key) &&
-          Objects.equals(bucket, that.bucket) &&
-          Objects.equals(uri, that.uri) &&
-          Objects.equals(lastModified, that.lastModified) &&
-          Objects.equals(eTag, that.eTag) &&
-          Objects.equals(versionId, that.versionId) &&
-          Objects.equals(isLatest, that.isLatest) &&
-          Objects.equals(owner, that.owner) &&
-          storageClass == that.storageClass &&
-          Objects.equals(cacheControl, that.cacheControl) &&
-          Objects.equals(userMetadata, that.userMetadata) &&
-          Objects.equals(contentMetadata, that.contentMetadata);
+      if (getClass() != obj.getClass())
+         return false;
+      MutableObjectMetadataImpl other = (MutableObjectMetadataImpl) obj;
+      if (uri == null) {
+         if (other.uri != null)
+            return false;
+      } else if (!uri.equals(other.uri))
+         return false;
+      return true;
    }
 
    @Override

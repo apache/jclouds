@@ -50,7 +50,7 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
    }
 
    ListContainerOptions(Integer maxKeys, String marker, String dir, boolean recursive,
-                        boolean detailed, String prefix, String delimiter) {
+            boolean detailed, String prefix, String delimiter) {
       super(maxKeys, marker);
       this.dir = dir;
       this.recursive = recursive;
@@ -58,8 +58,9 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
       this.prefix = prefix;
       this.delimiter = delimiter;
    }
+
    ListContainerOptions(Integer maxKeys, String marker, String dir, boolean recursive,
-                        boolean detailed, String prefix, String delimiter, boolean versions) {
+            boolean detailed, String prefix, String delimiter, boolean versions) {
       this(maxKeys, marker, dir, recursive, detailed, prefix, delimiter);
       this.versions = versions;
    }
@@ -100,7 +101,6 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
       public boolean isVersions() {
          return delegate.isVersions();
       }
-
 
       @Override
       public ListContainerOptions maxResults(int maxKeys) {
@@ -175,7 +175,9 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
       return detailed;
    }
 
-   public boolean isVersions() { return versions; }
+   public boolean isVersions() {
+      return versions;
+   }
 
    public String getPrefix() {
       return prefix;
@@ -214,6 +216,7 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
     * return a listing of all objects inside the store, recursively.
     */
    public ListContainerOptions recursive() {
+      // checkArgument(path == null, "path and recursive combination currently not supported");
       this.recursive = true;
       return this;
    }
@@ -248,7 +251,6 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
     * return a listing of all objects inside the store, recursively.
     */
    public ListContainerOptions versions() {
-      // checkArgument(path == null, "path and recursive combination currently not supported");
       this.versions = true;
       return this;
    }
@@ -296,6 +298,7 @@ public class ListContainerOptions extends ListOptions implements Cloneable {
          ListContainerOptions options = new ListContainerOptions();
          return options.versions();
       }
+
       /**
        * @see ListContainerOptions#withDetails()
        */
