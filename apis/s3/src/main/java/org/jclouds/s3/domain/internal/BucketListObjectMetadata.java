@@ -22,12 +22,12 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
 import org.jclouds.io.ContentMetadata;
 import org.jclouds.io.payloads.BaseImmutableContentMetadata;
 import org.jclouds.s3.domain.CanonicalUser;
 import org.jclouds.s3.domain.ObjectMetadata;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Returns the metadata parsable from a bucket listing
@@ -46,7 +46,7 @@ public class BucketListObjectMetadata implements ObjectMetadata {
    private final ContentMetadata contentMetadata;
 
    public BucketListObjectMetadata(String key, String bucket, URI uri, Date lastModified, String eTag, byte[] md5,
-                                   long contentLength, CanonicalUser owner, StorageClass storageClass) {
+            long contentLength, CanonicalUser owner, StorageClass storageClass) {
       this.key = checkNotNull(key, "key");
       this.bucket = checkNotNull(bucket, "bucket");
       this.uri = checkNotNull(uri, "uri");

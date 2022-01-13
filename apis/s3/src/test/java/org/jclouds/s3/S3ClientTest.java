@@ -60,11 +60,13 @@ import org.jclouds.s3.functions.ParseObjectFromHeadersAndHttpContent;
 import org.jclouds.s3.functions.ParseObjectMetadataFromHeaders;
 import org.jclouds.s3.functions.UploadIdFromHttpResponseViaRegex;
 import org.jclouds.s3.internal.BaseS3ClientTest;
+import org.jclouds.s3.options.BucketConfigOptions;
 import org.jclouds.s3.options.CopyObjectOptions;
 import org.jclouds.s3.options.ListBucketOptions;
 import org.jclouds.s3.options.PutBucketOptions;
 import org.jclouds.s3.options.PutObjectOptions;
 import org.jclouds.s3.xml.AccessControlListHandler;
+import org.jclouds.s3.xml.BucketConfigurationHandler;
 import org.jclouds.s3.xml.BucketLoggingHandler;
 import org.jclouds.s3.xml.CopyObjectHandler;
 import org.jclouds.s3.xml.ListAllMyBucketsHandler;
@@ -82,6 +84,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.Invokable;
 import com.google.inject.Module;
+
 /**
  * Tests behavior of {@code S3Client}
  */
@@ -500,6 +503,86 @@ public abstract class S3ClientTest<T extends S3Client> extends BaseS3ClientTest<
 
       checkFilters(request);
    }
+
+   public void testGetBucketVersion() throws SecurityException, NoSuchMethodException, IOException {
+      Invokable<?, ?> method = method(S3Client.class, "getBucketConfiguration", String.class, BucketConfigOptions[].class);
+      GeneratedHttpRequest request = processor.createRequest(method, ImmutableList.<Object> of("bucket", new BucketConfigOptions().versioning()));
+
+      assertRequestLineEquals(request, "GET https://bucket." + url + "/?versioning=true HTTP/1.1");
+      assertNonPayloadHeadersEqual(request, "Host: bucket." + url + "\n");
+      assertPayloadEquals(request, null, null, false);
+
+      assertResponseParserClassEquals(method, request, BucketConfigurationHandler.class);
+      assertSaxResponseParserClassEquals(method, null);
+      assertFallbackClassEquals(method, null);
+
+      checkFilters(request);
+   }
+
+   public void testGetBucketLifeCycles() throws SecurityException, NoSuchMethodException, IOException {
+      Invokable<?, ?> method = method(S3Client.class, "getBucketConfiguration", String.class, BucketConfigOptions[].class);
+      GeneratedHttpRequest request = processor.createRequest(method, ImmutableList.<Object> of("bucket", new BucketConfigOptions().lifecycle()));
+
+      assertRequestLineEquals(request, "GET https://bucket." + url + "/?lifecycle=true HTTP/1.1");
+      assertNonPayloadHeadersEqual(request, "Host: bucket." + url + "\n");
+      assertPayloadEquals(request, null, null, false);
+
+      assertResponseParserClassEquals(method, request, BucketConfigurationHandler.class);
+      assertSaxResponseParserClassEquals(method, null);
+      assertFallbackClassEquals(method, null);
+
+      checkFilters(request);
+   }
+
+   public void testGetBucketEncryption() throws SecurityException, NoSuchMethodException, IOException {
+      Invokable<?, ?> method = method(S3Client.class, "getBucketConfiguration", String.class, BucketConfigOptions[].class);
+      GeneratedHttpRequest request = processor.createRequest(method, ImmutableList.<Object> of("bucket", new BucketConfigOptions().encryption()));
+
+      assertRequestLineEquals(request, "GET https://bucket." + url + "/?encryption=true HTTP/1.1");
+      assertNonPayloadHeadersEqual(request, "Host: bucket." + url + "\n");
+      assertPayloadEquals(request, null, null, false);
+
+      assertResponseParserClassEquals(method, request, BucketConfigurationHandler.class);
+      assertSaxResponseParserClassEquals(method, null);
+      assertFallbackClassEquals(method, null);
+
+      checkFilters(request);
+   }
+
+   public void testDeleteBucketConfiguration() throws SecurityException, NoSuchMethodException, IOException {
+      Invokable<?, ?> method = method(S3Client.class, "deleteBucketConfiguration", String.class, BucketConfigOptions[].class);
+      GeneratedHttpRequest request = processor.createRequest(method, ImmutableList.<Object> of("bucket"));
+
+      assertRequestLineEquals(request, "DELETE https://bucket." + url + "/ HTTP/1.1");
+      assertNonPayloadHeadersEqual(request, "Host: bucket." + url + "\n");
+      assertPayloadEquals(request, null, null, false);
+
+      assertResponseParserClassEquals(method, request, BucketConfigurationHandler.class);
+      assertSaxResponseParserClassEquals(method, null);
+      assertFallbackClassEquals(method, MapHttp4xxCodesToExceptions.class);
+
+      checkFilters(request);
+   }
+
+   public void testPutBucketConfiguration() throws SecurityException, NoSuchMethodException, IOException {
+
+      Invokable<?, ?> method = method(S3Client.class, "putBucketConfiguration", String.class, S3Object.class,
+              BucketConfigOptions[].class);
+      GeneratedHttpRequest request = processor.createRequest(method, ImmutableList.<Object> of("bucket",
+              blobToS3Object.apply(BindBlobToMultipartFormTest.TEST_BLOB), new BucketConfigOptions().lifecycle()));
+
+      assertRequestLineEquals(request, "PUT https://bucket." + url + "/?lifecycle=true HTTP/1.1");
+      assertNonPayloadHeadersEqual(request, "Host: bucket." + url + "\n");
+      assertPayloadEquals(request, "hello", "text/plain",
+              false);
+
+      assertResponseParserClassEquals(method, request, BucketConfigurationHandler.class);
+      assertSaxResponseParserClassEquals(method, null);
+      assertFallbackClassEquals(method, null);
+
+      checkFilters(request);
+   }
+
 
    public void testEnableBucketLoggingOwner() throws SecurityException, NoSuchMethodException, IOException {
       Invokable<?, ?> method = method(S3Client.class, "enableBucketLogging", String.class, BucketLogging.class);

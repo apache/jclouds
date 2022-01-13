@@ -20,12 +20,12 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
 import org.jclouds.io.ContentMetadata;
 import org.jclouds.io.payloads.BaseImmutableContentMetadata;
 import org.jclouds.s3.domain.CanonicalUser;
 import org.jclouds.s3.domain.ObjectMetadata;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Returns the metadata parsable from a bucket listing

@@ -20,12 +20,12 @@ import java.net.URI;
 import java.util.Date;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
 import org.jclouds.io.ContentMetadataBuilder;
 import org.jclouds.io.payloads.BaseMutableContentMetadata;
 import org.jclouds.s3.domain.ObjectMetadata.StorageClass;
 import org.jclouds.s3.domain.internal.MutableObjectMetadataImpl;
+
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Allows you to create {@link ObjectMetadata} objects.
