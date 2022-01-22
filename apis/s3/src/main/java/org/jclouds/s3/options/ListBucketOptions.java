@@ -21,6 +21,10 @@ import static com.google.common.base.Preconditions.checkState;
 
 import org.jclouds.http.options.BaseHttpRequestOptions;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 /**
  * Contains options supported in the REST API for the GET bucket operation. <h2>
  * Usage</h2> The recommended way to instantiate a GetBucketOptions object is to statically import
@@ -41,10 +45,10 @@ public class ListBucketOptions extends BaseHttpRequestOptions implements Cloneab
     * Limits the response to keys which begin with the indicated prefix. You can use prefixes to
     * separate a bucket into different sets of keys in a way similar to how a file system uses
     * folders.
-    * 
+    *
     */
    public ListBucketOptions withPrefix(String prefix) {
-      queryParameters.put("prefix", checkNotNull(prefix, "prefix"));
+      queryParameters.put("prefix", urlEncode(checkNotNull(prefix, "prefix")));
       return this;
    }
 
@@ -58,7 +62,7 @@ public class ListBucketOptions extends BaseHttpRequestOptions implements Cloneab
     * results use the last key of the current page as the marker.
     */
    public ListBucketOptions afterMarker(String marker) {
-      queryParameters.put("marker", checkNotNull(marker, "marker"));
+      queryParameters.put("marker", urlEncode(checkNotNull(marker, "marker")));
       return this;
    }
 
@@ -85,10 +89,10 @@ public class ListBucketOptions extends BaseHttpRequestOptions implements Cloneab
     * Causes keys that contain the same string between the prefix and the first occurrence of the
     * delimiter to be rolled up into a single result element in the CommonPrefixes collection. These
     * rolled-up keys are not returned elsewhere in the response.
-    * 
+    *
     */
    public ListBucketOptions delimiter(String delimiter) {
-      queryParameters.put("delimiter", checkNotNull(delimiter, "delimiter"));
+      queryParameters.put("delimiter", urlEncode(checkNotNull(delimiter, "delimiter")));
       return this;
    }
 
@@ -130,12 +134,21 @@ public class ListBucketOptions extends BaseHttpRequestOptions implements Cloneab
          return options.delimiter(delimiter);
       }
 
-   }
 
+   }
    @Override
    public ListBucketOptions clone() {
       ListBucketOptions newOptions = new ListBucketOptions();
       newOptions.queryParameters.putAll(queryParameters);
       return newOptions;
+   }
+
+   private String urlEncode(String value) {
+      try {
+         return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
+      } catch (UnsupportedEncodingException ignored) {
+         // would only happen if StandardCharsets.UTF_8 is not a Charset enum (won't happen)
+         return value;
+      }
    }
 }

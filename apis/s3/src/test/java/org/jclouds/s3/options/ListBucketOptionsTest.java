@@ -79,9 +79,8 @@ public class ListBucketOptionsTest {
       options.withPrefix("/test").delimiter("/");
       Multimap<String, String> map = options.buildQueryParameters();
       assertEquals(map.size(), 2);
-      assertEquals(map.get("prefix"), ImmutableList.of("/test"));
-      assertEquals(map.get("delimiter"), ImmutableList.of("/"));
-
+      assertEquals(map.get("prefix"), ImmutableList.of("%2Ftest"));
+      assertEquals(map.get("delimiter"), ImmutableList.of("%2F"));
    }
 
    @Test
