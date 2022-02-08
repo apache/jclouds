@@ -28,8 +28,9 @@ public abstract class ActivityLogAlertProperties {
 
 	@Nullable
 	public abstract String description();
-	
-	public abstract boolean enabled();
+
+	@Nullable
+	public abstract Boolean enabled();
 
 	@Nullable
 	public abstract List<String> scopes();
@@ -41,7 +42,7 @@ public abstract class ActivityLogAlertProperties {
 	public abstract Actions actions();
 
 	@SerializedNames({ "description", "enabled", "scopes", "condition", "actions" })
-	public static ActivityLogAlertProperties create(final String description, final boolean enabled,
+	public static ActivityLogAlertProperties create(final String description, final Boolean enabled,
 			final List<String> scopes, final AlertRuleAllOfCondition condition, final Actions actions) {
 		return builder().description(description).enabled(enabled).scopes(scopes).condition(condition).actions(actions)
 				.build();
@@ -57,7 +58,7 @@ public abstract class ActivityLogAlertProperties {
 	public abstract static class Builder {
 		public abstract Builder description(String description);
 
-		public abstract Builder enabled(boolean enabled);
+		public abstract Builder enabled(Boolean enabled);
 
 		public abstract Builder scopes(List<String> scopes);
 
