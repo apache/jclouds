@@ -29,10 +29,10 @@ public abstract class AlertSummaryGroupItem {
 
 	public abstract String name();
 
-	public abstract Integer count();
+	public abstract int count();
 
 	@SerializedNames({ "groupedby", "name", "count" })
-	public static AlertSummaryGroupItem create(final String groupedby, final String name, final Integer count) {
+	public static AlertSummaryGroupItem create(final String groupedby, final String name, final int count) {
 		return builder().groupedby(groupedby).name(name).count(count).build();
 	}
 
@@ -48,7 +48,7 @@ public abstract class AlertSummaryGroupItem {
 
 		public abstract Builder name(String name);
 
-		public abstract Builder count(Integer count);
+		public abstract Builder count(int count);
 
 		public abstract AlertSummaryGroupItem build();
 

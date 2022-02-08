@@ -16,6 +16,8 @@
  */
 package org.jclouds.azurecompute.arm.domain;
 
+import java.util.Date;
+
 import org.jclouds.azurecompute.arm.util.GetEnumValue;
 import org.jclouds.json.SerializedNames;
 
@@ -38,7 +40,7 @@ public abstract class AlertModificationItem {
 
 	public abstract AlertModificationEvent modificationEvent();
 
-	public abstract String modifiedAt();
+	public abstract Date modifiedAt();
 
 	public abstract String modifiedBy();
 
@@ -49,7 +51,7 @@ public abstract class AlertModificationItem {
 	@SerializedNames({ "comments", "description", "modificationEvent", "modifiedAt", "modifiedBy", "newValue",
 			"oldValue" })
 	public static AlertModificationItem create(final String comments, final String description,
-			final AlertModificationEvent modificationEvent, final String modifiedAt, final String modifiedBy,
+			final AlertModificationEvent modificationEvent, final Date modifiedAt, final String modifiedBy,
 			final String newValue, final String oldValue) {
 		return builder().comments(comments).description(description).modificationEvent(modificationEvent)
 				.modifiedAt(modifiedAt).modifiedBy(modifiedBy).newValue(newValue).oldValue(oldValue).build();
@@ -70,7 +72,7 @@ public abstract class AlertModificationItem {
 
 		public abstract Builder modificationEvent(AlertModificationEvent modificationEvent);
 
-		public abstract Builder modifiedAt(String modifiedAt);
+		public abstract Builder modifiedAt(Date modifiedAt);
 
 		public abstract Builder modifiedBy(String modifiedBy);
 
