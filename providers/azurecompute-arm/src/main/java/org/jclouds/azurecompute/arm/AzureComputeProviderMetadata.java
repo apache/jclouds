@@ -40,6 +40,7 @@ import java.util.Properties;
 
 import org.jclouds.azurecompute.arm.domain.Region;
 import org.jclouds.azurecompute.arm.features.ActivityLogAlertApi;
+import org.jclouds.azurecompute.arm.features.AlertApi;
 import org.jclouds.azurecompute.arm.features.AvailabilitySetApi;
 import org.jclouds.azurecompute.arm.features.DeploymentApi;
 import org.jclouds.azurecompute.arm.features.DiskApi;
@@ -138,6 +139,7 @@ public class AzureComputeProviderMetadata extends BaseProviderMetadata {
       properties.put(API_VERSION_PREFIX + VirtualNetworkGatewayApi.class.getSimpleName(), "2018-02-01");
       properties.put(API_VERSION_PREFIX + VirtualNetworkGatewayConnectionApi.class.getSimpleName(), "2018-02-01");
       properties.put(API_VERSION_PREFIX + ActivityLogAlertApi.class.getSimpleName(), "2020-10-01");
+      properties.put(API_VERSION_PREFIX + AlertApi.class.getSimpleName(), "2019-03-01");
       
       return properties;
    }
