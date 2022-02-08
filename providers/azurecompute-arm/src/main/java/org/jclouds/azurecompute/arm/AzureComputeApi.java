@@ -21,7 +21,6 @@ import javax.ws.rs.PathParam;
 
 import org.jclouds.azurecompute.arm.domain.ServicePrincipal;
 import org.jclouds.azurecompute.arm.features.ActivityLogAlertApi;
-import org.jclouds.azurecompute.arm.features.AlertApi;
 import org.jclouds.azurecompute.arm.features.AvailabilitySetApi;
 import org.jclouds.azurecompute.arm.features.DeploymentApi;
 import org.jclouds.azurecompute.arm.features.DiskApi;
@@ -306,13 +305,4 @@ public interface AzureComputeApi extends Closeable {
 	 */
 	@Delegate
 	ActivityLogAlertApi getActivityLogAlertApi(@PathParam("resourcegroup") String resourcegroup);
-	
-	/**
-	 * Management features for Alerts.
-	 *
-	 * @see <a href=
-	 *      "https://docs.microsoft.com/en-us/rest/api/monitor/alertsmanagement/alerts">docs</a>
-	 */
-	@Delegate
-	AlertApi getAlertApi(@PathParam("resourceid") String resourceid);
 }
