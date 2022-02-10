@@ -16,7 +16,6 @@
  */
 package org.jclouds.azurecompute.arm.domain;
 
-import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.json.SerializedNames;
 
 import com.google.auto.value.AutoValue;
@@ -24,11 +23,10 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class ActionStatus {
 
-	@Nullable
-	public abstract Boolean isSuppressed();
+	public abstract boolean isSuppressed();
 
 	@SerializedNames({ "isSuppressed" })
-	public static ActionStatus create(final Boolean isSuppressed) {
+	public static ActionStatus create(final boolean isSuppressed) {
 		return new AutoValue_ActionStatus(isSuppressed);
 
 	}
