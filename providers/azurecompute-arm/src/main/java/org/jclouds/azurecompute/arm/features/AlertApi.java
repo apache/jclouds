@@ -33,7 +33,7 @@ import org.jclouds.azurecompute.arm.domain.Alert;
 import org.jclouds.azurecompute.arm.domain.AlertModification;
 import org.jclouds.azurecompute.arm.domain.AlertSummary;
 import org.jclouds.azurecompute.arm.filters.ApiVersionFilter;
-import org.jclouds.javax.annotation.Nullable;
+import org.jclouds.azurecompute.arm.options.AlertRequestOptions;
 import org.jclouds.oauth.v2.filters.OAuthFilter;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.RequestFilters;
@@ -51,24 +51,12 @@ import org.jclouds.rest.annotations.SelectJson;
 @RequestFilters({ OAuthFilter.class, ApiVersionFilter.class })
 @Consumes(MediaType.APPLICATION_JSON)
 public interface AlertApi {
-	@Named("alerts:list")
+	@Named("alerts:getAll")
 	@Path("/providers/Microsoft.AlertsManagement/alerts")
 	@GET
 	@SelectJson("value")
 	@Fallback(EmptyListOnNotFoundOr404.class)
-	List<Alert> getAll(@Nullable @QueryParam("targetResource") String targetResource,
-			@Nullable @QueryParam("targetResourceGroup") String targetResourceGroup,
-			@Nullable @QueryParam("monitorService") String monitorService,
-			@Nullable @QueryParam("monitorCondition") String monitorCondition,
-			@Nullable @QueryParam("severity") String severity, @Nullable @QueryParam("alertState") String alertState,
-			@Nullable @QueryParam("alertRule") String alertRule,
-			@Nullable @QueryParam("smartGroupId") String smartGroupId,
-			@Nullable @QueryParam("includeContext") String includeContext,
-			@Nullable @QueryParam("includeEgressConfig") String includeEgressConfig,
-			@Nullable @QueryParam("pageCount") String pageCount, @Nullable @QueryParam("sortBy") String sortBy,
-			@Nullable @QueryParam("sortOrder") String sortOrder, @Nullable @QueryParam("select") String select,
-			@Nullable @QueryParam("timeRange") String timeRange,
-			@Nullable @QueryParam("customTimeRange") String customTimeRange);
+	List<Alert> getAll(AlertRequestOptions...getAllOptions );
 
 	@Named("alerts:getbyid")
 	@Path("/providers/Microsoft.AlertsManagement/alerts/{alertId}")
@@ -92,16 +80,10 @@ public interface AlertApi {
 	@Path("providers/Microsoft.AlertsManagement/alertsSummary")
 	@GET
 	@Fallback(NullOnNotFoundOr404.class)
-	AlertSummary getSummary(@QueryParam("groupby") String groupby, @Nullable @QueryParam("alertRule") String alertRule,
-			@Nullable @QueryParam("alertState") String alertState,
-			@Nullable @QueryParam("customTimeRange") String customTimeRange,
-			@Nullable @QueryParam("includeSmartGroupsCount") String includeSmartGroupsCount,
-			@Nullable @QueryParam("monitorCondition") String monitorCondition,
-			@Nullable @QueryParam("monitorService") String monitorService,
-			@Nullable @QueryParam("severity") String severity,
-			@Nullable @QueryParam("targetResource") String targetResource,
-			@Nullable @QueryParam("targetResourceGroup") String targetResourceGroup,
-			@Nullable @QueryParam("targetResourceType") String targetResourceType,
-			@Nullable @QueryParam("timeRange") String timeRange);
-
+	AlertSummary getSummary(AlertRequestOptions...getSummaryOptions);
+		  
+ 
+		 
+		 
+		 
 }

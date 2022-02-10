@@ -27,17 +27,17 @@ import com.google.auto.value.AutoValue;
 public abstract class AlertSummaryGroup {
 
 	public abstract String groupedby();
-
+	
 	@Nullable
 	public abstract Integer smartGroupsCount();
 
-	public abstract Integer total();
+	public abstract int total();
 
 	@Nullable
 	public abstract List<AlertSummaryGroupItem> values();
 
 	@SerializedNames({ "groupedby", "smartGroupsCount", "total", "values" })
-	public static AlertSummaryGroup create(final String groupedby, final Integer smartGroupsCount, final Integer total,
+	public static AlertSummaryGroup create(final String groupedby, final Integer smartGroupsCount, final int total,
 			final List<AlertSummaryGroupItem> values) {
 		return builder().groupedby(groupedby).smartGroupsCount(smartGroupsCount).total(total).values(values).build();
 	}
@@ -54,7 +54,7 @@ public abstract class AlertSummaryGroup {
 
 		public abstract Builder smartGroupsCount(Integer smartGroupsCount);
 
-		public abstract Builder total(Integer total);
+		public abstract Builder total(int total);
 
 		public abstract Builder values(List<AlertSummaryGroupItem> values);
 

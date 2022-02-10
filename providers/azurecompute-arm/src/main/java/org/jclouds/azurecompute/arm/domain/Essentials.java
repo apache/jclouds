@@ -16,6 +16,8 @@
  */
 package org.jclouds.azurecompute.arm.domain;
 
+import java.util.Date;
+
 import org.jclouds.azurecompute.arm.util.GetEnumValue;
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.json.SerializedNames;
@@ -48,7 +50,7 @@ public abstract class Essentials {
 	public abstract String alertRule();
 
 	@Nullable
-	public abstract String lastModifiedDateTime();
+	public abstract Date lastModifiedDateTime();
 
 	@Nullable
 	public abstract String lastModifiedUserName();
@@ -57,7 +59,7 @@ public abstract class Essentials {
 	public abstract String sourceCreatedId();
 
 	@Nullable
-	public abstract String startDateTime();
+	public abstract Date startDateTime();
 
 	@Nullable
 	public abstract String targetResource();
@@ -90,8 +92,8 @@ public abstract class Essentials {
 			"startDateTime", "targetResource", "targetResourceGroup", "targetResourceName", "targetResourceType",
 			"alertState", "monitorCondition", "monitorService", "severity", "signalType" })
 	public static Essentials create(final ActionStatus actionStatus, final String alertRule,
-			final String lastModifiedDateTime, final String lastModifiedUserName, final String sourceCreatedId,
-			final String startDateTime, final String targetResource, final String targetResourceGroup,
+			final Date lastModifiedDateTime, final String lastModifiedUserName, final String sourceCreatedId,
+			final Date startDateTime, final String targetResource, final String targetResourceGroup,
 			final String targetResourceName, final String targetResourceType, final AlertState alertState,
 			final MonitorCondition monitorCondition, final String monitorService, final String severity,
 			final String signalType) {
