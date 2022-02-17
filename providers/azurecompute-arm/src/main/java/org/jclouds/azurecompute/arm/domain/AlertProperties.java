@@ -16,6 +16,7 @@
  */
 package org.jclouds.azurecompute.arm.domain;
 
+import org.jclouds.domain.JsonBall;
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.json.SerializedNames;
 
@@ -25,16 +26,16 @@ import com.google.auto.value.AutoValue;
 public abstract class AlertProperties {
 
 	@Nullable
-	public abstract Object context();
+	public abstract JsonBall context();
 
 	@Nullable
-	public abstract Object egressConfig();
+	public abstract JsonBall egressConfig();
 
 	@Nullable
 	public abstract Essentials essentials();
 
 	@SerializedNames({ "context", "egressConfig", "essentials" })
-	public static AlertProperties create(final Object context, final Object egressConfig, final Essentials essentials) {
+	public static AlertProperties create(final JsonBall context, final JsonBall egressConfig, final Essentials essentials) {
 		return builder().context(context).egressConfig(egressConfig).essentials(essentials).build();
 	}
 
@@ -46,9 +47,9 @@ public abstract class AlertProperties {
 
 	@AutoValue.Builder
 	public abstract static class Builder {
-		public abstract Builder context(Object provisioningState);
+		public abstract Builder context(JsonBall context);
 
-		public abstract Builder egressConfig(Object egressConfig);
+		public abstract Builder egressConfig(JsonBall egressConfig);
 
 		public abstract Builder essentials(Essentials essentials);
 

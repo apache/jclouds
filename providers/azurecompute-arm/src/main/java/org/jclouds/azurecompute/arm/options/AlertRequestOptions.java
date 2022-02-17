@@ -102,20 +102,20 @@ public class AlertRequestOptions extends BaseHttpRequestOptions {
 		return this;
 	}
 
-	public AlertRequestOptions withIncludeContext(Boolean includeContext) {
+	public AlertRequestOptions withIncludeContext(boolean includeContext) {
 		checkState(!queryParameters.containsKey(INCLUDE_CONTEXT), "Can't have duplicate parameter of includeContext");
 		queryParameters.put(INCLUDE_CONTEXT, String.valueOf(includeContext));
 		return this;
 	}
 
-	public AlertRequestOptions withIncludeEgressConfig(Boolean includeEgressConfig) {
+	public AlertRequestOptions withIncludeEgressConfig(boolean includeEgressConfig) {
 		checkState(!queryParameters.containsKey(INCLUDE_EGRESS_CONFIG),
 				"Can't have duplicate parameter of includeEgressConfig");
 		queryParameters.put(INCLUDE_EGRESS_CONFIG, String.valueOf(includeEgressConfig));
 		return this;
 	}
 
-	public AlertRequestOptions withPageCount(Integer pageCount) {
+	public AlertRequestOptions withPageCount(int pageCount) {
 		checkState(!queryParameters.containsKey(PAGE_COUNT), "Can't have duplicate parameter of pageCount");
 		queryParameters.put(PAGE_COUNT, String.valueOf(pageCount));
 		return this;
@@ -158,7 +158,7 @@ public class AlertRequestOptions extends BaseHttpRequestOptions {
 		return this;
 	}
 
-	public AlertRequestOptions withIncludeSmartGroupsCount(Boolean includeSmartGroupsCount) {
+	public AlertRequestOptions withIncludeSmartGroupsCount(boolean includeSmartGroupsCount) {
 		checkState(!queryParameters.containsKey(INCLUDE_SMART_GROUPS_COUNT),
 				"Can't have duplicate parameter of includeSmartGroupsCount");
 		queryParameters.put(INCLUDE_SMART_GROUPS_COUNT, String.valueOf(includeSmartGroupsCount));
@@ -215,23 +215,23 @@ public class AlertRequestOptions extends BaseHttpRequestOptions {
 			return new AlertRequestOptions().withAlertState(alertState);
 		}
 
-		public static AlertRequestOptions alertRule(String alerRule) {
-			return new AlertRequestOptions().withAlertRule(alerRule);
+		public static AlertRequestOptions alertRule(String alertRule) {
+			return new AlertRequestOptions().withAlertRule(alertRule);
 		}
 
 		public static AlertRequestOptions smartGroupId(String smartGroupId) {
 			return new AlertRequestOptions().withSmartGroupId(smartGroupId);
 		}
 
-		public static AlertRequestOptions includeContext(Boolean includeContext) {
+		public static AlertRequestOptions includeContext(boolean includeContext) {
 			return new AlertRequestOptions().withIncludeContext(includeContext);
 		}
 
-		public static AlertRequestOptions includeEgressConfig(Boolean includeEgressConfig) {
+		public static AlertRequestOptions includeEgressConfig(boolean includeEgressConfig) {
 			return new AlertRequestOptions().withIncludeEgressConfig(includeEgressConfig);
 		}
 
-		public static AlertRequestOptions pageCount(Integer pageCount) {
+		public static AlertRequestOptions pageCount(int pageCount) {
 			return new AlertRequestOptions().withPageCount(pageCount);
 		}
 
@@ -259,7 +259,7 @@ public class AlertRequestOptions extends BaseHttpRequestOptions {
 			return new AlertRequestOptions().withGroupBy(groupBy);
 		}
 
-		public static AlertRequestOptions includeSmartGroupsCount(Boolean includeSmartGroupsCount) {
+		public static AlertRequestOptions includeSmartGroupsCount(boolean includeSmartGroupsCount) {
 			return new AlertRequestOptions().withIncludeSmartGroupsCount(includeSmartGroupsCount);
 		}
 

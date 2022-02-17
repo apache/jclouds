@@ -1,0 +1,28 @@
+{
+	"properties": {
+		"essentials": {
+			"severity": "Sev4",
+			"signalType": "Log",
+			"alertState": "Closed",
+			"monitorCondition": "Fired",
+			"monitorService": "ActivityLog Administrative",
+			"targetResource": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.desktopvirtualization/hostpools/test",
+			"targetResourceName": "test",
+			"targetResourceGroup": "simple-vm",
+			"targetResourceType": "microsoft.desktopvirtualization/hostpools",
+			"sourceCreatedId": "e9bac899-9b62-4a4c-bdf0-03d0b36de44d_b19412575e566c1d66904f19b7bd652c",
+			"smartGroupId": "5578c276-b1ac-449c-99e2-7890fa1ff59b",
+			"alertRule": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/activityLogAlerts/HostPoolAlert",
+			"startDateTime": "2021-12-16T11:18:24.7655495Z",
+			"lastModifiedDateTime": "2021-12-17T05:57:33.8879323Z",
+			"lastModifiedUserName": "abc@xyz.com",
+			"actionStatus": {
+				"isSuppressed": false
+			},
+			"description": ""
+		}		
+	},
+	"id": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.desktopvirtualization/hostpools/test/providers/Microsoft.AlertsManagement/alerts/650d5726-xxxx-4e8c-0000-504d577da210",
+	"type": "Microsoft.AlertsManagement/alerts",
+	"name": "HostPoolAlert"
+}

@@ -34,6 +34,7 @@ import org.jclouds.azurecompute.arm.domain.AlertModification;
 import org.jclouds.azurecompute.arm.domain.AlertSummary;
 import org.jclouds.azurecompute.arm.filters.ApiVersionFilter;
 import org.jclouds.azurecompute.arm.options.AlertRequestOptions;
+import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.oauth.v2.filters.OAuthFilter;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.RequestFilters;
@@ -56,7 +57,7 @@ public interface AlertApi {
 	@GET
 	@SelectJson("value")
 	@Fallback(EmptyListOnNotFoundOr404.class)
-	List<Alert> getAll(AlertRequestOptions...getAllOptions );
+	List<Alert> getAll(@Nullable AlertRequestOptions... getAllOptions);
 
 	@Named("alerts:getbyid")
 	@Path("/providers/Microsoft.AlertsManagement/alerts/{alertId}")
@@ -80,10 +81,5 @@ public interface AlertApi {
 	@Path("providers/Microsoft.AlertsManagement/alertsSummary")
 	@GET
 	@Fallback(NullOnNotFoundOr404.class)
-	AlertSummary getSummary(AlertRequestOptions...getSummaryOptions);
-		  
- 
-		 
-		 
-		 
+	AlertSummary getSummary(AlertRequestOptions... getSummaryOptions);
 }
