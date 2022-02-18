@@ -95,7 +95,7 @@ public class AlertApiMockTest extends BaseAzureComputeApiMockTest {
 	}
 
 	public void testGetAll() throws InterruptedException {
-		server.enqueue(jsonResponse("/alertGetAll.json"));
+		server.enqueue(jsonResponse("/alertgetall.json"));
 		final AlertApi alertApi = api.getAlertApi("resourceGroups/myResourceGroup");
 		List<Alert> list = alertApi.getAll();
 		assertEquals(list.get(0).name(), "HostPoolAlert");
