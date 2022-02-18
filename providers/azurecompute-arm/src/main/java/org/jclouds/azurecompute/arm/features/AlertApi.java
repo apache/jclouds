@@ -57,13 +57,13 @@ public interface AlertApi {
 	@GET
 	@SelectJson("value")
 	@Fallback(EmptyListOnNotFoundOr404.class)
-	List<Alert> getAll(@Nullable AlertRequestOptions... getAllOptions);
+	List<Alert> list(@Nullable AlertRequestOptions... getAllOptions);
 
 	@Named("alerts:getbyid")
 	@Path("/providers/Microsoft.AlertsManagement/alerts/{alertId}")
 	@GET
 	@Fallback(NullOnNotFoundOr404.class)
-	Alert getById(@PathParam("alertId") String alertId);
+	Alert get(@PathParam("alertId") String alertId);
 
 	@Named("alerts:changestate")
 	@Path("/providers/Microsoft.AlertsManagement/alerts/{alertId}/changestate")

@@ -16,7 +16,6 @@
  */
 package org.jclouds.azurecompute.arm.features;
 
-import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.net.URI;
@@ -29,7 +28,6 @@ import org.jclouds.azurecompute.arm.domain.ActivityLogAlert;
 import org.jclouds.azurecompute.arm.domain.ActivityLogAlertProperties;
 import org.jclouds.azurecompute.arm.domain.AlertRuleAllOfCondition;
 import org.jclouds.azurecompute.arm.domain.AlertRuleAnyOfOrLeafCondition;
-import org.jclouds.azurecompute.arm.domain.ResourceGroup;
 import org.jclouds.azurecompute.arm.internal.BaseAzureComputeApiLiveTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -54,15 +52,7 @@ public class ActivityLogAlertApiLiveTest extends BaseAzureComputeApiLiveTest {
 		alertRuleName = String.format("vn-%s-%s", this.getClass().getSimpleName().toLowerCase(),
 				System.getProperty("user.name"));
 
-	}
-
-	protected void createTestResourceGroup() {
-		String name = String.format("rg-%s-%s", this.getClass().getSimpleName().toLowerCase(),
-				System.getProperty("user.name"));
-		ResourceGroup rg = api.getResourceGroupApi().create(name, LOCATION, ImmutableMap.<String, String>of());
-		assertNotNull(rg);
-		resourceGroupName = rg.name();
-	}
+	}	 
 
 	private ActivityLogAlertApi api() {
 		return api.getActivityLogAlertApi(resourceGroupName);
@@ -71,7 +61,7 @@ public class ActivityLogAlertApiLiveTest extends BaseAzureComputeApiLiveTest {
 	@Test
 	public void testCreate() {
 		ActivityLogAlert activityAlert = api().createOrUpdate(alertRuleName, properties(),
-				ImmutableMap.of("createdBy", "jcloud"), GLOBAL);
+				ImmutableMap.of("createdBy", "jclouds"), GLOBAL);
 		assertTrue(!activityAlert.type().isEmpty());
 	}
 

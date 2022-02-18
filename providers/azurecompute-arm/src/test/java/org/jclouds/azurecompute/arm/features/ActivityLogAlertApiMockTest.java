@@ -90,6 +90,15 @@ public class ActivityLogAlertApiMockTest extends BaseAzureComputeApiMockTest {
 		assertSent(server, "GET",
 				"/subscriptions/SUBSCRIPTIONID/resourcegroups/myResourceGroup/providers/Microsoft.Insights/activityLogAlerts/myActivityLogAlert?api-version=2020-10-01");
 	}
+	
+	public void testGetReturns404() throws InterruptedException {
+		server.enqueue(response404());
+		final ActivityLogAlertApi activityApi = api.getActivityLogAlertApi("myResourceGroup");
+		ActivityLogAlert alert = activityApi.get("myActivityLogAlert");
+		assertNull(alert);
+		assertSent(server, "GET",
+				"/subscriptions/SUBSCRIPTIONID/resourcegroups/myResourceGroup/providers/Microsoft.Insights/activityLogAlerts/myActivityLogAlert?api-version=2020-10-01");
+	}
 
 	public void testDelete() throws Exception {
 		server.enqueue(response202WithHeader());

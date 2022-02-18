@@ -16,6 +16,7 @@
  */
 package org.jclouds.azurecompute.arm.features;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertEquals;
@@ -38,7 +39,7 @@ public class AlertApiMockTest extends BaseAzureComputeApiMockTest {
 	public void testGetById() throws InterruptedException {
 		server.enqueue(jsonResponse("/alertsgetbyid.json"));
 		final AlertApi alertApi = api.getAlertApi("resourceGroups/myResourceGroup");
-		Alert alert = alertApi.getById("60c4d62b-xxxx-46d8-0000-b6dd8c4a769e");
+		Alert alert = alertApi.get("60c4d62b-xxxx-46d8-0000-b6dd8c4a769e");
 		final String alertName = alert.name();
 		assertEquals(alertName, "SampleAlert");
 		assertSent(server, "GET",
@@ -48,7 +49,7 @@ public class AlertApiMockTest extends BaseAzureComputeApiMockTest {
 	public void testGetByIdEmpty() throws Exception {
 		server.enqueue(new MockResponse().setResponseCode(404));
 		final AlertApi alertApi = api.getAlertApi("resourceGroups/myResourceGroup");
-		Alert alert = alertApi.getById("60c4d62b-xxxx-46d8-0000-b6dd8c4a769e");
+		Alert alert = alertApi.get("60c4d62b-xxxx-46d8-0000-b6dd8c4a769e");
 		assertNull(alert);
 		assertSent(server, "GET",
 				"/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.AlertsManagement/alerts/60c4d62b-xxxx-46d8-0000-b6dd8c4a769e?api-version=2019-03-01");
@@ -97,7 +98,7 @@ public class AlertApiMockTest extends BaseAzureComputeApiMockTest {
 	public void testGetAll() throws InterruptedException {
 		server.enqueue(jsonResponse("/alertgetall.json"));
 		final AlertApi alertApi = api.getAlertApi("resourceGroups/myResourceGroup");
-		List<Alert> list = alertApi.getAll();
+		List<Alert> list = alertApi.list();
 		assertEquals(list.get(0).name(), "HostPoolAlert");
 		assertSent(server, "GET",
 				"/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.AlertsManagement/alerts?api-version=2019-03-01");
@@ -106,7 +107,7 @@ public class AlertApiMockTest extends BaseAzureComputeApiMockTest {
 	public void testGetAllEmpty() throws Exception {
 		server.enqueue(new MockResponse().setResponseCode(404));
 		final AlertApi alertApi = api.getAlertApi("resourceGroups/myResourceGroup");
-		List<Alert> list = alertApi.getAll();
+		List<Alert> list = alertApi.list();
 		assertTrue(isEmpty(list));
 		assertSent(server, "GET",
 				"/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.AlertsManagement/alerts?api-version=2019-03-01");
@@ -115,8 +116,19 @@ public class AlertApiMockTest extends BaseAzureComputeApiMockTest {
 	public void testAlertChangeState() throws InterruptedException {
 		server.enqueue(jsonResponse("/alertchangestate.json"));
 		final AlertApi alertApi = api.getAlertApi("resourceGroups/myResourceGroup");
-		alertApi.changeState("650d5726-xxxx-4e8c-0000-504d577da210", "Closed");
+		Alert alert = alertApi.changeState("650d5726-xxxx-4e8c-0000-504d577da210", "Closed");
+		assertNotNull(alert);
 		assertSent(server, "POST",
 				"/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.AlertsManagement/alerts/650d5726-xxxx-4e8c-0000-504d577da210/changestate?newState=Closed&api-version=2019-03-01");
 	}
+	
+	public void testAlertChangeStateReturns404() throws InterruptedException {
+		server.enqueue(response404());
+		final AlertApi alertApi = api.getAlertApi("resourceGroups/myResourceGroup");
+		Alert alert = alertApi.changeState("650d5726-xxxx-4e8c-0000-504d577da210", "Closed");
+		assertNull(alert);
+		assertSent(server, "POST",
+				"/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.AlertsManagement/alerts/650d5726-xxxx-4e8c-0000-504d577da210/changestate?newState=Closed&api-version=2019-03-01");
+		
+	}	
 }

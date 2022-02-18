@@ -16,6 +16,7 @@
  */
 package org.jclouds.azurecompute.arm.features;
 
+import static org.junit.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
@@ -38,40 +39,39 @@ public class AlertApiLiveTest extends BaseAzureComputeApiLiveTest {
 	}
 
 	@Test
-	public void testGetAll() {
+	public void testList() {
 		AlertRequestOptions pageCount = AlertRequestOptions.Builder.pageCount(1);
-		List<Alert> result = alertApi().getAll(pageCount);
+		List<Alert> result = alertApi().list(pageCount);
 		System.out.println(result.size());
 		assertNotNull(result);
 		assertTrue(result.size() > 0);
 		final String id = result.get(0).id();
-		System.out.println(id);
 		alertId = id.substring(id.lastIndexOf("/") + 1);
 	}
 
-	@Test(dependsOnMethods = "testGetAll")
+	@Test(dependsOnMethods = "testList")
 	public void testGetById() {
-		Alert alert = alertApi().getById(alertId);
+		Alert alert = alertApi().get(alertId);
 		assertNotNull(alert);
 	}
 
-	@Test(dependsOnMethods = "testGetAll")
+	@Test(dependsOnMethods = "testList")
 	public void testGetHistory() {
 		AlertModification history = alertApi().getHistory(alertId);
 		assertNotNull(history);
 	}
 
-	@Test(dependsOnMethods = "testGetAll")
+	@Test(dependsOnMethods = "testList")
 	public void testGetSummary() {
 		AlertRequestOptions groupByOption = AlertRequestOptions.Builder.groupBy("severity");
 		AlertSummary summary = alertApi().getSummary(groupByOption);
 		assertNotNull(summary);
 	}
 
-	@Test(dependsOnMethods = "testGetAll")
+	@Test(dependsOnMethods = "testList")
 	public void testAlertChangeState() {
 		Alert alert = alertApi().changeState(alertId, "Closed");
 		assertNotNull(alert);
+		assertEquals("Closed", alertApi().get(alertId).properties().essentials().alertState().name());
 	}
-
 }
