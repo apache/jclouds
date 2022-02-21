@@ -16,56 +16,41 @@
  */
 package org.jclouds.azurecompute.arm.domain;
 
-import java.util.List;
-
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.json.SerializedNames;
 
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-public abstract class ActivityLogAlertProperties {
+public abstract class AlertSummaryGroupItem {
 
 	@Nullable
-	public abstract String description();
-	
-	public abstract boolean enabled();
+	public abstract String groupedby();
 
-	@Nullable
-	public abstract List<String> scopes();
+	public abstract String name();
 
-	@Nullable
-	public abstract AlertRuleAllOfCondition condition();
+	public abstract int count();
 
-	@Nullable
-	public abstract Actions actions();
-
-	@SerializedNames({ "description", "enabled", "scopes", "condition", "actions" })
-	public static ActivityLogAlertProperties create(final String description, final boolean enabled,
-			final List<String> scopes, final AlertRuleAllOfCondition condition, final Actions actions) {
-		return builder().description(description).enabled(enabled).scopes(scopes).condition(condition).actions(actions)
-				.build();
+	@SerializedNames({ "groupedby", "name", "count" })
+	public static AlertSummaryGroupItem create(final String groupedby, final String name, final int count) {
+		return builder().groupedby(groupedby).name(name).count(count).build();
 	}
 
 	public abstract Builder toBuilder();
 
 	public static Builder builder() {
-		return new AutoValue_ActivityLogAlertProperties.Builder();
+		return new AutoValue_AlertSummaryGroupItem.Builder();
 	}
 
 	@AutoValue.Builder
 	public abstract static class Builder {
-		public abstract Builder description(String description);
+		public abstract Builder groupedby(String groupedby);
 
-		public abstract Builder enabled(boolean enabled);
+		public abstract Builder name(String name);
 
-		public abstract Builder scopes(List<String> scopes);
+		public abstract Builder count(int count);
 
-		public abstract Builder condition(AlertRuleAllOfCondition condition);
-
-		public abstract Builder actions(Actions actions);
-
-		public abstract ActivityLogAlertProperties build();
+		public abstract AlertSummaryGroupItem build();
 
 	}
 }

@@ -16,56 +16,44 @@
  */
 package org.jclouds.azurecompute.arm.domain;
 
-import java.util.List;
-
+import org.jclouds.domain.JsonBall;
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.json.SerializedNames;
 
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-public abstract class ActivityLogAlertProperties {
+public abstract class AlertProperties {
 
 	@Nullable
-	public abstract String description();
-	
-	public abstract boolean enabled();
+	public abstract JsonBall context();
 
 	@Nullable
-	public abstract List<String> scopes();
+	public abstract JsonBall egressConfig();
 
 	@Nullable
-	public abstract AlertRuleAllOfCondition condition();
+	public abstract Essentials essentials();
 
-	@Nullable
-	public abstract Actions actions();
-
-	@SerializedNames({ "description", "enabled", "scopes", "condition", "actions" })
-	public static ActivityLogAlertProperties create(final String description, final boolean enabled,
-			final List<String> scopes, final AlertRuleAllOfCondition condition, final Actions actions) {
-		return builder().description(description).enabled(enabled).scopes(scopes).condition(condition).actions(actions)
-				.build();
+	@SerializedNames({ "context", "egressConfig", "essentials" })
+	public static AlertProperties create(final JsonBall context, final JsonBall egressConfig, final Essentials essentials) {
+		return builder().context(context).egressConfig(egressConfig).essentials(essentials).build();
 	}
 
 	public abstract Builder toBuilder();
 
 	public static Builder builder() {
-		return new AutoValue_ActivityLogAlertProperties.Builder();
+		return new AutoValue_AlertProperties.Builder();
 	}
 
 	@AutoValue.Builder
 	public abstract static class Builder {
-		public abstract Builder description(String description);
+		public abstract Builder context(JsonBall context);
 
-		public abstract Builder enabled(boolean enabled);
+		public abstract Builder egressConfig(JsonBall egressConfig);
 
-		public abstract Builder scopes(List<String> scopes);
+		public abstract Builder essentials(Essentials essentials);
 
-		public abstract Builder condition(AlertRuleAllOfCondition condition);
-
-		public abstract Builder actions(Actions actions);
-
-		public abstract ActivityLogAlertProperties build();
+		public abstract AlertProperties build();
 
 	}
 }

@@ -1,0 +1,79 @@
+{
+	"value": [
+		{
+			"id": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/activityLogAlerts/myActivityLog",
+			"type": "Microsoft.Insights/ActivityLogAlerts",
+			"name": "myActivityLog",
+			"location": "Global",
+			"kind": null,
+			"tags": {
+				"key1": "value1",
+				"key2": "value2"
+			},
+			"properties": {
+				"scopes": [
+					"/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"
+				],
+				"condition": {
+					"allOf": [
+						{
+							"field": "category",
+							"equals": "ServiceHealth",
+							"containsAny": null							
+						} 
+					],
+					"odata.type": ""
+				},
+				"actions": {
+					"actionGroups": [
+					 	{
+            			  "actionGroupId": "/subscriptions/SUBSCRIPTIONID/resourcegroups/myResourceGroup/providers/microsoft.insights/actiongroups/myAction",
+              			  "webhookProperties": null
+            			}
+					]
+				},
+				"enabled": false,
+				"description": ""
+			},
+			"identity": null
+		},
+		{
+			"id": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/activityLogAlerts/simpleActivityLog",
+			"type": "Microsoft.Insights/ActivityLogAlerts",
+			"name": "simpleActivityLog",
+			"location": "Global",
+			"kind": null,			
+			"properties": {
+				"scopes": [
+					"/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/simpleVM"
+				],
+				"condition": {
+					"allOf": [
+						{
+							"field": "category",
+							"equals": "Administrative",
+							"containsAny": null							
+						},
+						{
+							"field": "operationName",
+							"equals": "Microsoft.Compute/virtualMachines/write",
+							"containsAny": null							
+						}
+					],
+					"odata.type": null
+				},
+				"actions": {
+					"actionGroups": [
+						{
+							"actionGroupId": "/subscriptions/SUBSCRIPTIONID/resourcegroups/myResourceGroup/providers/microsoft.insights/actiongroups/myAction",
+							"webhookProperties": null													
+						}
+					]
+				},
+				"enabled": true,
+				"description": ""
+			},
+			"identity": null
+		}
+	]
+}

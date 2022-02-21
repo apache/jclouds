@@ -1,0 +1,46 @@
+{
+	"id": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/activityLogAlerts/myActivityLogAlert",
+	"type": "Microsoft.Insights/ActivityLogAlerts",
+	"name": "myActivityLogAlert",
+	"location": "Global",
+	"kind": null,
+	"tags": {
+		"key1": "Test",
+		"key2": "Testing"
+	},
+	"properties": {
+		"scopes": [
+			"/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/VM"
+		],
+		"condition": {
+			"allOf": [
+				{
+					"field": "category",
+					"equals": "Administrative",
+					"containsAny": null,
+					"odata.type": null
+				},
+				{
+					"field": "operationName",
+					"equals": "Microsoft.Compute/virtualMachines/write",
+					"containsAny": null,
+					"odata.type": null
+				}
+			],
+			"odata.type": null
+		},
+		"actions": {
+			"actionGroups": [
+				{
+					"actionGroupId": "/subscriptions/SUBSCRIPTIONID/resourcegroups/armdemo/providers/microsoft.insights/actiongroups/actions",
+					"webhookProperties": {
+						
+					}
+				}
+			]
+		},
+		"enabled": true,
+		"description": "test"
+	},
+	"identity": null
+}

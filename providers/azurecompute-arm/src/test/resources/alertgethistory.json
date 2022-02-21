@@ -1,0 +1,19 @@
+{
+	"properties": {
+		"alertId": "d9db1f27-ce08-4c6d-8ab6-c0a8fbd8bf64",
+		"modifications": [
+			{
+				"modificationEvent": "AlertCreated",
+				"oldValue": "",
+				"newValue": "",
+				"modifiedAt": "2021-12-15T18:01:42.4020003Z",
+				"modifiedBy": "System",
+				"comments": "",
+				"description": "Alert fired"
+			}
+		]
+	},
+	"id": "/subscriptions/SUBSCRIPTIONID/resourcegroups/myResourceGroup/providers/microsoft.compute/virtualmachines/mac/providers/Microsoft.AlertsManagement/alerts/d9db1f27-ce08-4c6d-8ab6-c0a8fbd8bf64/history/default",
+	"type": "Microsoft.AlertsManagement/alerts",
+	"name": "myRule"
+}

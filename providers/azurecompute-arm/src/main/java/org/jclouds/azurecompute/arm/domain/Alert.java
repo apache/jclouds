@@ -16,56 +16,46 @@
  */
 package org.jclouds.azurecompute.arm.domain;
 
-import java.util.List;
-
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.json.SerializedNames;
 
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-public abstract class ActivityLogAlertProperties {
+public abstract class Alert {
+
+	public abstract String id();
+
+	public abstract String name();
+
+	public abstract String type();
 
 	@Nullable
-	public abstract String description();
-	
-	public abstract boolean enabled();
+	public abstract AlertProperties properties();
 
-	@Nullable
-	public abstract List<String> scopes();
-
-	@Nullable
-	public abstract AlertRuleAllOfCondition condition();
-
-	@Nullable
-	public abstract Actions actions();
-
-	@SerializedNames({ "description", "enabled", "scopes", "condition", "actions" })
-	public static ActivityLogAlertProperties create(final String description, final boolean enabled,
-			final List<String> scopes, final AlertRuleAllOfCondition condition, final Actions actions) {
-		return builder().description(description).enabled(enabled).scopes(scopes).condition(condition).actions(actions)
-				.build();
+	@SerializedNames({ "id", "name", "type", "properties" })
+	public static Alert create(final String id, final String name, final String type,
+			final AlertProperties properties) {
+		return builder().id(id).name(name).type(type).properties(properties).build();
 	}
 
 	public abstract Builder toBuilder();
 
 	public static Builder builder() {
-		return new AutoValue_ActivityLogAlertProperties.Builder();
+		return new AutoValue_Alert.Builder();
 	}
 
 	@AutoValue.Builder
 	public abstract static class Builder {
-		public abstract Builder description(String description);
+		public abstract Builder id(String id);
 
-		public abstract Builder enabled(boolean enabled);
+		public abstract Builder name(String name);
 
-		public abstract Builder scopes(List<String> scopes);
+		public abstract Builder type(String type);
 
-		public abstract Builder condition(AlertRuleAllOfCondition condition);
+		public abstract Builder properties(AlertProperties properties);
 
-		public abstract Builder actions(Actions actions);
-
-		public abstract ActivityLogAlertProperties build();
+		public abstract Alert build();
 
 	}
 }

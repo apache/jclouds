@@ -24,48 +24,41 @@ import org.jclouds.json.SerializedNames;
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-public abstract class ActivityLogAlertProperties {
+public abstract class AlertSummaryGroup {
 
-	@Nullable
-	public abstract String description();
+	public abstract String groupedby();
 	
-	public abstract boolean enabled();
+	@Nullable
+	public abstract Integer smartGroupsCount();
+
+	public abstract int total();
 
 	@Nullable
-	public abstract List<String> scopes();
+	public abstract List<AlertSummaryGroupItem> values();
 
-	@Nullable
-	public abstract AlertRuleAllOfCondition condition();
-
-	@Nullable
-	public abstract Actions actions();
-
-	@SerializedNames({ "description", "enabled", "scopes", "condition", "actions" })
-	public static ActivityLogAlertProperties create(final String description, final boolean enabled,
-			final List<String> scopes, final AlertRuleAllOfCondition condition, final Actions actions) {
-		return builder().description(description).enabled(enabled).scopes(scopes).condition(condition).actions(actions)
-				.build();
+	@SerializedNames({ "groupedby", "smartGroupsCount", "total", "values" })
+	public static AlertSummaryGroup create(final String groupedby, final Integer smartGroupsCount, final int total,
+			final List<AlertSummaryGroupItem> values) {
+		return builder().groupedby(groupedby).smartGroupsCount(smartGroupsCount).total(total).values(values).build();
 	}
 
 	public abstract Builder toBuilder();
 
 	public static Builder builder() {
-		return new AutoValue_ActivityLogAlertProperties.Builder();
+		return new AutoValue_AlertSummaryGroup.Builder();
 	}
 
 	@AutoValue.Builder
 	public abstract static class Builder {
-		public abstract Builder description(String description);
+		public abstract Builder groupedby(String groupedby);
 
-		public abstract Builder enabled(boolean enabled);
+		public abstract Builder smartGroupsCount(Integer smartGroupsCount);
 
-		public abstract Builder scopes(List<String> scopes);
+		public abstract Builder total(int total);
 
-		public abstract Builder condition(AlertRuleAllOfCondition condition);
+		public abstract Builder values(List<AlertSummaryGroupItem> values);
 
-		public abstract Builder actions(Actions actions);
-
-		public abstract ActivityLogAlertProperties build();
+		public abstract AlertSummaryGroup build();
 
 	}
 }
