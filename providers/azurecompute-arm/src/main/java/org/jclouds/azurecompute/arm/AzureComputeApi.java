@@ -31,6 +31,7 @@ import org.jclouds.azurecompute.arm.features.JobApi;
 import org.jclouds.azurecompute.arm.features.LoadBalancerApi;
 import org.jclouds.azurecompute.arm.features.LocalNetworkGatewayApi;
 import org.jclouds.azurecompute.arm.features.LocationApi;
+import org.jclouds.azurecompute.arm.features.MetricAlertApi;
 import org.jclouds.azurecompute.arm.features.MetricDefinitionsApi;
 import org.jclouds.azurecompute.arm.features.MetricsApi;
 import org.jclouds.azurecompute.arm.features.NetworkInterfaceCardApi;
@@ -315,4 +316,14 @@ public interface AzureComputeApi extends Closeable {
 	 */
 	@Delegate
 	AlertApi getAlertApi(@PathParam("resourceid") String resourceid);
+	
+	/**
+	 * The Metric Alert API includes operations to get insights available for
+	 * entities within your subscription
+	 *
+	 * @see <a href=
+	 *      "https://docs.microsoft.com/en-us/rest/api/monitor/metric-alerts">docs</a>
+	 */
+	@Delegate
+	MetricAlertApi getMetricAlertApi(@PathParam("resourcegroup") String resourcegroup);
 }
