@@ -1,0 +1,42 @@
+{
+  "id": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.Insights/metricalerts/MetricAlertTest",
+  "name": "MetricAlertTest",
+  "type": "Microsoft.Insights/metricAlerts",
+  "location": "global",
+  "tags": {
+    "createdBy": "jclouds"
+  },
+  "properties": {
+    "description": "",
+    "severity": 3,
+    "enabled": false,
+    "scopes": [
+      "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/LinuxVM"
+    ],
+    "evaluationFrequency": "PT5M",
+    "windowSize": "PT5M",
+    "criteria": {
+      "allOf": [
+        {
+          "threshold": 0,
+          "name": "Metric1",
+          "metricNamespace": "Microsoft.Compute/virtualMachines",
+          "metricName": "CPU Credits Consumed",
+          "operator": "GreaterThan",
+          "timeAggregation": "Average",
+          "criterionType": "StaticThresholdCriterion"
+        }
+      ],
+      "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+    },
+    "autoMitigate": true,
+    "targetResourceRegion": "eastus",
+    "targetResourceType":"Microsoft.Compute/virtualMachines",
+    "actions": [
+      {
+        "actionGroupId": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/actiongroups/actionemail",
+        "webHookProperties": {}
+      }
+    ]
+  }
+}
