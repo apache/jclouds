@@ -38,12 +38,12 @@ public abstract class MetricAlert {
 	public abstract String name();
 
 	/**
-	 * The location of the location
+	 * The location of the resource
 	 */
 	public abstract String location();
 
 	/**
-	 * The type of the type
+	 * The type of the resource
 	 */
 	public abstract String type();
 
