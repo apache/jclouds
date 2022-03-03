@@ -52,6 +52,7 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
 
+import com.google.common.base.Strings;
 import org.jclouds.apis.ApiMetadata;
 import org.jclouds.apis.Apis;
 import org.jclouds.concurrent.SingleThreaded;
@@ -370,7 +371,11 @@ public class ContextBuilder {
          defaults.setProperty(PROPERTY_CREDENTIAL, credential);
       if (overrides.isPresent())
          putAllAsString(overrides.get(), defaults);
-      putAllAsString(propertiesPrefixedWithJcloudsApiOrProviderId(getSystemProperties(), apiMetadata.getId(), providerId), defaults);
+      Map<String, Object> system = propertiesPrefixedWithJcloudsApiOrProviderId(getSystemProperties(), apiMetadata.getId(), providerId);
+      if (Strings.isNullOrEmpty((String) system.get(PROPERTY_ENDPOINT))) {
+         system.remove(PROPERTY_ENDPOINT);
+      }
+      putAllAsString(system, defaults);
       return defaults;
    }
 
