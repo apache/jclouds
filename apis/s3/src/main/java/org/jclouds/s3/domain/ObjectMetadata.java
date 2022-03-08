@@ -40,6 +40,7 @@ public interface ObjectMetadata extends Comparable<ObjectMetadata> {
       INTELLIGENT_TIERING(Tier.STANDARD),
       REDUCED_REDUNDANCY(Tier.STANDARD),
       GLACIER(Tier.ARCHIVE),
+      GLACIER_IR(Tier.ARCHIVE),
       DEEP_ARCHIVE(Tier.ARCHIVE);
 
       private final Tier tier;
