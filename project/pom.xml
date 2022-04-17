@@ -226,7 +226,7 @@
     <guice.version>5.0.1</guice.version>
 
     <okhttp.version>3.14.9</okhttp.version>
-    <auto-factory.version>0.1-beta1</auto-factory.version>
+    <auto-factory.version>1.0.1</auto-factory.version>
     <auto-service.version>1.0-rc3</auto-service.version>
     <auto-value.version>1.4.1</auto-value.version>
 
