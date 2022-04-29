@@ -20,7 +20,9 @@ import static com.google.common.io.BaseEncoding.base16;
 import static com.google.common.primitives.Bytes.asList;
 import static org.testng.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -350,6 +352,15 @@ public class JsonTest {
 
       assertEquals(json.fromJson("{\"Id\":\"1234\",\"Volumes\":null}", SerializedNamesType.class),
             SerializedNamesType.create("1234", null));
+   }
+
+   public void nonUtf8InputStream() {
+      Json json = Guice.createInjector(new GsonModule()).getInstance(Json.class);
+      String jsonValue = "{\"stringValue\":\"1234\",\"intValue\":1234}";
+      Charset ebcdicCharset = Charset.forName("IBM-1047");
+      ByteArrayInputStream inputStream = new ByteArrayInputStream(jsonValue.getBytes(ebcdicCharset));
+      assertEquals(json.fromJson(inputStream, ebcdicCharset, ObjectNoDefaultConstructor.class),
+              new ObjectNoDefaultConstructor("1234", 1234));
    }
 
    @AutoValue

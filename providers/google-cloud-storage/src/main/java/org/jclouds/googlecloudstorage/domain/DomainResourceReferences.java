@@ -45,8 +45,11 @@ public final class DomainResourceReferences {
       ASIA_EAST1,
       ASIA_EAST2,
       ASIA_NORTHEAST1,
+      ASIA_NORTHEAST2,
+      ASIA_NORTHEAST3,
       ASIA_SOUTH1,
       ASIA_SOUTHEAST1,
+      ASIA_SOUTHEAST2,
 
       NORTHAMERICA_NORTHEAST1,
       US_CENTRAL1,
@@ -54,14 +57,18 @@ public final class DomainResourceReferences {
       US_EAST4,
       US_WEST1,
       US_WEST2,
+      US_WEST3,
+      US_WEST4,
 
       SOUTHAMERICA_EAST1,
 
+      EUROPE_CENTRAL2,
+      EUROPE_NORTH1,
       EUROPE_WEST1,
       EUROPE_WEST2,
       EUROPE_WEST3,
       EUROPE_WEST4,
-      EUROPE_NORTH1,
+      EUROPE_WEST6,
 
       AUSTRALIA_SOUTHEAST1,
 
@@ -86,6 +93,7 @@ public final class DomainResourceReferences {
    }
 
    public enum StorageClass {
+      ARCHIVE(Tier.ARCHIVE),
       COLDLINE(Tier.ARCHIVE),
       DURABLE_REDUCED_AVAILABILITY(Tier.STANDARD),
       MULTI_REGIONAL(Tier.STANDARD),
@@ -103,7 +111,7 @@ public final class DomainResourceReferences {
          switch (tier) {
          case STANDARD: return StorageClass.STANDARD;
          case INFREQUENT: return StorageClass.NEARLINE;
-         case ARCHIVE: return StorageClass.COLDLINE;
+         case ARCHIVE: return StorageClass.ARCHIVE;
          }
          throw new IllegalArgumentException("invalid tier: " + tier);
       }

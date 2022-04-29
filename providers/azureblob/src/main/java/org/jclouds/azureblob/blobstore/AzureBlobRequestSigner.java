@@ -21,11 +21,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.net.URI;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.inject.Named;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azure.storage.filters.SharedKeyLiteAuthentication;
+import org.jclouds.azure.storage.util.storageurl.StorageUrlSupplier;
 import org.jclouds.blobstore.BlobRequestSigner;
 import org.jclouds.blobstore.domain.Blob;
 import org.jclouds.blobstore.functions.BlobToHttpGetOptions;
@@ -36,6 +39,7 @@ import org.jclouds.http.HttpRequest;
 import org.jclouds.http.Uris;
 import org.jclouds.http.options.GetOptions;
 import org.jclouds.javax.annotation.Nullable;
+
 import com.google.common.base.Supplier;
 import com.google.common.net.HttpHeaders;
 import com.google.inject.Provider;
@@ -44,7 +48,7 @@ import com.google.inject.Provider;
 @Singleton
 public class AzureBlobRequestSigner implements BlobRequestSigner {
    private static final int DEFAULT_EXPIRY_SECONDS = 15 * 60;
-   private static final String API_VERSION = "2017-04-17";
+   private static final String API_VERSION = "2017-11-09";
 
    private final String identity;
    private final URI storageUrl;
@@ -53,22 +57,25 @@ public class AzureBlobRequestSigner implements BlobRequestSigner {
    private final DateService dateService;
    private final SharedKeyLiteAuthentication auth;
    private final String credential;
-   private final boolean isSAS; 
+   private final boolean isSAS;
+   private final AuthType authType;
 
    @Inject
    public AzureBlobRequestSigner(
          BlobToHttpGetOptions blob2HttpGetOptions, @TimeStamp Provider<String> timeStampProvider,
          DateService dateService, SharedKeyLiteAuthentication auth,
-         @org.jclouds.location.Provider Supplier<Credentials> creds, @Named("sasAuth") boolean sasAuthentication)
+         @org.jclouds.location.Provider Supplier<Credentials> creds, @Named("sasAuth") boolean sasAuthentication,
+         StorageUrlSupplier storageUriSupplier, AuthType authType)
          throws SecurityException, NoSuchMethodException {
       this.identity = creds.get().identity;
       this.credential = creds.get().credential;
-      this.storageUrl = URI.create("https://" + creds.get().identity + ".blob.core.windows.net/");
+      this.storageUrl = storageUriSupplier.get();
       this.blob2HttpGetOptions = checkNotNull(blob2HttpGetOptions, "blob2HttpGetOptions");
       this.timeStampProvider = checkNotNull(timeStampProvider, "timeStampProvider");
       this.dateService = checkNotNull(dateService, "dateService");
       this.auth = auth;
       this.isSAS = sasAuthentication;
+      this.authType = authType;
    }
 
    @Override
@@ -188,12 +195,30 @@ public class AzureBlobRequestSigner implements BlobRequestSigner {
             .replaceHeader(HttpHeaders.DATE, nowString);
       request = setHeaders(request, method, options, contentLength, contentType);
       return request.build();
-   }  
+   }
+
+   private HttpRequest signAD(String method, String container, String name,
+                              @Nullable GetOptions options, long expires,
+                              @Nullable Long contentLength, @Nullable String contentType) {
+      checkNotNull(method, "method");
+      checkNotNull(container, "container");
+      checkNotNull(name, "name");
+      String nowString = timeStampProvider.get();
+      HttpRequest.Builder request = HttpRequest.builder()
+              .method(method)
+              .endpoint(Uris.uriBuilder(storageUrl).appendPath(container).appendPath(name).build())
+              .replaceHeader(HttpHeaders.DATE, nowString);
+      request = setHeaders(request, method, options, contentLength, contentType);
+      return request.build();
+   }
    
    /**
     * modified sign() method, which acts depending on the Auth input. 
     */
    public HttpRequest sign(String method, String container, String name, @Nullable GetOptions options, long expires, @Nullable Long contentLength, @Nullable String contentType) {
+      if (authType == AuthType.AZURE_AD) {
+         return signAD(method, container, name, options, expires, contentLength, contentType);
+      }
       if (isSAS) {
          return signSAS(method, container, name, options, expires, contentLength, contentType);
       }

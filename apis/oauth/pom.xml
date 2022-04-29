@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
 
@@ -30,7 +30,6 @@
   <artifactId>oauth</artifactId>
   <name>jclouds OAuth core</name>
   <description>jclouds components to access OAuth</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.oauth.identity>FIX_ME</test.oauth.identity>
@@ -40,8 +39,6 @@
     <test.jclouds.oauth.scope>FIX_ME</test.jclouds.oauth.scope>
     <test.oauth.api-version>2</test.oauth.api-version>
     <test.oauth.build-version />
-    <jclouds.osgi.export>org.jclouds.oauth*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>
@@ -69,7 +66,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.squareup.okhttp</groupId>
+      <groupId>com.squareup.okhttp3</groupId>
       <artifactId>mockwebserver</artifactId>
       <scope>test</scope>
     </dependency>
@@ -79,21 +76,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <profiles>
     <profile>

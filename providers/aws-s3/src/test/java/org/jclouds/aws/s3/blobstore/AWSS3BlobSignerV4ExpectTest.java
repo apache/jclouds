@@ -48,8 +48,8 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.HttpHeaders;
+import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.google.inject.Scopes;
 
 @Test(groups = "unit", testName = "AWSS3BlobSignerV4ExpectTest")
 public class AWSS3BlobSignerV4ExpectTest extends S3BlobSignerExpectTest {
@@ -174,8 +174,8 @@ public class AWSS3BlobSignerV4ExpectTest extends S3BlobSignerExpectTest {
       }
 
       @Override
-      protected void bindRequestSigner() {
-         bind(RequestAuthorizeSignature.class).to(AWSRequestAuthorizeSignatureV4.class).in(Scopes.SINGLETON);
+      protected RequestAuthorizeSignature providesRequestAuthorizeSignature(Injector i, int version) {
+         return i.getInstance(AWSRequestAuthorizeSignatureV4.class);
       }
 
       @Override

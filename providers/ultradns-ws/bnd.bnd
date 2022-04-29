@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.ultradns.ws.*;version="${project.version}";-noimport:=true

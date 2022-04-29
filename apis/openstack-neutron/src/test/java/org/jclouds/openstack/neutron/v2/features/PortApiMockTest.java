@@ -25,6 +25,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.AddressPair;
 import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
@@ -39,8 +42,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 /**
  * Tests NetworkApi Guice wiring and parsing
@@ -56,7 +58,7 @@ public class PortApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/port_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          PortApi api = neutronApi.getPortApi("RegionOne");
 
          Port.CreatePort createPort = Port.createBuilder("6aeaf34a-c482-4bd3-9dc3-7faf36412f12")
@@ -101,7 +103,7 @@ public class PortApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/port_list_response_paged1.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          PortApi api = neutronApi.getPortApi("RegionOne");
 
          Ports ports = api.list(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -130,7 +132,7 @@ public class PortApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/port_list_response_paged2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          PortApi api = neutronApi.getPortApi("RegionOne");
 
          // Note: Lazy! Have to actually look at the collection.
@@ -163,7 +165,7 @@ public class PortApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/port_create_bulk_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          PortApi api = neutronApi.getPortApi("RegionOne");
 
          Port.CreatePort createPort1 = Port.createBuilder("64239a54-dcc4-4b39-920b-b37c2144effa")
@@ -207,7 +209,7 @@ public class PortApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/port_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          PortApi api = neutronApi.getPortApi("RegionOne");
 
          Port port = api.get("12345");
@@ -243,7 +245,7 @@ public class PortApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/port_update_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          PortApi api = neutronApi.getPortApi("RegionOne");
 
          Port.UpdatePort updatePort = Port.updateBuilder()
@@ -275,7 +277,7 @@ public class PortApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          PortApi api = neutronApi.getPortApi("RegionOne");
 
          boolean result = api.delete("12345");

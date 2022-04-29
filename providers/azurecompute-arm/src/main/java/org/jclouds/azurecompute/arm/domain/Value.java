@@ -16,6 +16,7 @@
  */
 package org.jclouds.azurecompute.arm.domain;
 
+import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.json.SerializedNames;
 
 import com.google.auto.value.AutoValue;
@@ -31,10 +32,10 @@ public abstract class Value {
    /**
     * The name of the Value
     */
-   public abstract String value();
+   public abstract @Nullable String value();
 
    @SerializedNames({"type", "value"})
-   public static Value create(final String type, final String value) {
+   public static Value create(final String type, @Nullable final String value) {
 
       return new AutoValue_Value(type, value);
    }

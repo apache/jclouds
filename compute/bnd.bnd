@@ -1,0 +1,6 @@
+Export-Package: \
+    org.jclouds.cim.*;version="${project.version}";-noimport:=true, \
+    org.jclouds.compute.*;version="${project.version}";-noimport:=true, \
+    org.jclouds.net.*;version="${project.version}";-noimport:=true, \
+    org.jclouds.ovf.*;version="${project.version}";-noimport:=true, \
+    org.jclouds.ssh.*;version="${project.version}";-noimport:=true

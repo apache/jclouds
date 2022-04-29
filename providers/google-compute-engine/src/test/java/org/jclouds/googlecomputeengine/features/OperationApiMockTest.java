@@ -23,6 +23,8 @@ import static org.testng.Assert.assertNull;
 
 import java.net.URI;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.googlecloud.domain.ForwardingListPage;
 import org.jclouds.googlecloud.domain.ListPage;
 import org.jclouds.googlecomputeengine.domain.Operation;
@@ -34,7 +36,7 @@ import org.jclouds.googlecomputeengine.parse.ParseZoneOperationTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
+
 
 @Test(groups = "unit", testName = "OperationApiMockTest", singleThreaded = true)
 public class OperationApiMockTest extends BaseGoogleComputeEngineApiMockTest {

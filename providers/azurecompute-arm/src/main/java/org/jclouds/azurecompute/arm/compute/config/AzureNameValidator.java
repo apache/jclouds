@@ -40,7 +40,7 @@ public class AzureNameValidator extends Validator<String> {
 
       if (name == null || name.length() < minLength || name.length() > maxLength)
          throw exception(name, "Can't be null or empty. Length must be " + minLength + " to " + maxLength + " symbols");
-      if (!CharMatcher.JAVA_LETTER_OR_DIGIT.matches(name.charAt(0)))
+      if (!Character.isLetterOrDigit(name.charAt(0)))
          throw exception(name, "Should start with letter/number");
 
       CharMatcher range = getAcceptableRange();

@@ -16,17 +16,16 @@
  */
 package org.jclouds.profitbricks.features;
 
-import static org.jclouds.profitbricks.internal.BaseProfitBricksMockTest.mockWebServer;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-
 import java.util.List;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 
 import org.jclouds.profitbricks.ProfitBricksApi;
 import org.jclouds.profitbricks.domain.Firewall;
@@ -45,7 +44,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/firewall/firewalls.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
 
       FirewallApi api = pbApi.firewallApi();
 
@@ -65,7 +64,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/firewall/firewall.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
 
       FirewallApi api = pbApi.firewallApi();
 
@@ -92,7 +91,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String id = "firewall-id";
@@ -112,7 +111,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/firewall/firewall-addtonic.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String content = "<ws:addFirewallRulesToNic>"
@@ -155,7 +154,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/firewall/firewall-remove.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String firewallId = "12345";
@@ -178,7 +177,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String firewallRuleId = "12345";
@@ -198,7 +197,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/firewall/firewall-activate.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String firewallId = "12345";
@@ -221,7 +220,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String firewallId = "12345";
@@ -241,7 +240,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/firewall/firewall-deactivate.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String firewallId = "12345";
@@ -264,7 +263,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String firewallId = "12345";
@@ -284,7 +283,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/firewall/firewall-delete.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String firewallId = "12345";
@@ -307,7 +306,7 @@ public class FirewallApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       FirewallApi api = pbApi.firewallApi();
 
       String firewallId = "12345";

@@ -44,7 +44,7 @@ public abstract class Bucket {
 
       public abstract List<String> responseHeader();
 
-      public abstract Integer maxAgeSeconds();
+      @Nullable public abstract Integer maxAgeSeconds();
 
       @SerializedNames({ "origin", "method", "responseHeader", "maxAgeSeconds" })
       public static Cors create(List<String> origin, List<String> method, List<String> responseHeader,

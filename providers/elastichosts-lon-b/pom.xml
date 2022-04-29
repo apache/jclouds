@@ -22,14 +22,13 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.jclouds.provider</groupId>
   <artifactId>elastichosts-lon-b</artifactId>
   <name>jclouds ElasticHosts BlueSquare London provider</name>
   <description>ElasticHosts implementation targeted to BlueSquare London</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.elastichosts-lon-b.endpoint>https://api-lon-b.elastichosts.com</test.elastichosts-lon-b.endpoint>
@@ -38,14 +37,6 @@
     <test.elastichosts-lon-b.identity>FIXME_IDENTITY</test.elastichosts-lon-b.identity>
     <test.elastichosts-lon-b.credential>FIXME_CREDENTIAL</test.elastichosts-lon-b.credential>
     <test.elastichosts-lon-b.template />
-
-    <jclouds.osgi.export>org.jclouds.elastichosts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>

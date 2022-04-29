@@ -16,17 +16,21 @@
  */
 package org.jclouds.profitbricks.features;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import java.util.List;
-import org.jclouds.profitbricks.ProfitBricksApi;
-import org.jclouds.profitbricks.domain.IpBlock;
-import org.jclouds.profitbricks.domain.Location;
-import org.jclouds.profitbricks.internal.BaseProfitBricksMockTest;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
+
+import java.util.List;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
+import org.jclouds.profitbricks.ProfitBricksApi;
+import org.jclouds.profitbricks.domain.IpBlock;
+import org.jclouds.profitbricks.domain.Location;
+import org.jclouds.profitbricks.internal.BaseProfitBricksMockTest;
+
 import org.testng.annotations.Test;
 
 @Test(groups = "unit", testName = "IpBlockApiMockTest")
@@ -37,7 +41,7 @@ public class IpBlockApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/ipblock/ipblock.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       IpBlockApi api = pbApi.ipBlockApi();
 
       String id = "qwertyui-qwer-qwer-qwer-qwertyyuiiop";
@@ -60,7 +64,7 @@ public class IpBlockApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       IpBlockApi api = pbApi.ipBlockApi();
 
       String id = "qwertyui-qwer-qwer-qwer-qwertyyuiiop";
@@ -80,7 +84,7 @@ public class IpBlockApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/ipblock/ipblocks.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       IpBlockApi api = pbApi.ipBlockApi();
 
       try {
@@ -98,7 +102,7 @@ public class IpBlockApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       IpBlockApi api = pbApi.ipBlockApi();
 
       try {
@@ -116,7 +120,7 @@ public class IpBlockApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/ipblock/ipblock-reserve.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       IpBlockApi api = pbApi.ipBlockApi();
 
       int blockSize = 2;
@@ -138,7 +142,7 @@ public class IpBlockApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/ipblock/ipblock-addtonic.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       IpBlockApi api = pbApi.ipBlockApi();
 
       String ip = "2";
@@ -160,7 +164,7 @@ public class IpBlockApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/ipblock/ipblock-removefromnic.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       IpBlockApi api = pbApi.ipBlockApi();
 
       String ip = "2";
@@ -182,7 +186,7 @@ public class IpBlockApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/ipblock/ipblock-release.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       IpBlockApi api = pbApi.ipBlockApi();
 
       String blockid = "2";

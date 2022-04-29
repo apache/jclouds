@@ -21,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
+
+import okhttp3.OkHttpClient;
 
 import org.jclouds.http.HttpCommandExecutorService;
 import org.jclouds.http.HttpUtils;
@@ -34,7 +37,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
-import com.squareup.okhttp.OkHttpClient;
+
 
 /**
  * Configures the {@link OkHttpCommandExecutorService}.
@@ -54,36 +57,40 @@ public class OkHttpCommandExecutorServiceModule extends AbstractModule {
    private static final class OkHttpClientProvider implements Provider<OkHttpClient> {
       private final HostnameVerifier verifier;
       private final Supplier<SSLContext> untrustedSSLContextProvider;
+      private final X509TrustManager trustAllCertsManager;
       private final HttpUtils utils;
       private final OkHttpClientSupplier clientSupplier;
 
       @Inject
       OkHttpClientProvider(HttpUtils utils, @Named("untrusted") HostnameVerifier verifier,
-            @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider, OkHttpClientSupplier clientSupplier) {
+            @Named("untrusted") Supplier<SSLContext> untrustedSSLContextProvider,
+            @Named("untrusted") X509TrustManager trustAllCertsManager,
+            OkHttpClientSupplier clientSupplier) {
          this.utils = utils;
          this.verifier = verifier;
          this.untrustedSSLContextProvider = untrustedSSLContextProvider;
+         this.trustAllCertsManager = trustAllCertsManager;
          this.clientSupplier = clientSupplier;
       }
 
       @Override
       public OkHttpClient get() {
-         OkHttpClient client = clientSupplier.get();
-         client.setConnectTimeout(utils.getConnectionTimeout(), TimeUnit.MILLISECONDS);
-         client.setReadTimeout(utils.getSocketOpenTimeout(), TimeUnit.MILLISECONDS);
-         // do not follow redirects since https redirects don't work properly
-         // ex. Caused by: java.io.IOException: HTTPS hostname wrong: should be
-         // <adriancole.s3int0.s3-external-3.amazonaws.com>
-         client.setFollowRedirects(false);
+         OkHttpClient.Builder clientBuilder = clientSupplier.get().newBuilder()
+            .connectTimeout(utils.getConnectionTimeout(), TimeUnit.MILLISECONDS)
+            .readTimeout(utils.getSocketOpenTimeout(), TimeUnit.MILLISECONDS)
+            // do not follow redirects since https redirects don't work properly
+            // ex. Caused by: java.io.IOException: HTTPS hostname wrong: should be
+            // <adriancole.s3int0.s3-external-3.amazonaws.com>
+            .followRedirects(false);
 
          if (utils.relaxHostname()) {
-            client.setHostnameVerifier(verifier);
+            clientBuilder.hostnameVerifier(verifier);
          }
          if (utils.trustAllCerts()) {
-            client.setSslSocketFactory(untrustedSSLContextProvider.get().getSocketFactory());
+            clientBuilder.sslSocketFactory(untrustedSSLContextProvider.get().getSocketFactory(), trustAllCertsManager);
          }
 
-         return client;
+         return clientBuilder.build();
       }
    }
 

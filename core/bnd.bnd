@@ -1,0 +1,17 @@
+Export-Package: \
+    org.jclouds.*;version=${project.version};-noimport:=true
+
+Bundle-Activator: org.jclouds.osgi.Activator
+
+-includeresource: \
+    lib/gson-${gson.version}.jar=gson-${gson.version}.jar;lib:=true
+
+-exportcontents: \
+    com.google.gson, \
+    com.google.gson.annotations, \
+    com.google.gson.reflect, \
+    com.google.gson.stream, \
+    com.google.gson.internal;version=${gson.version}, \
+    com.google.gson.internal.bind;version=${gson.version}, \
+    com.google.gson.internal.bind.util;version=${gson.version}, \
+    com.google.gson.internal.reflect;version=${gson.version}

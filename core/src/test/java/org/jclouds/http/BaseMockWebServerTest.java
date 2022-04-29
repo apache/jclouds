@@ -23,10 +23,15 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.security.GeneralSecurityException;
 import java.util.Properties;
 
-import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+
+import okhttp3.mockwebserver.Dispatcher;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.tls.HandshakeCertificates;
+import okhttp3.tls.HeldCertificate;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.providers.AnonymousProviderMetadata;
@@ -34,10 +39,7 @@ import org.testng.annotations.BeforeClass;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
-import com.squareup.okhttp.internal.SslContextBuilder;
-import com.squareup.okhttp.mockwebserver.Dispatcher;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 
 /**
  * Base class for integration tests that use {@link MockWebServer} to verify the
@@ -45,14 +47,19 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
  */
 public abstract class BaseMockWebServerTest {
 
-   protected SSLContext sslContext;
+   protected HandshakeCertificates serverCertificates;
 
    @BeforeClass(groups = "integration")
    protected void setupSSL() {
       try {
-         sslContext = new SslContextBuilder(InetAddress.getLocalHost().getHostName()).build();
-      } catch (GeneralSecurityException ex) {
-         throw new RuntimeException(ex);
+         String localhost = InetAddress.getLocalHost().getHostName();
+         HeldCertificate localhostCertificate = new HeldCertificate.Builder()
+             .addSubjectAlternativeName(localhost)
+             .build();
+
+         serverCertificates = new HandshakeCertificates.Builder()
+             .heldCertificate(localhostCertificate)
+             .build();
       } catch (UnknownHostException ex) {
          throw new RuntimeException(ex);
       }
@@ -64,7 +71,7 @@ public abstract class BaseMockWebServerTest {
     */
    protected static MockWebServer mockWebServer(MockResponse... responses) throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       for (MockResponse response : responses) {
          server.enqueue(response);
       }
@@ -76,7 +83,7 @@ public abstract class BaseMockWebServerTest {
     */
    protected static MockWebServer mockWebServer(Dispatcher dispatcher) throws IOException {
       MockWebServer server = new MockWebServer();
-      server.play();
+      server.start();
       server.setDispatcher(dispatcher);
       return server;
    }
@@ -98,6 +105,10 @@ public abstract class BaseMockWebServerTest {
       addOverrideProperties(properties);
       return ContextBuilder.newBuilder(AnonymousProviderMetadata.forApiOnEndpoint(apiClass, url))
             .modules(ImmutableSet.copyOf(connectionModules)).overrides(properties).buildApi(apiClass);
+   }
+
+   protected SSLSocketFactory sslSocketFactory() {
+      return serverCertificates.sslSocketFactory();
    }
 
    /**

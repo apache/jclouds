@@ -682,9 +682,13 @@ public final class LocalBlobStore implements BlobStore {
 
             // Try to convert payload to ByteSource, otherwise wrap it.
             ByteSource byteSource;
-            try {
-               byteSource = (ByteSource) blob.getPayload().getRawContent();
-            } catch (ClassCastException cce) {
+            Object object = blob.getPayload().getRawContent();
+            if (object instanceof ByteSource) {
+               byteSource = (ByteSource) object;
+            } else if (object instanceof byte[]) {
+               byteSource = ByteSource.wrap((byte[]) object);
+            } else {
+               // This should not happen.
                try {
                   byteSource = ByteSource.wrap(ByteStreams2.toByteArrayAndClose(blob.getPayload().openStream()));
                } catch (IOException e) {
@@ -724,18 +728,31 @@ public final class LocalBlobStore implements BlobStore {
                      "bytes " + offset + "-" + last + "/" + blob.getPayload().getContentMetadata().getContentLength());
             }
             ContentMetadata cmd = blob.getPayload().getContentMetadata();
-            // return InputStream to more closely follow real blobstore
-            try {
-               blob.setPayload(ByteSource.concat(streams.build()).openStream());
-            } catch (IOException ioe) {
-               throw new RuntimeException(ioe);
-            }
+            blob.setPayload(ByteSource.concat(streams.build()));
             HttpUtils.copy(cmd, blob.getPayload().getContentMetadata());
             blob.getPayload().getContentMetadata().setContentLength(size);
             blob.getMetadata().setSize(size);
          }
       }
       checkNotNull(blob.getPayload(), "payload " + blob);
+      // return InputStream to more closely follow real blobstore
+      Payload payload;
+      try {
+         InputStream is = blob.getPayload().openStream();
+         if (is instanceof FileInputStream) {
+            // except for FileInputStream since large MPU can open too many fds
+            is.close();
+            payload = blob.getPayload();
+         } else {
+            blob.resetPayload(/*release=*/ false);
+            payload = new InputStreamPayload(is);
+         }
+      } catch (IOException ioe) {
+         throw new RuntimeException(ioe);
+      }
+      payload.setContentMetadata(blob.getMetadata().getContentMetadata());
+      blob.setPayload(payload);
+      copyPayloadHeadersToBlob(blob.getPayload(), blob);
       return blob;
    }
 
@@ -753,22 +770,7 @@ public final class LocalBlobStore implements BlobStore {
 
    private Blob copyBlob(Blob blob) {
       Blob returnVal = blobFactory.create(BlobStoreUtils.copy(blob.getMetadata()));
-      // return InputStream to more closely follow real blobstore
-      Payload payload;
-      try {
-         InputStream is = blob.getPayload().openStream();
-         if (is instanceof FileInputStream) {
-            // except for FileInputStream since large MPU can open too many fds
-            is.close();
-            payload = blob.getPayload();
-         } else {
-            payload = new InputStreamPayload(blob.getPayload().openStream());
-         }
-      } catch (IOException ioe) {
-         throw new RuntimeException(ioe);
-      }
-      payload.setContentMetadata(blob.getMetadata().getContentMetadata());
-      returnVal.setPayload(payload);
+      returnVal.setPayload(blob.getPayload());
       copyPayloadHeadersToBlob(blob.getPayload(), returnVal);
       return returnVal;
    }
@@ -790,8 +792,7 @@ public final class LocalBlobStore implements BlobStore {
       }
 
       try {
-         String eTag = storageStrategy.putBlob(containerName, blob);
-         setBlobAccess(containerName, blobKey, options.getBlobAccess());
+         String eTag = storageStrategy.putBlob(containerName, blob, options.getBlobAccess());
          return eTag;
       } catch (IOException e) {
          String message = e.getMessage();
@@ -840,7 +841,9 @@ public final class LocalBlobStore implements BlobStore {
          Blob blobPart = getBlob(mpu.containerName(), MULTIPART_PREFIX + mpu.id() + "-" + mpu.blobName() + "-" + part.partNumber());
          contentLength += blobPart.getMetadata().getContentMetadata().getContentLength();
          blobs.add(blobPart);
-         md5Hasher.putBytes(BaseEncoding.base16().lowerCase().decode(blobPart.getMetadata().getETag()));
+         if (blobPart.getMetadata().getETag() != null) {
+            md5Hasher.putBytes(BaseEncoding.base16().lowerCase().decode(blobPart.getMetadata().getETag()));
+         }
       }
       String mpuETag = new StringBuilder("\"")
          .append(md5Hasher.hash())
@@ -1009,12 +1012,21 @@ public final class LocalBlobStore implements BlobStore {
 
       @Override
       public int read() throws IOException {
-         byte[] b = new byte[1];
-         int result = read(b, 0, b.length);
-         if (result == -1) {
-            return -1;
+         while (true) {
+            if (current == null) {
+               if (!blobs.hasNext()) {
+                  return -1;
+               }
+               current = blobs.next().getPayload().openStream();
+            }
+            int result = current.read();
+            if (result == -1) {
+               current.close();
+               current = null;
+               continue;
+            }
+            return result & 0x000000FF;
          }
-         return b[0] & 0x000000FF;
       }
 
       @Override

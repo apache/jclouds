@@ -37,7 +37,7 @@ import org.jclouds.crypto.Crypto;
 import org.jclouds.crypto.Pems;
 import org.jclouds.json.config.GsonModule.DateAdapter;
 import org.jclouds.json.config.GsonModule.Iso8601DateAdapter;
-import org.jclouds.json.gson.internal.JsonReaderInternalAccess;
+import com.google.gson.internal.JsonReaderInternalAccess;
 import org.jclouds.json.internal.NullFilteringTypeAdapterFactories;
 import org.jclouds.json.internal.NullFilteringTypeAdapterFactories.MapTypeAdapterFactory;
 import org.jclouds.json.internal.NullHackJsonLiteralAdapter;

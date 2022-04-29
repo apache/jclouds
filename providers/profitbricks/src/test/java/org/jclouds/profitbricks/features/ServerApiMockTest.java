@@ -16,12 +16,10 @@
  */
 package org.jclouds.profitbricks.features;
 
-import static org.jclouds.profitbricks.internal.BaseProfitBricksMockTest.mockWebServer;
-
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-
 import java.util.List;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 
 import org.jclouds.profitbricks.ProfitBricksApi;
 import org.jclouds.profitbricks.domain.AvailabilityZone;
@@ -47,7 +45,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/server/servers.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       try {
@@ -66,7 +64,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       try {
@@ -84,7 +82,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/server/server.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String id = "qwertyui-qwer-qwer-qwer-qwertyyuiiop";
@@ -106,7 +104,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String id = "random-non-existing-id";
@@ -126,7 +124,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/server/server-start.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String id = "qwertyui-qwer-qwer-qwer-qwertyyuiiop";
@@ -147,7 +145,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(500).setBody(payloadFromResource("/fault-404.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String id = "random-non-existing-id";
@@ -168,7 +166,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/server/server-stop.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String id = "qwertyui-qwer-qwer-qwer-qwertyyuiiop";
@@ -189,7 +187,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/server/server-reset.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String id = "qwertyui-qwer-qwer-qwer-qwertyyuiiop";
@@ -210,7 +208,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/server/server-create.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String dataCenterId = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
@@ -270,7 +268,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/server/server-update.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String serverId = "qwertyui-qwer-qwer-qwer-qwertyyuiiop";
@@ -325,7 +323,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setBody(payloadFromResource("/server/server-delete.xml")));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String serverId = "qwertyui-qwer-qwer-qwer-qwertyyuiiop";
@@ -347,7 +345,7 @@ public class ServerApiMockTest extends BaseProfitBricksMockTest {
       MockWebServer server = mockWebServer();
       server.enqueue(new MockResponse().setResponseCode(404));
 
-      ProfitBricksApi pbApi = api(server.getUrl(rootUrl));
+      ProfitBricksApi pbApi = api(server.url(rootUrl).url());
       ServerApi api = pbApi.serverApi();
 
       String id = "random-non-existing-id";

@@ -44,6 +44,7 @@ public class SharedKeyLiteAuthenticationTest {
    private SharedKeyLiteAuthentication filter;
    private SharedKeyLiteAuthentication filterSAS;
    private SharedKeyLiteAuthentication filterSASQuestionMark;
+   private SharedKeyLiteAuthentication filterSASCustomEndpoint;
 
    @DataProvider(parallel = true)
    public Object[][] dataProvider() {
@@ -67,8 +68,11 @@ public class SharedKeyLiteAuthenticationTest {
             { HttpRequest.builder().method(HttpMethod.GET).endpoint("https://" + ACCOUNT
                   + ".blob.core.windows.net/movies/MOV1.avi").build(), filterSAS, "https://foo.blob.core.windows.net/movies/MOV1.avi?sv=2018-03-28&ss=b&srt=sco&sp=rwdlac&se=2019-02-13T17%3A18%3A22Z&st=2019-02-13T09%3A18%3A22Z&spr=https&sig=sMnaKSD94CzEPeGnWauTT0wBNIn%2B4ySkZO5PEAW7zs%3D" }, 
             { HttpRequest.builder().method(HttpMethod.GET).endpoint("https://" + ACCOUNT
-                  + ".blob.core.windows.net/movies/MOV1.avi").build(), filterSASQuestionMark, "https://foo.blob.core.windows.net/movies/MOV1.avi?sv=2018-03-28&ss=b&srt=sco&sp=rwdlac&se=2019-02-13T17%3A18%3A22Z&st=2019-02-13T09%3A18%3A22Z&spr=https&sig=sMnaKSD94CzEPeGnWauTT0wBNIn%2B4ySkZO5PEAW7zs%3D" } };
-   }
+                  + ".blob.core.windows.net/movies/MOV1.avi").build(), filterSASQuestionMark, "https://foo.blob.core.windows.net/movies/MOV1.avi?sv=2018-03-28&ss=b&srt=sco&sp=rwdlac&se=2019-02-13T17%3A18%3A22Z&st=2019-02-13T09%3A18%3A22Z&spr=https&sig=sMnaKSD94CzEPeGnWauTT0wBNIn%2B4ySkZO5PEAW7zs%3D" },
+            { HttpRequest.builder().method(HttpMethod.GET).endpoint("http://my-custom-endpoint.net/movies/MOV1.avi").build(), filterSASCustomEndpoint,
+               "http://my-custom-endpoint.net/movies/MOV1.avi?sv=2018-03-28&ss=b&srt=sco&sp=rwdlac&se=2019-02-13T17%3A18%3A22Z&st=2019-02-13T09%3A18%3A22Z&spr=https&sig=sMnaKSD94CzEPeGnWauTT0wBNIn%2B4ySkZO5PEAW7zs%3D" } };
+
+}
 
    /**
     * NOTE this test is dependent on how frequently the timestamp updates. At
@@ -167,5 +171,12 @@ public class SharedKeyLiteAuthenticationTest {
             .modules(ImmutableSet.<Module> of(new MockModule(), new NullLoggingModule()))
             .buildInjector(); 
       filterSASQuestionMark = injector.getInstance(SharedKeyLiteAuthentication.class);
+      injector = ContextBuilder
+            .newBuilder("azureblob")
+            .endpoint("http://my-custom-endpoint.net")
+            .credentials(ACCOUNT, "?sv=2018-03-28&ss=b&srt=sco&sp=rwdlac&se=2019-02-13T17:18:22Z&st=2019-02-13T09:18:22Z&spr=https&sig=sMnaKSD94CzEPeGnWauTT0wBNIn%2B4ySkZO5PEAW7zs%3D")
+            .modules(ImmutableSet.<Module> of(new MockModule(), new NullLoggingModule()))
+            .buildInjector();
+      filterSASCustomEndpoint = injector.getInstance(SharedKeyLiteAuthentication.class);
    }
 }

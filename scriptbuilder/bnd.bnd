@@ -1,0 +1,5 @@
+Export-Package: \
+    org.jclouds.scriptbuilder.*;version="${project.version}";-noimport:=true
+
+Bundle-Activator: \
+    org.jclouds.scriptbuilder.functionloader.osgi.Activator

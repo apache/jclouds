@@ -17,8 +17,10 @@
 package org.jclouds.azureblob.config;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 
+import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azureblob.domain.AzureBlob;
 import org.jclouds.azureblob.domain.MutableBlobProperties;
 import org.jclouds.azureblob.domain.internal.AzureBlobImpl;
@@ -27,6 +29,8 @@ import org.jclouds.blobstore.config.BlobStoreObjectModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
+
+import static org.jclouds.azure.storage.config.AzureStorageProperties.AUTH_TYPE;
 
 /**
  * Configures the domain object mappings needed for all Azure Blob implementations
@@ -58,4 +62,9 @@ public class AzureBlobModule extends AbstractModule {
       return factory.create(null);
    }
 
+   @Inject
+   @Provides
+   final AuthType AuthTypeFromPropertyOrDefault(@Named(AUTH_TYPE) String authType) {
+      return AuthType.fromValue(authType);
+   }
 }

@@ -46,11 +46,10 @@ public class DnsNameValidator extends Validator<String> {
    }
 
    public void validate(String name) {
-
-      if (name == null || name.length() < min || name.length() > max)
+      if (name == null || name.isEmpty() || name.length() < min || name.length() > max)
          throw exception(name, "Can't be null or empty. Length must be " + min + " to " + max
                   + " symbols.");
-      if (CharMatcher.JAVA_LETTER_OR_DIGIT.indexIn(name) != 0)
+      if (!Character.isLetterOrDigit(name.charAt(0)))
          throw exception(name, "Should start with letter/number");
       if (!name.toLowerCase().equals(name))
          throw exception(name, "Should be only lowercase");

@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.jclouds</groupId>
         <artifactId>jclouds-project</artifactId>
-        <version>2.3.0-SNAPSHOT</version>
+        <version>2.6.0-SNAPSHOT</version>
         <relativePath>../../project/pom.xml</relativePath>
     </parent>
 
@@ -31,7 +31,6 @@
     <artifactId>google-compute-engine</artifactId>
     <name>jclouds Google Compute Engine provider</name>
     <description>jclouds components to access GoogleCompute</description>
-    <packaging>bundle</packaging>
 
     <properties>
         <test.google-compute-engine.identity>client_email which usually looks like project_id@developer.gserviceaccount.com</test.google-compute-engine.identity>
@@ -42,13 +41,6 @@
         <test.google-compute-engine.api-version>v1</test.google-compute-engine.api-version>
         <test.google-compute-engine.build-version/>
         <test.google-compute-engine.template>imageNameMatches=debian-7-wheezy-v[0-9]*,locationId=us-central1-a,minRam=2048</test.google-compute-engine.template>
-        <jclouds.osgi.export>org.jclouds.googlecomputeengine*;version="${project.version}"</jclouds.osgi.export>
-        <jclouds.osgi.import>
-            org.jclouds.compute.internal;version="${project.version}",
-            org.jclouds.rest.internal;version="${project.version}",
-            org.jclouds*;version="${project.version}",
-            *
-        </jclouds.osgi.import>
     </properties>
 
     <dependencies>
@@ -136,16 +128,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>com.squareup.okhttp</groupId>
+          <groupId>com.squareup.okhttp3</groupId>
           <artifactId>mockwebserver</artifactId>
           <scope>test</scope>
-          <exclusions>
-            <!-- Already provided by jclouds-sshj -->
-            <exclusion>
-              <groupId>org.bouncycastle</groupId>
-              <artifactId>bcprov-jdk15on</artifactId>
-            </exclusion>
-          </exclusions>
         </dependency>
     </dependencies>
     <profiles>

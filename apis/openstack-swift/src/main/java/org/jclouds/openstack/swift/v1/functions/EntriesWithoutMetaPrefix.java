@@ -38,7 +38,7 @@ public enum EntriesWithoutMetaPrefix implements Function<Multimap<String, String
    public Map<String, String> apply(Multimap<String, String> arg0) {
       ImmutableMap.Builder<String, String> metadata = ImmutableMap.builder();
       for (Entry<String, String> header : arg0.entries()) {
-         int index = header.getKey().indexOf("-Meta-");
+         int index = header.getKey().toLowerCase().indexOf("-meta-");
          if (index != -1) {
             metadata.put(header.getKey().substring(index + 6), header.getValue());
          }

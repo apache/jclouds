@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Rule;
 import org.jclouds.openstack.neutron.v2.domain.RuleDirection;
@@ -37,8 +40,6 @@ import org.jclouds.openstack.neutron.v2.internal.BaseNeutronApiMockTest;
 import org.jclouds.openstack.v2_0.options.PaginationOptions;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 /**
  * Tests SecurityGroupApi Guice wiring and parsing
@@ -54,7 +55,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/security_group_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          SecurityGroup.CreateSecurityGroup createSecurityGroup = SecurityGroup.createBuilder().name("new-webservers")
@@ -96,7 +97,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/security_group_rule_create_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          Rule.CreateRule createSecurityGroupRule = Rule.createBuilder(
@@ -142,7 +143,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/security_group_list_response_paged1.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          SecurityGroups securityGroups = api.listSecurityGroups(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -173,7 +174,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/security_group_rule_list_response_paged1.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          Rules rules = api.listRules(PaginationOptions.Builder.limit(2).marker("abcdefg"));
@@ -205,7 +206,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/security_group_list_response_paged2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          // Note: Lazy! Have to actually look at the collection.
@@ -240,7 +241,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/security_group_rule_list_response_paged2.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          // Note: Lazy! Have to actually look at the collection.
@@ -275,7 +276,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/security_group_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          SecurityGroup securityGroup = api.getSecurityGroup("12345");
@@ -309,7 +310,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201).setBody(stringFromResource("/security_group_rule_get_response.json"))));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          Rule rule = api.get("12345");
@@ -343,7 +344,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          boolean result = api.deleteSecurityGroup("12345");
@@ -371,7 +372,7 @@ public class SecurityGroupApiMockTest extends BaseNeutronApiMockTest {
             new MockResponse().setResponseCode(201)));
 
       try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
+         NeutronApi neutronApi = api(server.url("/").toString(), "openstack-neutron", overrides);
          SecurityGroupApi api = neutronApi.getSecurityGroupApi("RegionOne");
 
          boolean result = api.deleteRule("12345");

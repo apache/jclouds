@@ -115,7 +115,7 @@ public class InvokeHttpMethod implements Function<Invocation, Object> {
     *            if our thread is interrupted during execution
     * @throws UncheckedTimeoutException
     *            if the time limit is reached
-    * @see TimeLimiter#callWithTimeout(Callable, long, TimeUnit, boolean)
+    * @see TimeLimiter#callWithTimeout(Callable, long, TimeUnit)
     */
    public Object invokeWithTimeout(final Invocation invocation, final long limitNanos) {
       String commandName = config.getCommandName(invocation);
@@ -125,7 +125,7 @@ public class InvokeHttpMethod implements Function<Invocation, Object> {
       logger.debug(">> blocking on %s for %s", invocation, limitNanos);
       try {
          return timeLimiter
-               .callWithTimeout(new InvokeAndTransform(commandName, command), limitNanos, NANOSECONDS, true);
+               .callWithTimeout(new InvokeAndTransform(commandName, command), limitNanos, NANOSECONDS);
       } catch (Throwable t) {
          try {
             return fallback.createOrPropagate(t);

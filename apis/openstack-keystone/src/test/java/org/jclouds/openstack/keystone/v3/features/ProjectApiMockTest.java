@@ -25,12 +25,14 @@ import static org.testng.Assert.assertTrue;
 import java.util.List;
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.openstack.keystone.v3.domain.Project;
 import org.jclouds.openstack.keystone.v3.internal.BaseV3KeystoneApiMockTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableSet;
-import com.squareup.okhttp.mockwebserver.MockResponse;
+
 
 @Test(groups = "unit", testName = "ProjectApiMockTest", singleThreaded = true)
 public class ProjectApiMockTest extends BaseV3KeystoneApiMockTest {

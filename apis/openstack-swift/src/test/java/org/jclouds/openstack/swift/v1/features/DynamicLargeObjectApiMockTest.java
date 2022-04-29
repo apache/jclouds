@@ -21,6 +21,10 @@ import static com.google.common.net.HttpHeaders.ETAG;
 import static org.jclouds.openstack.swift.v1.reference.SwiftHeaders.OBJECT_METADATA_PREFIX;
 import static org.testng.Assert.assertEquals;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.io.Payloads;
 import org.jclouds.openstack.swift.v1.SwiftApi;
 import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
@@ -28,9 +32,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.HttpHeaders;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 @Test(groups = "unit", testName = "DynamicLargeObjectApiMockTest")
 public final class DynamicLargeObjectApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
@@ -48,7 +50,7 @@ public final class DynamicLargeObjectApiMockTest extends BaseOpenStackMockTest<S
       server.enqueue(addCommonHeaders(new MockResponse().addHeader("X-Object-Manifest", "myContainer/myObject")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          assertEquals(api.getObjectApi("DFW", containerName).put(objectName.concat("1"), Payloads.newPayload("data1")),
                "89d903bc35dede724fd52c51437ff5fd");
          assertEquals(api.getDynamicLargeObjectApi("DFW", containerName).putManifest(objectName,
@@ -60,7 +62,7 @@ public final class DynamicLargeObjectApiMockTest extends BaseOpenStackMockTest<S
          RecordedRequest uploadRequest = server.takeRequest();
          assertEquals(uploadRequest.getRequestLine(),
                "PUT /v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/myContainer/myObjectTest1 HTTP/1.1");
-         assertEquals(new String(uploadRequest.getBody()), "data1");
+         assertEquals(uploadRequest.getBody().readUtf8(), "data1");
 
          RecordedRequest uploadRequestManifest = server.takeRequest();
          assertRequest(uploadRequestManifest, "PUT",
@@ -80,7 +82,7 @@ public final class DynamicLargeObjectApiMockTest extends BaseOpenStackMockTest<S
       server.enqueue(addCommonHeaders(new MockResponse().addHeader("X-Object-Manifest", "myContainer/myObject")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          assertEquals(api.getDynamicLargeObjectApi("DFW", "myContainer").putManifest("myObject",
                ImmutableMap.of("MyFoo", "Bar"), ImmutableMap.of("MyFoo", "Bar")), "abcd");
 
@@ -104,7 +106,7 @@ public final class DynamicLargeObjectApiMockTest extends BaseOpenStackMockTest<S
       server.enqueue(addCommonHeaders(new MockResponse().addHeader("X-Object-Manifest", "myContainer/myObject")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          assertEquals(api.getDynamicLargeObjectApi("DFW", "myContainer").putManifest("unic₪de",
                ImmutableMap.of("MyFoo", "Bar"), ImmutableMap.of("MyFoo", "Bar")), "abcd");
 

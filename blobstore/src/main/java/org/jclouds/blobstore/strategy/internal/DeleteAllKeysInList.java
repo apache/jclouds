@@ -49,6 +49,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.inject.Inject;
 
 /**
@@ -286,7 +287,7 @@ public class DeleteAllKeysInList implements ClearListStrategy, ClearContainerStr
                   outstandingFutures.remove(blobDelFuture);
                   semaphore.release();
                }
-            });
+            }, MoreExecutors.directExecutor());
          } else {
             // It is possible above to acquire a semaphore but not submit any
             // task to the executorService. For e.g. if the listing contains

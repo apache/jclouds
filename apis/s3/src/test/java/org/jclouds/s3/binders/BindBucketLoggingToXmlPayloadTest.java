@@ -32,14 +32,12 @@ import org.testng.annotations.Test;
 import com.google.common.collect.ImmutableSet;
 
 /**
- * Tests behavior of {@code BindBucketLoggingToXmlPayload}
+ * Tests behavior of {@link #BindBucketLoggingToXmlPayload}
  */
 //NOTE:without testName, this will not call @Before* and fail w/NPE during surefire
 @Test(groups = "unit", testName = "BindBucketLoggingToXmlPayloadTest")
 public class BindBucketLoggingToXmlPayloadTest  extends BaseHandlerTest {
-
    public void testApplyInputStream() throws IOException {
-      
       BucketLogging bucketLogging = new BucketLogging("mylogs", "access_log-", ImmutableSet
                .<Grant> of(new Grant(new EmailAddressGrantee("adrian@jclouds.org"),
                         Permission.FULL_CONTROL)));
@@ -48,12 +46,10 @@ public class BindBucketLoggingToXmlPayloadTest  extends BaseHandlerTest {
                "/bucket_logging.xml"));
       
       HttpRequest request = HttpRequest.builder().method("GET").endpoint("http://test").build();
-      BindBucketLoggingToXmlPayload binder = injector
-               .getInstance(BindBucketLoggingToXmlPayload.class);
+      BindBucketLoggingToXmlPayload binder = new BindBucketLoggingToXmlPayload();
 
       binder.bindToRequest(request, bucketLogging);
       assertEquals(request.getPayload().getContentMetadata().getContentType(), "text/xml");
       assertEquals(request.getPayload().getRawContent(), expected);
-
    }
 }

@@ -16,12 +16,14 @@
  */
 package org.jclouds.http.okhttp;
 
+import okhttp3.OkHttpClient;
+
 import org.jclouds.http.okhttp.OkHttpClientSupplier.NewOkHttpClient;
 
 import com.google.common.annotations.Beta;
 import com.google.common.base.Supplier;
 import com.google.inject.ImplementedBy;
-import com.squareup.okhttp.OkHttpClient;
+
 
 /**
  * Provides the OkHttp client used for all requests. This could be used to

@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.rackspace.cloudfiles.v1.*;version="${project.version}";-noimport:=true

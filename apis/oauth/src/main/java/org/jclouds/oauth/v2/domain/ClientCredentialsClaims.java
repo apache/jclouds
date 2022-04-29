@@ -16,6 +16,7 @@
  */
 package org.jclouds.oauth.v2.domain;
 
+import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.json.SerializedNames;
 
 import com.google.auto.value.AutoValue;
@@ -49,10 +50,11 @@ public abstract class ClientCredentialsClaims {
     public abstract long nbf();
 
     /** "JWT ID", a unique identifier for the JWT. */
+    @Nullable
     public abstract String jti();
 
     @SerializedNames({ "iss", "sub", "aud", "exp", "nbf", "jti" })
-    public static ClientCredentialsClaims create(String iss, String sub, String aud, long exp, long nbf, String jti) {
+    public static ClientCredentialsClaims create(String iss, String sub, String aud, long exp, long nbf, @Nullable String jti) {
         return new AutoValue_ClientCredentialsClaims(iss, sub, aud, exp, nbf, jti);
     }
 

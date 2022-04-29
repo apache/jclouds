@@ -34,6 +34,13 @@ import java.net.URLDecoder;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.mockwebserver.Dispatcher;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
+import okio.Buffer;
+
 import org.jclouds.io.ByteStreams2;
 import org.jclouds.io.Payload;
 import org.jclouds.util.Strings2;
@@ -42,16 +49,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
-import com.squareup.okhttp.mockwebserver.Dispatcher;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Tests for functionality all {@link HttpCommandExecutorService} http executor
@@ -76,7 +79,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testRequestFilter() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody("test"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.downloadFilter("", "filterme");
 
@@ -93,7 +96,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testGetStringWithHeader() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody("test"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.download("", "test");
 
@@ -109,7 +112,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testGetString() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(XML));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          assertEquals(client.download(""), XML);
       } finally {
@@ -121,7 +124,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testGetStringIsRetriedOnFailure() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(500), new MockResponse().setBody(XML));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.download("");
          assertEquals(server.getRequestCount(), 2);
@@ -135,10 +138,10 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testGetStringViaRequest() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(XML));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          HttpResponse getStringResponse = client.invoke(HttpRequest.builder().method("GET")
-               .endpoint(server.getUrl("/objects").toString()).build());
+               .endpoint(server.url("/objects").toString()).build());
          assertEquals(Strings2.toStringAndClose(getStringResponse.getPayload().openStream()).trim(), XML);
       } finally {
          closeQuietly(client);
@@ -154,7 +157,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test(dataProvider = "gets")
    public void testGetStringSynch(String uri) throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(XML));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.synch(uri);
          RecordedRequest request = server.takeRequest();
@@ -169,7 +172,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testGetException() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.downloadException("", tail(1));
          assertEquals(result, "foo");
@@ -182,7 +185,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testGetSynchException() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.synchException("", "");
          assertEquals(result, "foo");
@@ -195,10 +198,10 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testGetStringRedirect() throws Exception {
       MockWebServer redirectTarget = mockWebServer(new MockResponse().setBody(XML2));
-      redirectTarget.useHttps(sslContext.getSocketFactory(), false);
+      redirectTarget.useHttps(sslSocketFactory(), false);
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(302).setHeader("Location",
-            redirectTarget.getUrl("/").toString()));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+            redirectTarget.url("/").toString()));
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.download("redirect");
          assertEquals(result, XML2);
@@ -216,10 +219,10 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
       String constitutionsMd5 = base64().encode(oneHundredOneConstitutions.hash(md5()).asBytes());
       MockResponse response = new MockResponse().addHeader("Content-MD5", constitutionsMd5)
             .addHeader("Content-type", "text/plain")
-            .setBody(oneHundredOneConstitutions.openStream(), oneHundredOneConstitutions.size());
+            .setBody(new Buffer().readFrom(oneHundredOneConstitutions.openStream(), oneHundredOneConstitutions.size()));
 
       MockWebServer server = mockWebServer(response, response);
-      InputStream input = server.getUrl("/101constitutions").openStream();
+      InputStream input = server.url("/101constitutions").url().openStream();
 
       try {
          assertValidMd5(input, constitutionsMd5);
@@ -240,7 +243,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          try {
             MockResponse response = new MockResponse();
             String expectedMd5 = request.getHeader("Content-MD5");
-            ByteSource body = ByteSource.wrap(request.getBody());
+            ByteSource body = ByteSource.wrap(request.getBody().readByteArray());
             String realMd5FromRequest = base64().encode(body.hash(md5()).asBytes());
             boolean matched = expectedMd5.equals(realMd5FromRequest);
             if (matched) {
@@ -259,7 +262,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testUploadBigFile() throws Exception {
       MockWebServer server = mockWebServer(new MD5CheckDispatcher());
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
 
       File f = null;
       Payload payload = null;
@@ -295,12 +298,12 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testPost() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody("fooPOST"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.post("", "foo");
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          assertEquals(result, "fooPOST");
       } finally {
          closeQuietly(client);
@@ -311,12 +314,12 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testZeroLengthPost() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          client.postNothing("");
          assertEquals(server.getRequestCount(), 1);
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "");
+         assertEquals(request.getBody().readUtf8(), "");
       } finally {
          closeQuietly(client);
          server.shutdown();
@@ -327,16 +330,16 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    public void testPostIsRetriedOnFailure() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(500),
             new MockResponse().setBody("fooPOST"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.post("", "foo");
          assertEquals(server.getRequestCount(), 2);
          assertEquals(result, "fooPOST");
          // Verify that the body was properly sent in the two requests
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(client);
          server.shutdown();
@@ -346,10 +349,10 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testPostRedirect() throws Exception {
       MockWebServer redirectTarget = mockWebServer(new MockResponse().setBody("fooPOSTREDIRECT"));
-      redirectTarget.useHttps(sslContext.getSocketFactory(), false);
+      redirectTarget.useHttps(sslSocketFactory(), false);
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(302).setHeader("Location",
-            redirectTarget.getUrl("/").toString()));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+            redirectTarget.url("/").toString()));
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.post("redirect", "foo");
          assertEquals(result, "fooPOSTREDIRECT");
@@ -357,9 +360,9 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          assertEquals(redirectTarget.getRequestCount(), 1);
          // Verify that the body was populated after the redirect
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = redirectTarget.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(client);
          redirectTarget.shutdown();
@@ -370,12 +373,12 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testPostAsInputStream() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody("fooPOST"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.postAsInputStream("", "foo");
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          assertEquals(result, "fooPOST");
       } finally {
          closeQuietly(client);
@@ -386,7 +389,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testPostAsInputStreamDoesNotRetryOnFailure() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(500), new MockResponse());
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          client.postAsInputStream("", "foo");
          fail("Request should have thrown an exception after a server error");
@@ -401,12 +404,12 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testPostBinder() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody("fooPOSTJSON"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.postJson("", "foo");
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "{\"key\":\"foo\"}");
+         assertEquals(request.getBody().readUtf8(), "{\"key\":\"foo\"}");
          assertEquals(result, "fooPOSTJSON");
       } finally {
          closeQuietly(client);
@@ -418,7 +421,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    public void testPostContentDisposition() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().addHeader("x-Content-Disposition",
             "attachment; filename=photo.jpg"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       Payload payload = null;
       try {
          ByteSource body = ByteSource.wrap("foo".getBytes());
@@ -441,7 +444,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testPostContentEncoding() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().addHeader("x-Content-Encoding", "gzip"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       Payload payload = null;
       try {
          ByteSource body = ByteSource.wrap("foo".getBytes());
@@ -464,7 +467,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testPostContentLanguage() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().addHeader("x-Content-Language", "mi, en"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       Payload payload = null;
       try {
          ByteSource body = ByteSource.wrap("foo".getBytes());
@@ -487,12 +490,12 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testPut() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody("fooPUT"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.upload("", "foo");
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          assertEquals(result, "fooPUT");
       } finally {
          closeQuietly(client);
@@ -503,10 +506,10 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testPutRedirect() throws Exception {
       MockWebServer redirectTarget = mockWebServer(new MockResponse().setBody("fooPUTREDIRECT"));
-      redirectTarget.useHttps(sslContext.getSocketFactory(), false);
+      redirectTarget.useHttps(sslSocketFactory(), false);
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(302).setHeader("Location",
-            redirectTarget.getUrl("/").toString()));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+            redirectTarget.url("/").toString()));
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.upload("redirect", "foo");
          assertEquals(result, "fooPUTREDIRECT");
@@ -514,9 +517,9 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
          assertEquals(redirectTarget.getRequestCount(), 1);
          // Verify that the body was populated after the redirect
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = redirectTarget.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(client);
          redirectTarget.shutdown();
@@ -527,12 +530,12 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testZeroLengthPut() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          client.putNothing("");
          assertEquals(server.getRequestCount(), 1);
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "");
+         assertEquals(request.getBody().readUtf8(), "");
       } finally {
          closeQuietly(client);
          server.shutdown();
@@ -543,16 +546,16 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    public void testPutIsRetriedOnFailure() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(500),
             new MockResponse().setBody("fooPUT"));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.upload("", "foo");
          assertEquals(server.getRequestCount(), 2);
          assertEquals(result, "fooPUT");
          // Verify that the body was properly sent in the two requests
          RecordedRequest request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = server.takeRequest();
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(client);
          server.shutdown();
@@ -562,7 +565,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testHead() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          assertTrue(client.exists(""));
       } finally {
@@ -574,7 +577,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testHeadIsRetriedOnServerError() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(500), new MockResponse());
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          assertTrue(client.exists(""));
          assertEquals(server.getRequestCount(), 2);
@@ -587,7 +590,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testHeadFailure() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(404));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          assertFalse(client.exists(""));
       } finally {
@@ -599,7 +602,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    @Test
    public void testGetAndParseSax() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody(XML));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          String result = client.downloadAndParse("");
          assertEquals(result, "whoppers");
@@ -613,11 +616,11 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
    public void testInterruptThrottledGet() throws Exception {
       long timeoutMillis = 10 * 1000;
       MockWebServer server = mockWebServer(new MockResponse().setBody(XML).throttleBody(XML.length() / 2, timeoutMillis, TimeUnit.MILLISECONDS));
-      IntegrationTestClient client = client(server.getUrl("/").toString());
+      IntegrationTestClient client = client(server.url("/").toString());
       try {
          HttpResponse response = client.invoke(HttpRequest.builder()
             .method("GET")
-            .endpoint(server.getUrl("/").toURI())
+            .endpoint(server.url("/").uri())
             .build());
          InputStream is = response.getPayload().openStream();
          long now = System.currentTimeMillis();

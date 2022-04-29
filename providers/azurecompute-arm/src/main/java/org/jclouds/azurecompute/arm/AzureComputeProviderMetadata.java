@@ -39,6 +39,8 @@ import java.net.URI;
 import java.util.Properties;
 
 import org.jclouds.azurecompute.arm.domain.Region;
+import org.jclouds.azurecompute.arm.features.ActivityLogAlertApi;
+import org.jclouds.azurecompute.arm.features.AlertApi;
 import org.jclouds.azurecompute.arm.features.AvailabilitySetApi;
 import org.jclouds.azurecompute.arm.features.DeploymentApi;
 import org.jclouds.azurecompute.arm.features.DiskApi;
@@ -47,6 +49,7 @@ import org.jclouds.azurecompute.arm.features.ImageApi;
 import org.jclouds.azurecompute.arm.features.LoadBalancerApi;
 import org.jclouds.azurecompute.arm.features.LocalNetworkGatewayApi;
 import org.jclouds.azurecompute.arm.features.LocationApi;
+import org.jclouds.azurecompute.arm.features.MetricAlertApi;
 import org.jclouds.azurecompute.arm.features.MetricDefinitionsApi;
 import org.jclouds.azurecompute.arm.features.MetricsApi;
 import org.jclouds.azurecompute.arm.features.NetworkInterfaceCardApi;
@@ -136,6 +139,9 @@ public class AzureComputeProviderMetadata extends BaseProviderMetadata {
       properties.put(API_VERSION_PREFIX + LocalNetworkGatewayApi.class.getSimpleName(), "2018-02-01");
       properties.put(API_VERSION_PREFIX + VirtualNetworkGatewayApi.class.getSimpleName(), "2018-02-01");
       properties.put(API_VERSION_PREFIX + VirtualNetworkGatewayConnectionApi.class.getSimpleName(), "2018-02-01");
+      properties.put(API_VERSION_PREFIX + ActivityLogAlertApi.class.getSimpleName(), "2020-10-01");
+      properties.put(API_VERSION_PREFIX + AlertApi.class.getSimpleName(), "2019-03-01");
+      properties.put(API_VERSION_PREFIX + MetricAlertApi.class.getSimpleName(), "2018-03-01");
       
       return properties;
    }

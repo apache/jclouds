@@ -46,6 +46,7 @@ public class SSLModule extends AbstractModule {
       bind(new TypeLiteral<Supplier<SSLContext>>() {
       }).annotatedWith(Names.named("untrusted")).to(new TypeLiteral<UntrustedSSLContextSupplier>() {
       });
+      bind(X509TrustManager.class).annotatedWith(Names.named("untrusted")).to(TrustAllCerts.class);
    }
 
    /**
@@ -101,7 +102,7 @@ public class SSLModule extends AbstractModule {
    @Singleton
    public static class TrustAllCerts implements X509TrustManager {
       public X509Certificate[] getAcceptedIssuers() {
-         return null;
+         return new X509Certificate[0];
       }
 
       public void checkClientTrusted(X509Certificate[] certs, String authType) {

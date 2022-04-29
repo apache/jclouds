@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.sqs.*;version="${project.version}";-noimport:=true

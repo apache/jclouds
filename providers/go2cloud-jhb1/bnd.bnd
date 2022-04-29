@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.go2cloud.*;version="${project.version}";-noimport:=true

@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.date.joda.*;version="${project.version}";-noimport:=true

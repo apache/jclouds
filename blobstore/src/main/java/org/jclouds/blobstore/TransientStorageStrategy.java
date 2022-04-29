@@ -20,6 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.io.BaseEncoding.base16;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -166,6 +167,11 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
 
    @Override
    public String putBlob(final String containerName, final Blob blob) throws IOException {
+      return putBlob(containerName, blob, BlobAccess.PRIVATE);
+   }
+
+   @Override
+   public String putBlob(final String containerName, final Blob blob, BlobAccess access) throws IOException {
       byte[] payload;
       HashCode actualHashCode;
       HashingInputStream input = new HashingInputStream(Hashing.md5(), blob.getPayload().openStream());
@@ -187,11 +193,18 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
          Closeables2.closeQuietly(input);
       }
 
-      Blob newBlob = createUpdatedCopyOfBlobInContainer(containerName, blob, payload, actualHashCode);
+      String eTag = null;
+      if (blob.getMetadata() != null) {
+         eTag = blob.getMetadata().getETag();
+      }
+      if (eTag == null) {
+         eTag = base16().lowerCase().encode(actualHashCode.asBytes());
+      }
+      Blob newBlob = createUpdatedCopyOfBlobInContainer(containerName, blob, payload, actualHashCode, eTag);
       Map<String, Blob> map = containerToBlobs.get(containerName);
       String blobName = newBlob.getMetadata().getName();
       map.put(blobName, newBlob);
-      containerToBlobAccess.get(containerName).put(blobName, BlobAccess.PRIVATE);
+      containerToBlobAccess.get(containerName).put(blobName, access);
       return base16().lowerCase().encode(actualHashCode.asBytes());
    }
 
@@ -234,12 +247,13 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
       return "/";
    }
 
-   private Blob createUpdatedCopyOfBlobInContainer(String containerName, Blob in, byte[] input, HashCode contentMd5) {
+   private Blob createUpdatedCopyOfBlobInContainer(String containerName, Blob in, byte[] input, HashCode contentMd5, String eTag) {
       checkNotNull(containerName, "containerName");
       checkNotNull(in, "blob");
       checkNotNull(input, "input");
       checkNotNull(contentMd5, "contentMd5");
-      Payload payload = Payloads.newByteSourcePayload(ByteSource.wrap(input));
+      checkNotNull(eTag, "eTag");
+      Payload payload = createPayload(input);
       MutableContentMetadata oldMd = in.getPayload().getContentMetadata();
       HttpUtils.copy(oldMd, payload.getContentMetadata());
       payload.getContentMetadata().setContentMD5(contentMd5);
@@ -249,7 +263,6 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
       blob.getMetadata().setContainer(containerName);
       blob.getMetadata().setLastModified(new Date());
       blob.getMetadata().setSize((long) input.length);
-      String eTag = base16().lowerCase().encode(contentMd5.asBytes());
       blob.getMetadata().setETag(eTag);
       // Set HTTP headers to match metadata
       blob.getAllHeaders().replaceValues(HttpHeaders.LAST_MODIFIED,
@@ -258,6 +271,52 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
       copyPayloadHeadersToBlob(payload, blob);
       blob.getAllHeaders().putAll(Multimaps.forMap(blob.getMetadata().getUserMetadata()));
       return blob;
+   }
+
+   private static final class RepeatingByteSource extends ByteSource {
+      private final byte ch;
+
+      RepeatingByteSource(byte ch) {
+         this.ch = ch;
+      }
+
+      @Override
+      public InputStream openStream() {
+         return new RepeatingInputStream(ch);
+      }
+   }
+
+   /** @return Payload of input, possibly optimized for sparse regions (ASCII NULs) */
+   private static Payload createPayload(byte[] input) {
+      for (int i = 0; i < input.length; ++i) {
+         if (input[i] != (byte) 0) {
+            return Payloads.newByteArrayPayload(input);
+         }
+      }
+
+      // all bytes are NUL
+      return Payloads.newByteSourcePayload(new RepeatingByteSource((byte) 0).slice(0, input.length));
+   }
+
+   private static final class RepeatingInputStream extends InputStream {
+      private final byte ch;
+
+      RepeatingInputStream(byte ch) {
+         this.ch = ch;
+      }
+
+      @Override
+      public int read() throws IOException {
+         return ch;
+      }
+
+      @Override
+      public int read(byte[] b, int off, int len) {
+         for (int i = 0; i < len; ++i) {
+            b[off + i] = ch;
+         }
+         return len;
+      }
    }
 
    private void copyPayloadHeadersToBlob(Payload payload, Blob blob) {

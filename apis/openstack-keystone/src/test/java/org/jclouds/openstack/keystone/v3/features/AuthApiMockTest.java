@@ -21,12 +21,13 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.openstack.keystone.v3.domain.Token;
 import org.jclouds.openstack.keystone.v3.domain.User;
 import org.jclouds.openstack.keystone.v3.internal.BaseV3KeystoneApiMockTest;
 import org.testng.annotations.Test;
 
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 @Test(groups = "unit", testName = "AuthApiMockTest", singleThreaded = true)
 public class AuthApiMockTest extends BaseV3KeystoneApiMockTest {

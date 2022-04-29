@@ -24,12 +24,20 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+
+import okhttp3.ConnectionSpec;
+import okhttp3.OkHttpClient;
+import okhttp3.TlsVersion;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import org.jclouds.http.BaseHttpCommandExecutorServiceIntegrationTest;
 import org.jclouds.http.HttpResponseException;
@@ -40,16 +48,10 @@ import org.jclouds.rest.annotations.PATCH;
 import org.jclouds.rest.binders.BindToStringPayload;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
-import com.squareup.okhttp.ConnectionSpec;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.TlsVersion;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Tests the functionality of the {@link OkHttpCommandExecutorService}
@@ -83,13 +85,13 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
    @Test
    public void testPatch() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setBody("fooPATCH"));
-      PatchApi api = api(PatchApi.class, server.getUrl("/").toString());
+      PatchApi api = api(PatchApi.class, server.url("/").toString());
       try {
          String result = api.patch("", "foo");
          // Verify that the body is properly populated
          RecordedRequest request = server.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          assertEquals(result, "fooPATCH");
          // Verify content headers are sent
          assertNotNull(request.getHeader("Content-Type"));
@@ -106,7 +108,7 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
    public void testPatchIsRetriedOnFailure() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(500),
             new MockResponse().setBody("fooPATCH"));
-      PatchApi api = api(PatchApi.class, server.getUrl("/").toString());
+      PatchApi api = api(PatchApi.class, server.url("/").toString());
       try {
          String result = api.patch("", "foo");
          assertEquals(server.getRequestCount(), 2);
@@ -114,10 +116,10 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
          // Verify that the body was properly sent in the two requests
          RecordedRequest request = server.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = server.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(api);
          server.shutdown();
@@ -127,10 +129,10 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
    @Test
    public void testPatchRedirect() throws Exception {
       MockWebServer redirectTarget = mockWebServer(new MockResponse().setBody("fooPATCHREDIRECT"));
-      redirectTarget.useHttps(sslContext.getSocketFactory(), false);
+      redirectTarget.useHttps(sslSocketFactory(), false);
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(302).setHeader("Location",
-            redirectTarget.getUrl("/").toString()));
-      PatchApi api = api(PatchApi.class, server.getUrl("/").toString());
+            redirectTarget.url("/").toString()));
+      PatchApi api = api(PatchApi.class, server.url("/").toString());
       try {
          String result = api.patch("", "foo");
          assertEquals(result, "fooPATCHREDIRECT");
@@ -139,10 +141,10 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
          // Verify that the body was populated after the redirect
          RecordedRequest request = server.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
          request = redirectTarget.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "foo");
+         assertEquals(request.getBody().readUtf8(), "foo");
       } finally {
          closeQuietly(api);
          redirectTarget.shutdown();
@@ -153,25 +155,25 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
    @Test
    public void testZeroLengthPatch() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
-      PatchApi api = api(PatchApi.class, server.getUrl("/").toString());
+      PatchApi api = api(PatchApi.class, server.url("/").toString());
       try {
          api.patchNothing("");
          assertEquals(server.getRequestCount(), 1);
          RecordedRequest request = server.takeRequest();
          assertEquals(request.getMethod(), "PATCH");
-         assertEquals(new String(request.getBody(), Charsets.UTF_8), "");
+         assertEquals(request.getBody().readUtf8(), "");
       } finally {
          closeQuietly(api);
          server.shutdown();
       }
    }
 
-   @Test(expectedExceptions = HttpResponseException.class, expectedExceptionsMessageRegExp = ".*exhausted connection specs.*")
+   @Test(expectedExceptions = HttpResponseException.class, expectedExceptionsMessageRegExp = "Unable to find acceptable protocols.*")
    public void testSSLConnectionFailsIfOnlyHttpConfigured() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
-      server.useHttps(sslContext.getSocketFactory(), false);
+      server.useHttps(sslSocketFactory(), false);
       Module httpConfigModule = new ConnectionSpecModule(ConnectionSpec.CLEARTEXT);
-      PatchApi api = api(PatchApi.class, server.getUrl("/").toString(), httpConfigModule);
+      PatchApi api = api(PatchApi.class, server.url("/").toString(), httpConfigModule);
       try {
          api.patchNothing("");
       } finally {
@@ -180,11 +182,11 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
       }
    }
 
-   @Test(expectedExceptions = HttpResponseException.class, expectedExceptionsMessageRegExp = ".*exhausted connection specs.*")
+   @Test(expectedExceptions = HttpResponseException.class, expectedExceptionsMessageRegExp = "CLEARTEXT communication not enabled for client.*")
    public void testHTTPConnectionFailsIfOnlySSLConfigured() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
       Module httpConfigModule = new ConnectionSpecModule(ConnectionSpec.MODERN_TLS);
-      PatchApi api = api(PatchApi.class, server.getUrl("/").toString(), httpConfigModule);
+      PatchApi api = api(PatchApi.class, server.url("/").toString(), httpConfigModule);
       try {
          api.patchNothing("");
       } finally {
@@ -197,10 +199,10 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
    public void testBothProtocolsSucceedIfSSLAndHTTPConfigured() throws Exception {
       MockWebServer redirectTarget = mockWebServer(new MockResponse());
       MockWebServer server = mockWebServer(new MockResponse().setResponseCode(302).setHeader("Location",
-            redirectTarget.getUrl("/").toString()));
-      server.useHttps(sslContext.getSocketFactory(), false);
+            redirectTarget.url("/").toString()));
+      server.useHttps(sslSocketFactory(), false);
       Module httpConfigModule = new ConnectionSpecModule(ConnectionSpec.CLEARTEXT, ConnectionSpec.MODERN_TLS);
-      PatchApi api = api(PatchApi.class, server.getUrl("/").toString(), httpConfigModule);
+      PatchApi api = api(PatchApi.class, server.url("/").toString(), httpConfigModule);
       try {
          api.patchNothing("");
          assertEquals(server.getRequestCount(), 1);
@@ -215,19 +217,28 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
    @Test
    public void testRestrictedSSLProtocols() throws Exception {
       MockWebServer server = mockWebServer(new MockResponse());
-      server.useHttps(sslContext.getSocketFactory(), false);
+      server.useHttps(sslSocketFactory(), false);
       ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS).tlsVersions(TlsVersion.TLS_1_2)
             .build();
-      PatchApi api = api(PatchApi.class, server.getUrl("/").toString(), new ConnectionSpecModule(spec));
+      PatchApi api = api(PatchApi.class, server.url("/").toString(), new ConnectionSpecModule(spec));
       try {
          api.patchNothing("");
          assertEquals(server.getRequestCount(), 1);
          RecordedRequest request = server.takeRequest();
-         assertEquals(request.getSslProtocol(), "TLSv1.2");
+         assertEquals(request.getTlsVersion().javaName(), "TLSv1.2");
       } finally {
          closeQuietly(api);
          server.shutdown();
       }
+   }
+
+   protected static MockWebServer mockWebServer(MockResponse... responses) throws IOException {
+      MockWebServer server = new MockWebServer();
+      server.start(null, 0);
+      for (MockResponse response : responses) {
+         server.enqueue(response);
+      }
+      return server;
    }
 
    @ConfiguresHttpCommandExecutorService
@@ -244,9 +255,9 @@ public class OkHttpCommandExecutorServiceTest extends BaseHttpCommandExecutorSer
          bind(OkHttpClientSupplier.class).toInstance(new OkHttpClientSupplier() {
             @Override
             public OkHttpClient get() {
-               OkHttpClient client = new OkHttpClient();
-               client.setConnectionSpecs(connectionSpecs);
-               return client;
+               return new OkHttpClient.Builder()
+                   .connectionSpecs(connectionSpecs)
+                   .build();
             }
          });
       }

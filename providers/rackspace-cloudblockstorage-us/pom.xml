@@ -22,14 +22,13 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.jclouds.provider</groupId>
   <artifactId>rackspace-cloudblockstorage-us</artifactId>
   <name>jclouds Rackspace Next Generation Cloud Block Storage US provider</name>
   <description>OpenStack Cinder implementation targeted to Rackspace Next Generation Cloud Block Storage US</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.rackspace-cloudblockstorage-us.endpoint>https://identity.api.rackspacecloud.com/v2.0/</test.rackspace-cloudblockstorage-us.endpoint>
@@ -38,8 +37,6 @@
     <test.rackspace-cloudblockstorage-us.identity>${test.rackspace-us.identity}</test.rackspace-cloudblockstorage-us.identity>
     <test.rackspace-cloudblockstorage-us.credential>${test.rackspace-us.credential}</test.rackspace-cloudblockstorage-us.credential>
     <test.rackspace-cloudblockstorage-us.template />
-    <jclouds.osgi.export>org.jclouds.rackspace.cloudblockstorage.us*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

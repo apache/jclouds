@@ -19,6 +19,9 @@ package org.jclouds.blobstore.strategy.internal;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jclouds.concurrent.FutureIterables.transformParallel;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.annotation.Resource;
@@ -79,6 +82,15 @@ public class FetchBlobMetadata implements Function<PageSet<? extends StorageMeta
    public PageSet<? extends StorageMetadata> apply(PageSet<? extends StorageMetadata> in) {
       checkState(container != null, "container name should be initialized");
 
+      if (in == null) {
+         return new PageSetImpl<>(Collections.<StorageMetadata>emptyList(), null);
+      }
+
+      Map<String, StorageMetadata> orderedMap = new LinkedHashMap<>(in.size());
+      for (StorageMetadata storageMetadata : in) {
+         orderedMap.put(storageMetadata.getName(), null);
+      }
+
       Iterable<StorageMetadata> returnv = Lists.newArrayList(transformParallel(in,
           new Function<StorageMetadata, ListenableFuture<? extends StorageMetadata>>() {
 
@@ -88,7 +100,7 @@ public class FetchBlobMetadata implements Function<PageSet<? extends StorageMeta
                return Futures.immediateFuture(from);
             }
             return userExecutor.submit(new Callable<StorageMetadata>() {
-               @Override public StorageMetadata call() throws Exception {
+               @Override public StorageMetadata call() {
                   return blobstore.blobMetadata(container, from.getName());
                }
             });
@@ -96,6 +108,10 @@ public class FetchBlobMetadata implements Function<PageSet<? extends StorageMeta
 
       }, userExecutor, maxTime, logger, String.format("getting metadata from containerName: %s", container)));
 
-      return new PageSetImpl<StorageMetadata>(returnv, in.getNextMarker());
+      for (StorageMetadata storageMetadata : returnv) {
+         orderedMap.put(storageMetadata.getName(), storageMetadata);
+      }
+
+      return new PageSetImpl<>(orderedMap.values(), in.getNextMarker());
    }
 }

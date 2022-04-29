@@ -27,15 +27,16 @@ import java.util.Properties;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.http.BaseMockWebServerTest;
 import org.jclouds.http.config.JavaUrlHttpCommandExecutorServiceModule;
 import org.jclouds.softlayer.SoftLayerApiMetadata;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.inject.Module;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 /**
  * Base class for all SoftLayer mock tests.
@@ -54,9 +55,9 @@ public class BaseSoftLayerMockTest extends BaseMockWebServerTest {
       return new JavaUrlHttpCommandExecutorServiceModule();
    }
 
-   public byte[] payloadFromResource(String resource) {
+   public String payloadFromResource(String resource) {
       try {
-         return toStringAndClose(getClass().getResourceAsStream(resource)).getBytes(Charsets.UTF_8);
+         return toStringAndClose(getClass().getResourceAsStream(resource));
       } catch (IOException e) {
          throw Throwables.propagate(e);
       }

@@ -22,14 +22,13 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.jclouds.api</groupId>
   <artifactId>sts</artifactId>
   <name>jclouds sts api</name>
   <description>jclouds components to access an implementation of Security Token Service (STS)</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.sts.endpoint>https://sts.amazonaws.com</test.sts.endpoint>
@@ -37,9 +36,6 @@
     <test.sts.build-version />
     <test.sts.identity>${test.aws.identity}</test.sts.identity>
     <test.sts.credential>${test.aws.credential}</test.sts.credential>
-
-    <jclouds.osgi.export>org.jclouds.aws*;version="${project.version}",org.jclouds.sts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>
@@ -63,8 +59,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

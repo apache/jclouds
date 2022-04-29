@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.jclouds</groupId>
         <artifactId>jclouds-project</artifactId>
-        <version>2.3.0-SNAPSHOT</version>
+        <version>2.6.0-SNAPSHOT</version>
         <relativePath>../../project/pom.xml</relativePath>
     </parent>
 
@@ -31,7 +31,6 @@
     <artifactId>google-cloud-storage</artifactId>
     <name>jclouds Google Cloud Storage provider</name>
     <description>jclouds components to access Google Cloud Storage</description>
-    <packaging>bundle</packaging>
 
     <properties>
         <test.google-cloud-storage.identity>client_email which usually looks like project_id@developer.gserviceaccount.com</test.google-cloud-storage.identity>
@@ -41,8 +40,6 @@
         <test.jclouds.oauth.credential-type>p12PrivateKeyCredentials</test.jclouds.oauth.credential-type>
         <test.google-cloud-storage.api-version>v1</test.google-cloud-storage.api-version>
         <test.google-cloud-storage.build-version/>
-        <jclouds.osgi.export>org.jclouds.googlecloudstorage*;version="${project.version}"</jclouds.osgi.export>
-        <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
     </properties>
 
     <dependencies>
@@ -119,16 +116,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>com.squareup.okhttp</groupId>
+          <groupId>com.squareup.okhttp3</groupId>
           <artifactId>mockwebserver</artifactId>
           <scope>test</scope>
-          <exclusions>
-            <!-- Already provided by jclouds-sshj -->
-            <exclusion>
-              <groupId>org.bouncycastle</groupId>
-              <artifactId>bcprov-jdk15on</artifactId>
-            </exclusion>
-          </exclusions>
         </dependency>
     </dependencies>
     <profiles>

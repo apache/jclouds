@@ -22,14 +22,13 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.jclouds.api</groupId>
   <artifactId>rackspace-clouddns</artifactId>
   <name>jclouds rackspace clouddns api</name>
   <description>jclouds components for Rackspace Cloud DNS</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.rackspace-clouddns.endpoint>https://identity.api.rackspacecloud.com/v2.0/</test.rackspace-clouddns.endpoint>
@@ -37,9 +36,6 @@
     <test.rackspace-clouddns.build-version />
     <test.rackspace-clouddns.identity>${test.rackspace-us.identity}</test.rackspace-clouddns.identity>
     <test.rackspace-clouddns.credential>${test.rackspace-us.credential}</test.rackspace-clouddns.credential>
-
-    <jclouds.osgi.export>org.jclouds.rackspace.clouddns.v1*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

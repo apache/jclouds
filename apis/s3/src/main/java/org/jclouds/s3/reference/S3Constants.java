@@ -32,6 +32,7 @@ public final class S3Constants {
    public static final String PROPERTY_S3_SERVICE_PATH = "jclouds.s3.service-path";
    public static final String PROPERTY_S3_VIRTUAL_HOST_BUCKETS = "jclouds.s3.virtual-host-buckets";
    public static final String PROPERTY_JCLOUDS_S3_CHUNKED_SIZE = "jclouds.s3.chunked.size";
+   public static final String PROPERTY_SIGNER_VERSION = "jclouds.s3.signer-version";
 
    public static final String TEMPORARY_SIGNATURE_PARAM = "Signature";
 

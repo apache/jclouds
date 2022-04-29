@@ -19,11 +19,12 @@ package org.jclouds.azurecompute.arm.features;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.azurecompute.arm.domain.StorageService;
 import org.jclouds.azurecompute.arm.domain.Availability;
 import org.jclouds.azurecompute.arm.domain.StorageServiceKeys;
 import org.jclouds.azurecompute.arm.domain.StorageServiceUpdateParams;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 import org.jclouds.azurecompute.arm.internal.BaseAzureComputeApiMockTest;
 import org.jclouds.date.DateService;
 import org.jclouds.date.internal.SimpleDateFormatDateService;

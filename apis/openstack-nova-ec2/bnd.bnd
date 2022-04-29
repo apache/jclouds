@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.openstack.nova.ec2.*;version="${project.version}";-noimport:=true

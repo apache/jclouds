@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.jclouds.json.gson.internal.JsonReaderInternalAccess;
+import com.google.gson.internal.JsonReaderInternalAccess;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.FluentIterable;
@@ -56,7 +56,7 @@ public class NullFilteringTypeAdapterFactories {
    }
 
    static <T> TypeToken<?> resolve(TypeToken<T> ownerType, Type param) {
-      return TypeToken.get(org.jclouds.json.gson.internal.$Gson$Types.resolve(ownerType.getType(), ownerType.getRawType(),
+      return TypeToken.get(com.google.gson.internal.$Gson$Types.resolve(ownerType.getType(), ownerType.getRawType(),
             param));
    }
 

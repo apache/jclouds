@@ -153,15 +153,25 @@ public class Reflection2 {
          .newBuilder().build(new CacheLoader<TypeToken<?>, Set<Invokable<?, ?>>>() {
             public Set<Invokable<?, ?>> load(TypeToken<?> key) {
                ImmutableSet.Builder<Invokable<?, ?>> builder = ImmutableSet.<Invokable<?, ?>> builder();
-               for (Constructor<?> ctor : key.getRawType().getDeclaredConstructors()) {
-                  ctor.setAccessible(true);
+               Class<?> raw = key.getRawType();
+               for (Constructor<?> ctor : raw.getDeclaredConstructors()) {
+                  // TODO replace isAccessible() with canAccess() when using Java >= 9
+                  if (!ctor.isAccessible() && !coreJavaClass(raw)) {
+                     // In JDK 11 up to 14, the only uses for `java.beans.ConstructorProperties` annotation
+                     // are in the `java.awt`, `java.beans` and `javax.swing` packages.
+                     // Since these constructors are public, there is no need to call `setAccessible()`
+                     ctor.setAccessible(true);
+                  }
                   builder.add(key.constructor(ctor));
                }
                // Look for factory methods, if this is an abstract type.
-               if (Modifier.isAbstract(key.getRawType().getModifiers())) {
-                  for (Invokable<?, Object> method : methods(key.getRawType())){
+               if (Modifier.isAbstract(raw.getModifiers())) {
+                  for (Invokable<?, Object> method : methods(raw)){
                      if (method.isStatic() && method.getReturnType().equals(key)) {
-                        method.setAccessible(true);
+                        // TODO replace isAccessible() with canAccess() when using Java >= 9
+                        if (!method.isAccessible() && !coreJavaClass(raw)) {
+                           method.setAccessible(true);
+                        }
                         builder.add(method);
                      }
                   }
@@ -317,7 +327,8 @@ public class Reflection2 {
                   if (raw == Object.class)
                      continue;
                   for (Method method : raw.getDeclaredMethods()) {
-                     if (!coreJavaClass(raw)) {
+                     // TODO replace isAccessible() with canAccess() when using Java >= 9
+                     if (!method.isAccessible() && !coreJavaClass(raw)) {
                         method.setAccessible(true);
                      }
                      builder.add(key.method(method));

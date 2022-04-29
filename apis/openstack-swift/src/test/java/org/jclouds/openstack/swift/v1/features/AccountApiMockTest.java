@@ -28,15 +28,17 @@ import static org.testng.Assert.assertTrue;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jclouds.openstack.swift.v1.SwiftApi;
 import org.jclouds.openstack.swift.v1.domain.Account;
 import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMap;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 @Test(groups = "unit", testName = "AccountApiMockTest")
 public class AccountApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
@@ -51,7 +53,7 @@ public class AccountApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
             .addHeader(ACCOUNT_METADATA_PREFIX + "Apiversion", "v1.1")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          Account account = api.getAccountApi("DFW").get();
          assertEquals(account.getContainerCount(), 3L);
          assertEquals(account.getObjectCount(), 42L);
@@ -76,7 +78,7 @@ public class AccountApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
             .addHeader(ACCOUNT_METADATA_PREFIX + "ApiVersion", "v1.1")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          api.getAccountApi("DFW").updateMetadata(metadata);
 
          assertEquals(server.getRequestCount(), 2);
@@ -98,7 +100,7 @@ public class AccountApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
       server.enqueue(addCommonHeaders(accountResponse()));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          api.getAccountApi("DFW").updateTemporaryUrlKey("foobar");
 
          assertEquals(server.getRequestCount(), 2);
@@ -118,7 +120,7 @@ public class AccountApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
       server.enqueue(addCommonHeaders(accountResponse()));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          assertTrue(api.getAccountApi("DFW").deleteMetadata(metadata));
 
          assertEquals(server.getRequestCount(), 2);

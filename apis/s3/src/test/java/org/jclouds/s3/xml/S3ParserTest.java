@@ -70,6 +70,8 @@ public class S3ParserTest extends PerformanceTest {
    }
 
    public static final String listAllMyBucketsResultOn200 = "<ListAllMyBucketsResult xmlns=\"http://s3.amazonaws.com/doc/callables/\"><Owner><ID>e1a5f66a480ca99a4fdfe8e318c3020446c9989d7004e7778029fbcc5d990fa0</ID></Owner><Buckets><Bucket><Name>adrianjbosstest</Name><CreationDate>2009-03-12T02:00:07.000Z</CreationDate></Bucket><Bucket><Name>adrianjbosstest2</Name><CreationDate>2009-03-12T02:00:09.000Z</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>";
+   public static final String listAllMyBucketsResultOn200DisplayNameFirst = "<ListAllMyBucketsResult xmlns=\"http://s3.amazonaws.com/doc/callables/\"><Owner><DisplayName>TestName</DisplayName><ID>e1a5f66a480ca99a4fdfe8e318c3020446c9989d7004e7778029fbcc5d990fa0</ID></Owner><Buckets><Bucket><Name>adrianjbosstest</Name><CreationDate>2009-03-12T02:00:07.000Z</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>";
+   public static final String listAllMyBucketsResultOn200OwnerLast = "<ListAllMyBucketsResult xmlns=\"http://s3.amazonaws.com/doc/callables/\"><Buckets><Bucket><Name>adrianjbosstest</Name><CreationDate>2009-03-12T02:00:07.000Z</CreationDate></Bucket></Buckets><Owner><DisplayName>TestName</DisplayName><ID>e1a5f66a480ca99a4fdfe8e318c3020446c9989d7004e7778029fbcc5d990fa0</ID></Owner></ListAllMyBucketsResult>";
 
    @Test
    void testParseListAllMyBucketsSerialResponseTime() throws HttpException {
@@ -112,6 +114,36 @@ public class S3ParserTest extends PerformanceTest {
       CanonicalUser owner = new CanonicalUser("e1a5f66a480ca99a4fdfe8e318c3020446c9989d7004e7778029fbcc5d990fa0");
       assert container1.getOwner().equals(owner);
       assert container2.getOwner().equals(owner);
+   }
+
+   @Test
+   public void testCanParseListAllMyBucketsDisplayNameFirst() throws HttpException {
+      Set<BucketMetadata> s3Buckets = factory.create(injector.getInstance(ListAllMyBucketsHandler.class)).parse(
+              Strings2.toInputStream(listAllMyBucketsResultOn200DisplayNameFirst));
+      BucketMetadata container = Iterables.get(s3Buckets, 0);
+      assert container.getName().equals("adrianjbosstest");
+      Date expectedDate1 = new SimpleDateFormatDateService().iso8601DateParse("2009-03-12T02:00:07.000Z");
+      Date date = container.getCreationDate();
+      assert date.equals(expectedDate1);
+      assert s3Buckets.size() == 1;
+      CanonicalUser owner = new CanonicalUser("e1a5f66a480ca99a4fdfe8e318c3020446c9989d7004e7778029fbcc5d990fa0",
+              "TestName");
+      assert container.getOwner().equals(owner);
+   }
+
+   @Test
+   public void testCanParseListAllMyBucketsOwnerLast() throws HttpException {
+      Set<BucketMetadata> s3Buckets = factory.create(injector.getInstance(ListAllMyBucketsHandler.class)).parse(
+              Strings2.toInputStream(listAllMyBucketsResultOn200OwnerLast));
+      BucketMetadata container = Iterables.get(s3Buckets, 0);
+      assert container.getName().equals("adrianjbosstest");
+      Date expectedDate = new SimpleDateFormatDateService().iso8601DateParse("2009-03-12T02:00:07.000Z");
+      Date date1 = container.getCreationDate();
+      assert date1.equals(expectedDate);
+      assert s3Buckets.size() == 1;
+      CanonicalUser owner = new CanonicalUser("e1a5f66a480ca99a4fdfe8e318c3020446c9989d7004e7778029fbcc5d990fa0",
+              "TestName");
+      assert container.getOwner().equals(owner);
    }
 
    public static final String listContainerResult = "<ListContainerHandler xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>adrianjbosstest</Name><Prefix></Prefix><Marker></Marker><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>3366</Key><LastModified>2009-03-12T02:00:13.000Z</LastModified><ETag>&quot;9d7bb64e8e18ee34eec06dd2cf37b766&quot;</ETag><Size>136</Size><Owner><ID>e1a5f66a480ca99a4fdfe8e318c3020446c9989d7004e7778029fbcc5d990fa0</ID><DisplayName>ferncam</DisplayName></Owner><StorageClass>STANDARD</StorageClass></Contents></ListContainerHandler>";

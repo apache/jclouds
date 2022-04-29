@@ -80,9 +80,19 @@ public final class B2BlobIntegrationLiveTest extends BaseBlobIntegrationTest {
    }
 
    @Override
-   public void testPutIncorrectContentMD5() throws InterruptedException, IOException {
+   public void testPutIncorrectContentMD5ByteSource() throws InterruptedException, IOException {
       try {
-         super.testPutIncorrectContentMD5();
+         super.testPutIncorrectContentMD5ByteSource();
+         failBecauseExceptionWasNotThrown(AssertionError.class);
+      } catch (AssertionError ae) {
+         throw new SkipException("B2 does not enforce Content-MD5", ae);
+      }
+   }
+
+   @Override
+   public void testPutIncorrectContentMD5InputStream() throws InterruptedException, IOException {
+      try {
+         super.testPutIncorrectContentMD5InputStream();
          failBecauseExceptionWasNotThrown(AssertionError.class);
       } catch (AssertionError ae) {
          throw new SkipException("B2 does not enforce Content-MD5", ae);

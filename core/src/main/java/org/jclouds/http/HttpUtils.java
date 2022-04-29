@@ -121,8 +121,9 @@ public class HttpUtils {
 
    public static byte[] toByteArrayOrNull(PayloadEnclosing response) {
       if (response.getPayload() != null) {
-         InputStream input = response.getPayload().getInput();
+         InputStream input = null;
          try {
+            input = response.getPayload().openStream();
             return toByteArray(input);
          } catch (IOException e) {
             propagate(e);

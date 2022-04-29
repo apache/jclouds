@@ -1,0 +1,21 @@
+{
+  "Marker": "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault3",
+  "VaultList": [ 
+   {
+    "CreationDate": "2012-03-16T22:22:47.214Z",
+    "LastInventoryDate": "2012-03-21T22:06:51.218Z",
+    "NumberOfArchives": 2,
+    "SizeInBytes": 12334,
+    "VaultARN": "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault1",
+    "VaultName": "examplevault1"
+   }, 
+   {
+    "CreationDate": "2012-03-19T22:06:51.218Z",
+    "LastInventoryDate": "2012-03-21T22:06:51.218Z",
+    "NumberOfArchives": 0,
+    "SizeInBytes": 0,
+    "VaultARN": "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault2",
+    "VaultName": "examplevault2"
+   }
+  ]
+}

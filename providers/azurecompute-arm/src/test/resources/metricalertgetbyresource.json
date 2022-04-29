@@ -1,0 +1,80 @@
+{
+  "value": [
+    {
+      "id": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/metricalerts/MetricAlert1",
+      "name": "MetricAlert1",
+      "type": "Microsoft.Insights/metricAlerts",
+      "location": "global",
+      "tags": {},
+      "properties": {
+        "description": "MetricAlert1",
+        "severity": 0,
+        "enabled": true,
+        "scopes": [
+          "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/LinuxVM",
+          "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/CentOSVM"
+        ],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT1M",
+        "criteria": {
+          "allOf": [
+            {
+              "threshold": 0,
+              "name": "criteria1",
+              "metricNamespace": "Microsoft.Compute/virtualMachines",
+              "metricName": "Available Memory Bytes",
+              "operator": "GreaterThan",
+              "timeAggregation": "Total",
+              "criterionType": "StaticThresholdCriterion"
+            }
+          ],
+          "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+        },
+        "autoMitigate": true,
+        "targetResourceType": "Microsoft.Compute/virtualMachines",
+        "targetResourceRegion": "eastus",
+        "actions": []
+      }
+    },
+    {
+      "id": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/metricalerts/MetricAlert2",
+      "name": "MetricAlert2",
+      "type": "Microsoft.Insights/metricAlerts",
+      "location": "global",
+      "tags": {},
+      "properties": {
+        "description": "",
+        "severity": 3,
+        "enabled": false,
+        "scopes": [
+          "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/LinuxVM"
+        ],
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "criteria": {
+          "allOf": [
+            {
+              "threshold": 0,
+              "name": "criteria1",
+              "metricNamespace": "Microsoft.Compute/virtualMachines",
+              "metricName": "Percentage CPU",
+              "operator": "GreaterThan",
+              "timeAggregation": "Average",
+              "criterionType": "StaticThresholdCriterion"
+            }
+          ],
+          "odata.type": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+        },
+        "autoMitigate": true,
+        "targetResourceType": "Microsoft.Compute/virtualMachines",
+        "targetResourceRegion": "eastus",
+  		"actions": [
+          {
+            "actionGroupId": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/actionGroups/metricaction",
+            "webHookProperties": {}
+          }
+        ]
+      }
+    }      
+  ]
+}

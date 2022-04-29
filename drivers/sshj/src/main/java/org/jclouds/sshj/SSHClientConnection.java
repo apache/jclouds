@@ -157,7 +157,7 @@ public class SSHClientConnection implements Connection<SSHClient> {
       if (sessionTimeout != 0) {
          ssh.setTimeout(sessionTimeout);
       }
-      ssh.connect(hostAndPort.getHostText(), hostAndPort.getPortOrDefault(22));
+      ssh.connect(hostAndPort.getHost(), hostAndPort.getPortOrDefault(22));
       if (loginCredentials.hasUnencryptedPrivateKey()) {
          OpenSSHKeyFile key = new OpenSSHKeyFile();
          key.init(loginCredentials.getOptionalPrivateKey().get(), null);

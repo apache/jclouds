@@ -16,12 +16,18 @@
  */
 package org.jclouds.s3.binders;
 
-import java.util.Properties;
+import static org.jclouds.s3.binders.XMLHelper.asString;
+import static org.jclouds.s3.binders.XMLHelper.createDocument;
+import static org.jclouds.s3.binders.XMLHelper.elem;
+import static org.jclouds.s3.binders.XMLHelper.elemWithText;
+
+import java.util.Collection;
 
 import javax.inject.Singleton;
 import javax.ws.rs.core.MediaType;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.Binder;
@@ -31,55 +37,61 @@ import org.jclouds.s3.domain.AccessControlList.Grant;
 import org.jclouds.s3.domain.AccessControlList.GroupGrantee;
 import org.jclouds.s3.domain.BucketLogging;
 import org.jclouds.s3.reference.S3Constants;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.google.common.base.Throwables;
-import com.jamesmurty.utils.XMLBuilder;
 
 @Singleton
 public class BindBucketLoggingToXmlPayload implements Binder {
    @Override
    public <R extends HttpRequest> R bindToRequest(R request, Object payload) {
       BucketLogging from = (BucketLogging) payload;
-      Properties outputProperties = new Properties();
-      outputProperties.put(javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION, "yes");
       try {
-         String stringPayload = generateBuilder(from).asString(outputProperties);
-         request.setPayload(stringPayload);
+         request.setPayload(generatePayload(from));
          request.getPayload().getContentMetadata().setContentType(MediaType.TEXT_XML);
+         return request;
       } catch (Exception e) {
          Throwables.propagateIfPossible(e);
          throw new RuntimeException("error transforming bucketLogging: " + from, e);
       }
-      return request;
    }
 
-   protected XMLBuilder generateBuilder(BucketLogging bucketLogging) throws ParserConfigurationException,
-         FactoryConfigurationError {
-      XMLBuilder rootBuilder = XMLBuilder.create("BucketLoggingStatus")
-            .attr("xmlns", S3Constants.S3_REST_API_XML_NAMESPACE).e("LoggingEnabled");
-      rootBuilder.e("TargetBucket").t(bucketLogging.getTargetBucket());
-      rootBuilder.e("TargetPrefix").t(bucketLogging.getTargetPrefix());
-      XMLBuilder grantsBuilder = rootBuilder.elem("TargetGrants");
-      for (Grant grant : bucketLogging.getTargetGrants()) {
-         XMLBuilder grantBuilder = grantsBuilder.elem("Grant");
-         XMLBuilder granteeBuilder = grantBuilder.elem("Grantee").attr("xmlns:xsi",
-               "http://www.w3.org/2001/XMLSchema-instance");
+   private String generatePayload(BucketLogging bucketLogging)
+         throws ParserConfigurationException, FactoryConfigurationError, TransformerException {
+      Document document = createDocument();
+      Element rootNode = elem(document, "BucketLoggingStatus", document);
+      rootNode.setAttribute("xmlns", S3Constants.S3_REST_API_XML_NAMESPACE);
+      Element loggingNode = elem(rootNode, "LoggingEnabled", document);
+      elemWithText(loggingNode, "TargetBucket", bucketLogging.getTargetBucket(), document);
+      elemWithText(loggingNode, "TargetPrefix", bucketLogging.getTargetPrefix(), document);
+      addGrants(elem(loggingNode, "TargetGrants", document),
+                bucketLogging.getTargetGrants(),
+                document);
+      return asString(document);
+   }
+
+   static void addGrants(Element grantsNode, Collection<Grant> grants, Document document) {
+      for (Grant grant : grants) {
+         Element grantNode = elem(grantsNode, "Grant", document);
+         Element granteeNode = elem(grantNode, "Grantee", document);
+         granteeNode.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
          if (grant.getGrantee() instanceof GroupGrantee) {
-            granteeBuilder.attr("xsi:type", "Group").elem("URI").text(grant.getGrantee().getIdentifier());
+            granteeNode.setAttribute("xsi:type", "Group");
+            elemWithText(granteeNode, "URI", grant.getGrantee().getIdentifier(), document);
          } else if (grant.getGrantee() instanceof CanonicalUserGrantee) {
             CanonicalUserGrantee grantee = (CanonicalUserGrantee) grant.getGrantee();
-            granteeBuilder.attr("xsi:type", "CanonicalUser").elem("ID").text(grantee.getIdentifier()).up();
+            granteeNode.setAttribute("xsi:type", "CanonicalUser");
+            elemWithText(granteeNode, "ID", grantee.getIdentifier(), document);
             if (grantee.getDisplayName() != null) {
-               granteeBuilder.elem("DisplayName").text(grantee.getDisplayName());
+               elemWithText(granteeNode, "DisplayName", grantee.getDisplayName(), document);
             }
          } else if (grant.getGrantee() instanceof EmailAddressGrantee) {
-            granteeBuilder.attr("xsi:type", "AmazonCustomerByEmail").elem("EmailAddress")
-                  .text(grant.getGrantee().getIdentifier());
+            granteeNode.setAttribute("xsi:type", "AmazonCustomerByEmail");
+            elemWithText(granteeNode, "EmailAddress", grant.getGrantee().getIdentifier(), document);
          }
-         grantBuilder.elem("Permission").text(grant.getPermission().toString());
+         elemWithText(grantNode, "Permission", grant.getPermission(), document);
       }
-      return grantsBuilder;
    }
-
 }

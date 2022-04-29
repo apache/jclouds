@@ -22,14 +22,13 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.jclouds.provider</groupId>
   <artifactId>aws-s3</artifactId>
   <name>jclouds Amazon Simple Storage Service (S3) provider</name>
   <description>Simple Storage Service (S3) implementation targeted to Amazon Web Services</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.aws.identity>FIXME_IDENTITY</test.aws.identity>
@@ -42,14 +41,6 @@
     <test.aws-s3.credential>${test.aws.credential}</test.aws-s3.credential>
     <test.aws-s3.sessionToken>${test.aws.sessionToken}</test.aws-s3.sessionToken>
     <test.blobstore.container-count>25</test.blobstore.container-count>
-
-    <jclouds.osgi.export>org.jclouds.aws.s3*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds*;version="${project.version}",
-      org.jclouds.io;version="${project.version}",
-      org.jclouds.http.options;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>
@@ -99,15 +90,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.squareup.okhttp</groupId>
+      <groupId>com.squareup.okhttp3</groupId>
       <artifactId>mockwebserver</artifactId>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.bouncycastle</groupId>
-          <artifactId>bcprov-jdk15on</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.google.auto.service</groupId>

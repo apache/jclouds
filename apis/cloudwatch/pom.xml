@@ -22,14 +22,13 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.jclouds.api</groupId>
   <artifactId>cloudwatch</artifactId>
   <name>jclouds cloudwatch api</name>
   <description>jclouds components to access an implementation of CloudWatch</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.cloudwatch.endpoint>https://monitoring.us-east-1.amazonaws.com</test.cloudwatch.endpoint>
@@ -37,9 +36,6 @@
     <test.cloudwatch.build-version />
     <test.cloudwatch.identity>${test.aws.identity}</test.cloudwatch.identity>
     <test.cloudwatch.credential>${test.aws.credential}</test.cloudwatch.credential>
-
-    <jclouds.osgi.export>org.jclouds.cloudwatch*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>
@@ -63,8 +59,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -131,7 +131,9 @@ public class Reflection2Test {
          "spliterator",
          "stream",
          // Java 9 methods
-         "of");
+         "of",
+         // Java 10 methods
+         "copyOf");
 
    private static final ImmutableSet<String> SORTED_SET_METHODS = ImmutableSet.<String>builder()
          .addAll(SET_METHODS)

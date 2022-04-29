@@ -16,15 +16,20 @@
  */
 package org.jclouds.azureblob;
 
+import static org.jclouds.azure.storage.config.AzureStorageProperties.ACCOUNT;
+import static org.jclouds.azure.storage.config.AzureStorageProperties.AUTH_TYPE;
+import static org.jclouds.azure.storage.config.AzureStorageProperties.TENANT_ID;
 import static org.jclouds.blobstore.reference.BlobStoreConstants.PROPERTY_USER_METADATA_PREFIX;
 import static org.jclouds.reflect.Reflection2.typeToken;
 
 import java.net.URI;
 import java.util.Properties;
 
+import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azureblob.blobstore.config.AzureBlobStoreContextModule;
 import org.jclouds.azureblob.config.AzureBlobHttpApiModule;
 import org.jclouds.blobstore.BlobStoreContext;
+import org.jclouds.oauth.v2.config.OAuthModule;
 import org.jclouds.rest.internal.BaseHttpApiMetadata;
 
 import com.google.common.collect.ImmutableSet;
@@ -52,6 +57,9 @@ public class AzureBlobApiMetadata extends BaseHttpApiMetadata {
    public static Properties defaultProperties() {
       Properties properties = BaseHttpApiMetadata.defaultProperties();
       properties.setProperty(PROPERTY_USER_METADATA_PREFIX, "x-ms-meta-");
+      properties.setProperty(AUTH_TYPE, AuthType.AZURE_KEY.toString());
+      properties.setProperty(ACCOUNT, "");
+      properties.setProperty(TENANT_ID, "");
       return properties;
    }
    
@@ -62,12 +70,15 @@ public class AzureBlobApiMetadata extends BaseHttpApiMetadata {
          .name("Microsoft Azure Blob Service API")
          .identityName("Account Name")
          .credentialName("Access Key")
-         .version("2017-04-17")
+         .version("2017-11-09")
          .defaultEndpoint("https://${jclouds.identity}.blob.core.windows.net")
          .documentation(URI.create("http://msdn.microsoft.com/en-us/library/dd135733.aspx"))
          .defaultProperties(AzureBlobApiMetadata.defaultProperties())
          .view(typeToken(BlobStoreContext.class))
-         .defaultModules(ImmutableSet.<Class<? extends Module>>of(AzureBlobHttpApiModule.class, AzureBlobStoreContextModule.class));
+         .defaultModules(ImmutableSet.<Class<? extends Module>>of(
+                 AzureBlobHttpApiModule.class,
+                 AzureBlobStoreContextModule.class,
+                 OAuthModule.class));
       }
       
       @Override

@@ -1,0 +1,29 @@
+{
+  "properties": {
+    "essentials": {
+      "severity": "Sev4",
+      "signalType": "Log",
+      "alertState": "Acknowledged",
+      "monitorCondition": "Fired",
+      "monitorService": "ActivityLog Administrative",
+      "targetResource": "/subscriptions/SUBSCRIPTIONID/resourcegroups/myResourceGroup/providers/microsoft.compute/virtualmachines/mac",
+      "targetResourceName": "mac",
+      "targetResourceGroup": "myResourceGroup",
+      "targetResourceType": "microsoft.compute/virtualmachines",
+      "sourceCreatedId": "4f4f8514-8dcc-483d-bfd4-90142a63fe06_952656992461616e11c062eeaaed472d",
+      "smartGroupId": "54ebf82c-b522-4520-b582-6c6382477b6a",
+      "smartGroupingReason": "Similar to other alerts in the group",
+      "alertRule": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/activityLogAlerts/SampleAlert",
+      "startDateTime": "2021-12-15T04:21:17.7200826Z",
+      "lastModifiedDateTime": "2021-12-15T04:23:20.9184138Z",
+      "lastModifiedUserName": "abc@xyz.com",
+      "actionStatus": {
+        "isSuppressed": false
+      },
+      "description": ""
+    } 
+  },
+  "id": "/subscriptions/SUBSCRIPTIONID/resourcegroups/myResourceGroup/providers/microsoft.compute/virtualmachines/mac/providers/Microsoft.AlertsManagement/alerts/60c4d62b-xxxx-46d8-0000-b6dd8c4a769e",
+  "type": "Microsoft.AlertsManagement/alerts",
+  "name": "SampleAlert"
+}

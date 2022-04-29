@@ -40,7 +40,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testInstance() throws Exception {
       server.enqueue(jsonResponse("/instance_get.json"));
 
-      Instance instance = resourceApi().instance(server.getUrl("/foo/bar").toURI());
+      Instance instance = resourceApi().instance(server.url("/foo/bar").uri());
       assertEquals(instance, new ParseInstanceTest().expected(url("/projects")));
       assertSent(server, "GET", "/foo/bar");
    }
@@ -48,7 +48,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testInstanceReturns404() throws Exception {
       server.enqueue(response404());
 
-      Instance instance = resourceApi().instance(server.getUrl("/foo/bar").toURI());
+      Instance instance = resourceApi().instance(server.url("/foo/bar").uri());
       assertNull(instance);
       assertSent(server, "GET", "/foo/bar");
    }
@@ -56,7 +56,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testNetwork() throws Exception {
       server.enqueue(jsonResponse("/network_get.json"));
 
-      Network network = resourceApi().network(server.getUrl("/foo/bar").toURI());
+      Network network = resourceApi().network(server.url("/foo/bar").uri());
       assertEquals(network, new ParseNetworkTest().expected(url("/projects")));
       assertSent(server, "GET", "/foo/bar");
    }
@@ -64,7 +64,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testNetworkReturns404() throws Exception {
       server.enqueue(response404());
 
-      Network network = resourceApi().network(server.getUrl("/foo/bar").toURI());
+      Network network = resourceApi().network(server.url("/foo/bar").uri());
       assertNull(network);
       assertSent(server, "GET", "/foo/bar");
    }
@@ -72,7 +72,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testDisk() throws Exception {
       server.enqueue(jsonResponse("/disk_get.json"));
 
-      Disk disk = resourceApi().disk(server.getUrl("/foo/bar").toURI());
+      Disk disk = resourceApi().disk(server.url("/foo/bar").uri());
       assertEquals(disk, new ParseDiskTest().expected(url("/projects")));
       assertSent(server, "GET", "/foo/bar");
    }
@@ -80,7 +80,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testDiskReturns404() throws Exception {
       server.enqueue(response404());
 
-      Disk disk = resourceApi().disk(server.getUrl("/foo/bar").toURI());
+      Disk disk = resourceApi().disk(server.url("/foo/bar").uri());
       assertNull(disk);
       assertSent(server, "GET", "/foo/bar");
    }
@@ -88,7 +88,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testImage() throws Exception {
       server.enqueue(jsonResponse("/image_get.json"));
 
-      Image image = resourceApi().image(server.getUrl("/foo/bar").toURI());
+      Image image = resourceApi().image(server.url("/foo/bar").uri());
       assertEquals(image, new ParseImageTest().expected(url("/projects")));
       assertSent(server, "GET", "/foo/bar");
    }
@@ -96,7 +96,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testImageReturns404() throws Exception {
       server.enqueue(response404());
 
-      Image image = resourceApi().image(server.getUrl("/foo/bar").toURI());
+      Image image = resourceApi().image(server.url("/foo/bar").uri());
       assertNull(image);
       assertSent(server, "GET", "/foo/bar");
    }
@@ -104,7 +104,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testOperation() throws Exception {
       server.enqueue(jsonResponse("/operation.json"));
 
-      Operation operation = resourceApi().operation(server.getUrl("/foo/bar").toURI());
+      Operation operation = resourceApi().operation(server.url("/foo/bar").uri());
       assertEquals(operation, new ParseOperationTest().expected(url("/projects")));
       assertSent(server, "GET", "/foo/bar");
    }
@@ -112,7 +112,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testOperationReturns404() throws Exception {
       server.enqueue(response404());
 
-      Operation operation = resourceApi().operation(server.getUrl("/foo/bar").toURI());
+      Operation operation = resourceApi().operation(server.url("/foo/bar").uri());
       assertNull(operation);
       assertSent(server, "GET", "/foo/bar");
    }
@@ -120,7 +120,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testDelete() throws Exception {
       server.enqueue(jsonResponse("/operation.json"));
 
-      Operation operation = resourceApi().delete(server.getUrl("/foo/bar").toURI());
+      Operation operation = resourceApi().delete(server.url("/foo/bar").uri());
       assertEquals(operation, new ParseOperationTest().expected(url("/projects")));
       assertSent(server, "DELETE", "/foo/bar");
    }
@@ -128,7 +128,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testDeleteReturns404() throws Exception {
       server.enqueue(response404());
 
-      Operation operation = resourceApi().delete(server.getUrl("/foo/bar").toURI());
+      Operation operation = resourceApi().delete(server.url("/foo/bar").uri());
       assertNull(operation);
       assertSent(server, "DELETE", "/foo/bar");
    }
@@ -136,7 +136,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testResetInstance() throws Exception {
       server.enqueue(jsonResponse("/operation.json"));
 
-      Operation operation = resourceApi().resetInstance(server.getUrl("/foo/bar").toURI());
+      Operation operation = resourceApi().resetInstance(server.url("/foo/bar").uri());
       assertEquals(operation, new ParseOperationTest().expected(url("/projects")));
       assertSent(server, "POST", "/foo/bar/reset");
    }
@@ -144,7 +144,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testStopInstance() throws Exception {
       server.enqueue(jsonResponse("/operation.json"));
 
-      Operation operation = resourceApi().stopInstance(server.getUrl("/foo/bar").toURI());
+      Operation operation = resourceApi().stopInstance(server.url("/foo/bar").uri());
       assertEquals(operation, new ParseOperationTest().expected(url("/projects")));
       assertSent(server, "POST", "/foo/bar/stop");
    }
@@ -152,7 +152,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testStartInstance() throws Exception {
       server.enqueue(jsonResponse("/operation.json"));
 
-      Operation operation = resourceApi().startInstance(server.getUrl("/foo/bar").toURI());
+      Operation operation = resourceApi().startInstance(server.url("/foo/bar").uri());
       assertEquals(operation, new ParseOperationTest().expected(url("/projects")));
       assertSent(server, "POST", "/foo/bar/start");
    }
@@ -160,7 +160,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testSubnetwork() throws Exception {
       server.enqueue(jsonResponse("/subnetwork_get.json"));
 
-      Subnetwork subnet = resourceApi().subnetwork(server.getUrl("/foo/bar").toURI());
+      Subnetwork subnet = resourceApi().subnetwork(server.url("/foo/bar").uri());
       assertEquals(subnet, new ParseSubnetworkTest().expected(url("/projects")));
       assertSent(server, "GET", "/foo/bar");
    }
@@ -168,7 +168,7 @@ public class ResourcesMockTest extends BaseGoogleComputeEngineApiMockTest {
    public void testSubnetworkReturns404() throws Exception {
       server.enqueue(response404());
 
-      Subnetwork subnet = resourceApi().subnetwork(server.getUrl("/foo/bar").toURI());
+      Subnetwork subnet = resourceApi().subnetwork(server.url("/foo/bar").uri());
       assertNull(subnet);
       assertSent(server, "GET", "/foo/bar");
    }

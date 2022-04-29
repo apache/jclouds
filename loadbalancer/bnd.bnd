@@ -1,0 +1,5 @@
+Export-Package: \
+    org.jclouds.loadbalancer.*;version="${project.version}
+
+Fragment-Host: \
+    jclouds-core

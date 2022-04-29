@@ -1,0 +1,33 @@
+{
+	"id": "/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/microsoft.insights/activityLogAlerts/myActivityLogAlertRule",
+	"type": "Microsoft.Insights/ActivityLogAlerts",
+	"name": "myActivityLogAlertRule",
+	"location": "Global",
+	"properties": {
+		"scopes": [
+			"/subscriptions/SUBSCRIPTIONID/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/VM"
+		],
+		"condition": {
+			"allOf": [
+				{
+					"field": "category",
+					"equals": "ServiceHealth",
+					"containsAny": null,
+					"odata.type": null
+				}
+			],
+			"odata.type": ""
+		},
+		"actions": {
+			"actionGroups": [
+				{
+					"actionGroupId": "/subscriptions/SUBSCRIPTIONID/resourcegroups/myResourceGroup/providers/microsoft.insights/actiongroups/myAction",
+					"webhookProperties": null
+				}
+			]
+		},
+		"enabled": false,
+		"description": ""
+	},
+	"identity": null
+}

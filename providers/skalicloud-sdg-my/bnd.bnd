@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.skalicloud.*;version="${project.version}";-noimport:=true

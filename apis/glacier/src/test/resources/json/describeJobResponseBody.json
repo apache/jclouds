@@ -1,0 +1,18 @@
+{
+  "Action": "ArchiveRetrieval",
+  "ArchiveId": "NkbByEejwEggmBz2fTHgJrg0XBoDfjP4q6iu87-TjhqG6eGoOY9Z8i1_AUyUsuhPAdTqLHy8pTl5nfCFJmDl2yEZONi5L26Omw12vcs01MNGntHEQL8MBfGlqrEXAMPLEArchiveId",
+  "ArchiveSizeInBytes": 16777216,
+  "ArchiveSHA256TreeHash": "beb0fe31a1c7ca8c6c04d574ea906e3f97b31fdca7571defb5b44dca89b5af60",
+  "Completed": false,
+  "CreationDate": "2012-05-15T17:21:39.339Z",
+  "CompletionDate": "2012-05-15T17:21:43.561Z",
+  "InventorySizeInBytes": null,
+  "JobDescription": "My ArchiveRetrieval Job",
+  "JobId": "HkF9p6o7yjhFx-K3CGl6fuSm6VzW9T7esGQfco8nUXVYwS0jlb5gq1JZ55yHgt5vP54ZShjoQzQVVh7vEXAMPLEjobID",
+  "RetrievalByteRange": "0-16777215",
+  "SHA256TreeHash": "beb0fe31a1c7ca8c6c04d574ea906e3f97b31fdca7571defb5b44dca89b5af60",
+  "SNSTopic": "arn:aws:sns:us-east-1:012345678901:mytopic",
+  "StatusCode": "InProgress",
+  "StatusMessage": "Operation in progress.",
+  "VaultARN": "arn:aws:glacier:us-east-1:012345678901:vaults/examplevault"
+}

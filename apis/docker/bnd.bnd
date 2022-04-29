@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.docker.*;version="${project.version}";-noimport:=true

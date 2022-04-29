@@ -1,0 +1,2 @@
+Export-Package: \
+    org.jclouds.glesys.*;version="${project.version}";-noimport:=true

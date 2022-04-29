@@ -20,6 +20,8 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Set;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.aws.ec2.internal.BaseAWSEC2ApiMockTest;
 import org.jclouds.aws.ec2.options.CreateSecurityGroupOptions;
 import org.jclouds.ec2.domain.SecurityGroup;
@@ -32,7 +34,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "AWSSecurityGroupApiMockTest", singleThreaded = true)
 public class AWSSecurityGroupApiMockTest extends BaseAWSEC2ApiMockTest {

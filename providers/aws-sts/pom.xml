@@ -22,14 +22,13 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.jclouds.provider</groupId>
   <artifactId>aws-sts</artifactId>
   <name>jclouds Amazon Identity and Access Management (STS) provider</name>
   <description>Identity and Access Management (STS) to Amazon Web Services</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.aws.identity>FIXME_IDENTITY</test.aws.identity>
@@ -39,9 +38,6 @@
     <test.aws-sts.build-version />
     <test.aws-sts.identity>${test.aws.identity}</test.aws-sts.identity>
     <test.aws-sts.credential>${test.aws.credential}</test.aws-sts.credential>
-
-    <jclouds.osgi.export>org.jclouds.aws.sts*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

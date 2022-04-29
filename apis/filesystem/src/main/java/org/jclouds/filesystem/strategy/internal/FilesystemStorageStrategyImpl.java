@@ -368,6 +368,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
       builder.name(key);
       File file = getFileForBlobKey(container, key);
       ByteSource byteSource;
+      boolean isDirectory = false;
 
       if (getDirectoryBlobSuffix(key) != null) {
          if (!file.isDirectory()) {
@@ -379,6 +380,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
          }
          logger.debug("%s - %s is a directory", container, key);
          byteSource = ByteSource.empty();
+         isDirectory = true;
       } else {
          byteSource = Files.asByteSource(file);
       }
@@ -387,7 +389,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
          String contentDisposition = null;
          String contentEncoding = null;
          String contentLanguage = null;
-         String contentType = null;
+         String contentType = isDirectory ? "application/x-directory" : null;
          HashCode hashCode = null;
          String eTag = null;
          Date expires = null;
@@ -403,9 +405,11 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
                contentDisposition = readStringAttributeIfPresent(view, attributes, XATTR_CONTENT_DISPOSITION);
                contentEncoding = readStringAttributeIfPresent(view, attributes, XATTR_CONTENT_ENCODING);
                contentLanguage = readStringAttributeIfPresent(view, attributes, XATTR_CONTENT_LANGUAGE);
-               contentType = readStringAttributeIfPresent(view, attributes, XATTR_CONTENT_TYPE);
-               if (contentType == null && autoDetectContentType) {
-                  contentType = probeContentType(file.toPath());
+               if (!isDirectory) {
+                  contentType = readStringAttributeIfPresent(view, attributes, XATTR_CONTENT_TYPE);
+                  if (contentType == null && autoDetectContentType) {
+                     contentType = probeContentType(file.toPath());
+                  }
                }
                if (attributes.contains(XATTR_CONTENT_MD5)) {
                   ByteBuffer buf = ByteBuffer.allocate(view.size(XATTR_CONTENT_MD5));
@@ -522,6 +526,11 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
    @Override
    public String putBlob(final String containerName, final Blob blob) throws IOException {
+      return putBlob(containerName, blob, BlobAccess.PRIVATE);
+   }
+
+   @Override
+   public String putBlob(final String containerName, final Blob blob, BlobAccess access) throws IOException {
       String blobKey = blob.getMetadata().getName();
       Payload payload = blob.getPayload();
       filesystemContainerNameValidator.validate(containerName);
@@ -579,7 +588,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
             }
          }
 
-         setBlobAccess(containerName, tmpBlobName, BlobAccess.PRIVATE);
+         setBlobAccess(containerName, tmpBlobName, access);
 
          if (!tmpFile.renameTo(outputFile)) {
             throw new IOException("Could not rename file " + tmpFile + " to " + outputFile);

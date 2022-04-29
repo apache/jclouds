@@ -19,6 +19,10 @@ package org.jclouds.openstack.swift.v1.features;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
 import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
@@ -32,9 +36,7 @@ import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
 import org.testng.annotations.Test;
 
 import com.google.common.io.ByteSource;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
+
 
 @Test(groups = "unit", testName = "BulkApiMockTest")
 public class BulkApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
@@ -53,7 +55,7 @@ public class BulkApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody("{\"Number Files Created\": 10, \"Errors\": []}")));
 
       try {
-         SwiftApi api = api(server.getUrl("/").toString(), "openstack-swift");
+         SwiftApi api = api(server.url("/").toString(), "openstack-swift");
          Payload payload = Payloads.newByteSourcePayload(ByteSource.wrap(tarGz));
          ExtractArchiveResponse response = api.getBulkApi("DFW").extractArchive("myContainer", payload, "tar.gz");
 
@@ -64,7 +66,7 @@ public class BulkApiMockTest extends BaseOpenStackMockTest<SwiftApi> {
          assertAuthentication(server);
          RecordedRequest extractRequest = server.takeRequest();
          assertRequest(extractRequest, "PUT", "/v1/MossoCloudFS_5bcf396e-39dd-45ff-93a1-712b9aba90a9/myContainer?extract-archive=tar.gz");
-         assertEquals(extractRequest.getBody(), tarGz);
+         assertEquals(extractRequest.getBody().readByteArray(), tarGz);
       } finally {
          server.shutdown();
       }

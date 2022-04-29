@@ -90,7 +90,7 @@ public class SignRequest implements HttpRequestFilter {
       builder.put(AtmosHeaders.UID, creds.get().identity);
       String date = timeStampProvider.get();
       builder.put(HttpHeaders.DATE, date);
-      if (request.getHeaders().containsKey(AtmosHeaders.DATE))
+      if (request.getFirstHeaderOrNull(AtmosHeaders.DATE) != null)
          builder.put(AtmosHeaders.DATE, date);
       request = request.toBuilder().replaceHeaders(Multimaps.forMap(builder.build())).build();
       String signature = calculateSignature(createStringToSign(request));

@@ -21,6 +21,8 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Date;
 
+import okhttp3.mockwebserver.MockResponse;
+
 import org.jclouds.azurecompute.arm.domain.Metric;
 import org.jclouds.azurecompute.arm.domain.MetricData;
 import org.jclouds.azurecompute.arm.domain.MetricName;
@@ -28,7 +30,6 @@ import org.jclouds.azurecompute.arm.internal.BaseAzureComputeApiMockTest;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
 
 @Test(groups = "unit", testName = "MetricsApiMockTest", singleThreaded = true)
 public class MetricsApiMockTest extends BaseAzureComputeApiMockTest {

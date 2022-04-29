@@ -128,7 +128,7 @@ public class VaultApiMockTest extends BaseAzureComputeApiMockTest {
    @BeforeMethod
    public void start() throws IOException, URISyntaxException {
       super.start();
-      vaultUri = server.getUrl("").toURI();
+      vaultUri = server.url("").uri();
    }
 
    public void createVault() throws InterruptedException {

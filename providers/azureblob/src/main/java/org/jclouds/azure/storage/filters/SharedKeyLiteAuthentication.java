@@ -21,14 +21,12 @@ import static com.google.common.io.ByteStreams.readBytes;
 import static org.jclouds.crypto.Macs.asByteProcessor;
 import static org.jclouds.util.Patterns.NEWLINE_PATTERN;
 import static org.jclouds.util.Strings2.toInputStream;
-import org.jclouds.http.Uris.UriBuilder;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.jclouds.http.Uris;
-import java.net.URI;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -36,12 +34,9 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import org.jclouds.Constants;
+import org.jclouds.azure.storage.config.AuthType;
+import org.jclouds.azure.storage.util.storageurl.StorageUrlSupplier;
 import org.jclouds.crypto.Crypto;
 import org.jclouds.date.TimeStamp;
 import org.jclouds.domain.Credentials;
@@ -49,16 +44,24 @@ import org.jclouds.http.HttpException;
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpRequestFilter;
 import org.jclouds.http.HttpUtils;
+import org.jclouds.http.Uris;
+import org.jclouds.http.Uris.UriBuilder;
 import org.jclouds.http.internal.SignatureWire;
 import org.jclouds.logging.Logger;
+import org.jclouds.oauth.v2.filters.OAuthFilter;
 import org.jclouds.util.Strings2;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.io.ByteProcessor;
 import com.google.common.net.HttpHeaders;
@@ -76,10 +79,11 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
    private final Provider<String> timeStampProvider;
    private final Crypto crypto;
    private final String credential;
-   private final String identity;
    private final HttpUtils utils;
    private final URI storageUrl;
    private final boolean isSAS;
+   private final AuthType authType;
+   private final OAuthFilter oAuthFilter;
 
    @Resource
    @Named(Constants.LOGGER_SIGNATURE)
@@ -88,16 +92,19 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
    @Inject
    public SharedKeyLiteAuthentication(SignatureWire signatureWire,
          @org.jclouds.location.Provider Supplier<Credentials> creds, @TimeStamp Provider<String> timeStampProvider,
-         Crypto crypto, HttpUtils utils, @Named("sasAuth") boolean sasAuthentication) {
+         Crypto crypto, HttpUtils utils, @Named("sasAuth") boolean sasAuthentication,
+         StorageUrlSupplier storageUrlSupplier, AuthType authType,
+         OAuthFilter oAuthFilter) {
       this.crypto = crypto;
       this.utils = utils;
       this.signatureWire = signatureWire;
-      this.storageUrl = URI.create("https://" + creds.get().identity + ".blob.core.windows.net/");
+      this.storageUrl = storageUrlSupplier.get();
       this.creds = creds;
-      this.identity = creds.get().identity;
       this.credential = creds.get().credential;
       this.timeStampProvider = timeStampProvider;
       this.isSAS = sasAuthentication;
+      this.authType = authType;
+      this.oAuthFilter = oAuthFilter;
    }
    
    /** 
@@ -105,11 +112,15 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
     * is used and applies the right filtering.  
     */
    public HttpRequest filter(HttpRequest request) throws HttpException {
-      request = this.isSAS ? filterSAS(request, this.credential) : filterKey(request);
+      if (this.authType == AuthType.AZURE_AD) {
+         request = this.oAuthFilter.filter(request);
+      } else {
+         request = this.isSAS ? filterSAS(request, this.credential) : filterKey(request);
+      }
       utils.logRequest(signatureLog, request, "<<");
       return request;
    }
-   
+
    /** 
     * this filter method is applied only for the cases with SAS Authentication. 
     */

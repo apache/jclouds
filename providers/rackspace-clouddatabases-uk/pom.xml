@@ -22,14 +22,13 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.jclouds.provider</groupId>
   <artifactId>rackspace-clouddatabases-uk</artifactId>
   <name>jclouds Rackspace Cloud Databases UK provider</name>
   <description>OpenStack Trove implementation targeted to Rackspace Cloud Databases UK</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.rackspace-clouddatabases-uk.endpoint>https://identity.api.rackspacecloud.com/v2.0/</test.rackspace-clouddatabases-uk.endpoint>
@@ -38,8 +37,6 @@
     <test.rackspace-clouddatabases-uk.identity>${test.rackspace-uk.identity}</test.rackspace-clouddatabases-uk.identity>
     <test.rackspace-clouddatabases-uk.credential>${test.rackspace-uk.credential}</test.rackspace-clouddatabases-uk.credential>
     <test.rackspace-clouddatabases-uk.template />
-    <jclouds.osgi.export>org.jclouds.rackspace.clouddatabases.uk*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>org.jclouds*;version="${project.version}",*</jclouds.osgi.import>
   </properties>
 
   <dependencies>

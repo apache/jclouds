@@ -1,0 +1,3 @@
+Export-Package: \
+    org.jclouds.openstack.keystone.*;version="${project.version}";-noimport:=true,\
+    org.jclouds.openstack.v2_0.*;version="${project.version}";-noimport:=true

@@ -24,6 +24,12 @@ import org.jclouds.providers.internal.BaseProviderMetadata;
 
 import com.google.auto.service.AutoService;
 
+import static org.jclouds.azure.storage.config.AzureStorageProperties.ACCOUNT;
+import static org.jclouds.azure.storage.config.AzureStorageProperties.TENANT_ID;
+import static org.jclouds.oauth.v2.config.CredentialType.CLIENT_CREDENTIALS_SECRET;
+import static org.jclouds.oauth.v2.config.OAuthProperties.CREDENTIAL_TYPE;
+import static org.jclouds.oauth.v2.config.OAuthProperties.RESOURCE;
+
 /**
  * Implementation of {@link org.jclouds.types.ProviderMetadata} for Microsoft Azure Blob Service.
  */
@@ -38,7 +44,7 @@ public class AzureBlobProviderMetadata extends BaseProviderMetadata {
    public Builder toBuilder() {
       return builder().fromProviderMetadata(this);
    }
-   
+
    public AzureBlobProviderMetadata() {
       super(builder());
    }
@@ -49,15 +55,18 @@ public class AzureBlobProviderMetadata extends BaseProviderMetadata {
 
    public static Properties defaultProperties() {
       Properties properties = new Properties();
+      properties.put("oauth.endpoint", "https://login.microsoft.com/${" + TENANT_ID + "}/oauth2/token");
+      properties.put(RESOURCE, "https://storage.azure.com");
+      properties.put(CREDENTIAL_TYPE, CLIENT_CREDENTIALS_SECRET.toString());
+      properties.put(ACCOUNT, "${jclouds.identity}");
       return properties;
    }
    public static class Builder extends BaseProviderMetadata.Builder {
-
       protected Builder() {
             id("azureblob")
             .name("Microsoft Azure Blob Service")
             .apiMetadata(new AzureBlobApiMetadata())
-            .endpoint("https://${jclouds.identity}.blob.core.windows.net")
+            .endpoint("https://${" + ACCOUNT + "}.blob.core.windows.net")
             .homepage(URI.create("http://www.microsoft.com/windowsazure/storage/"))
             .console(URI.create("https://windows.azure.com/default.aspx"))
             .linkedServices("azureblob", "azurequeue", "azuretable")

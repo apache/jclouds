@@ -19,6 +19,7 @@ package org.jclouds.azureblob;
 import static com.google.common.io.BaseEncoding.base16;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.failBecauseExceptionWasNotThrown;
+import static org.jclouds.azure.storage.config.AzureStorageProperties.AUTH_TYPE;
 import static org.jclouds.azure.storage.options.ListOptions.Builder.includeMetadata;
 import static org.jclouds.azureblob.options.CreateContainerOptions.Builder.withMetadata;
 import static org.jclouds.azureblob.options.CreateContainerOptions.Builder.withPublicAccess;
@@ -36,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jclouds.azure.storage.AzureStorageResponseException;
+import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azure.storage.domain.BoundedSet;
 import org.jclouds.azure.storage.options.ListOptions;
 import org.jclouds.azureblob.domain.AccessTier;
@@ -59,6 +61,7 @@ import org.jclouds.io.Payloads;
 import org.jclouds.util.Strings2;
 import org.jclouds.util.Throwables2;
 import org.jclouds.utils.TestUtils;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Charsets;
@@ -71,9 +74,7 @@ import com.google.common.io.ByteSource;
 
 @Test(groups = "live", singleThreaded = true)
 public class AzureBlobClientLiveTest extends BaseBlobStoreIntegrationTest {
-   public AzureBlobClientLiveTest() {
-      provider = "azureblob";
-   }
+   public AzureBlobClientLiveTest() { provider = "azureblob"; }
 
    public AzureBlobClient getApi() {
       return view.unwrapApi(AzureBlobClient.class);
@@ -111,8 +112,8 @@ public class AzureBlobClientLiveTest extends BaseBlobStoreIntegrationTest {
       long containerCount = response.size();
       assertTrue(containerCount >= 1);
       ListBlobsResponse list = getApi().listBlobs(privateContainer);
-      assertEquals(list.getUrl(), URI.create(String.format("https://%s.blob.core.windows.net/%s",
-            view.unwrap().getIdentity(), privateContainer)));
+      assertThat(list.getUrl().toString()).endsWith(
+              String.format(".blob.core.windows.net/%s", privateContainer));
       // TODO .. check to see the container actually exists
    }
 
@@ -174,8 +175,7 @@ public class AzureBlobClientLiveTest extends BaseBlobStoreIntegrationTest {
          }
       }
       ListBlobsResponse list = getApi().listBlobs();
-      assertEquals(list.getUrl(), URI.create(String.format("https://%s.blob.core.windows.net/$root",
-            view.unwrap().getIdentity())));
+      assertThat(list.getUrl().toString()).endsWith(".blob.core.windows.net/$root");
    }
 
    @Test
@@ -388,6 +388,10 @@ public class AzureBlobClientLiveTest extends BaseBlobStoreIntegrationTest {
 
    @Test
    public void testGetSetACL() throws Exception {
+      String authType = System.getProperty(AUTH_TYPE);
+      if (authType != null && AuthType.fromValue(authType) == AuthType.AZURE_AD) {
+         throw new SkipException("Get/Set ACL unsupported with Azure AD");
+      }
       AzureBlobClient client = getApi();
       String blockContainer = CONTAINER_PREFIX + containerIndex.incrementAndGet();
       client.createContainer(blockContainer);

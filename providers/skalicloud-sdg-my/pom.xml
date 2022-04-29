@@ -22,14 +22,13 @@
   <parent>
     <groupId>org.apache.jclouds</groupId>
     <artifactId>jclouds-project</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.6.0-SNAPSHOT</version>
     <relativePath>../../project/pom.xml</relativePath>
   </parent>
   <groupId>org.apache.jclouds.provider</groupId>
   <artifactId>skalicloud-sdg-my</artifactId>
   <name>jclouds SkaliCloud Malaysia provider</name>
   <description>SkaliCloud implementation targeted to Malaysia</description>
-  <packaging>bundle</packaging>
 
   <properties>
     <test.skalicloud-sdg-my.endpoint>https://api.sdg-my.skalicloud.com</test.skalicloud-sdg-my.endpoint>
@@ -38,14 +37,6 @@
     <test.skalicloud-sdg-my.identity>FIXME_IDENTITY</test.skalicloud-sdg-my.identity>
     <test.skalicloud-sdg-my.credential>FIXME_CREDENTIAL</test.skalicloud-sdg-my.credential>
     <test.skalicloud-sdg-my.template />
-
-    <jclouds.osgi.export>org.jclouds.skalicloud*;version="${project.version}"</jclouds.osgi.export>
-    <jclouds.osgi.import>
-      org.jclouds.compute.internal;version="${project.version}",
-      org.jclouds.rest.internal;version="${project.version}",
-      org.jclouds*;version="${project.version}",
-      *
-    </jclouds.osgi.import>
   </properties>
 
   <dependencies>
