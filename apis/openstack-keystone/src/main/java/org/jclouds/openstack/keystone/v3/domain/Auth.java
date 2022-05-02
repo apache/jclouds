@@ -45,9 +45,23 @@ public abstract class Auth {
       @Nullable
       public abstract PasswordAuth password();
 
-      @SerializedNames({ "methods", "token", "password" })
-      public static Identity create(List<String> methods, Id token, PasswordAuth password) {
-         return new AutoValue_Auth_Identity(methods, token, password);
+      @Nullable
+      public abstract AccessKeyAuth secret();
+
+      @SerializedNames({ "methods", "token", "password", "application_credential" })
+      public static Identity create(List<String> methods, Id token, PasswordAuth password, AccessKeyAuth accessKeyAuth) {
+         return new AutoValue_Auth_Identity(methods, token, password, accessKeyAuth);
+      }
+
+      @AutoValue
+      public abstract static class AccessKeyAuth {
+         public abstract String id();
+         public abstract String secret();
+
+         @SerializedNames({ "id", "secret" })
+         public static AccessKeyAuth create(String id, String secret) {
+            return new AutoValue_Auth_Identity_AccessKeyAuth(id, secret);
+         }
       }
 
       @AutoValue

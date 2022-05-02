@@ -44,7 +44,7 @@ public class BindPasswordAuthToJsonPayload extends BindAuthToJsonPayload<Passwor
       DomainAuth domain = DomainAuth.create(credentials.tenantOrDomainName());
       UserAuth user = UserAuth.create(creds.username(), domain, creds.password());
 
-      return Auth.create(Identity.create(singletonList("password"), null, PasswordAuth.create(user)), scope);
+      return Auth.create(Identity.create(singletonList("password"), null, PasswordAuth.create(user), null), scope);
    }
 
 }
