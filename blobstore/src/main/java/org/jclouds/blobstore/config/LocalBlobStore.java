@@ -564,7 +564,9 @@ public final class LocalBlobStore implements BlobStore {
 
       InputStream is = null;
       try {
-         is = blob.getPayload().openStream();
+         synchronized (blob.getPayload()) {
+            is = blob.getPayload().openStream();
+         }
          ContentMetadata metadata = blob.getMetadata().getContentMetadata();
          BlobBuilder.PayloadBlobBuilder builder = blobBuilder(toName)
                .payload(is);
@@ -690,7 +692,9 @@ public final class LocalBlobStore implements BlobStore {
             } else {
                // This should not happen.
                try {
-                  byteSource = ByteSource.wrap(ByteStreams2.toByteArrayAndClose(blob.getPayload().openStream()));
+                  synchronized (blob.getPayload()) {
+                     byteSource = ByteSource.wrap(ByteStreams2.toByteArrayAndClose(blob.getPayload().openStream()));
+                  }
                } catch (IOException e) {
                   throw new RuntimeException(e);
                }
@@ -738,7 +742,10 @@ public final class LocalBlobStore implements BlobStore {
       // return InputStream to more closely follow real blobstore
       Payload payload;
       try {
-         InputStream is = blob.getPayload().openStream();
+         InputStream is;
+         synchronized (blob.getPayload()) {
+            is = blob.getPayload().openStream();
+         }
          if (is instanceof FileInputStream) {
             // except for FileInputStream since large MPU can open too many fds
             is.close();
@@ -1017,7 +1024,10 @@ public final class LocalBlobStore implements BlobStore {
                if (!blobs.hasNext()) {
                   return -1;
                }
-               current = blobs.next().getPayload().openStream();
+               Payload payload = blobs.next().getPayload();
+               synchronized (payload) {
+                  current = payload.openStream();
+               }
             }
             int result = current.read();
             if (result == -1) {
@@ -1036,7 +1046,10 @@ public final class LocalBlobStore implements BlobStore {
                if (!blobs.hasNext()) {
                   return -1;
                }
-               current = blobs.next().getPayload().openStream();
+               Payload payload = blobs.next().getPayload();
+               synchronized (payload) {
+                  current = payload.openStream();
+               }
             }
             int result = current.read(b, off, len);
             if (result == -1) {
