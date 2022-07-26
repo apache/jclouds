@@ -32,11 +32,14 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 
+import okhttp3.Authenticator;
+import okhttp3.Credentials;
 import okhttp3.internal.http.HttpMethod;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Route;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
@@ -55,6 +58,7 @@ import org.jclouds.http.internal.HttpWire;
 import org.jclouds.io.ContentMetadataCodec;
 import org.jclouds.io.MutableContentMetadata;
 import org.jclouds.io.Payload;
+import org.jclouds.proxy.internal.GuiceProxyConfig;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMultimap;
@@ -66,17 +70,19 @@ public final class OkHttpCommandExecutorService extends BaseHttpCommandExecutorS
    private final Function<URI, Proxy> proxyForURI;
    private final OkHttpClient globalClient;
    private final String userAgent;
+   private final GuiceProxyConfig proxyConfig;
 
    @Inject
    OkHttpCommandExecutorService(HttpUtils utils, ContentMetadataCodec contentMetadataCodec,
          DelegatingRetryHandler retryHandler, IOExceptionRetryHandler ioRetryHandler,
          DelegatingErrorHandler errorHandler, HttpWire wire, Function<URI, Proxy> proxyForURI, OkHttpClient okHttpClient,
          @Named(PROPERTY_IDEMPOTENT_METHODS) String idempotentMethods,
-         @Named(PROPERTY_USER_AGENT) String userAgent) {
+         @Named(PROPERTY_USER_AGENT) String userAgent, GuiceProxyConfig proxyConfig) {
       super(utils, contentMetadataCodec, retryHandler, ioRetryHandler, errorHandler, wire, idempotentMethods);
       this.proxyForURI = proxyForURI;
       this.globalClient = okHttpClient;
       this.userAgent = userAgent;
+	  this.proxyConfig = proxyConfig;
    }
 
    @Override
@@ -172,10 +178,27 @@ public final class OkHttpCommandExecutorService extends BaseHttpCommandExecutorS
 
    @Override
    protected HttpResponse invoke(Request nativeRequest) throws IOException, InterruptedException {
-      OkHttpClient requestScopedClient = globalClient.newBuilder()
-          .proxy(proxyForURI.apply(nativeRequest.url().uri()))
-          .build();
-
+	   
+	  OkHttpClient.Builder okHttpClientBuilder = globalClient.newBuilder()
+				.proxy(proxyForURI.apply(nativeRequest.url().uri()));
+		
+		if (proxyConfig.getCredentials().isPresent()) {
+			Authenticator proxyAuthenticator = new Authenticator() {
+				@Override
+				public Request authenticate(Route route, Response response) throws IOException {
+					if (response != null && response.code() == 407
+							&& !response.message().toLowerCase().contains("preemptive authenticate")) {
+						return null;
+					}
+					String credential = Credentials.basic(proxyConfig.getCredentials().get().identity,
+							proxyConfig.getCredentials().get().credential);
+					return response.request().newBuilder().header("Proxy-Authorization", credential).build();
+				}
+			};
+			okHttpClientBuilder.proxyAuthenticator(proxyAuthenticator);
+		}
+	  OkHttpClient requestScopedClient = okHttpClientBuilder.build();
+	  
       Response response = requestScopedClient.newCall(nativeRequest).execute();
 
       HttpResponse.Builder<?> builder = HttpResponse.builder();
