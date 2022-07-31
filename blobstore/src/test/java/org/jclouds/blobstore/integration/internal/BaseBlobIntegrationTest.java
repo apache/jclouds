@@ -104,7 +104,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
    private static final ByteSource oneHundredOneConstitutions = TestUtils.randomByteSource().slice(0, 101 * 45118);
 
-   @BeforeClass(groups = { "integration", "live" }, dependsOnMethods = "setupContext")
+   @BeforeClass(groups = { "integration", "live" })
    @Override
    public void setUpResourcesOnThisThread(ITestContext testContext) throws Exception {
       super.setUpResourcesOnThisThread(testContext);
