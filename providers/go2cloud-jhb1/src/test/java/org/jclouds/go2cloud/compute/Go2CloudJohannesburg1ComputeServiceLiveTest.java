@@ -19,7 +19,7 @@ package org.jclouds.go2cloud.compute;
 import org.jclouds.elasticstack.compute.ElasticStackComputeServiceLiveTest;
 import org.testng.annotations.Test;
 
-@Test(groups = "live", sequential = true, testName = "Go2CloudJohannesburg1ComputeServiceLiveTest")
+@Test(groups = "live", singleThreaded = true, testName = "Go2CloudJohannesburg1ComputeServiceLiveTest")
 public class Go2CloudJohannesburg1ComputeServiceLiveTest extends ElasticStackComputeServiceLiveTest {
 
    public Go2CloudJohannesburg1ComputeServiceLiveTest() {

@@ -29,7 +29,7 @@ import java.io.InputStream;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 
-@Test(groups = "unit", sequential = true)
+@Test(groups = "unit", singleThreaded = true)
 public class WireTest {
 
    static class BufferLogger implements Logger {

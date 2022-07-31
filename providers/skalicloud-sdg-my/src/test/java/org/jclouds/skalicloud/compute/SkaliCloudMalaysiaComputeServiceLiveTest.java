@@ -19,7 +19,7 @@ package org.jclouds.skalicloud.compute;
 import org.jclouds.elasticstack.compute.ElasticStackComputeServiceLiveTest;
 import org.testng.annotations.Test;
 
-@Test(groups = "live", sequential = true, testName = "SkaliCloudMalaysiaComputeServiceLiveTest")
+@Test(groups = "live", singleThreaded = true, testName = "SkaliCloudMalaysiaComputeServiceLiveTest")
 public class SkaliCloudMalaysiaComputeServiceLiveTest extends ElasticStackComputeServiceLiveTest {
 
    public SkaliCloudMalaysiaComputeServiceLiveTest() {

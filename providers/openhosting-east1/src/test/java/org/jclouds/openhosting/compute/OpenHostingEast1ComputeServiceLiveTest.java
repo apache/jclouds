@@ -19,7 +19,7 @@ package org.jclouds.openhosting.compute;
 import org.jclouds.elasticstack.compute.ElasticStackComputeServiceLiveTest;
 import org.testng.annotations.Test;
 
-@Test(groups = "live", sequential = true, testName = "OpenHostingEast1ComputeServiceLiveTest")
+@Test(groups = "live", singleThreaded = true, testName = "OpenHostingEast1ComputeServiceLiveTest")
 public class OpenHostingEast1ComputeServiceLiveTest extends ElasticStackComputeServiceLiveTest {
 
    public OpenHostingEast1ComputeServiceLiveTest() {
