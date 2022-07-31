@@ -24,6 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.jclouds.blobstore.options.ListContainerOptions.Builder.afterMarker;
 import static org.jclouds.blobstore.options.ListContainerOptions.Builder.inDirectory;
 import static org.jclouds.blobstore.options.ListContainerOptions.Builder.maxResults;
+import static org.jclouds.utils.TestUtils.NO_INVOCATIONS;
+import static org.jclouds.utils.TestUtils.SINGLE_NO_ARG_INVOCATION;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -789,5 +791,15 @@ public class BaseContainerIntegrationTest extends BaseBlobStoreIntegrationTest {
       if (view.getConsistencyModel() == ConsistencyModel.EVENTUAL) {
          Uninterruptibles.sleepUninterruptibly(AWAIT_CONSISTENCY_TIMEOUT_SECONDS, TimeUnit.SECONDS);
       }
+   }
+
+   @DataProvider
+   public Object[][] ignoreOnWindows() {
+      return isWindowsOs() ? NO_INVOCATIONS
+            : SINGLE_NO_ARG_INVOCATION;
+   }
+
+   private static boolean isWindowsOs() {
+      return System.getProperty("os.name", "").toLowerCase().contains("windows");
    }
 }
