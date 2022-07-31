@@ -88,7 +88,7 @@ public class GlacierClientLiveTest extends BaseApiLiveTest<GlacierClient> {
                ContentRange.fromPartNumber(1, partSizeInMb), buildPayload(partSizeInMb * MiB));
          assertThat(part1).isNotNull();
          assertThat(part2).isNotNull();
-         assertThat(api.listParts(VAULT_NAME1, uploadId).iterator()).extracting("treeHash").containsExactly(part1, part2);
+         assertThat(api.listParts(VAULT_NAME1, uploadId).iterator()).toIterable().extracting("treeHash").containsExactly(part1, part2);
       } finally {
          assertThat(api.abortMultipartUpload(VAULT_NAME1, uploadId)).isTrue();
       }
