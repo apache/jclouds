@@ -67,7 +67,7 @@ import com.google.common.util.concurrent.Uninterruptibles;
 /**
  * Test class for {@link FilesystemStorageStrategyImpl } class
  */
-@Test(groups = "unit", testName = "filesystem.FilesystemBlobUtilsTest", sequential = true)
+@Test(groups = "unit", testName = "filesystem.FilesystemBlobUtilsTest", singleThreaded = true)
 public class FilesystemStorageStrategyImplTest {
    private static final String CONTAINER_NAME = "funambol-test";
    private static final String TARGET_CONTAINER_NAME = TestUtils.TARGET_BASE_DIR + CONTAINER_NAME;

@@ -29,7 +29,7 @@ import com.google.common.collect.ImmutableList;
 /**
  * Tests behavior of {@code ChefUtils}
  */
-@Test(groups = { "unit" }, sequential = true)
+@Test(groups = { "unit" }, singleThreaded = true)
 public class ChefUtilsTest {
    public static long millis = 1280251180727L;
    public static String millisString = "1280251180727";

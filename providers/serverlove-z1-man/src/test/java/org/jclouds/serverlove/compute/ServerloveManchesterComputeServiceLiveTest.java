@@ -19,7 +19,7 @@ package org.jclouds.serverlove.compute;
 import org.jclouds.elasticstack.compute.ElasticStackComputeServiceLiveTest;
 import org.testng.annotations.Test;
 
-@Test(groups = "live", sequential = true, testName = "ServerloveManchesterComputeServiceLiveTest")
+@Test(groups = "live", singleThreaded = true, testName = "ServerloveManchesterComputeServiceLiveTest")
 public class ServerloveManchesterComputeServiceLiveTest extends ElasticStackComputeServiceLiveTest {
 
    public ServerloveManchesterComputeServiceLiveTest() {

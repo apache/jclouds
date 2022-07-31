@@ -36,7 +36,7 @@ import org.jclouds.io.ByteStreams2;
 import org.jclouds.logging.Logger;
 import org.testng.annotations.Test;
 
-@Test(groups = "live", sequential = true)
+@Test(groups = "live", singleThreaded = true)
 public class WireLiveTest {
 
    private static final String sysHttpStreamUrl = System.getProperty("jclouds.wire.httpstream.url");
