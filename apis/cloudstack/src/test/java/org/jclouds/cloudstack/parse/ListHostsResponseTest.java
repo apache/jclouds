@@ -36,6 +36,8 @@ import com.google.inject.Injector;
 @Test(groups = "unit")
 public class ListHostsResponseTest extends BaseParserTest<Set<Host>, Set<Host>> {
 
+   @Override
+   @Test(enabled = false)
    public void compare(Set<Host> expects, Set<Host> response) {
       assertEquals(response.toString(), expects.toString());
    }

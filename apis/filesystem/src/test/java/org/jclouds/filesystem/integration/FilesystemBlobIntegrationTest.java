@@ -64,6 +64,7 @@ public class FilesystemBlobIntegrationTest extends BaseBlobIntegrationTest {
    // Mac OS X HFS+ does not support UserDefinedFileAttributeView:
    // https://bugs.openjdk.java.net/browse/JDK-8030048
    @Override
+   @Test(enabled = false)
    public void checkContentMetadata(Blob blob) {
       if (!isMacOSX()) {
          super.checkContentMetadata(blob);
