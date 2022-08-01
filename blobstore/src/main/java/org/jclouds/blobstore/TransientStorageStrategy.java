@@ -162,7 +162,22 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
    @Override
    public Blob getBlob(final String containerName, final String blobName) {
       Map<String, Blob> map = containerToBlobs.get(containerName);
-      return map == null ? null : map.get(blobName);
+      if (map == null) {
+         return null;
+      }
+      Blob blob = map.get(blobName);
+      if (blob == null) {
+         return null;
+      }
+
+      // Deep copy Blob to make sure ByteSourcePayload does not share Closer.
+      Payload payload = blob.getPayload();
+      MutableContentMetadata md = payload.getContentMetadata();
+      Blob newBlob = blobFactory.create(BlobStoreUtils.copy(blob.getMetadata()));
+      Payload newPayload = Payloads.newPayload(payload.getRawContent());
+      newBlob.setPayload(payload);
+      HttpUtils.copy(md, newPayload.getContentMetadata());
+      return newBlob;
    }
 
    @Override
