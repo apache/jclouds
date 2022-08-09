@@ -31,6 +31,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.inject.Named;
+import javax.net.ssl.SSLSocketFactory;
 
 import okhttp3.Authenticator;
 import okhttp3.Credentials;
@@ -196,6 +197,10 @@ public final class OkHttpCommandExecutorService extends BaseHttpCommandExecutorS
 				}
 			};
 			okHttpClientBuilder.proxyAuthenticator(proxyAuthenticator);
+		}
+		
+		if (proxyConfig.isSslProxyEnabled()) {
+			okHttpClientBuilder.socketFactory(new DelegatingSocketFactory(SSLSocketFactory.getDefault()));
 		}
 	  OkHttpClient requestScopedClient = okHttpClientBuilder.build();
 	  

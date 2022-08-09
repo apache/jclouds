@@ -375,6 +375,14 @@ public final class Constants {
     * Default value: 2 minutes.
     */
    public static final String PROPERTY_MAX_RATE_LIMIT_WAIT = "jclouds.max-ratelimit-wait";
+   
+   /**
+    * Boolean property.
+    * <p/>
+    * When true, the proxy server type is HTTPS i.e HTTP and SSL
+    * 
+    */
+   public static final String PROPERTY_PROXY_ENABLE_SSL_PROXY = "jclouds.enable-ssl-proxy";
 
    private Constants() {
       throw new AssertionError("intentionally unimplemented");
