@@ -24,6 +24,7 @@ import static org.jclouds.Constants.PROPERTY_PROXY_PORT;
 import static org.jclouds.Constants.PROPERTY_PROXY_SYSTEM;
 import static org.jclouds.Constants.PROPERTY_PROXY_TYPE;
 import static org.jclouds.Constants.PROPERTY_PROXY_USER;
+import static org.jclouds.Constants.PROPERTY_PROXY_ENABLE_SSL_PROXY;
 
 import java.net.Proxy;
 import java.net.Proxy.Type;
@@ -69,6 +70,9 @@ public class GuiceProxyConfig implements ProxyConfig {
    @Inject(optional = true)
    @Named(PROPERTY_PROXY_TYPE)
    private Proxy.Type type = Proxy.Type.HTTP;
+   @Inject(optional = true)
+   @Named(PROPERTY_PROXY_ENABLE_SSL_PROXY)
+   private Boolean sslProxyEnabled = false;
 
    @Override
    public Optional<HostAndPort> getProxy() {
@@ -116,6 +120,10 @@ public class GuiceProxyConfig implements ProxyConfig {
    @Override
    public boolean isJvmProxyEnabled() {
       return jvmProxyEnabled;
+   }
+   
+   public boolean isSslProxyEnabled() {
+      return sslProxyEnabled;
    }
 
    /**
