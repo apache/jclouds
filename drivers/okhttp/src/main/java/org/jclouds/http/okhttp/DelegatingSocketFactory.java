@@ -22,6 +22,21 @@ import java.net.Socket;
 
 import javax.net.SocketFactory;
 
+/**
+ * The {@code DelegatingSocketFactory} class delegates instance of
+ * SSLSocketFactory to SocketFactory.
+ * 
+ * <p>
+ * Note:
+ * {@link okhttp3.OkHttpClient.Builder#sslSocketFactory(javax.net.ssl.SSLSocketFactory)}
+ * method deprecated.
+ * 
+ * <p>
+ * Note: {@link okhttp3.OkHttpClient.Builder#socketFactory(SocketFactory)}
+ * method doesn't accept {@code javax.net.ssl.SSLSocketFactory.getDefault()} at
+ * runtime, throws {@code java.lang.IllegalArgumentException}.
+ * 
+ */
 public class DelegatingSocketFactory extends SocketFactory {
 	private final SocketFactory delegate;
 
