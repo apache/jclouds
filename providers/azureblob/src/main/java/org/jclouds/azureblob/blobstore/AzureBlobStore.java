@@ -434,15 +434,19 @@ public class AzureBlobStore extends BaseBlobStore {
 
       ImmutableList.Builder<String> blocks = ImmutableList.builder();
       for (MultipartPart part : parts) {
-         String blockId = BaseEncoding.base64().encode(Ints.toByteArray(part.partNumber()));
+         String blockId = makeBlockId(part.partNumber());
          blocks.add(blockId);
       }
       return sync.putBlockList(mpu.containerName(), azureBlob, blocks.build());
    }
 
+   static String makeBlockId(int partNumber) {
+       return BaseEncoding.base64Url().encode(Ints.toByteArray(partNumber));
+   }
+   
    @Override
    public MultipartPart uploadMultipartPart(MultipartUpload mpu, int partNumber, Payload payload) {
-      String blockId = BaseEncoding.base64().encode(Ints.toByteArray(partNumber));
+      String blockId = makeBlockId(partNumber);
       sync.putBlock(mpu.containerName(), mpu.blobName(), blockId, payload);
       String eTag = "";  // putBlock does not return ETag
       Date lastModified = null;  // putBlob does not return Last-Modified
