@@ -214,10 +214,11 @@
     <maven.compile.source>${jdk.version}</maven.compile.source>
     <maven.compile.target>${jdk.version}</maven.compile.target>
     <maven.compile.deprecation>true</maven.compile.deprecation>
+    <project.build.outputTimestamp>1668154596</project.build.outputTimestamp>
 
     <!-- Plugin versions -->
     <bnd.version>5.2.0</bnd.version>
-    <maven-jar-plugin.version>3.0.1</maven-jar-plugin.version>
+    <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
 
     <!-- General dependency versions -->
@@ -476,7 +477,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.0.0-M7</version>
         <configuration>
           <useReleaseProfile>false</useReleaseProfile>
           <goals>deploy</goals>
@@ -638,6 +639,21 @@
           </configuration>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.3.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-remote-resources-plugin</artifactId>
+          <version>1.7.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.1</version>
+        </plugin>
+        <plugin>
           <groupId>biz.aQute.bnd</groupId>
           <artifactId>bnd-maven-plugin</artifactId>
           <version>${bnd.version}</version>
@@ -675,7 +691,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-archetype-plugin</artifactId>
-          <version>2.2</version>
+          <version>3.2.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
@@ -1040,7 +1056,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>3.2.0</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
