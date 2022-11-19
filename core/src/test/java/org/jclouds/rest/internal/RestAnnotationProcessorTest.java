@@ -43,6 +43,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1036,7 +1037,7 @@ public class RestAnnotationProcessorTest extends BaseRestApiTest {
    public void testMultipartWithParamFilePart() throws Exception {
       Invokable<?, ?> method = method(TestMultipartForm.class, "withParamFilePart", String.class,
             File.class);
-      File file = File.createTempFile("foo", "bar");
+      File file = Files.createTempFile("foo", "bar").toFile();
       try {
          Files.append("foobledata", file, UTF_8);
 
@@ -1082,7 +1083,7 @@ public class RestAnnotationProcessorTest extends BaseRestApiTest {
    public void testMultipartWithParamFileBinaryPart() throws Exception {
       Invokable<?, ?> method = method(TestMultipartForm.class, "withParamFileBinaryPart",
             String.class, File.class);
-      File file = File.createTempFile("foo", "bar");
+      File file = Files.createTempFile("foo", "bar").toFile();
       try {
          Files.write(new byte[] { 17, 26, 39, 40, 50 }, file);
 
