@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetAddress;
+import java.nio.file.Files;
 
 import org.jclouds.compute.domain.ExecChannel;
 import org.jclouds.compute.domain.ExecResponse;
@@ -148,7 +149,7 @@ public class SshjSshClientLiveTest {
    }
 
    public void testPutAndGet() throws IOException {
-      temp = File.createTempFile("foo", "bar");
+      temp = Files.createTempFile("foo", "bar").toFile();
       try {
          SshClient client = setupClient();
          client.put(temp.getAbsolutePath(), Payloads.newStringPayload("rabbit"));
