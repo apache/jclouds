@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
-import java.nio.file.Files;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -269,7 +268,7 @@ public abstract class BaseHttpCommandExecutorServiceIntegrationTest extends Base
       Payload payload = null;
 
       try {
-         f = Files.createTempFile("jclouds", "tmp").toFile();
+         f = java.nio.file.Files.createTempFile("jclouds", "tmp").toFile();
          long length = (new Random().nextInt(32) + 1) * 1024L * 1024L;
          TestUtils.randomByteSource().slice(0, length).copyTo(Files.asByteSink(f));
 

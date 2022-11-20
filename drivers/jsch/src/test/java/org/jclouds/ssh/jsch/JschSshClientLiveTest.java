@@ -28,7 +28,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetAddress;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -162,7 +161,7 @@ public class JschSshClientLiveTest {
 
    @Test
    public void testPutAndGet() throws IOException {
-      temp = Files.createTempFile("foo", "bar").toFile();
+      temp = java.nio.file.Files.createTempFile("foo", "bar").toFile();
       try {
          SshClient client = setupClient();
          client.put(temp.getAbsolutePath(), Payloads.newStringPayload("rabbit"));
