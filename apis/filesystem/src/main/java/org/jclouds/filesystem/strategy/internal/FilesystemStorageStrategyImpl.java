@@ -353,6 +353,14 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
       File containerFile = openFolder(container);
       final int containerPathLength = containerFile.getAbsolutePath().length() + 1;
+      if (prefix != null) {
+         // prefix may end with a partial directory so only list the complete parent
+         int index = prefix.lastIndexOf('/');
+         if (index != -1) {
+            containerFile = new File(containerFile, prefix.substring(0, index + 1));
+         }
+      }
+
       populateBlobKeysInContainer(containerFile, blobNames, prefix, new Function<String, String>() {
          @Override
          public String apply(String string) {
