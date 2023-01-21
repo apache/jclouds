@@ -24,6 +24,7 @@ import static com.google.common.io.BaseEncoding.base16;
 import static java.nio.file.Files.createDirectories;
 import static java.nio.file.Files.getFileAttributeView;
 import static java.nio.file.Files.getPosixFilePermissions;
+import static java.nio.file.Files.move;
 import static java.nio.file.Files.probeContentType;
 import static java.nio.file.Files.readAttributes;
 import static java.nio.file.Files.setPosixFilePermissions;
@@ -44,6 +45,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
@@ -574,7 +576,8 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
             eTag = actualHashCode.asBytes();
          }
 
-         if (outputFile.exists()) {
+         // TODO: is this necessary?
+         if (isWindows() && outputFile.exists()) {
             delete(outputFile);
          }
 
@@ -590,9 +593,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
          setBlobAccess(containerName, tmpBlobName, access);
 
-         if (!tmpFile.renameTo(outputFile)) {
-            throw new IOException("Could not rename file " + tmpFile + " to " + outputFile);
-         }
+         move(tmpPath, outputFile.toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
          tmpFile = null;
 
          return base16().lowerCase().encode(eTag);
