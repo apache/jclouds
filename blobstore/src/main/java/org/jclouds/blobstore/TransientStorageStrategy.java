@@ -150,7 +150,7 @@ public class TransientStorageStrategy implements LocalStorageStrategy {
    }
 
    @Override
-   public Iterable<String> getBlobKeysInsideContainer(final String containerName, String prefix) {
+   public Iterable<String> getBlobKeysInsideContainer(final String containerName, String prefix, String delimiter) {
       ConcurrentSkipListMap<String, Blob> blobs = containerToBlobs.get(containerName);
       if (prefix == null) {
          return blobs.keySet();

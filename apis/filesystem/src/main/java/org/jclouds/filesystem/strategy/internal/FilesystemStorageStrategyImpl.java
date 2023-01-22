@@ -342,7 +342,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
     * @throws IOException
     */
    @Override
-   public Iterable<String> getBlobKeysInsideContainer(String container, String prefix) throws IOException {
+   public Iterable<String> getBlobKeysInsideContainer(String container, String prefix, String delimiter) throws IOException {
       filesystemContainerNameValidator.validate(container);
       // check if container exists
       // TODO maybe an error is more appropriate
@@ -361,7 +361,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
          }
       }
 
-      populateBlobKeysInContainer(containerFile, blobNames, prefix, new Function<String, String>() {
+      populateBlobKeysInContainer(containerFile, blobNames, prefix, delimiter, new Function<String, String>() {
          @Override
          public String apply(String string) {
             return denormalize(string.substring(containerPathLength));
@@ -464,6 +464,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
                .contentType(contentType)
                .expires(expires)
                .tier(tier)
+               .type(isDirectory ? StorageType.FOLDER : StorageType.BLOB)
                .userMetadata(userMetadata.build());
          } else {
             builder.payload(byteSource)
@@ -770,7 +771,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
    public long countBlobs(String container, ListContainerOptions options) {
       // TODO: honor options
       try {
-         return Iterables.size(getBlobKeysInsideContainer(container, null));
+         return Iterables.size(getBlobKeysInsideContainer(container, null, null));
       } catch (IOException ioe) {
          throw Throwables.propagate(ioe);
       }
@@ -981,7 +982,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
    }
 
    private static void populateBlobKeysInContainer(File directory, Set<String> blobNames,
-         String prefix, Function<String, String> function) {
+         String prefix, String delimiter, Function<String, String> function) {
       File[] children = directory.listFiles();
       if (children == null) {
          return;
@@ -1001,7 +1002,11 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
                continue;
             }
             blobNames.add(fullPath + File.separator); // TODO: undo if failures
-            populateBlobKeysInContainer(child, blobNames, prefix, function);
+            // Skip recursion if the delimiter tells us not to return children.
+            if (delimiter != null && delimiter.equals("/")) {
+               continue;
+            }
+            populateBlobKeysInContainer(child, blobNames, prefix, delimiter, function);
          }
       }
    }
