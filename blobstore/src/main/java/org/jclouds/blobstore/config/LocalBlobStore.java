@@ -238,20 +238,12 @@ public final class LocalBlobStore implements BlobStore {
       // Loading blobs from container
       Iterable<String> blobBelongingToContainer = null;
       try {
-         blobBelongingToContainer = storageStrategy.getBlobKeysInsideContainer(containerName, options.getPrefix());
+         blobBelongingToContainer = storageStrategy.getBlobKeysInsideContainer(containerName, options.getPrefix(), options.getDelimiter());
       } catch (IOException e) {
          logger.error(e, "An error occurred loading blobs contained into container %s", containerName);
          propagate(e);
       }
 
-      blobBelongingToContainer = Iterables.filter(blobBelongingToContainer,
-            new Predicate<String>() {
-               @Override
-               public boolean apply(String key) {
-                  // ignore folders
-                  return storageStrategy.blobExists(containerName, key);
-               }
-            });
       SortedSet<StorageMetadata> contents = newTreeSet(FluentIterable.from(blobBelongingToContainer)
             .transform(new Function<String, StorageMetadata>() {
                @Override
@@ -414,7 +406,7 @@ public final class LocalBlobStore implements BlobStore {
       boolean returnVal = true;
       if (storageStrategy.containerExists(containerName)) {
          try {
-            if (Iterables.isEmpty(storageStrategy.getBlobKeysInsideContainer(containerName, null)))
+            if (Iterables.isEmpty(storageStrategy.getBlobKeysInsideContainer(containerName, null, null)))
                storageStrategy.deleteContainer(containerName);
             else
                returnVal = false;

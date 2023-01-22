@@ -64,7 +64,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
@@ -525,20 +524,6 @@ public class FilesystemBlobStoreTest {
 
         assertTrue(!blobStore.blobExists(CONTAINER_NAME,
                 blobKey.substring(0, blobKey.length() - 1)));
-    }
-
-    @Test(dataProvider = "ignoreOnMacOSX")
-    public void testListDirectoryBlobs() {
-        blobStore.createContainerInLocation(null, CONTAINER_NAME);
-        checkForContainerContent(CONTAINER_NAME, null);
-
-        Set<String> dirs = ImmutableSet.of(TestUtils.createRandomBlobKey("directory-", File.separator));
-        for (String d : dirs) {
-            blobStore.putBlob(CONTAINER_NAME, createDirBlob(d));
-            assertTrue(blobStore.blobExists(CONTAINER_NAME, d));
-        }
-
-        checkForContainerContent(CONTAINER_NAME, dirs);
     }
 
     @Test(dataProvider = "ignoreOnMacOSX")
