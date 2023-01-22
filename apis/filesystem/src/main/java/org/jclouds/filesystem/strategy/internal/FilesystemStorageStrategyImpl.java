@@ -36,7 +36,9 @@ import static org.jclouds.filesystem.util.Utils.setPrivate;
 import static org.jclouds.filesystem.util.Utils.setPublic;
 import static org.jclouds.util.Closeables2.closeQuietly;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -377,8 +379,10 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
       BlobBuilder builder = blobBuilders.get();
       builder.name(key);
       File file = getFileForBlobKey(container, key);
+      InputStream is;
       ByteSource byteSource;
       boolean isDirectory = false;
+      long length;
 
       if (getDirectoryBlobSuffix(key) != null) {
          if (!file.isDirectory()) {
@@ -391,8 +395,20 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
          logger.debug("%s - %s is a directory", container, key);
          byteSource = ByteSource.empty();
          isDirectory = true;
+         length = 0;
+         is = new ByteArrayInputStream(new byte[0]);
       } else {
          byteSource = Files.asByteSource(file);
+         try {
+            // Must operate only an open file handle to avoid concurrent putBlob changing the object
+            FileInputStream fis = new FileInputStream(file);
+            length = fis.getChannel().size();
+            is = fis;
+         } catch (FileNotFoundException fnfe) {
+            return null;
+         } catch (Exception e) {
+            throw new RuntimeException(e);
+         }
       }
       try {
          String cacheControl = null;
@@ -406,6 +422,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
          Tier tier = Tier.STANDARD;
          ImmutableMap.Builder<String, String> userMetadata = ImmutableMap.builder();
 
+         // TODO: not atomic -- how to read from the FileChannel?
          UserDefinedFileAttributeView view = getUserDefinedFileAttributeView(file.toPath());
          if (view != null) {
             try {
@@ -455,12 +472,12 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
                logger.debug("xattrs not supported on %s", file.toPath());
             }
 
-            builder.payload(byteSource)
+            builder.payload(is)
                .cacheControl(cacheControl)
                .contentDisposition(contentDisposition)
                .contentEncoding(contentEncoding)
                .contentLanguage(contentLanguage)
-               .contentLength(byteSource.size())
+               .contentLength(length)
                .contentMD5(hashCode)
                .eTag(eTag)
                .contentType(contentType)
@@ -469,8 +486,9 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
                .type(isDirectory ? StorageType.FOLDER : StorageType.BLOB)
                .userMetadata(userMetadata.build());
          } else {
-            builder.payload(byteSource)
-               .contentLength(byteSource.size())
+            builder.payload(is)
+               .contentLength(length)
+               // TODO: not atomic and expensive for large objects
                .contentMD5(byteSource.hash(Hashing.md5()).asBytes());
          }
       } catch (FileNotFoundException fnfe) {
@@ -480,8 +498,9 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
       }
       Blob blob = builder.build();
       blob.getMetadata().setContainer(container);
+      // TODO: not atomic
       blob.getMetadata().setLastModified(new Date(file.lastModified()));
-      blob.getMetadata().setSize(file.length());
+      blob.getMetadata().setSize(length);
       if (blob.getPayload().getContentMetadata().getContentMD5() != null)
          blob.getMetadata().setETag(base16().lowerCase().encode(blob.getPayload().getContentMetadata().getContentMD5()));
       return blob;
