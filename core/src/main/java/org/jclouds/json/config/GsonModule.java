@@ -38,6 +38,7 @@ import org.jclouds.domain.JsonBall;
 import org.jclouds.domain.LoginCredentials;
 import org.jclouds.json.Json;
 import org.jclouds.json.SerializedNames;
+import com.google.gson.ReflectionAccessFilter;
 import com.google.gson.internal.ConstructorConstructor;
 import com.google.gson.internal.Excluder;
 import com.google.gson.internal.JsonReaderInternalAccess;
@@ -61,6 +62,7 @@ import org.jclouds.json.internal.NullFilteringTypeAdapterFactories.SetTypeAdapte
 import org.jclouds.json.internal.NullHackJsonLiteralAdapter;
 import org.jclouds.json.internal.OptionalTypeAdapterFactory;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.ImmutableSet;
@@ -131,7 +133,7 @@ public class GsonModule extends AbstractModule {
             ImmutableSet.of(new ExtractNamed()));
 
       builder.registerTypeAdapterFactory(new DeserializationConstructorAndReflectiveTypeAdapterFactory(
-            new ConstructorConstructor(ImmutableMap.<Type, InstanceCreator<?>>of()), serializationPolicy,
+            new ConstructorConstructor(ImmutableMap.<Type, InstanceCreator<?>>of(), /*useJdkUnsafe=*/ false, ImmutableList.<ReflectionAccessFilter>of()), serializationPolicy,
             Excluder.DEFAULT, deserializationPolicy));
 
       // complicated (serializers/deserializers as they need context to operate)

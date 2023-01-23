@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.jclouds.json.SerializedNames;
+import com.google.gson.ReflectionAccessFilter;
 import com.google.gson.internal.ConstructorConstructor;
 import com.google.gson.internal.Excluder;
 import org.jclouds.json.internal.NamingStrategies.AnnotationConstructorNamingStrategy;
@@ -41,6 +42,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
@@ -67,7 +69,8 @@ public final class DeserializationConstructorAndReflectiveTypeAdapterFactoryTest
             ImmutableSet.of(ConstructorProperties.class, SerializedNames.class, Inject.class),
             ImmutableSet.of(new ExtractNamed()));
 
-      return new DeserializationConstructorAndReflectiveTypeAdapterFactory(new ConstructorConstructor(ImmutableMap.<Type, InstanceCreator<?>>of()),
+      return new DeserializationConstructorAndReflectiveTypeAdapterFactory(
+            new ConstructorConstructor(ImmutableMap.<Type, InstanceCreator<?>>of(), /*useJdkUnsafe=*/ false, ImmutableList.<ReflectionAccessFilter>of()),
             serializationPolicy, Excluder.DEFAULT, deserializationPolicy);
    }
 
