@@ -26,6 +26,7 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.ReflectionAccessFilter;
 import com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory;
 import com.google.gson.internal.ConstructorConstructor;
 import com.google.gson.internal.Excluder;
@@ -35,6 +36,7 @@ import org.jclouds.json.internal.NamingStrategies.AnnotationConstructorNamingStr
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.reflect.Invokable;
@@ -117,7 +119,7 @@ public final class DeserializationConstructorAndReflectiveTypeAdapterFactory imp
             "deserializationFieldNamingPolicy");
       this.delegateFactory = new ReflectiveTypeAdapterFactory(constructorConstructor, checkNotNull(
             serializationFieldNamingPolicy, "fieldNamingPolicy"), checkNotNull(excluder, "excluder"),
-              new JsonAdapterAnnotationTypeAdapterFactory(constructorConstructor));
+              new JsonAdapterAnnotationTypeAdapterFactory(constructorConstructor), ImmutableList.<ReflectionAccessFilter>of());
    }
 
    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
