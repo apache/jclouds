@@ -44,7 +44,7 @@ public final class GoogleComputeEngineImageToImage implements Function<Image, or
               .status(Status.AVAILABLE)
               .uri(image.selfLink());
 
-      if (image.deprecated() != null) {
+      if (image.deprecated() != null && image.deprecated().state() != null) {
          builder.userMetadata(ImmutableMap.of("deprecatedState", image.deprecated().state().name()));
          if (image.deprecated().state() == State.DELETED){
             builder.status(Status.DELETED);
