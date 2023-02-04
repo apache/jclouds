@@ -85,6 +85,19 @@ public class GoogleComputeEngineImageToImageTest {
       assertEquals(transformed.getStatus(), Status.AVAILABLE);
    }
 
+   public void testDeprecatedAndNullState(){
+      GoogleComputeEngineImageToImage imageToImage = new GoogleComputeEngineImageToImage(new ImageNameToOperatingSystem());
+      Deprecated deprecated =  Deprecated.create(
+              null, // state
+              URI.create("http://baseurl/projects/centos-cloud/global/images/centos-6-2-v20120326test"), // replacement
+              "2014-07-16T22:16:13.468Z", // deprecated
+              "2015-07-16T22:16:13.468Z", // obsolete
+              "2016-07-16T22:16:13.468Z"); // deleted
+      Image image = image("test-deprecated", deprecated);
+      org.jclouds.compute.domain.Image transformed = imageToImage.apply(image);
+      assertEquals(transformed.getStatus(), Status.AVAILABLE);
+   }
+
    private static Image image(String name, Deprecated deprecated) {
       return Image.create( //
             "1234", // id
