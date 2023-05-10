@@ -25,7 +25,6 @@ import java.util.Map;
 import org.jclouds.byon.Node;
 import org.jclouds.util.Closeables2;
 import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -112,7 +111,7 @@ public class YamlNode {
          InputStream in = null;
          try {
             in = byteSource.openStream();
-            return (YamlNode) new Yaml(new Constructor(YamlNode.class, new LoaderOptions())).load(in);
+            return (YamlNode) new Yaml(new Constructor(YamlNode.class)).load(in);
          } catch (IOException ioe) {
             throw Throwables.propagate(ioe);
          } finally {
