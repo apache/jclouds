@@ -19,6 +19,7 @@ package org.jclouds.json.config;
 import static com.google.common.io.BaseEncoding.base16;
 
 import java.beans.ConstructorProperties;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -76,6 +77,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.google.inject.AbstractModule;
 import com.google.inject.ImplementedBy;
@@ -107,6 +109,8 @@ public class GsonModule extends AbstractModule {
       builder.registerTypeAdapter(Date.class, adapter.nullSafe());
       builder.registerTypeAdapter(byte[].class, byteArrayAdapter.nullSafe());
       builder.registerTypeAdapter(JsonBall.class, jsonAdapter.nullSafe());
+      builder.registerTypeAdapter(File.class, new FileTypeAdapter());
+
       builder.registerTypeAdapterFactory(credentialsAdapterFactory);
       builder.registerTypeAdapterFactory(optional);
       builder.registerTypeAdapterFactory(iterable);
@@ -310,6 +314,27 @@ public class GsonModule extends AbstractModule {
          if (toParse == -1)
             return null;
          return new Date(toParse);
+      }
+   }
+
+   private static class FileTypeAdapter extends TypeAdapter<File> {
+      @Override
+      public void write(JsonWriter out, File file) throws IOException {
+         if (file == null) {
+            out.nullValue();
+         } else {
+            out.value(file.getPath());
+         }
+      }
+
+      @Override
+      public File read(JsonReader in) throws IOException {
+         if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
+         } else {
+            return new File(in.nextString());
+         }
       }
    }
 

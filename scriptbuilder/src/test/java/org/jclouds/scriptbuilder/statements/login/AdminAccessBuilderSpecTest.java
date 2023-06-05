@@ -27,10 +27,12 @@ import java.lang.reflect.Field;
 
 import javax.inject.Provider;
 
+import org.jclouds.json.Json;
+import org.jclouds.json.config.GsonModule;
 import org.jclouds.scriptbuilder.statements.login.AdminAccess.Builder;
 import org.testng.annotations.Test;
 
-import com.google.gson.Gson;
+import com.google.inject.Guice;
 
 /**
  * 
@@ -155,10 +157,12 @@ public class AdminAccessBuilderSpecTest {
       }
    }
 
+   @Test
    public void testNiceJson() {
       AdminAccessBuilderSpec spec = parse("adminUsername=nimda,adminPassword=dictionaryword");
-      assertEquals(new Gson().toJson(spec), "{\"adminUsername\":\"nimda\",\"adminPassword\":\"dictionaryword\"}");
-      assertEquals(new Gson().fromJson(new Gson().toJson(spec), AdminAccessBuilderSpec.class), spec);
+      Json json = Guice.createInjector(new GsonModule()).getInstance(Json.class);
+      assertEquals(json.toJson(spec), "{\"adminUsername\":\"nimda\",\"adminPassword\":\"dictionaryword\"}");
+      assertEquals(json.fromJson(json.toJson(spec), AdminAccessBuilderSpec.class), spec);
    }
 
    public void testParse_unknownKey() {

@@ -95,11 +95,11 @@ public class LifeCycleModuleTest {
       assert closer.getState() == Closer.State.DONE;
    }
 
-   static class PostConstructable {
+   public static class PostConstructable {
       boolean isStarted;
 
       @PostConstruct
-      void start() {
+      public void start() {
          isStarted = true;
       }
    }
