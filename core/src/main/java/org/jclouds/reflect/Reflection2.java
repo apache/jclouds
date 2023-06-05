@@ -327,10 +327,6 @@ public class Reflection2 {
                   if (raw == Object.class)
                      continue;
                   for (Method method : raw.getDeclaredMethods()) {
-                     // TODO replace isAccessible() with canAccess() when using Java >= 9
-                     if (!method.isAccessible() && !coreJavaClass(raw)) {
-                        method.setAccessible(true);
-                     }
                      builder.add(key.method(method));
                   }
                }

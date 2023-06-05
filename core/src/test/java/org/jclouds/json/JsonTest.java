@@ -199,7 +199,7 @@ public class JsonTest {
    }
 
    private static class EnumInsideWithParser {
-      private static enum Test {
+      public static enum Test {
          FOO, BAR, UNRECOGNIZED;
 
          @SuppressWarnings("unused")
