@@ -217,7 +217,6 @@
     <project.build.outputTimestamp>1668154596</project.build.outputTimestamp>
 
     <!-- Plugin versions -->
-    <bnd.version>5.2.0</bnd.version>
     <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
     <maven-surefire-plugin.version>3.1.0</maven-surefire-plugin.version>
 
@@ -468,10 +467,6 @@
     </testResources>
     <plugins>
       <plugin>
-        <groupId>biz.aQute.bnd</groupId>
-        <artifactId>bnd-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <version>3.0.0-M7</version>
@@ -629,11 +624,6 @@
               </goals>
             </execution>
           </executions>
-          <configuration>
-            <archive>
-              <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-            </archive>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -649,22 +639,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>3.2.1</version>
-        </plugin>
-        <plugin>
-          <groupId>biz.aQute.bnd</groupId>
-          <artifactId>bnd-maven-plugin</artifactId>
-          <version>${bnd.version}</version>
-          <configuration>
-            <bndfile>bnd.bnd</bndfile>
-          </configuration>
-          <executions>
-            <execution>
-              <id>bnd-process</id>
-              <goals>
-                <goal>bnd-process</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -872,7 +846,6 @@
               <ignoredResourcePattern>CreateInternetService-options-test.xml</ignoredResourcePattern>
               <ignoredResourcePattern>.gitattributes</ignoredResourcePattern>
               <ignoredResourcePattern>functions/.gitattributes</ignoredResourcePattern>
-              <ignoredResourcePattern>OSGI-OPT/bnd.bnd</ignoredResourcePattern>
               <!-- For bouncycastle -->
               <ignoredResourcePattern>META-INF/BCKEY.DSA</ignoredResourcePattern>
               <ignoredResourcePattern>META-INF/BCKEY.SF</ignoredResourcePattern>
