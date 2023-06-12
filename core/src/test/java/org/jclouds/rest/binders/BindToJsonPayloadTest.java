@@ -23,7 +23,6 @@ import java.io.File;
 import org.jclouds.http.HttpRequest;
 import org.jclouds.json.Json;
 import org.jclouds.json.config.GsonModule;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableMap;
@@ -48,15 +47,19 @@ public class BindToJsonPayloadTest {
 
    }
 
-   // TODO: fails with Failed making field 'java.io.File#path' accessible; either increase its visibility or write a custom TypeAdapter for its declaring type.
-   // This is serializing a File which we don't actually care about.  Just pick a different type instead?
-   @Ignore
+   private static class MyFile {
+      private MyFile(File path) {
+         this.path = path;
+      }
+      private final File path;
+   }
+
    @Test
    public void testSomethingNotAMap() throws SecurityException, NoSuchMethodException {
       BindToJsonPayload binder = new BindToJsonPayload(json);
 
       HttpRequest request = HttpRequest.builder().method("GET").endpoint("http://momma").build();
-      request = binder.bindToRequest(request, new File("foo"));
+      request = binder.bindToRequest(request, new MyFile(new File("foo")));
       assertEquals(request.getPayload().getRawContent(), "{\"path\":\"foo\"}");
       assertEquals(request.getPayload().getContentMetadata().getContentType(), "application/json");
 
