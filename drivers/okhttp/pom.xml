@@ -31,7 +31,7 @@
   <description>OkHttp Driver</description>
 
   <properties>
-    <okio.version>1.17.2</okio.version>
+    <okio.version>3.4.0</okio.version>
   </properties>
 
   <dependencies>
