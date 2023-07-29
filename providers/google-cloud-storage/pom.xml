@@ -145,6 +145,8 @@
                                 <configuration>
                                     <threadCount>1</threadCount>
                                     <systemPropertyVariables>
+                                        <jclouds.blobstore.httpstream.url>${jclouds.blobstore.httpstream.url}</jclouds.blobstore.httpstream.url>
+                                        <jclouds.blobstore.httpstream.md5>${jclouds.blobstore.httpstream.md5}</jclouds.blobstore.httpstream.md5>
                                         <test.google-cloud-storage.identity>${test.google-cloud-storage.identity}</test.google-cloud-storage.identity>
                                         <test.google-cloud-storage.credential>${test.google-cloud-storage.credential}</test.google-cloud-storage.credential>
                                         <test.jclouds.googlecloud.project-name>${test.jclouds.googlecloud.project-name}</test.jclouds.googlecloud.project-name>
