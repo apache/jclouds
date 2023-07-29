@@ -95,7 +95,7 @@ public class BucketApiLiveTest extends BaseGoogleCloudStorageApiLiveTest {
       Logging log = Logging.create(LOG_BUCKET_NAME, BUCKET_NAME);
 
       BucketTemplate template = new BucketTemplate().name(BUCKET_NAME).addAcl(acl).addDefaultObjectAccessControls(oac)
-               .versioning(version).location(Location.US_CENTRAL2).logging(log)
+               .versioning(version).location(Location.US_CENTRAL1).logging(log)
                .storageClass(StorageClass.DURABLE_REDUCED_AVAILABILITY).addCORS(cors);
 
       Bucket response = api().createBucket(PROJECT_NUMBER, template);
@@ -104,7 +104,7 @@ public class BucketApiLiveTest extends BaseGoogleCloudStorageApiLiveTest {
       assertNotNull(response.cors());
       assertTrue(response.cors().size() == 1);
       assertEquals(response.name(), BUCKET_NAME);
-      assertEquals(response.location(), Location.US_CENTRAL2);
+      assertEquals(response.location(), Location.US_CENTRAL1);
       assertThat(response.storageClass()).isEqualTo(StorageClass.DURABLE_REDUCED_AVAILABILITY);
       assertTrue(response.versioning().enabled());
    }
@@ -197,7 +197,7 @@ public class BucketApiLiveTest extends BaseGoogleCloudStorageApiLiveTest {
    @Test(groups = "live", dependsOnMethods = { "testCreateBucket" })
    public void testCreateAlreadyExistBucket() {
 
-      BucketTemplate template = new BucketTemplate().name(BUCKET_NAME).location(Location.US_CENTRAL2)
+      BucketTemplate template = new BucketTemplate().name(BUCKET_NAME).location(Location.US_CENTRAL1)
                .storageClass(StorageClass.DURABLE_REDUCED_AVAILABILITY);
 
       assertNull(api().createBucket(PROJECT_NUMBER, template));
@@ -212,7 +212,7 @@ public class BucketApiLiveTest extends BaseGoogleCloudStorageApiLiveTest {
       Versioning version = Versioning.create(true);
 
       BucketTemplate template = new BucketTemplate().name(BUCKET_NAME_WITHOPTIONS).addDefaultObjectAccessControls(oac)
-               .versioning(version).location(Location.US_CENTRAL2)
+               .versioning(version).location(Location.US_CENTRAL1)
                .storageClass(StorageClass.DURABLE_REDUCED_AVAILABILITY).addCORS(cors);
 
       InsertBucketOptions options = new InsertBucketOptions().projection(Projection.FULL);
@@ -222,7 +222,7 @@ public class BucketApiLiveTest extends BaseGoogleCloudStorageApiLiveTest {
       assertNotNull(response);
       assertNotNull(response.cors());
       assertEquals(response.name(), BUCKET_NAME_WITHOPTIONS);
-      assertEquals(response.location(), Location.US_CENTRAL2);
+      assertEquals(response.location(), Location.US_CENTRAL1);
       assertTrue(response.versioning().enabled());
    }
 

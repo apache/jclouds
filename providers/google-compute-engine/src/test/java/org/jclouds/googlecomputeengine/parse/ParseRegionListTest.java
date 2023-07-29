@@ -50,11 +50,11 @@ public class ParseRegionListTest extends BaseGoogleComputeEngineParseTest<ListPa
       Region region2 = Region.create( //
             "6396763663251190992", // id
             parse("2013-07-08T14:40:37.939-07:00"), // creationTimestamp
-            URI.create(baseUrl + "/party/regions/us-central2"), // selfLink
-            "us-central2", // name
-            "us-central2", // description
+            URI.create(baseUrl + "/party/regions/us-central1"), // selfLink
+            "us-central1", // name
+            "us-central1", // description
             Region.Status.UP, // status
-            ImmutableList.of(URI.create(baseUrl + "/party/zones/us-central2-a")), // zones
+            ImmutableList.of(URI.create(baseUrl + "/party/zones/us-central1-a")), // zones
             ImmutableList.of( //
                   Quota.create("INSTANCES", 0, 8), //
                   Quota.create("CPUS", 0, 8), //
