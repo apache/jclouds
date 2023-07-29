@@ -37,7 +37,10 @@ public final class DomainResourceReferences {
      /*
       *  Multi-Regional
       */
-      ASIA, EU, US,
+      ASIA,
+      EU,
+      IN,
+      US,
 
       /*
        *  Regional
@@ -47,36 +50,45 @@ public final class DomainResourceReferences {
       ASIA_NORTHEAST1,
       ASIA_NORTHEAST2,
       ASIA_NORTHEAST3,
-      ASIA_SOUTH1,
       ASIA_SOUTHEAST1,
+
+      ASIA_SOUTH1,
+      ASIA_SOUTH2,
+
       ASIA_SOUTHEAST2,
 
+      ME_CENTRAL1,
+      ME_WEST1,
+
       NORTHAMERICA_NORTHEAST1,
+      NORTHAMERICA_NORTHEAST2,
       US_CENTRAL1,
       US_EAST1,
       US_EAST4,
+      US_EAST5,
+      US_SOUTH1,
       US_WEST1,
       US_WEST2,
       US_WEST3,
       US_WEST4,
 
       SOUTHAMERICA_EAST1,
+      SOUTHAMERICA_WEST1,
 
       EUROPE_CENTRAL2,
       EUROPE_NORTH1,
+      EUROPE_SOUTHWEST1,
       EUROPE_WEST1,
       EUROPE_WEST2,
       EUROPE_WEST3,
       EUROPE_WEST4,
       EUROPE_WEST6,
+      EUROPE_WEST8,
+      EUROPE_WEST9,
+      EUROPE_WEST12,
 
       AUSTRALIA_SOUTHEAST1,
-
-      /*
-       *  Alpha locations
-       */
-      @Beta
-      US_CENTRAL2;
+      AUSTRALIA_SOUTHEAST2;
 
       public String value() {
          return name().replace('_', '-');
