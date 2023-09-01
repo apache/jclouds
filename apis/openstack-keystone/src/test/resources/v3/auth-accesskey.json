@@ -1,0 +1,13 @@
+{
+    "auth": {
+        "identity": {
+            "methods": [
+                "application_credential"
+            ],
+            "application_credential": {
+                "id": "identity",
+                "secret": "credential"
+            }
+        }
+    }
+}

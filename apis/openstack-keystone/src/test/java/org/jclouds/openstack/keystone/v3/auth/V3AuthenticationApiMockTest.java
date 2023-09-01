@@ -160,4 +160,14 @@ public class V3AuthenticationApiMockTest extends BaseV3KeystoneApiMockTest {
       assertSent(server, "POST", "/auth/tokens", stringFromResource(json));
    }
 
+   public void testAuthenticateAccessKey() throws InterruptedException {
+
+      TenantOrDomainAndCredentials<ApiAccessKeyCredentials> credentials = TenantOrDomainAndCredentials
+            .<ApiAccessKeyCredentials> builder().tenantOrDomainName("domain").scope("unscoped")
+            .credentials(ApiAccessKeyCredentials.builder().accessKey("identity").secretKey("credential").build()).build();
+
+
+      checkTokenResult(credentials, "/v3/auth-accesskey.json");
+   }
+
 }

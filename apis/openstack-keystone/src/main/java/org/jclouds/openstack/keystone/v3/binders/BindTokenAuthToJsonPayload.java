@@ -39,7 +39,7 @@ public class BindTokenAuthToJsonPayload extends BindAuthToJsonPayload<TokenCrede
    @Override
    protected Auth buildAuth(TenantOrDomainAndCredentials<TokenCredentials> credentials, Object scope) {
       Id token = Id.create(credentials.credentials().id());
-      return Auth.create(Identity.create(singletonList("token"), token, null), scope);
+      return Auth.create(Identity.create(singletonList("token"), token, null, null), scope);
    }
 
 }
