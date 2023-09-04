@@ -23,6 +23,7 @@ import java.util.Properties;
 import org.jclouds.openstack.keystone.auth.domain.PasswordCredentials;
 import org.jclouds.openstack.keystone.auth.domain.TenantOrDomainAndCredentials;
 import org.jclouds.openstack.keystone.auth.domain.TokenCredentials;
+import org.jclouds.openstack.keystone.auth.domain.ApiAccessKeyCredentials;
 import org.jclouds.openstack.keystone.v3.internal.BaseV3KeystoneApiLiveTest;
 import org.testng.annotations.Test;
 
@@ -53,5 +54,11 @@ public class V3AuthenticationApiLiveTest extends BaseV3KeystoneApiLiveTest {
       assertNotNull(authenticationApi.authenticateToken(TenantOrDomainAndCredentials.<TokenCredentials> builder()
             .tenantOrDomainName(tenant).scope("unscoped")
             .credentials(TokenCredentials.builder().id(token.get()).build()).build()));
+   }
+
+   public void testAuthenticateAccessKey() {
+      assertNotNull(authenticationApi.authenticateAccessKey(TenantOrDomainAndCredentials.<ApiAccessKeyCredentials> builder()
+            .tenantOrDomainName(tenant).scope("unscoped")
+            .credentials(ApiAccessKeyCredentials.builder().accessKey(identity).secretKey(credential).build()).build()));
    }
 }
