@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.jclouds.blobstore.domain.Tier;
 
-import com.google.common.annotations.Beta;
 import com.google.common.base.CaseFormat;
 
 public final class DomainResourceReferences {
