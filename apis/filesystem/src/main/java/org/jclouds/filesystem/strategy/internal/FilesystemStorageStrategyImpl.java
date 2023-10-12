@@ -187,7 +187,11 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
    @Override
    public ContainerAccess getContainerAccess(String container) {
-      Path path = new File(buildPathStartingFromBaseDir(container)).toPath();
+      File file = new File(buildPathStartingFromBaseDir(container));
+      if (!file.exists()) {
+         throw new ContainerNotFoundException(container, "in getContainerAccess");
+      }
+      Path path = file.toPath();
 
       if ( isWindows() ) {
          try {
