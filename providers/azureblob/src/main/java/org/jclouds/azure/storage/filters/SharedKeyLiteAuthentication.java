@@ -55,6 +55,8 @@ import org.jclouds.http.HttpUtils;
 import org.jclouds.http.Uris;
 import org.jclouds.http.Uris.UriBuilder;
 import org.jclouds.http.internal.SignatureWire;
+import org.jclouds.io.ContentMetadata;
+import org.jclouds.io.Payload;
 import org.jclouds.logging.Logger;
 import org.jclouds.oauth.v2.filters.OAuthFilter;
 import org.jclouds.util.Strings2;
@@ -240,21 +242,23 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
    }
 
    private void appendPayloadMetadataForSharedKey(HttpRequest request, StringBuilder buffer) {
-      buffer.append(
-              Strings.nullToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
-                      .getContentEncoding())).append("\n");
-      buffer.append(
-              Strings.nullToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
-                      .getContentLanguage())).append("\n");
-      buffer.append(
-              HttpUtils.nullOrZeroToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
-                      .getContentLength())).append("\n");
-      buffer.append(
-              HttpUtils.nullToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
-                      .getContentMD5())).append("\n");
-      buffer.append(
-              Strings.nullToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
-                      .getContentType())).append("\n");
+      Payload payload = request.getPayload();
+      if (payload == null) {
+         buffer.append("\n\n\n\n\n");
+         return;
+      }
+
+      ContentMetadata contentMetadata = payload.getContentMetadata();
+      buffer.append(Strings.nullToEmpty(contentMetadata.getContentEncoding()))
+              .append("\n");
+      buffer.append(Strings.nullToEmpty(contentMetadata.getContentLanguage()))
+              .append("\n");
+      buffer.append(HttpUtils.nullOrZeroToEmpty(contentMetadata.getContentLength()))
+              .append("\n");
+      buffer.append(HttpUtils.nullToEmpty(contentMetadata.getContentMD5()))
+              .append("\n");
+      buffer.append(Strings.nullToEmpty(contentMetadata.getContentType()))
+              .append("\n");
    }
 
    private void appendPayloadMetadata(HttpRequest request, StringBuilder buffer) {
