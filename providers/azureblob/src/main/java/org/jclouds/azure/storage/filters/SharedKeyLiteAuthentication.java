@@ -222,7 +222,6 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
       appendCanonicalizedResourceForSharedKey(request, buffer);
       if (signatureWire.enabled())
          signatureWire.output(buffer.toString());
-      System.out.println(buffer);
       return buffer.toString();
    }
 
