@@ -270,7 +270,6 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
       String signature = signString(toSign);
       if (signatureWire.enabled())
          signatureWire.input(Strings2.toInputStream(signature));
-      System.out.println(signature);
       return signature;
    }
 
