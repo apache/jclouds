@@ -24,7 +24,9 @@ public enum AuthType {
     /** Includes both the API key and SAS credentials */
     AZURE_KEY,
     /** Azure AD credentials */
-    AZURE_AD;
+    AZURE_AD,
+    /** Uses the SharedKey scheme, rather than SharedKeyLite */
+    AZURE_SHARED_KEY;
 
     @Override
     public String toString() {

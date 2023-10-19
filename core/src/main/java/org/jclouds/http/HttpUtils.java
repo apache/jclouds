@@ -272,6 +272,10 @@ public class HttpUtils {
       return md5 != null ? base64().encode(md5) : "";
    }
 
+   public static String nullOrZeroToEmpty(Long contentLength) {
+      return contentLength != null && contentLength > 0 ? contentLength.toString() : "";
+   }
+
    public static String nullToEmpty(Collection<String> collection) {
       return (collection == null || collection.isEmpty()) ? "" : collection.iterator().next();
    }

@@ -34,6 +34,14 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.TreeMultiset;
 import org.jclouds.Constants;
 import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azure.storage.util.storageurl.StorageUrlSupplier;
@@ -56,13 +64,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import com.google.common.io.ByteProcessor;
 import com.google.common.net.HttpHeaders;
 
@@ -74,6 +76,9 @@ import com.google.common.net.HttpHeaders;
 @Singleton
 public class SharedKeyLiteAuthentication implements HttpRequestFilter {
    private static final Collection<String> FIRST_HEADERS_TO_SIGN = ImmutableList.of(HttpHeaders.DATE);
+   private static final Collection<String> FIRST_HEADERS_TO_SIGN_FOR_SHARED_KEY =
+           ImmutableList.of(HttpHeaders.DATE, HttpHeaders.IF_MODIFIED_SINCE, HttpHeaders.IF_MATCH,
+                   HttpHeaders.IF_NONE_MATCH, HttpHeaders.IF_UNMODIFIED_SINCE, HttpHeaders.RANGE);
    private final SignatureWire signatureWire;
    private final Supplier<Credentials> creds;
    private final Provider<String> timeStampProvider;
@@ -114,6 +119,8 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
    public HttpRequest filter(HttpRequest request) throws HttpException {
       if (this.authType == AuthType.AZURE_AD) {
          request = this.oAuthFilter.filter(request);
+      } else if (this.authType == AuthType.AZURE_SHARED_KEY){
+         request = this.isSAS ? filterSAS(request, this.credential) : filterSharedKey(request);
       } else {
          request = this.isSAS ? filterSAS(request, this.credential) : filterKey(request);
       }
@@ -153,7 +160,22 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
       String signature = calculateSignature(createStringToSign(request));
       return replaceAuthorizationHeader(request, signature);
    }
-   
+
+   /**
+    * this is a 'standard' filter method, applied when SharedKey authentication is used.
+    */
+   public HttpRequest filterSharedKey(HttpRequest request) throws HttpException {
+      request = replaceDateHeader(request);
+      String signature = calculateSignature(createStringToSignForSharedKey(request));
+      return replaceAuthorizationHeaderForSharedKey(request, signature);
+   }
+
+   HttpRequest replaceAuthorizationHeaderForSharedKey(HttpRequest request, String signature) {
+      return request.toBuilder()
+              .replaceHeader(HttpHeaders.AUTHORIZATION, "SharedKey " + creds.get().identity + ":" + signature)
+              .build();
+   }
+
    HttpRequest replaceAuthorizationHeader(HttpRequest request, String signature) {
       return request.toBuilder()
             .replaceHeader(HttpHeaders.AUTHORIZATION, "SharedKeyLite " + creds.get().identity + ":" + signature)
@@ -187,7 +209,22 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
          throw new IllegalArgumentException("there is neither ContainerName nor BlobName in the URI path");
       }
       return result;
-   } 
+   }
+
+   public String createStringToSignForSharedKey(HttpRequest request) {
+      utils.logRequest(signatureLog, request, ">>");
+      StringBuilder buffer = new StringBuilder();
+      // re-sign the request
+      appendMethod(request, buffer);
+      appendPayloadMetadataForSharedKey(request, buffer);
+      appendHttpHeadersForSharedKey(request, buffer);
+      appendCanonicalizedHeaders(request, buffer);
+      appendCanonicalizedResourceForSharedKey(request, buffer);
+      if (signatureWire.enabled())
+         signatureWire.output(buffer.toString());
+      System.out.println(buffer);
+      return buffer.toString();
+   }
 
    public String createStringToSign(HttpRequest request) {
       utils.logRequest(signatureLog, request, ">>");
@@ -203,6 +240,24 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
       return buffer.toString();
    }
 
+   private void appendPayloadMetadataForSharedKey(HttpRequest request, StringBuilder buffer) {
+      buffer.append(
+              Strings.nullToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
+                      .getContentEncoding())).append("\n");
+      buffer.append(
+              Strings.nullToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
+                      .getContentLanguage())).append("\n");
+      buffer.append(
+              HttpUtils.nullOrZeroToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
+                      .getContentLength())).append("\n");
+      buffer.append(
+              HttpUtils.nullToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
+                      .getContentMD5())).append("\n");
+      buffer.append(
+              Strings.nullToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
+                      .getContentType())).append("\n");
+   }
+
    private void appendPayloadMetadata(HttpRequest request, StringBuilder buffer) {
       buffer.append(
             HttpUtils.nullToEmpty(request.getPayload() == null ? null : request.getPayload().getContentMetadata()
@@ -216,6 +271,7 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
       String signature = signString(toSign);
       if (signatureWire.enabled())
          signatureWire.input(Strings2.toInputStream(signature));
+      System.out.println(signature);
       return signature;
    }
 
@@ -260,12 +316,62 @@ public class SharedKeyLiteAuthentication implements HttpRequestFilter {
          toSign.append(HttpUtils.nullToEmpty(request.getHeaders().get(header))).append("\n");
    }
 
+   private void appendHttpHeadersForSharedKey(HttpRequest request, StringBuilder toSign) {
+      for (String header : FIRST_HEADERS_TO_SIGN_FOR_SHARED_KEY)
+         toSign.append(HttpUtils.nullToEmpty(request.getHeaders().get(header))).append("\n");
+   }
+
    @VisibleForTesting
    void appendCanonicalizedResource(HttpRequest request, StringBuilder toSign) {
       // 1. Beginning with an empty string (""), append a forward slash (/), followed by the name of
       // the identity that owns the resource being accessed.
       toSign.append("/").append(creds.get().identity);
       appendUriPath(request, toSign);
+   }
+
+   void appendCanonicalizedResourceForSharedKey(HttpRequest request, StringBuilder toSign) {
+      // 1. Beginning with an empty string (""), append a forward slash (/), followed by the name of
+      // the identity that owns the resource being accessed.
+      toSign.append("/").append(creds.get().identity);
+      // 2. Append the resource's encoded URI path
+      toSign.append(request.getEndpoint().getRawPath());
+      appendQueryParametersForSharedKey(request, toSign);
+   }
+
+   void appendQueryParametersForSharedKey(HttpRequest request, StringBuilder toSign) {
+      // 3. Append each query parameter as a new line
+      Map<String, Multiset<String>> sortedParams = Maps.newTreeMap();
+      if (request.getEndpoint().getQuery() != null) {
+         String[] params = request.getEndpoint().getQuery().split("&");
+         for (String param : params) {
+            String[] paramNameAndValue = param.split("=");
+            String key = paramNameAndValue[0];
+            String value = paramNameAndValue.length > 1 ? paramNameAndValue[1] : "";
+            if (sortedParams.containsKey(key)) {
+               sortedParams.get(key).add(value);
+            } else {
+               Multiset<String> values = TreeMultiset.create();
+               values.add(value);
+               sortedParams.put(key, values);
+            }
+         }
+      }
+
+      for (Entry<String, Multiset<String>> entry : sortedParams.entrySet()) {
+         String key = entry.getKey();
+         Multiset<String> values = entry.getValue();
+         toSign.append("\n");
+         toSign.append(key);
+         toSign.append(":");
+         boolean first = true;
+         for (String value : values) {
+            if (!first) {
+               toSign.append(",");
+            }
+            toSign.append(value);
+            first = false;
+         }
+      }
    }
 
    @VisibleForTesting
