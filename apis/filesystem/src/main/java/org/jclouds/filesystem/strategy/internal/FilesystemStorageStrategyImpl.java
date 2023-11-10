@@ -470,7 +470,6 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
                .contentType(contentType)
                .expires(expires)
                .tier(tier)
-               .type(isDirectory ? StorageType.FOLDER : StorageType.BLOB)
                .userMetadata(userMetadata.build());
          } else {
             builder.payload(byteSource)
@@ -482,7 +481,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
       } catch (IOException e) {
          throw Throwables.propagate(e);
       }
-      Blob blob = builder.build();
+      Blob blob = builder.type(isDirectory ? StorageType.FOLDER : StorageType.BLOB).build();
       blob.getMetadata().setContainer(container);
       blob.getMetadata().setLastModified(new Date(file.lastModified()));
       blob.getMetadata().setSize(file.length());
