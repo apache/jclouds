@@ -367,7 +367,6 @@ public final class LocalBlobStore implements BlobStore {
          if (!contents.contains(md)) {
             contents.add(md);
          }
-         contents.add(md);
       }
       return contents;
    }
