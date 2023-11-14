@@ -364,9 +364,7 @@ public final class LocalBlobStore implements BlobStore {
             o = prefix + o;
          }
          md.setName(o + delimiter);
-         if (!contents.contains(md)) {
-            contents.add(md);
-         }
+         contents.add(md);
       }
       return contents;
    }
