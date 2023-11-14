@@ -193,6 +193,22 @@ public class ListContainerTest {
       assertThat(Iterables.get(results, 0).getType()).isNotEqualTo(StorageType.RELATIVE_PATH);
    }
 
+   public void testListBlobEndsWithDelimiterAndDelimiterFilter() {
+      String containerName = "testListBlobEndsWithDelimiterAndDelimiterFilter";
+      blobStore.createContainerInLocation(null, containerName);
+      blobStore.putBlob(containerName, blobStore.blobBuilder("foo/").type(StorageType.FOLDER)
+         .payload(ByteSource.empty()).build());
+      blobStore.putBlob(containerName, blobStore.blobBuilder("bar/text").type(StorageType.BLOB)
+         .payload(ByteSource.empty()).build());
+      PageSet<? extends StorageMetadata> results = blobStore.list(containerName,
+         ListContainerOptions.Builder.delimiter("/"));
+      assertThat(results.size()).isEqualTo(2);
+      assertThat(Iterables.get(results, 0).getName()).isEqualTo("bar/");
+      assertThat(Iterables.get(results, 0).getType()).isEqualTo(StorageType.RELATIVE_PATH);
+      assertThat(Iterables.get(results, 1).getName()).isEqualTo("foo/");
+      assertThat(Iterables.get(results, 1).getType()).isEqualTo(StorageType.FOLDER);
+   }
+
    public void testDirectoryListing() {
       String containerName = "testDirectoryListing";
       blobStore.createContainerInLocation(null, containerName);
