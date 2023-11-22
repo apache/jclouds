@@ -66,6 +66,7 @@ public class ListBucketHandler extends ParseSax.HandlerWithResult<ListBucketResp
    @Inject
    public ListBucketHandler(DateService dateParser) {
       this.dateParser = dateParser;
+      this.currentOwner = new CanonicalUser();
    }
 
    public ListBucketResponse getResult() {
@@ -87,7 +88,7 @@ public class ListBucketHandler extends ParseSax.HandlerWithResult<ListBucketResp
 
    public void endElement(String uri, String name, String qName) {
       if (qName.equals("ID")) {
-         currentOwner = new CanonicalUser(currentOrNull(currentText));
+    	 currentOwner.setId(currentOrNull(currentText));
       } else if (qName.equals("DisplayName")) {
          currentOwner.setDisplayName(currentOrNull(currentText));
       } else if (qName.equals("Key")) { // content stuff
@@ -112,7 +113,7 @@ public class ListBucketHandler extends ParseSax.HandlerWithResult<ListBucketResp
          builder.contentLength(Long.valueOf(currentOrNull(currentText)));
       } else if (qName.equals("Owner")) {
          builder.owner(currentOwner);
-         currentOwner = null;
+         currentOwner = new CanonicalUser();
       } else if (qName.equals("StorageClass")) {
          builder.storageClass(ObjectMetadata.StorageClass.valueOf(currentOrNull(currentText)));
       } else if (qName.equals("Contents")) {
