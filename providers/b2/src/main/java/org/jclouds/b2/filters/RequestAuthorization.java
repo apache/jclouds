@@ -50,9 +50,11 @@ public final class RequestAuthorization implements HttpRequestFilter {
             endpoint.getPath() +
             (endpoint.getQuery() == null ? "" : "?" + endpoint.getQuery()));
 
+      String updatedRequestBody = request.getPayload().getRawContent().toString().replaceAll("\"accountId\":.?\".*\"", "\"accountId\":\"" + auth.accountId() + "\"");
       request = request.toBuilder()
             .endpoint(endpoint)
             .replaceHeader(HttpHeaders.AUTHORIZATION, auth.authorizationToken())
+            .payload(updatedRequestBody)
             .build();
       return request;
    }
