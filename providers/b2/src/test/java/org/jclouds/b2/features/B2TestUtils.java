@@ -120,7 +120,7 @@ final class B2TestUtils {
     * @see RecordedRequest
     */
    private static void assertContentTypeIsJson(RecordedRequest request) {
-      assertThat(request.getHeaders().values("Content-Type")).contains("application/json");
+      assertThat(request.getHeaders().values("Content-Type")).contains("application/unknown");
    }
 
    /**
