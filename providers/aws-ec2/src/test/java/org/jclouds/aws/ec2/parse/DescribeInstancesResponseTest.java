@@ -43,7 +43,7 @@ import com.google.common.collect.ImmutableSet;
  */
 // NOTE:without testName, this will not call @Before* and fail w/NPE during
 // surefire
-@Test(groups = "unit", testName = "AWSDescribeInstancesResponseHandlerTest")
+@Test(groups = "unit", testName = "DescribeInstancesResponseHandlerTest")
 public class DescribeInstancesResponseTest extends BaseEC2HandlerTest {
 
    private DateService dateService;
