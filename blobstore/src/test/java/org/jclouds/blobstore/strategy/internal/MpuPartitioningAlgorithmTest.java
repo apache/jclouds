@@ -137,9 +137,9 @@ public final class MpuPartitioningAlgorithmTest {
       // then the number of parts is increasing
       length += 1;
       chunkSize = strategy.calculateChunkSize(length);
-      assertEquals(chunkSize, MAX_PART_SIZE);
-      assertEquals(strategy.getParts(), MAX_NUMBER_OF_PARTS);
-      assertEquals(strategy.getRemaining(), 1);
+      assertEquals(chunkSize, 5369246044L);
+      assertEquals(strategy.getParts(), MAX_NUMBER_OF_PARTS - 1);
+      assertEquals(strategy.getRemaining(), 6045);
       assertEquals(chunkSize * strategy.getParts() + strategy.getRemaining(), length);
    }
 }

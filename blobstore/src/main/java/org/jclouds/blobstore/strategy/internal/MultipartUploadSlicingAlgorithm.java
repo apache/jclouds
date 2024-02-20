@@ -72,6 +72,7 @@ public final class MultipartUploadSlicingAlgorithm {
       this.maximumNumberOfParts = maximumNumberOfParts;
    }
 
+   // TODO: This algorithm is needlessly complicated.
    public long calculateChunkSize(long length) {
       long unitPartSize = defaultPartSize; // first try with default part size
       int parts = (int)(length / unitPartSize);
@@ -111,6 +112,10 @@ public final class MultipartUploadSlicingAlgorithm {
       long remainder = length % unitPartSize;
       if (remainder == 0 && parts > 0) {
          parts -= 1;
+      }
+      if (remainder > 0 && parts == maximumNumberOfParts) {
+          parts -= 1;
+          partSize = length / parts;
       }
       this.chunkSize = partSize;
       this.parts = parts;
