@@ -699,6 +699,22 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
       testPut(payload, hashCode, payload, length, new PutOptions().multipart(true));
    }
 
+   @Test(groups = { "integration", "live" }, enabled = false)
+   public void testPutMultipartByteSourceBig() throws Exception {
+      long length = 5L * 1024 * 1024 * 1024 + 1;
+      BlobStore blobStore = view.getBlobStore();
+      MultipartUploadSlicingAlgorithm algorithm = new MultipartUploadSlicingAlgorithm(
+              blobStore.getMinimumMultipartPartSize(), blobStore.getMaximumMultipartPartSize(),
+              blobStore.getMaximumNumberOfParts());
+      // make sure that we are creating multiple parts
+      assertThat(algorithm.calculateChunkSize(length)).isLessThan(length);
+      // TODO: this is inefficient due to skip recomputing entire stream
+      ByteSource byteSource = TestUtils.randomByteSource().slice(0, length);
+      Payload payload = new ByteSourcePayload(byteSource);
+      HashCode hashCode = byteSource.hash(Hashing.md5());
+      testPut(payload, hashCode, payload, length, new PutOptions().multipart(true));
+   }
+
    @Test(groups = { "integration", "live" })
    public void testPutMultipartInputStream() throws Exception {
       long length = Math.max(getMinimumMultipartBlobSize(), MultipartUploadSlicingAlgorithm.DEFAULT_PART_SIZE + 1);
@@ -858,12 +874,17 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
          Blob blob = blobStore.getBlob(container, blobName);
          assertThat(blob.getMetadata().getContentMetadata().getContentLength()).isEqualTo(length);
 
-         InputStream is = null;
-         try {
-            is = blob.getPayload().openStream();
-            assertThat(is).hasContentEqualTo(expectedPayload.openStream());
-         } finally {
-            Closeables2.closeQuietly(is);
+         try (InputStream actual = blob.getPayload().openStream();
+              InputStream expected = expectedPayload.openStream()) {
+            while (length > 0) {
+               int bufferLength = (int) Math.min(1 << 20, length);
+               byte[] actualBuffer = new byte[bufferLength];
+               ByteStreams.readFully(actual, actualBuffer);
+               byte[] expectedBuffer = new byte[bufferLength];
+               ByteStreams.readFully(expected, expectedBuffer);
+               assertThat(actualBuffer).isEqualTo(expectedBuffer);
+               length -= bufferLength;
+            }
          }
          validateMetadata(blob.getMetadata(), container, blob.getMetadata().getName());
          checkContentMetadata(blob);
