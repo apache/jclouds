@@ -24,7 +24,7 @@ import static com.google.common.util.concurrent.Futures.getUnchecked;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 import javax.inject.Singleton;
 

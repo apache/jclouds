@@ -28,7 +28,7 @@ import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Singleton;
 
 import org.jclouds.collect.Memoized;

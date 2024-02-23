@@ -16,7 +16,7 @@
  */
 package org.jclouds.aws.filters;
 
-import static javax.ws.rs.HttpMethod.GET;
+import static jakarta.ws.rs.HttpMethod.GET;
 import static org.jclouds.aws.reference.AWSConstants.PROPERTY_HEADER_TAG;
 import static org.jclouds.providers.AnonymousProviderMetadata.forApiOnEndpoint;
 import static org.testng.Assert.assertEquals;

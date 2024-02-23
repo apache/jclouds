@@ -19,7 +19,7 @@ package org.jclouds.glesys.features;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.glesys.domain.Cost;
 import org.jclouds.glesys.domain.IpDetails;

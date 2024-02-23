@@ -19,9 +19,9 @@ package org.jclouds.aws.ec2.features;
 import static org.jclouds.aws.reference.FormParameters.ACTION;
 
 import javax.inject.Named;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 
 import org.jclouds.Fallbacks;
 import org.jclouds.aws.ec2.options.CreateSubnetOptions;

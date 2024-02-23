@@ -48,7 +48,7 @@ import java.util.Map.Entry;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.ws.rs.HttpMethod;
+import jakarta.ws.rs.HttpMethod;
 
 import org.jclouds.Constants;
 import org.jclouds.io.ContentMetadata;

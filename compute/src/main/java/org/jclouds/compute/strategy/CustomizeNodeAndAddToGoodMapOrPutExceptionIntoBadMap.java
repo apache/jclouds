@@ -27,7 +27,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.compute.callables.RunScriptOnNode;

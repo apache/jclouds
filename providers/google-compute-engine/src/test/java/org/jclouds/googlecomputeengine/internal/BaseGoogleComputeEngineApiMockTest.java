@@ -18,7 +18,7 @@ package org.jclouds.googlecomputeengine.internal;
 
 import static com.google.common.base.Throwables.propagate;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.jclouds.compute.config.ComputeServiceProperties.TIMEOUT_NODE_TERMINATED;
 import static org.jclouds.googlecloud.config.GoogleCloudProperties.CREDENTIAL_TYPE;
 import static org.jclouds.googlecloud.config.GoogleCloudProperties.PROJECT_NAME;

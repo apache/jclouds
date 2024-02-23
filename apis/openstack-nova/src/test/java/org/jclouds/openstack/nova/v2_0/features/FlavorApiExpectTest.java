@@ -18,8 +18,8 @@ package org.jclouds.openstack.nova.v2_0.features;
 
 import static org.testng.Assert.assertEquals;
 
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.HttpMethod;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

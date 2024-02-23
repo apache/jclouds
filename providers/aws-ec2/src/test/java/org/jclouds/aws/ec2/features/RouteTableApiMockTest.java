@@ -16,7 +16,7 @@
  */
 package org.jclouds.aws.ec2.features;
 
-import static javax.ws.rs.core.Response.Status.PRECONDITION_FAILED;
+import static jakarta.ws.rs.core.Response.Status.PRECONDITION_FAILED;
 import static org.jclouds.aws.ec2.options.RouteOptions.Builder.destinationCidrBlock;
 import static org.jclouds.aws.ec2.options.RouteOptions.Builder.gatewayId;
 import static org.jclouds.aws.ec2.options.RouteTableOptions.Builder.dryRun;

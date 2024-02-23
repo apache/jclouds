@@ -32,9 +32,9 @@ import java.util.Properties;
 
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
-import javax.ws.rs.HEAD;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import jakarta.ws.rs.HEAD;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 
 import org.jclouds.Fallbacks.FalseOnNotFoundOr404;
 import org.jclouds.apis.ApiMetadata;

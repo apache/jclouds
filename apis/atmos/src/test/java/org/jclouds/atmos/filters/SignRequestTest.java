@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.atmos.config.AtmosHttpApiModule;

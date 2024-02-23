@@ -26,7 +26,7 @@ import static org.jclouds.chef.util.ChefUtils.fromOhaiTime;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;

@@ -19,7 +19,7 @@ package org.jclouds.compute.callables;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.compute.domain.ExecResponse;

@@ -18,7 +18,7 @@ package org.jclouds.openstack.nova.v2_0.compute.extensions;
 
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import com.google.common.base.Optional;

@@ -30,7 +30,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 

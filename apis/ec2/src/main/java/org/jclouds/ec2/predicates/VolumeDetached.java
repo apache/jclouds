@@ -18,7 +18,7 @@ package org.jclouds.ec2.predicates;
 
 import static com.google.common.collect.Iterables.getLast;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.ec2.domain.Attachment;
 import org.jclouds.ec2.domain.Volume;

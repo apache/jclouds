@@ -27,7 +27,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import com.google.common.collect.ImmutableSet;
 import org.jclouds.blobstore.domain.Blob;

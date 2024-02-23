@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 package org.jclouds.aws.handlers;
-import static javax.ws.rs.HttpMethod.PUT;
-import static javax.ws.rs.core.Response.Status.CONFLICT;
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static jakarta.ws.rs.HttpMethod.PUT;
+import static jakarta.ws.rs.core.Response.Status.CONFLICT;
+import static jakarta.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;

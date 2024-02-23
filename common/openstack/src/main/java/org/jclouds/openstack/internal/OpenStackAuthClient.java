@@ -17,10 +17,10 @@
 package org.jclouds.openstack.internal;
 import java.io.Closeable;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.Path;
 
 import org.jclouds.Constants;
 import org.jclouds.openstack.domain.AuthenticationResponse;

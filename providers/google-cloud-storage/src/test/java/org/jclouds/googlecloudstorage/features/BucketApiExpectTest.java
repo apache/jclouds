@@ -20,7 +20,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertNull;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.googlecloudstorage.domain.BucketAccessControls;
 import org.jclouds.googlecloudstorage.domain.BucketAccessControls.Role;

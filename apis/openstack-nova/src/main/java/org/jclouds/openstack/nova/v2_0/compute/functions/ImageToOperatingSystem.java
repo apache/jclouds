@@ -29,6 +29,7 @@ import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -53,7 +54,7 @@ public class ImageToOperatingSystem implements Function<Image, OperatingSystem> 
    // Windows Server 2008 R2 x64
    public static final Pattern WINDOWS_PATTERN = Pattern.compile("Windows (.*) (x[86][64])");
 
-   @javax.annotation.Resource
+   @Resource
    @Named(ComputeServiceConstants.COMPUTE_LOGGER)
    protected Logger logger = Logger.NULL;
 

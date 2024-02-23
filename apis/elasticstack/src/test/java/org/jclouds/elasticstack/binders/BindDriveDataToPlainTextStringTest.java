@@ -21,7 +21,7 @@ import static org.testng.Assert.assertEquals;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.elasticstack.domain.ClaimType;
 import org.jclouds.elasticstack.domain.Drive;

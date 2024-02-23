@@ -19,7 +19,7 @@ package org.jclouds.softlayer.compute;
 import static org.testng.Assert.assertEquals;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.compute.RunNodesException;

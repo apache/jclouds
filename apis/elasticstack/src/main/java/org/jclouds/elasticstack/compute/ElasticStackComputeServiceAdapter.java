@@ -26,7 +26,7 @@ import static org.jclouds.elasticstack.util.Servers.small;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;

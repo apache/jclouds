@@ -18,7 +18,7 @@ package org.jclouds.azure.storage.handlers;
 
 import java.io.ByteArrayInputStream;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.Constants;

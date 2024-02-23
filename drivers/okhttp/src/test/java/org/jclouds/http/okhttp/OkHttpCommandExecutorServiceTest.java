@@ -28,9 +28,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;

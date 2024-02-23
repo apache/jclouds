@@ -16,8 +16,8 @@
  */
 package org.jclouds.docker.parse;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.docker.domain.Version;
 import org.jclouds.docker.internal.BaseDockerParseTest;

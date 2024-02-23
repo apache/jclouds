@@ -18,8 +18,8 @@ package org.jclouds.googlecomputeengine;
 
 import java.io.Closeable;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 
 import org.jclouds.googlecloud.config.CurrentProject;
 import org.jclouds.googlecomputeengine.features.AddressApi;

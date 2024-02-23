@@ -24,8 +24,8 @@ import static org.jclouds.util.Strings2.toStringAndClose;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
 
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;

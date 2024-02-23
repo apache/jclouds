@@ -24,7 +24,7 @@ import static org.testng.Assert.assertEquals;
 import java.util.Date;
 import java.util.Map;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.date.internal.SimpleDateFormatDateService;
 import org.jclouds.http.HttpResponse;

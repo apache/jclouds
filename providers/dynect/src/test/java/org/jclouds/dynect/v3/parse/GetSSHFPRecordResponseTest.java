@@ -16,8 +16,8 @@
  */
 package org.jclouds.dynect.v3.parse;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.dynect.v3.domain.Record;
 import org.jclouds.dynect.v3.domain.rdata.SSHFPData;

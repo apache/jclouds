@@ -17,7 +17,7 @@
 package org.jclouds.dynect.v3;
 
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 
 import java.io.IOException;

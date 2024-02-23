@@ -18,7 +18,7 @@ package org.jclouds.ec2.compute.extensions;
 
 import static org.testng.Assert.assertEquals;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.compute.domain.Image;
 import org.jclouds.compute.domain.ImageTemplate;

@@ -25,7 +25,7 @@ import static org.jclouds.openstack.swift.v1.reference.SwiftHeaders.OBJECT_DELET
 
 import java.util.Date;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpRequest.Builder;

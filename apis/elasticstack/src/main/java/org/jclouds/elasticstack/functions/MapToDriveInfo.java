@@ -19,7 +19,7 @@ package org.jclouds.elasticstack.functions;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Singleton;
 
 import org.jclouds.elasticstack.domain.ClaimType;

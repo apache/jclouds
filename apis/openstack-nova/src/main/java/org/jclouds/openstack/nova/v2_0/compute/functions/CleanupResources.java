@@ -21,7 +21,7 @@ import static org.jclouds.openstack.nova.v2_0.compute.strategy.ApplyNovaTemplate
 
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;

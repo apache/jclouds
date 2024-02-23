@@ -16,8 +16,8 @@
  */
 package org.jclouds.sts;
 import static com.google.common.net.HttpHeaders.HOST;
-import static javax.ws.rs.HttpMethod.POST;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.HttpMethod.POST;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.jclouds.sts.options.AssumeRoleOptions.Builder.externalId;
 import static org.jclouds.sts.options.FederatedUserOptions.Builder.policy;
 import static org.jclouds.sts.options.SessionCredentialsOptions.Builder.serialNumber;

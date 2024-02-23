@@ -22,7 +22,7 @@ import static org.testng.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.blobstore.domain.Blob;

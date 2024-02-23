@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.MockResponse;

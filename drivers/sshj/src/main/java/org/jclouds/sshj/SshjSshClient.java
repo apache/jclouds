@@ -37,8 +37,8 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
+import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import net.schmizz.sshj.SSHClient;

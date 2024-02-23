@@ -19,8 +19,8 @@ package org.jclouds.dynect.v3.filters;
 import static org.jclouds.http.HttpUtils.closeClientButKeepContentStream;
 import static org.jclouds.http.HttpUtils.releasePayload;
 
-import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
+import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.dynect.v3.domain.Session;

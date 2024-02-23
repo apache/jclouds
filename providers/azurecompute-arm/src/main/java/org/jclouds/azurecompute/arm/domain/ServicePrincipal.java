@@ -19,8 +19,7 @@ package org.jclouds.azurecompute.arm.domain;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
+import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.json.SerializedNames;
 
 import com.google.auto.value.AutoValue;

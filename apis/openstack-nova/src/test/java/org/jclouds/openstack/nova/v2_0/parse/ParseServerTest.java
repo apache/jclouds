@@ -21,8 +21,8 @@ import static org.jclouds.openstack.nova.v2_0.domain.Address.createV6;
 
 import java.net.URI;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.date.internal.SimpleDateFormatDateService;
 import org.jclouds.json.BaseItemParserTest;

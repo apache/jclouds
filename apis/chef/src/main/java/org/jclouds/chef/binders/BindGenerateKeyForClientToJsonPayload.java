@@ -17,7 +17,7 @@
 package org.jclouds.chef.binders;
 
 import javax.inject.Singleton;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.binders.BindToStringPayload;

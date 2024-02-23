@@ -22,7 +22,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.glesys.domain.EmailAccount;
 import org.jclouds.glesys.domain.EmailAlias;

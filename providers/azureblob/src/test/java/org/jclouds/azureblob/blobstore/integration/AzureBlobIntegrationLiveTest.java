@@ -19,7 +19,7 @@ package org.jclouds.azureblob.blobstore.integration;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;

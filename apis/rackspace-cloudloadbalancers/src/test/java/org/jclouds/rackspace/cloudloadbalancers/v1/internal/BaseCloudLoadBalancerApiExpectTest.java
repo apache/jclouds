@@ -16,8 +16,8 @@
  */
 package org.jclouds.rackspace.cloudloadbalancers.v1.internal;
 import static com.google.common.net.HttpHeaders.ACCEPT;
-import static javax.ws.rs.HttpMethod.GET;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.HttpMethod.GET;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

@@ -18,7 +18,7 @@ package org.jclouds.logging.log4j.config;
 
 import static org.testng.Assert.assertEquals;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.logging.Logger;
 import org.jclouds.logging.log4j.Log4JLogger;

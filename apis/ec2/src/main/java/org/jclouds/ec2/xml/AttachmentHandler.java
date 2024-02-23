@@ -18,7 +18,7 @@ package org.jclouds.ec2.xml;
 
 import java.util.Date;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 
 import org.jclouds.aws.util.AWSUtils;

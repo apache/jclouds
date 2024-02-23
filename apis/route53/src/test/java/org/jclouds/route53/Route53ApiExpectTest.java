@@ -18,8 +18,8 @@ package org.jclouds.route53;
 
 import static com.google.common.net.HttpHeaders.DATE;
 import static com.google.common.net.HttpHeaders.HOST;
-import static javax.ws.rs.HttpMethod.GET;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.HttpMethod.GET;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 

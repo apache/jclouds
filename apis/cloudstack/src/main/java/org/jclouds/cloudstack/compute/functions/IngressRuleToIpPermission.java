@@ -16,7 +16,7 @@
  */
 package org.jclouds.cloudstack.compute.functions;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.compute.reference.ComputeServiceConstants;

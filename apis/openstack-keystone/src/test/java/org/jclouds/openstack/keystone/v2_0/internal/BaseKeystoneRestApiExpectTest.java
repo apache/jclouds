@@ -20,7 +20,7 @@ import static org.jclouds.openstack.keystone.config.KeystoneProperties.SERVICE_T
 
 import java.util.Properties;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.apis.ApiMetadata;
 import org.jclouds.http.HttpRequest;

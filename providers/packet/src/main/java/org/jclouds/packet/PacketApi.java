@@ -18,7 +18,7 @@ package org.jclouds.packet;
 
 import java.io.Closeable;
 
-import javax.ws.rs.PathParam;
+import jakarta.ws.rs.PathParam;
 
 import org.jclouds.packet.features.DeviceApi;
 import org.jclouds.packet.features.FacilityApi;

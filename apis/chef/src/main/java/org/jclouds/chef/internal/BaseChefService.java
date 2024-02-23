@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.security.PrivateKey;
 import java.util.concurrent.ExecutorService;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;

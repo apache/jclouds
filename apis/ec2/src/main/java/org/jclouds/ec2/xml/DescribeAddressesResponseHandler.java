@@ -21,7 +21,7 @@ import static org.jclouds.util.SaxUtils.equalsOrSuffix;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 
 import org.jclouds.aws.util.AWSUtils;

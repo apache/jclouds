@@ -22,12 +22,12 @@ import com.google.inject.assistedinject.Assisted;
 import org.jclouds.compute.domain.SecurityGroup;
 import org.jclouds.compute.domain.SecurityGroupBuilder;
 import org.jclouds.domain.Location;
+import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.net.domain.IpPermission;
 import org.jclouds.net.domain.IpProtocol;
 import org.jclouds.openstack.neutron.v2.domain.Rule;
 import org.jclouds.openstack.neutron.v2.domain.RuleDirection;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import static com.google.common.collect.Iterables.filter;

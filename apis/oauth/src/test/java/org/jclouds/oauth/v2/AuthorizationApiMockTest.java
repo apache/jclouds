@@ -19,7 +19,7 @@ package org.jclouds.oauth.v2;
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.io.BaseEncoding.base64Url;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 import static org.jclouds.oauth.v2.config.CredentialType.P12_PRIVATE_KEY_CREDENTIALS;
 import static org.jclouds.oauth.v2.config.CredentialType.CLIENT_CREDENTIALS_SECRET;

@@ -17,8 +17,8 @@
 package org.jclouds.googlecloudstorage.binders;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.util.Map;
 

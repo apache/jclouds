@@ -24,7 +24,7 @@ import org.jclouds.io.Payload;
 import org.jclouds.io.PayloadEnclosing;
 import org.jclouds.logging.Logger;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;

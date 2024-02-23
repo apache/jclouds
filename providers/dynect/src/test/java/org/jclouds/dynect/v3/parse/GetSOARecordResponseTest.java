@@ -18,8 +18,8 @@ package org.jclouds.dynect.v3.parse;
 
 import static org.jclouds.dynect.v3.domain.Zone.SerialStyle.INCREMENT;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.dynect.v3.domain.SOARecord;
 import org.jclouds.dynect.v3.domain.rdata.SOAData;

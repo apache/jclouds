@@ -21,7 +21,7 @@ import static org.jclouds.http.HttpUtils.releasePayload;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

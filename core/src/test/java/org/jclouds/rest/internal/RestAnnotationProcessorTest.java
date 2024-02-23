@@ -18,8 +18,8 @@ package org.jclouds.rest.internal;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_XML;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jclouds.io.Payloads.newInputStreamPayload;
@@ -57,19 +57,19 @@ import java.util.concurrent.ExecutionException;
 import javax.inject.Named;
 import javax.inject.Qualifier;
 import javax.inject.Singleton;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Encoded;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Encoded;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.HttpMethod;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.Constants;
 import org.jclouds.ContextBuilder;
@@ -493,7 +493,7 @@ public class RestAnnotationProcessorTest extends BaseRestApiTest {
 
    @Target({ ElementType.METHOD })
    @Retention(RetentionPolicy.RUNTIME)
-   @javax.ws.rs.HttpMethod("FOO")
+   @jakarta.ws.rs.HttpMethod("FOO")
    public @interface FOO {
    }
 

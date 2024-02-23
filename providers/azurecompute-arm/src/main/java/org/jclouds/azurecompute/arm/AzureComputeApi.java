@@ -17,7 +17,7 @@
 package org.jclouds.azurecompute.arm;
 
 import java.io.Closeable;
-import javax.ws.rs.PathParam;
+import jakarta.ws.rs.PathParam;
 
 import org.jclouds.azurecompute.arm.domain.ServicePrincipal;
 import org.jclouds.azurecompute.arm.features.ActivityLogAlertApi;

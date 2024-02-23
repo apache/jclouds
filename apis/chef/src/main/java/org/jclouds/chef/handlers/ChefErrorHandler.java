@@ -18,7 +18,7 @@ package org.jclouds.chef.handlers;
 
 import static org.jclouds.util.Closeables2.closeQuietly;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

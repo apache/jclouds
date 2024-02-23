@@ -19,7 +19,7 @@ package org.jclouds.blobstore.strategy.internal;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.blobstore.reference.BlobStoreConstants;

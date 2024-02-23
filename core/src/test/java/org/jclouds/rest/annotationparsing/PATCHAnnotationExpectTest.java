@@ -21,7 +21,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.Closeable;
 
-import javax.ws.rs.Path;
+import jakarta.ws.rs.Path;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

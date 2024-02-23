@@ -31,8 +31,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.domain.Credentials;

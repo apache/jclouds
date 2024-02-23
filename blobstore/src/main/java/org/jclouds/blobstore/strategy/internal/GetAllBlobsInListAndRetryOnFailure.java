@@ -20,7 +20,7 @@ import static org.jclouds.concurrent.FutureIterables.transformParallel;
 
 import java.util.concurrent.Callable;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 import javax.inject.Singleton;
 

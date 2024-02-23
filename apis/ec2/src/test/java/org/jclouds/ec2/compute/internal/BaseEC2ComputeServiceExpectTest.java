@@ -18,7 +18,7 @@ package org.jclouds.ec2.compute.internal;
 
 import static org.jclouds.location.reference.LocationConstants.PROPERTY_REGIONS;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import java.util.Properties;
 
 import org.jclouds.compute.ComputeService;

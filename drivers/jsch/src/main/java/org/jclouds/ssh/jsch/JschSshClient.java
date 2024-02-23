@@ -37,8 +37,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ConnectException;
 
-import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
+import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.compute.domain.ExecChannel;

@@ -23,7 +23,7 @@ import static org.jclouds.compute.config.ComputeServiceProperties.TIMEOUT_NODE_R
 import java.util.NoSuchElementException;
 import java.util.concurrent.Callable;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;

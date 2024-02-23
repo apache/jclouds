@@ -21,7 +21,7 @@ import static org.testng.Assert.assertEquals;
 import java.io.IOException;
 import java.net.URI;
 
-import javax.ws.rs.HttpMethod;
+import jakarta.ws.rs.HttpMethod;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.http.HttpRequest;

@@ -18,7 +18,7 @@ package org.jclouds.openstack.handlers;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.Constants;

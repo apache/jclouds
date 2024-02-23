@@ -26,7 +26,7 @@ import static org.jclouds.compute.config.ComputeServiceProperties.TIMEOUT_NODE_R
 import static org.jclouds.compute.functions.DefaultCredentialsFromImageOrOverridingCredentials.overrideDefaultCredentialsWithOptionsIfPresent;
 import static org.jclouds.ec2.compute.util.EC2ComputeUtils.getZoneFromLocationOrNull;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;

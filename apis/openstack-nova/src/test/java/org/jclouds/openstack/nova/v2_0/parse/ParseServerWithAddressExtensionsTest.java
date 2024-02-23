@@ -34,8 +34,8 @@ import org.jclouds.openstack.v2_0.domain.Resource;
 import org.jclouds.rest.annotations.SelectJson;
 import org.testng.annotations.Test;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 import java.net.URI;
 
 @Test(groups = "unit", testName = "ParseServerWithAddressExtensionsTest")

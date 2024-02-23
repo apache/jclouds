@@ -22,7 +22,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.compute.domain.SecurityGroup;
 import org.jclouds.compute.domain.SecurityGroupBuilder;

@@ -18,7 +18,7 @@ package org.jclouds.azurecompute.arm.handlers;
 
 import static org.jclouds.azurecompute.arm.handlers.AzureRateLimitRetryHandler.isRateLimitError;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

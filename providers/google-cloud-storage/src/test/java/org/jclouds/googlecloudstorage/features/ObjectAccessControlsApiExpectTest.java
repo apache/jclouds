@@ -21,7 +21,7 @@ import static org.jclouds.googlecloudstorage.domain.DomainResourceReferences.Obj
 import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertNull;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.googlecloudstorage.domain.templates.ObjectAccessControlsTemplate;
 import org.jclouds.googlecloudstorage.internal.BaseGoogleCloudStorageApiExpectTest;

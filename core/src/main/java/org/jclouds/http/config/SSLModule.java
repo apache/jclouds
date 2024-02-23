@@ -20,7 +20,7 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.net.ssl.HostnameVerifier;

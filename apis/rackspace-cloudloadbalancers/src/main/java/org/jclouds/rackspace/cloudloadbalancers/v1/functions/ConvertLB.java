@@ -18,7 +18,7 @@ package org.jclouds.rackspace.cloudloadbalancers.v1.functions;
 
 import java.net.URI;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 
 import org.jclouds.logging.Logger;

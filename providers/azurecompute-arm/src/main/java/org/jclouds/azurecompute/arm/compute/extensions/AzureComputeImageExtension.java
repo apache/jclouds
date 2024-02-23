@@ -26,7 +26,7 @@ import static org.jclouds.compute.config.ComputeServiceProperties.TIMEOUT_NODE_S
 import java.net.URI;
 import java.util.concurrent.Callable;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.Constants;
 import org.jclouds.azurecompute.arm.AzureComputeApi;

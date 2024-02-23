@@ -16,9 +16,9 @@
  */
 package org.jclouds.googlecomputeengine.parse;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import javax.ws.rs.Consumes;
+import jakarta.ws.rs.Consumes;
 
 import org.jclouds.googlecloud.domain.ForwardingListPage;
 import org.jclouds.googlecloud.domain.ListPage;

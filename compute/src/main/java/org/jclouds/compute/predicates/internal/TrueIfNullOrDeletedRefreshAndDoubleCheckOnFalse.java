@@ -21,7 +21,7 @@ import static org.jclouds.compute.util.ComputeServiceUtils.formatStatus;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.compute.domain.ComputeMetadataIncludingStatus;
 import org.jclouds.logging.Logger;

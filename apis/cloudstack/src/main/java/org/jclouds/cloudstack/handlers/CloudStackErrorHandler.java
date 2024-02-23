@@ -18,7 +18,7 @@ package org.jclouds.cloudstack.handlers;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Singleton;
 
 import org.jclouds.http.HttpCommand;

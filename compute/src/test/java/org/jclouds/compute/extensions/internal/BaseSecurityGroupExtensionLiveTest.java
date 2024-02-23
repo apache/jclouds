@@ -23,7 +23,7 @@ import static org.testng.Assert.assertTrue;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.compute.ComputeService;

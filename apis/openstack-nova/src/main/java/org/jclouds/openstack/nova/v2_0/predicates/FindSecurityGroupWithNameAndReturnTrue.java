@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Singleton;
 
 import org.jclouds.logging.Logger;

@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.googlecloudstorage.domain.Bucket;
 import org.jclouds.googlecloudstorage.domain.DomainResourceReferences.DestinationPredefinedAcl;

@@ -23,8 +23,7 @@ import static org.jclouds.openstack.nova.v2_0.predicates.SecurityGroupPredicates
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -33,6 +32,7 @@ import org.jclouds.Context;
 import org.jclouds.compute.domain.SecurityGroup;
 import org.jclouds.compute.reference.ComputeServiceConstants;
 import org.jclouds.domain.Location;
+import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.logging.Logger;
 import org.jclouds.net.domain.IpProtocol;
 import org.jclouds.openstack.neutron.v2.NeutronApi;

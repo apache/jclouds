@@ -24,7 +24,7 @@ import static org.jclouds.s3.binders.XMLHelper.elemWithText;
 import java.util.Collection;
 
 import javax.inject.Singleton;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;

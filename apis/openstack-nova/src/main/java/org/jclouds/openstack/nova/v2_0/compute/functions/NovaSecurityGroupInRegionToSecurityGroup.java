@@ -24,7 +24,7 @@ import static com.google.common.collect.Iterables.transform;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 import javax.inject.Singleton;
 

@@ -27,8 +27,8 @@ import org.jclouds.softlayer.domain.VirtualGuestBlockDevice;
 import org.jclouds.softlayer.domain.VirtualGuestNetworkComponent;
 import org.jclouds.softlayer.internal.BaseSoftLayerParseTest;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 
 public class GetCreateObjectOptionsParseTest extends BaseSoftLayerParseTest<ContainerVirtualGuestConfiguration> {
 

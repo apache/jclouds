@@ -23,7 +23,7 @@ import static com.google.common.base.Throwables.getRootCause;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.compute.callables.RunScriptOnNode;

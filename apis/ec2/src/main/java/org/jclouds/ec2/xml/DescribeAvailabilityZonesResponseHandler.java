@@ -18,7 +18,7 @@ package org.jclouds.ec2.xml;
 
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 
 import org.jclouds.ec2.domain.AvailabilityZoneInfo;

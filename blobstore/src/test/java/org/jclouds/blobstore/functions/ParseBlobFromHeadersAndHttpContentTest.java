@@ -22,7 +22,7 @@ import static org.easymock.EasyMock.replay;
 import static org.testng.Assert.assertEquals;
 
 import javax.inject.Provider;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.blobstore.config.BlobStoreObjectModule;
 import org.jclouds.blobstore.domain.Blob;
