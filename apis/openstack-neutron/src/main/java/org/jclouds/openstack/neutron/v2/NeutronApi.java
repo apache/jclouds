@@ -19,7 +19,7 @@ package org.jclouds.openstack.neutron.v2;
 import java.io.Closeable;
 import java.util.Set;
 
-import javax.ws.rs.Path;
+import jakarta.ws.rs.Path;
 
 import org.jclouds.location.Region;
 import org.jclouds.openstack.neutron.v2.features.FloatingIPApi;

@@ -16,7 +16,7 @@
  */
 package org.jclouds.rackspace.clouddns.v1.features;
 
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.testng.Assert.assertEquals;
 
 import java.net.URI;

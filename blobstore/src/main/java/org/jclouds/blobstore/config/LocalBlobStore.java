@@ -41,7 +41,7 @@ import java.util.SortedSet;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

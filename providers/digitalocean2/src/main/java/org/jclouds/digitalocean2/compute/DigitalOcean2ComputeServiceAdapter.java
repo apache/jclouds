@@ -30,7 +30,7 @@ import static org.jclouds.compute.config.ComputeServiceProperties.TIMEOUT_NODE_T
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 

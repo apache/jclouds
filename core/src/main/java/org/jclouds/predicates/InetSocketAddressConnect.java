@@ -24,7 +24,7 @@ import java.net.Proxy;
 import java.net.Socket;
 import java.net.URI;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 import javax.inject.Singleton;
 

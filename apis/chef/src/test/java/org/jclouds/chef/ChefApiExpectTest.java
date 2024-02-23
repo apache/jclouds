@@ -21,7 +21,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.Set;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.chef.config.ChefHttpApiModule;
 import org.jclouds.chef.domain.CookbookDefinition;

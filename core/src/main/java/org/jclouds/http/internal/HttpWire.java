@@ -22,7 +22,7 @@ import org.jclouds.Constants;
 import org.jclouds.logging.Logger;
 import org.jclouds.logging.internal.Wire;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 public class HttpWire extends Wire {

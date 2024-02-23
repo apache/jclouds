@@ -17,8 +17,8 @@
 package org.jclouds.rest.internal;
 
 import static com.google.inject.util.Types.newParameterizedType;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_XML;
 
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;

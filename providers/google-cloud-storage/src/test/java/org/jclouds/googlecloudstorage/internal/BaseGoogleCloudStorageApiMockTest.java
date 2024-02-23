@@ -18,7 +18,7 @@ package org.jclouds.googlecloudstorage.internal;
 
 import static com.google.common.base.Throwables.propagate;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.jclouds.googlecloud.config.GoogleCloudProperties.CREDENTIAL_TYPE;
 import static org.jclouds.googlecloud.config.GoogleCloudProperties.PROJECT_NAME;
 import static org.jclouds.oauth.v2.config.CredentialType.BEARER_TOKEN_CREDENTIALS;

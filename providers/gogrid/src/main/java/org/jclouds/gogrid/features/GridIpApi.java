@@ -23,8 +23,8 @@ import static org.jclouds.gogrid.reference.GoGridQueryParams.LOOKUP_LIST_KEY;
 
 import java.util.Set;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
 import org.jclouds.gogrid.domain.Ip;
 import org.jclouds.gogrid.domain.Option;

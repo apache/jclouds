@@ -27,7 +27,7 @@ import static org.jclouds.compute.reference.ComputeServiceConstants.COMPUTE_LOGG
 
 import java.util.NoSuchElementException;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;

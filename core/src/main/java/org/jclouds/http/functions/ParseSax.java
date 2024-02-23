@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

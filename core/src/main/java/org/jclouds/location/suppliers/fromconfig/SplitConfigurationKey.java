@@ -18,7 +18,7 @@ package org.jclouds.location.suppliers.fromconfig;
 
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Singleton;
 
 import org.jclouds.config.ValueOfConfigurationKeyOrNull;

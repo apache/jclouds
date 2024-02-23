@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.Constants;

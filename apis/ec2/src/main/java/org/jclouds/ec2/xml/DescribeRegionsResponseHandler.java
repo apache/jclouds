@@ -19,7 +19,7 @@ package org.jclouds.ec2.xml;
 import java.net.URI;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.http.functions.ParseSax;
 import org.jclouds.logging.Logger;

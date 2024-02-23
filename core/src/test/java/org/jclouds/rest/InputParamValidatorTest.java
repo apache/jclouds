@@ -19,8 +19,8 @@ package org.jclouds.rest;
 import static org.jclouds.providers.AnonymousProviderMetadata.forApiOnEndpoint;
 import static org.jclouds.reflect.Reflection2.method;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.PathParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PathParam;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.http.HttpRequest;

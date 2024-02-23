@@ -19,7 +19,7 @@ package org.jclouds.http.handlers;
 import static org.jclouds.Constants.PROPERTY_MAX_RATE_LIMIT_WAIT;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.http.HttpCommand;

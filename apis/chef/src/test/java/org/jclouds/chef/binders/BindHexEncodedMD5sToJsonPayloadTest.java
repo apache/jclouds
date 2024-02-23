@@ -22,7 +22,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.File;
 
-import javax.ws.rs.HttpMethod;
+import jakarta.ws.rs.HttpMethod;
 
 import org.jclouds.chef.ChefApiMetadata;
 import org.jclouds.chef.config.ChefParserModule;

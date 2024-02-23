@@ -20,7 +20,7 @@ import static org.jclouds.util.Closeables2.closeQuietly;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpErrorHandler;

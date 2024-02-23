@@ -18,7 +18,7 @@ package org.jclouds.openstack.keystone.v3.catalog;
 
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

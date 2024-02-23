@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 package org.jclouds.rackspace.cloudloadbalancers.v1.features;
-import static javax.ws.rs.HttpMethod.PUT;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.HttpMethod.PUT;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.testng.Assert.assertTrue;
 
 import java.net.URI;

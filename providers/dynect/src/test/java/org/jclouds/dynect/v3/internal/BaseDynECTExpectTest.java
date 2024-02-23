@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 package org.jclouds.dynect.v3.internal;
-import static javax.ws.rs.HttpMethod.POST;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.HttpMethod.POST;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
+import static jakarta.ws.rs.core.Response.Status.OK;
 
 import org.jclouds.dynect.v3.config.DynECTHttpApiModule;
 import org.jclouds.http.HttpRequest;

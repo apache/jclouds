@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.date.DateCodec;
 import org.jclouds.date.DateCodecFactory;

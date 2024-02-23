@@ -26,8 +26,8 @@ import org.jclouds.openstack.nova.v2_0.domain.FloatingIPPool;
 import org.jclouds.rest.annotations.SelectJson;
 import org.testng.annotations.Test;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 import java.util.Set;
 
 @Test(groups = "unit", testName = "ParseFloatingIPPoolListTest")

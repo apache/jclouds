@@ -16,7 +16,7 @@
  */
 package org.jclouds.openstack.nova.v2_0.internal;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

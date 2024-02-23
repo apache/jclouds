@@ -42,7 +42,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.crypto.Crypto;
 import org.jclouds.googlecloudstorage.GoogleCloudStorageProviderMetadata;

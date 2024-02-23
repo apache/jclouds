@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.security.PrivateKey;
 
 import javax.inject.Provider;
-import javax.ws.rs.HttpMethod;
+import jakarta.ws.rs.HttpMethod;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.chef.ChefApiMetadata;

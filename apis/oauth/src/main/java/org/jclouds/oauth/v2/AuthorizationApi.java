@@ -16,14 +16,14 @@
  */
 package org.jclouds.oauth.v2;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.io.Closeable;
 
 import javax.inject.Named;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.POST;
 
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.oauth.v2.OAuthFallbacks.AuthorizationExceptionOn4xx;

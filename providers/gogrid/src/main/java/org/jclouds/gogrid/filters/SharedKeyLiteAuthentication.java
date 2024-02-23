@@ -21,7 +21,7 @@ import static com.google.common.hash.Hashing.md5;
 import static com.google.common.io.BaseEncoding.base16;
 import static java.lang.String.format;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 

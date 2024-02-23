@@ -26,7 +26,7 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Provider;
 
 import org.jclouds.Constants;

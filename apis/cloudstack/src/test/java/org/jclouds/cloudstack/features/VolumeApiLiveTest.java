@@ -26,7 +26,7 @@ import static org.testng.AssertJUnit.assertTrue;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.cloudstack.CloudStackApi;
 import org.jclouds.cloudstack.domain.AsyncCreateResponse;

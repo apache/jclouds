@@ -24,8 +24,8 @@ import static org.jclouds.openstack.keystone.config.KeystoneProperties.SCOPE;
 import static org.jclouds.openstack.keystone.config.KeystoneProperties.TENANT_ID;
 import static org.jclouds.openstack.keystone.config.KeystoneProperties.TENANT_NAME;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.logging.Logger;

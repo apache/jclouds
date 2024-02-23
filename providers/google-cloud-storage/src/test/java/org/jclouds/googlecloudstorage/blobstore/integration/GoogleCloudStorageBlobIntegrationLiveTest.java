@@ -26,7 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.domain.Blob;

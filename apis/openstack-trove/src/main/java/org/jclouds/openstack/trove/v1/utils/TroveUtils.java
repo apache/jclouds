@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.openstack.trove.v1.TroveApi;
 import org.jclouds.openstack.trove.v1.domain.Instance;

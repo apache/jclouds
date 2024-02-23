@@ -29,7 +29,6 @@ import java.net.Proxy;
 import java.net.URI;
 import java.util.Map;
 
-import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -59,6 +58,7 @@ import org.jclouds.http.internal.HttpWire;
 import org.jclouds.io.ContentMetadataCodec;
 import org.jclouds.io.MutableContentMetadata;
 import org.jclouds.io.Payload;
+import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.proxy.internal.GuiceProxyConfig;
 
 import com.google.common.base.Function;

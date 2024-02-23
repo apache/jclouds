@@ -23,7 +23,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -41,7 +41,7 @@ import com.google.inject.spi.TypeListener;
 
 /**
  * TypeListener that will bind {@link org.jclouds.logging.Logger} to members annotated with
- * {@link javax.annotation.Resource}
+ * {@link jakarta.annotation.Resource}
  * <p/>
  * This class is a TypeListener so that it can create a logger whose category is
  * the same as the name of the injected instance's class.

@@ -28,7 +28,7 @@ import static org.jclouds.cloudstack.predicates.TemplatePredicates.isReady;
 import static org.jclouds.cloudstack.predicates.ZonePredicates.supportsSecurityGroups;
 import static org.jclouds.ssh.SshKeys.fingerprintPrivateKey;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;

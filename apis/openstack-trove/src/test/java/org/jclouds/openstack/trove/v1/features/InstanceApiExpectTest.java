@@ -22,7 +22,7 @@ import static org.testng.Assert.assertTrue;
 import java.net.URI;
 import java.util.Set;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.openstack.trove.v1.domain.Instance;

@@ -23,7 +23,7 @@ import static org.testng.Assert.assertEquals;
 import java.lang.reflect.Field;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 

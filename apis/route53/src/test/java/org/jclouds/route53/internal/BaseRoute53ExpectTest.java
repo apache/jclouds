@@ -16,7 +16,7 @@
  */
 package org.jclouds.route53.internal;
 
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 
 import org.jclouds.date.DateService;
 import org.jclouds.http.HttpResponse;

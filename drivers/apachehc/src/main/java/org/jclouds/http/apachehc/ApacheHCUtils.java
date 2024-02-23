@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Singleton;
-import javax.ws.rs.HttpMethod;
+import jakarta.ws.rs.HttpMethod;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;

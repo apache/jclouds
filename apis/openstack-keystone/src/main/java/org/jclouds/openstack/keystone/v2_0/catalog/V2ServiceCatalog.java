@@ -23,7 +23,7 @@ import static org.jclouds.openstack.keystone.catalog.ServiceEndpoint.Interface.P
 import java.net.URI;
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

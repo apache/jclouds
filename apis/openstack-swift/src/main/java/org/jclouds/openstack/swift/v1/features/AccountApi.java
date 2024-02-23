@@ -16,16 +16,16 @@
  */
 package org.jclouds.openstack.swift.v1.features;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.jclouds.openstack.swift.v1.reference.SwiftHeaders.ACCOUNT_TEMPORARY_URL_KEY;
 
 import java.util.Map;
 
 import javax.inject.Named;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.HEAD;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.HEAD;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
 
 import org.jclouds.Fallbacks.FalseOnNotFoundOr404;
 import org.jclouds.openstack.keystone.auth.filters.AuthenticateRequest;

@@ -17,8 +17,8 @@
 package org.jclouds.ultradns.ws.handlers;
 import static com.google.common.base.Throwables.propagate;
 import static com.google.common.net.HttpHeaders.HOST;
-import static javax.ws.rs.HttpMethod.POST;
-import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static jakarta.ws.rs.HttpMethod.POST;
+import static jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.jclouds.rest.internal.BaseRestApiExpectTest.payloadFromStringWithContentType;
 import static org.jclouds.util.Strings2.toStringAndClose;
 import static org.testng.Assert.assertEquals;

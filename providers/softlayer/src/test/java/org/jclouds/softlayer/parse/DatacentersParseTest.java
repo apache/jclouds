@@ -18,8 +18,8 @@ package org.jclouds.softlayer.parse;
 
 import java.util.Set;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.softlayer.domain.Datacenter;
 import org.jclouds.softlayer.internal.BaseSoftLayerParseTest;

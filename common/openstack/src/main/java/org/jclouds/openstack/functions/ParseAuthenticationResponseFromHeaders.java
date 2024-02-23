@@ -24,7 +24,7 @@ import static org.jclouds.openstack.reference.AuthHeaders.AUTH_TOKEN;
 import java.net.URI;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

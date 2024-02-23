@@ -21,7 +21,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.File;
 
-import javax.ws.rs.PathParam;
+import jakarta.ws.rs.PathParam;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.reflect.Invocation;

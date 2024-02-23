@@ -23,7 +23,7 @@ import static org.jclouds.aws.ec2.options.AWSDescribeImagesOptions.Builder.filte
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 

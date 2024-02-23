@@ -17,9 +17,9 @@
 package org.jclouds.cloudwatch.features;
 
 import javax.inject.Named;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 
 import com.google.common.annotations.Beta;
 import com.google.common.collect.FluentIterable;

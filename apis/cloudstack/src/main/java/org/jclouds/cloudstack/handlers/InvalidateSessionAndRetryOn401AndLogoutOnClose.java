@@ -18,7 +18,7 @@ package org.jclouds.cloudstack.handlers;
 
 import static org.jclouds.http.HttpUtils.releasePayload;
 
-import javax.annotation.PreDestroy;
+import jakarta.annotation.PreDestroy;
 
 import org.jclouds.cloudstack.domain.LoginResponse;
 import org.jclouds.cloudstack.features.SessionApi;

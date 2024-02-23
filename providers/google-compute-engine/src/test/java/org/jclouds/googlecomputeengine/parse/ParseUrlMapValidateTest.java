@@ -17,9 +17,9 @@
 package org.jclouds.googlecomputeengine.parse;
 
 import java.net.URI;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import javax.ws.rs.Consumes;
+import jakarta.ws.rs.Consumes;
 
 import org.jclouds.googlecomputeengine.domain.UrlMapValidateResult;
 import org.jclouds.googlecomputeengine.domain.UrlMapValidateResult.UrlMapValidateResultInternal.TestFailure;

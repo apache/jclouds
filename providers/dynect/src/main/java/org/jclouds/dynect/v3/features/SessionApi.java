@@ -17,11 +17,11 @@
 package org.jclouds.dynect.v3.features;
 
 import javax.inject.Named;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 
 import org.jclouds.dynect.v3.DynECTFallbacks.FalseOn400;
 import org.jclouds.dynect.v3.domain.Session;

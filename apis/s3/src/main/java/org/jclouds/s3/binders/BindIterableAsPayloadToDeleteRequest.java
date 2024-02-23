@@ -25,7 +25,7 @@ import static org.jclouds.s3.binders.XMLHelper.createDocument;
 import static org.jclouds.s3.binders.XMLHelper.elem;
 import static org.jclouds.s3.binders.XMLHelper.elemWithText;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 

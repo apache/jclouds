@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.security.PrivateKey;
 import java.util.NoSuchElementException;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;

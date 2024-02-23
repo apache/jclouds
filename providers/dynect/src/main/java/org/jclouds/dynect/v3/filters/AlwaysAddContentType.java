@@ -17,7 +17,7 @@
 package org.jclouds.dynect.v3.filters;
 
 import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.jclouds.http.HttpRequest.NON_PAYLOAD_METHODS;
 
 import org.jclouds.http.HttpException;

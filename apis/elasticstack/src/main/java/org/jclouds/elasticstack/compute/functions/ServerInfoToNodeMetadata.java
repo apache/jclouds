@@ -23,7 +23,7 @@ import static org.jclouds.compute.util.ComputeServiceUtils.groupFromMapOrName;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

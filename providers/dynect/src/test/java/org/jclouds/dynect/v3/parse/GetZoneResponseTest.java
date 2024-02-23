@@ -19,8 +19,8 @@ package org.jclouds.dynect.v3.parse;
 import static org.jclouds.dynect.v3.domain.Zone.SerialStyle.INCREMENT;
 import static org.jclouds.dynect.v3.domain.Zone.Type.PRIMARY;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.dynect.v3.domain.Zone;
 import org.jclouds.dynect.v3.internal.BaseDynECTParseTest;

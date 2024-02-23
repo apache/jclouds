@@ -28,8 +28,8 @@ import org.jclouds.openstack.keystone.v2_0.domain.User;
 import org.jclouds.rest.annotations.SelectJson;
 import org.testng.annotations.Test;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 
 import static org.jclouds.openstack.v2_0.ServiceType.BLOCK_STORAGE;
 import static org.jclouds.openstack.v2_0.ServiceType.COMPUTE;

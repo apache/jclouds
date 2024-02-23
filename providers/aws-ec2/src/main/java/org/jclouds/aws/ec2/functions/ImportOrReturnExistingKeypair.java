@@ -19,7 +19,7 @@ package org.jclouds.aws.ec2.functions;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.jclouds.ssh.SshKeys.fingerprintPublicKey;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;

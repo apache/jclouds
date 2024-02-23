@@ -24,8 +24,8 @@ import static org.testng.Assert.assertEquals;
 import java.io.Closeable;
 import java.net.URI;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.concurrent.config.ExecutorServiceModule;

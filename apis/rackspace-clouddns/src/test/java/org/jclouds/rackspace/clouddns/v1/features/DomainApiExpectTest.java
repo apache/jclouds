@@ -16,9 +16,9 @@
  */
 package org.jclouds.rackspace.clouddns.v1.features;
 
-import static javax.ws.rs.HttpMethod.POST;
-import static javax.ws.rs.HttpMethod.PUT;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.HttpMethod.POST;
+import static jakarta.ws.rs.HttpMethod.PUT;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SimpleTimeZone;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.rackspace.clouddns.v1.CloudDNSApi;

@@ -19,7 +19,7 @@ package org.jclouds.suppliers;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.jclouds.logging.Logger;
 

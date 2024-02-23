@@ -22,7 +22,7 @@ import static org.jclouds.util.SaxUtils.equalsOrSuffix;
 import java.net.URI;
 import java.util.Map;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Provider;
 

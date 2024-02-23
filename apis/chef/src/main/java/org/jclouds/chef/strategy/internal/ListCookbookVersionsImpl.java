@@ -25,7 +25,7 @@ import org.jclouds.chef.domain.CookbookVersion;
 import org.jclouds.chef.strategy.ListCookbookVersions;
 import org.jclouds.logging.Logger;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.concurrent.ExecutorService;

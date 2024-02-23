@@ -24,7 +24,7 @@ import static com.google.common.collect.Iterables.transform;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 
 import org.jclouds.Context;

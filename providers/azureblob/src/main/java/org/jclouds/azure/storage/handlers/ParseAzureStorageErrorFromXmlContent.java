@@ -21,7 +21,7 @@ import static org.jclouds.http.HttpUtils.releasePayload;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 
 import org.jclouds.azure.storage.AzureStorageResponseException;

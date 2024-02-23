@@ -18,7 +18,7 @@ package org.jclouds.rest.internal;
 
 import java.util.Set;
 
-import javax.ws.rs.Consumes;
+import jakarta.ws.rs.Consumes;
 
 import org.jclouds.reflect.Invocation;
 

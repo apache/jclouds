@@ -23,7 +23,7 @@ import static org.jclouds.http.Uris.uriBuilder;
 
 import java.net.URI;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 import javax.inject.Singleton;
 

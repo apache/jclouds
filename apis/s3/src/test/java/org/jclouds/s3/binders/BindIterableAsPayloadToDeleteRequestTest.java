@@ -18,7 +18,7 @@ package org.jclouds.s3.binders;
 
 import static org.testng.Assert.assertEquals;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.io.Payload;

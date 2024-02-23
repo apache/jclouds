@@ -21,7 +21,7 @@ import static java.lang.Math.max;
 import java.io.IOException;
 import java.util.Random;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 import javax.inject.Singleton;
 

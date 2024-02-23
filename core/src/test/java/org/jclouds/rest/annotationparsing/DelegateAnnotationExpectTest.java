@@ -19,11 +19,11 @@ package org.jclouds.rest.annotationparsing;
 import static org.jclouds.providers.AnonymousProviderMetadata.forApiOnEndpoint;
 import static org.testng.Assert.assertTrue;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.HEAD;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.HEAD;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 
 import org.jclouds.Fallbacks.FalseOnNotFoundOr404;
 import org.jclouds.http.HttpRequest;

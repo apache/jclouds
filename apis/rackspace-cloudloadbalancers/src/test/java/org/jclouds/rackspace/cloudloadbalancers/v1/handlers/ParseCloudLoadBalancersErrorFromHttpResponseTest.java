@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 package org.jclouds.rackspace.cloudloadbalancers.v1.handlers;
-import static javax.ws.rs.HttpMethod.GET;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static jakarta.ws.rs.HttpMethod.GET;
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 
 import java.net.URI;
 

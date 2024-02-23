@@ -16,7 +16,7 @@
  */
 package org.jclouds.openstack.cinder.v1.internal;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

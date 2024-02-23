@@ -17,9 +17,9 @@
 package org.jclouds.cloudstack.features;
 
 import javax.inject.Named;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.cloudstack.domain.Capabilities;
 import org.jclouds.cloudstack.filters.AuthenticationFilter;

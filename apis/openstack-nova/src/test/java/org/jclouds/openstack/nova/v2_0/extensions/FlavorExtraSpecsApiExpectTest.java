@@ -21,7 +21,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.net.URI;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.openstack.nova.v2_0.internal.BaseNovaApiExpectTest;

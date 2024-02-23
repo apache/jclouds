@@ -21,7 +21,7 @@ import static org.testng.Assert.assertEquals;
 import java.net.URI;
 import java.util.List;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

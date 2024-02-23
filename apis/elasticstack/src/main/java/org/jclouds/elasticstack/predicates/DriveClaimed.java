@@ -18,7 +18,7 @@ package org.jclouds.elasticstack.predicates;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

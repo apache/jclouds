@@ -19,7 +19,7 @@ package org.jclouds.ec2.internal;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.aws.filters.FormSigner;
 import org.jclouds.date.DateService;

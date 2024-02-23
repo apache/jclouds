@@ -16,7 +16,7 @@
  */
 package org.jclouds.servermanager.compute.functions;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import javax.inject.Named;
 import javax.inject.Singleton;
 

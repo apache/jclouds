@@ -18,8 +18,8 @@ package org.jclouds.docker.parse;
 
 import java.util.List;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.docker.domain.ImageHistory;
 import org.jclouds.docker.internal.BaseDockerParseTest;

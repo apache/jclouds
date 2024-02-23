@@ -16,11 +16,11 @@
  */
 package org.jclouds.googlecomputeengine.parse;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
 
-import javax.ws.rs.Consumes;
+import jakarta.ws.rs.Consumes;
 
 import org.jclouds.googlecomputeengine.domain.KeyValuePair;
 import org.jclouds.googlecomputeengine.domain.Route;
