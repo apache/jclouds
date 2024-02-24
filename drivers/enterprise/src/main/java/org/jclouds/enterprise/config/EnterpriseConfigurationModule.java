@@ -20,7 +20,6 @@ import org.jclouds.concurrent.config.ConfiguresExecutorService;
 import org.jclouds.concurrent.config.ExecutorServiceModule;
 import org.jclouds.date.joda.config.JodaDateServiceModule;
 import org.jclouds.encryption.bouncycastle.config.BouncyCastleCryptoModule;
-import org.jclouds.netty.config.NettyPayloadModule;
 
 import com.google.common.util.concurrent.ListeningExecutorService;
 
@@ -52,7 +51,6 @@ public class EnterpriseConfigurationModule extends ExecutorServiceModule {
    protected void configure() {
       install(new BouncyCastleCryptoModule());
       install(new JodaDateServiceModule());
-      install(new NettyPayloadModule());
    }
 
 }
