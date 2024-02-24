@@ -35,7 +35,6 @@
     <module>joda</module>
     <module>jsch</module>
     <module>log4j</module>
-    <module>netty</module>
     <module>okhttp</module>
     <module>slf4j</module>
     <module>sshj</module>
