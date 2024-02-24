@@ -19,7 +19,7 @@ package org.jclouds.s3.binders;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;

@@ -19,7 +19,7 @@ import com.google.common.base.Function;
 import org.jclouds.azurecompute.arm.util.GetEnumValue;
 import org.jclouds.http.HttpResponse;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 /**
  * Parses job status from http response
  */

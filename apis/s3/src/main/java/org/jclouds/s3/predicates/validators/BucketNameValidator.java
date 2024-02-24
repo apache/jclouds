@@ -16,7 +16,7 @@
  */
 package org.jclouds.s3.predicates.validators;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.predicates.Validator;
 

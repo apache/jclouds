@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.io.BaseEncoding.base64;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Function;
 

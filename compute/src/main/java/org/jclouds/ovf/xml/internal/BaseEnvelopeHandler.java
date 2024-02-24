@@ -20,8 +20,8 @@ import static org.jclouds.util.SaxUtils.equalsOrSuffix;
 
 import java.util.Map;
 
-import javax.inject.Named;
-import javax.inject.Provider;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
 
 import org.jclouds.http.functions.ParseSax;
 import org.jclouds.ovf.internal.BaseEnvelope;

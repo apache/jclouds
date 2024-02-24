@@ -22,8 +22,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.collect.Memoized;
 import org.jclouds.compute.domain.SecurityGroup;

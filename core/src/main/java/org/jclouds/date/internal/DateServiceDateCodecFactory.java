@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Date;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.date.DateCodec;
 import org.jclouds.date.DateCodecFactory;

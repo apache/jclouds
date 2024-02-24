@@ -19,8 +19,8 @@ package org.jclouds.openstack.keystone.v3.catalog;
 import java.util.List;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.logging.Logger;
 import org.jclouds.openstack.keystone.auth.domain.AuthInfo;

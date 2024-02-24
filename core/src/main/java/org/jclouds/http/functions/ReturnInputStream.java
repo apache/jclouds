@@ -18,7 +18,7 @@ package org.jclouds.http.functions;
 
 import java.io.InputStream;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpResponse;
 

@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.googlecomputeengine.compute.functions.Resources;
 import org.jclouds.googlecomputeengine.domain.Operation;

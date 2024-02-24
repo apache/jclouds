@@ -22,7 +22,7 @@ import java.io.Closeable;
 import java.net.URI;
 import java.util.Map;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;

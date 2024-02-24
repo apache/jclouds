@@ -19,8 +19,8 @@ package org.jclouds.chef.functions;
 import org.jclouds.chef.domain.Environment;
 import org.jclouds.http.functions.ParseJson;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class ParseSearchEnvironmentsFromJson extends ParseSearchResultFromJson<Environment> {

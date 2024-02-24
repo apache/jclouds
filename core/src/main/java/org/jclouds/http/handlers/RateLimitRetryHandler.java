@@ -20,7 +20,7 @@ import static org.jclouds.Constants.PROPERTY_MAX_RATE_LIMIT_WAIT;
 import static org.jclouds.Constants.PROPERTY_MAX_RETRIES;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpResponse;

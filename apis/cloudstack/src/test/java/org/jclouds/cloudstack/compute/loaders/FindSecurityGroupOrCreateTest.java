@@ -27,7 +27,7 @@ import static org.easymock.EasyMock.verify;
 import static org.testng.Assert.assertEquals;
 
 import java.net.UnknownHostException;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.cloudstack.CloudStackApi;
 import org.jclouds.cloudstack.domain.IngressRule;

@@ -18,7 +18,7 @@ package org.jclouds.openstack.nova.ec2.internal;
 
 import java.util.Date;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.date.DateService;
 import org.jclouds.date.internal.DateServiceDateCodecFactory.DateServiceIso8601Codec;

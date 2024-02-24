@@ -24,7 +24,7 @@ import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.SortedSet;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.gogrid.domain.Ip;
 import org.jclouds.gogrid.domain.IpPortPair;

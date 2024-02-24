@@ -19,7 +19,7 @@ package org.jclouds.chef.binders;
 import com.google.common.base.Function;
 import org.jclouds.chef.domain.Environment;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class EnvironmentName implements Function<Object, String> {

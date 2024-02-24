@@ -26,8 +26,8 @@ import static com.google.common.collect.Sets.newHashSet;
 import static org.jclouds.location.predicates.LocationPredicates.idEquals;
 import static org.jclouds.util.InetAddresses2.isPrivateIPAddress;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.util.Map;
 import java.util.Set;
 

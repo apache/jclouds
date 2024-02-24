@@ -27,7 +27,7 @@ import java.security.SignatureException;
 import java.util.Map;
 
 import jakarta.annotation.Resource;
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.Constants;
 import org.jclouds.blobstore.BlobRequestSigner;

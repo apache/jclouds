@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.elasticstack.domain.ClaimType;
 import org.jclouds.elasticstack.domain.DriveInfo;

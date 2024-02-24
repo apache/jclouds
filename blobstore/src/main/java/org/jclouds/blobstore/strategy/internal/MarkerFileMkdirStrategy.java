@@ -18,8 +18,8 @@ package org.jclouds.blobstore.strategy.internal;
 
 import static org.jclouds.io.Payloads.newByteArrayPayload;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.domain.StorageType;

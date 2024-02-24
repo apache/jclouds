@@ -26,8 +26,8 @@ import static org.jclouds.location.predicates.LocationPredicates.isZoneOrRegionW
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.collect.Memoized;
 import org.jclouds.domain.Location;

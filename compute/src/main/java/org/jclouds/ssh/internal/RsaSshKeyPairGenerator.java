@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.security.SecureRandom;
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.crypto.Crypto;
 import org.jclouds.ssh.SshKeyPairGenerator;

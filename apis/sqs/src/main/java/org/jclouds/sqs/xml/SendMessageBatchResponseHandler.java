@@ -16,7 +16,7 @@
  */
 package org.jclouds.sqs.xml;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.sqs.domain.MessageIdAndMD5;
 

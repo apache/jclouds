@@ -19,7 +19,7 @@ package org.jclouds.azurecompute.arm.features;
 import java.net.URI;
 import java.util.List;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;

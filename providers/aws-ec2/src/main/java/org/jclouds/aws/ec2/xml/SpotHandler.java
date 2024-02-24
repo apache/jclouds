@@ -16,7 +16,7 @@
  */
 package org.jclouds.aws.ec2.xml;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.aws.ec2.domain.Spot;
 import org.jclouds.aws.util.AWSUtils;

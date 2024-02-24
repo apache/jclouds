@@ -18,7 +18,7 @@ package org.jclouds.azureblob.functions;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.azureblob.blobstore.functions.BlobMetadataToBlobProperties;
 import org.jclouds.azureblob.domain.AccessTier;

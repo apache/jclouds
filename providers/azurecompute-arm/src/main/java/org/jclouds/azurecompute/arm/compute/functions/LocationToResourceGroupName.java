@@ -19,8 +19,8 @@ package org.jclouds.azurecompute.arm.compute.functions;
 import static org.jclouds.compute.config.ComputeServiceProperties.RESOURCENAME_DELIMITER;
 import static org.jclouds.compute.config.ComputeServiceProperties.RESOURCENAME_PREFIX;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import com.google.common.base.Function;
 

@@ -17,7 +17,7 @@
 package org.jclouds.atmos.handlers;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.atmos.domain.AtmosError;

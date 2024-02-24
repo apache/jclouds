@@ -18,7 +18,7 @@ package org.jclouds.openstack.keystone.v2_0;
 
 import java.io.Closeable;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.core.MediaType;

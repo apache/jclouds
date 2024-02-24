@@ -54,9 +54,9 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import javax.inject.Named;
-import javax.inject.Qualifier;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Qualifier;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Encoded;
 import jakarta.ws.rs.FormParam;

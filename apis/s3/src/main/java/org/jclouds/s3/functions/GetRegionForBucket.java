@@ -19,8 +19,8 @@ package org.jclouds.s3.functions;
 import java.util.concurrent.ExecutionException;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.logging.Logger;
 import org.jclouds.s3.Bucket;

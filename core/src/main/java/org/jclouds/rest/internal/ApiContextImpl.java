@@ -18,7 +18,7 @@ package org.jclouds.rest.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.annotations.Name;
 import org.jclouds.domain.Credentials;

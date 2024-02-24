@@ -18,9 +18,9 @@ package org.jclouds.atmos.domain.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 import org.jclouds.atmos.domain.AtmosObject;
 import org.jclouds.atmos.domain.MutableContentMetadata;

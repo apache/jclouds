@@ -18,7 +18,7 @@ package org.jclouds.atmos.blobstore.config;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.atmos.AtmosClient;
 import org.jclouds.atmos.blobstore.AtmosBlobRequestSigner;

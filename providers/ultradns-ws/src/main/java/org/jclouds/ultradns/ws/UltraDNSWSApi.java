@@ -18,7 +18,7 @@ package org.jclouds.ultradns.ws;
 
 import java.io.Closeable;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.POST;
 
 import org.jclouds.rest.annotations.Delegate;

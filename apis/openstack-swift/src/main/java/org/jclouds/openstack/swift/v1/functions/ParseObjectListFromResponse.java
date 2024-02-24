@@ -23,7 +23,7 @@ import static org.jclouds.util.Strings2.urlEncode;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

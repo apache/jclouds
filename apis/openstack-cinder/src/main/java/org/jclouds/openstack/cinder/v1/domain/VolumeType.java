@@ -23,7 +23,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import org.jclouds.javax.annotation.Nullable;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import java.beans.ConstructorProperties;
 import java.util.Date;
 import java.util.Map;

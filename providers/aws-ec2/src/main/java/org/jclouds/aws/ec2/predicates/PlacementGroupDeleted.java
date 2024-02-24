@@ -19,7 +19,7 @@ package org.jclouds.aws.ec2.predicates;
 import java.util.NoSuchElementException;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.ec2.AWSEC2Api;
 import org.jclouds.aws.ec2.domain.PlacementGroup;

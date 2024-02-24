@@ -26,7 +26,7 @@ import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.base.Optional;
 import org.jclouds.javax.annotation.Nullable;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 /**
  * IP address

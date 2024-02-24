@@ -28,8 +28,8 @@ import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Credentials;
 

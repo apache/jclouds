@@ -20,7 +20,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.googlecloud.config.ListPageAdapterFactory;
 import org.jclouds.googlecomputeengine.domain.Firewall;

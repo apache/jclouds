@@ -18,7 +18,7 @@ package org.jclouds.elasticstack.functions;
 
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;

@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.compute.domain.Hardware;
 import org.jclouds.compute.domain.HardwareBuilder;

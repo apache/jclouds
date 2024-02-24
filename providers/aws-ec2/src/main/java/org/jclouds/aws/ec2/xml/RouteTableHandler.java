@@ -18,7 +18,7 @@ package org.jclouds.aws.ec2.xml;
 
 import static org.jclouds.util.SaxUtils.equalsOrSuffix;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.aws.ec2.domain.RouteTable;
 import org.jclouds.ec2.xml.TagSetHandler;

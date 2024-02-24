@@ -18,8 +18,8 @@ package org.jclouds.ec2.binders;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.Binder;

@@ -18,8 +18,8 @@ package org.jclouds.azureblob.blobstore.functions;
 
 import java.util.SortedSet;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azureblob.domain.ListBlobsResponse;
 import org.jclouds.blobstore.domain.PageSet;

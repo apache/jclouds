@@ -26,8 +26,8 @@ import static com.google.common.collect.Iterables.transform;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.aws.util.AWSUtils;

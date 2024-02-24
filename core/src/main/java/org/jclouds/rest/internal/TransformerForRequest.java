@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
 import java.net.URI;
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.lang.model.type.NullType;
 
 import org.jclouds.functions.IdentityFunction;

@@ -21,7 +21,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.testng.Assert.assertEquals;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.blobstore.config.BlobStoreObjectModule;

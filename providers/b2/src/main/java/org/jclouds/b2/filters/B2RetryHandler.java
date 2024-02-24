@@ -20,7 +20,7 @@ import static org.jclouds.http.HttpUtils.closeClientButKeepContentStream;
 import static org.jclouds.http.HttpUtils.releasePayload;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.b2.B2Api;
 import org.jclouds.b2.domain.GetUploadPartResponse;

@@ -18,7 +18,7 @@ package org.jclouds.internal;
 
 import static org.testng.Assert.assertEquals;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.testng.annotations.Test;
 

@@ -26,8 +26,8 @@ import java.security.PrivateKey;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.chef.config.InstallChef;
 import org.jclouds.chef.config.Validator;

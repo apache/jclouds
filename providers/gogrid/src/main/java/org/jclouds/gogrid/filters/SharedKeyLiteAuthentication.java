@@ -22,8 +22,8 @@ import static com.google.common.io.BaseEncoding.base16;
 import static java.lang.String.format;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.date.TimeStamp;

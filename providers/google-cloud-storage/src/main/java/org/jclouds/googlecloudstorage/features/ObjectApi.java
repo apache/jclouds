@@ -18,7 +18,7 @@ package org.jclouds.googlecloudstorage.features;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.Encoded;

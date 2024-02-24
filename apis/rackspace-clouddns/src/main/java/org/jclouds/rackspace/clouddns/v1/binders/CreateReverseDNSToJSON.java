@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.net.URI;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;

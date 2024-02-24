@@ -18,7 +18,7 @@ package org.jclouds.blobstore.functions;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.blobstore.domain.Blob;
 

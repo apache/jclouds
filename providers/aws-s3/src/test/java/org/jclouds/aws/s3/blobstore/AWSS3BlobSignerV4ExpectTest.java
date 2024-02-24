@@ -23,7 +23,7 @@ import static org.testng.Assert.assertEquals;
 import java.util.Date;
 import java.util.Properties;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.aws.s3.AWSS3ApiMetadata;

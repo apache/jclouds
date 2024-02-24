@@ -16,7 +16,7 @@
  */
 package org.jclouds.cloudwatch.xml;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.Date;
 
 import com.google.common.annotations.Beta;

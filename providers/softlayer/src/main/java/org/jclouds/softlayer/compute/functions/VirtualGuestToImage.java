@@ -19,8 +19,8 @@ package org.jclouds.softlayer.compute.functions;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.Image;
 import org.jclouds.compute.domain.ImageBuilder;

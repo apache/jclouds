@@ -18,7 +18,7 @@ package org.jclouds.rest.internal;
 
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.crypto.Crypto;
 import org.jclouds.date.DateService;

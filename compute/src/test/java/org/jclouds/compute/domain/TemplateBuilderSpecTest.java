@@ -26,7 +26,7 @@ import static org.testng.Assert.fail;
 
 import java.lang.reflect.Field;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.domain.LoginCredentials;

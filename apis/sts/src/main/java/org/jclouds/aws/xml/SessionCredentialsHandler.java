@@ -18,7 +18,7 @@ package org.jclouds.aws.xml;
 
 import static org.jclouds.util.SaxUtils.currentOrNull;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.aws.domain.SessionCredentials;
 import org.jclouds.date.DateService;

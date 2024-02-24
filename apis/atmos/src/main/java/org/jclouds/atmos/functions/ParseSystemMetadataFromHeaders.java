@@ -21,8 +21,8 @@ import static com.google.common.io.BaseEncoding.base16;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.atmos.domain.FileType;
 import org.jclouds.atmos.domain.SystemMetadata;

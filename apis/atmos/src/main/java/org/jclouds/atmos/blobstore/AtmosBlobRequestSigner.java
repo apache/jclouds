@@ -23,8 +23,8 @@ import static org.jclouds.reflect.Reflection2.method;
 import java.net.URI;
 import java.util.Date;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.atmos.AtmosClient;
 import org.jclouds.atmos.blobstore.functions.BlobToObject;

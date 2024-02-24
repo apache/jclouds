@@ -29,7 +29,7 @@ import java.security.cert.X509Certificate;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.location.Provider;

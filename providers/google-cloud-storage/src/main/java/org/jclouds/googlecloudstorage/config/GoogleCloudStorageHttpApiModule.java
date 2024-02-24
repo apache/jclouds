@@ -16,7 +16,7 @@
  */
 package org.jclouds.googlecloudstorage.config;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.googlecloud.config.CurrentProject;

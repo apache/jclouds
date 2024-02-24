@@ -19,7 +19,7 @@ package org.jclouds.openstack.trove.v1.filters;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpException;
 import org.jclouds.http.HttpRequest;

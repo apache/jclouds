@@ -19,7 +19,7 @@ package org.jclouds.elasticstack.functions;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.elasticstack.domain.Model;
 import org.jclouds.elasticstack.domain.NIC;

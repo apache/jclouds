@@ -16,8 +16,8 @@
  */
 package org.jclouds.aws.s3.blobstore.internal;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.Context;
 import org.jclouds.aws.s3.blobstore.AWSS3BlobStore;

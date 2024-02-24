@@ -18,8 +18,8 @@ package org.jclouds.openstack.keystone.v1_1.binders;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.json.Json;

@@ -20,7 +20,7 @@ import static org.jclouds.azurecompute.arm.handlers.AzureRateLimitRetryHandler.i
 
 import java.io.IOException;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azurecompute.arm.exceptions.AzureComputeRateLimitExceededException;
 import org.jclouds.http.HttpCommand;

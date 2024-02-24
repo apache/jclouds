@@ -18,7 +18,7 @@ package org.jclouds.http.okhttp.config;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;

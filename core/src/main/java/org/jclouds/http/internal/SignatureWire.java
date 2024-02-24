@@ -17,7 +17,7 @@
 package org.jclouds.http.internal;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.logging.Logger;

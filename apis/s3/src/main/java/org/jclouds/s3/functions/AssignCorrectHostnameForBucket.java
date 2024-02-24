@@ -18,7 +18,7 @@ package org.jclouds.s3.functions;
 
 import java.net.URI;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.location.functions.RegionToEndpointOrProviderIfNull;
 import org.jclouds.s3.Bucket;

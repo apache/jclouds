@@ -17,7 +17,7 @@
 package org.jclouds.events.handlers;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.logging.Logger;
 

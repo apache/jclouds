@@ -28,7 +28,7 @@ import static org.testng.Assert.fail;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.collect.Memoized;
 import org.jclouds.compute.domain.Hardware;

@@ -17,7 +17,7 @@
 package org.jclouds.ultradns.ws.features;
 
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.POST;
 
 import org.jclouds.Fallbacks.EmptyFluentIterableOnNotFoundOr404;

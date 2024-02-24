@@ -20,7 +20,7 @@ import static com.google.common.collect.Iterables.tryFind;
 
 import java.util.NoSuchElementException;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.location.suppliers.ImplicitRegionIdSupplier;
 import org.jclouds.openstack.keystone.v1_1.domain.Auth;

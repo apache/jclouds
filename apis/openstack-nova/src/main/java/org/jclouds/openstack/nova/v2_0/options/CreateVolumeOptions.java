@@ -24,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.MapBinder;

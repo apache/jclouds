@@ -22,8 +22,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;

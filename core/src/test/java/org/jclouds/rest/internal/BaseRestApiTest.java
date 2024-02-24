@@ -29,8 +29,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Map.Entry;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.concurrent.config.ConfiguresExecutorService;
 import org.jclouds.fallbacks.MapHttp4xxCodesToExceptions;

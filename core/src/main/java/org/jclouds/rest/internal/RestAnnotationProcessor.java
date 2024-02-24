@@ -55,7 +55,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Encoded;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.HeaderParam;

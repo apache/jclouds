@@ -18,7 +18,7 @@ package org.jclouds.glesys.handlers;
 
 import java.io.IOException;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpErrorHandler;

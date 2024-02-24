@@ -20,7 +20,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import static org.jclouds.blobstore.attr.BlobScopes.CONTAINER;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;

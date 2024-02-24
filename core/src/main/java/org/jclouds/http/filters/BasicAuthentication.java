@@ -21,8 +21,8 @@ import static com.google.common.io.BaseEncoding.base64;
 import static com.google.common.net.HttpHeaders.AUTHORIZATION;
 import static java.lang.String.format;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.http.HttpException;

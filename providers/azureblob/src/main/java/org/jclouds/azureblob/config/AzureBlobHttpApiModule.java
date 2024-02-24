@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.Map;
 import java.util.List;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import com.google.inject.Scopes;
 import org.jclouds.azure.storage.config.AzureStorageOAuthConfigFactory;

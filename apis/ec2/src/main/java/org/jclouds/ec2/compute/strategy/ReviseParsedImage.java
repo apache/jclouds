@@ -16,7 +16,7 @@
  */
 package org.jclouds.ec2.compute.strategy;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.ImageBuilder;
 import org.jclouds.compute.domain.OperatingSystem;

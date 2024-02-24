@@ -21,7 +21,7 @@ import static org.jclouds.profitbricks.config.ProfitBricksComputeProperties.POLL
 
 import java.util.concurrent.Callable;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Supplier;

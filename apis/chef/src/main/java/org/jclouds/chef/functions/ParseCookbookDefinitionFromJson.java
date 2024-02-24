@@ -21,8 +21,8 @@ import org.jclouds.chef.domain.CookbookDefinition;
 import org.jclouds.http.HttpResponse;
 import org.jclouds.http.functions.ParseJson;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.util.Map;
 
 /**

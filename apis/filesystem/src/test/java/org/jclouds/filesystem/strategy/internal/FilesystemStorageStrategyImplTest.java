@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.assertj.core.api.Fail;
 import org.jclouds.blobstore.domain.Blob;

@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.compute.domain.Image;
 import org.jclouds.compute.domain.ImageBuilder;

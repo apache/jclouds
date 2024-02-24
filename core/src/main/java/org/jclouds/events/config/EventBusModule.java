@@ -19,8 +19,8 @@ package org.jclouds.events.config;
 import static com.google.inject.Scopes.SINGLETON;
 import static org.jclouds.Constants.PROPERTY_USER_THREADS;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.events.config.annotations.AsyncBus;
 import org.jclouds.events.handlers.DeadEventLoggingHandler;

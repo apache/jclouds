@@ -29,8 +29,8 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.json.Json;
 import org.jclouds.oauth.v2.config.Authorization;

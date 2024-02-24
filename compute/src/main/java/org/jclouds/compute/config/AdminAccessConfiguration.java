@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.config.AdminAccessConfiguration.Default;
 import org.jclouds.compute.functions.Sha512Crypt;

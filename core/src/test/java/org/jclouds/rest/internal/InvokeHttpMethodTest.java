@@ -25,7 +25,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpCommandExecutorService;

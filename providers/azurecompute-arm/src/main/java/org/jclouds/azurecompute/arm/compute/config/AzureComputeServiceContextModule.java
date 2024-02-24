@@ -16,7 +16,7 @@
  */
 package org.jclouds.azurecompute.arm.compute.config;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azurecompute.arm.compute.AzureComputeService;
 import org.jclouds.azurecompute.arm.compute.AzureComputeServiceAdapter;

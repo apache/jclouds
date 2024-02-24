@@ -18,7 +18,7 @@ package org.jclouds.aws.config;
 
 import java.util.Date;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.filters.FormSigner;
 import org.jclouds.date.DateService;

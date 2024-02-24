@@ -16,8 +16,8 @@
  */
 package org.jclouds.atmos.blobstore.functions;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.atmos.domain.BoundedSet;
 import org.jclouds.atmos.domain.DirectoryEntry;

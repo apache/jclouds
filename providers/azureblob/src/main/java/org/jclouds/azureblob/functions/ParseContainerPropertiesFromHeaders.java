@@ -20,8 +20,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Map.Entry;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.azureblob.domain.ContainerProperties;
 import org.jclouds.azureblob.domain.MutableContainerPropertiesWithMetadata;

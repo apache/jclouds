@@ -20,7 +20,7 @@ import static org.jclouds.Constants.PROPERTY_SESSION_INTERVAL;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.cloudstack.domain.Zone;
 

@@ -32,7 +32,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.lifecycle.Closer;
 

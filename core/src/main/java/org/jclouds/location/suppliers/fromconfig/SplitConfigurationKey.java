@@ -19,7 +19,7 @@ package org.jclouds.location.suppliers.fromconfig;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.config.ValueOfConfigurationKeyOrNull;
 import org.jclouds.location.Provider;

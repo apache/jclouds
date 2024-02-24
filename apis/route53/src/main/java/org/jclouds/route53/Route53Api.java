@@ -18,7 +18,7 @@ package org.jclouds.route53;
 
 import java.io.Closeable;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;

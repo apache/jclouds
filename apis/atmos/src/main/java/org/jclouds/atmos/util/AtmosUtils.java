@@ -22,8 +22,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.jclouds.atmos.AtmosClient;
 import org.jclouds.atmos.blobstore.functions.BlobToObject;

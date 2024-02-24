@@ -18,8 +18,8 @@ package org.jclouds.openstack.keystone.v3.binders;
 
 import static java.util.Collections.singletonList;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.json.Json;
 import org.jclouds.openstack.keystone.auth.domain.PasswordCredentials;

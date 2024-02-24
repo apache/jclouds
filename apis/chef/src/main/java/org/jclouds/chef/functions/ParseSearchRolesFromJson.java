@@ -16,8 +16,8 @@
  */
 package org.jclouds.chef.functions;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.chef.domain.Role;
 import org.jclouds.http.functions.ParseJson;

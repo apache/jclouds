@@ -23,7 +23,7 @@ import org.jclouds.http.HttpResponseException;
 import org.jclouds.rest.AuthorizationException;
 import org.jclouds.rest.ResourceNotFoundException;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import static org.jclouds.http.HttpUtils.closeClientButKeepContentStream;
 

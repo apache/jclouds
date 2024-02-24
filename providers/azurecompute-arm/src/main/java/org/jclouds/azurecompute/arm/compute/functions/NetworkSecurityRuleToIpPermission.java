@@ -17,8 +17,8 @@
 package org.jclouds.azurecompute.arm.compute.functions;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azurecompute.arm.domain.NetworkSecurityRule;
 import org.jclouds.azurecompute.arm.domain.NetworkSecurityRuleProperties.Access;

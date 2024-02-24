@@ -23,7 +23,7 @@ import static org.jclouds.util.Strings2.toStringAndClose;
 import java.io.IOException;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpErrorHandler;

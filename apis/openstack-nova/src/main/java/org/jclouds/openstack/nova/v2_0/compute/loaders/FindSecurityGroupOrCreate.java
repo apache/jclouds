@@ -19,7 +19,7 @@ package org.jclouds.openstack.nova.v2_0.compute.loaders;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.compute.domain.SecurityGroup;
 import org.jclouds.openstack.nova.v2_0.domain.regionscoped.RegionAndName;

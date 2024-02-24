@@ -28,7 +28,7 @@ import org.jclouds.net.domain.IpProtocol;
 import org.jclouds.openstack.neutron.v2.domain.Rule;
 import org.jclouds.openstack.neutron.v2.domain.RuleDirection;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;

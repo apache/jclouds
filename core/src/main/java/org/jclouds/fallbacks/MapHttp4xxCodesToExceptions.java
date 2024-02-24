@@ -19,8 +19,8 @@ package org.jclouds.fallbacks;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Throwables.propagate;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.Fallback;
 import org.jclouds.http.HttpResponseException;

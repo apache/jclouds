@@ -17,7 +17,7 @@
 package org.jclouds.cloudstack.compute.functions;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.compute.reference.ComputeServiceConstants;
 import org.jclouds.cloudstack.domain.IngressRule;

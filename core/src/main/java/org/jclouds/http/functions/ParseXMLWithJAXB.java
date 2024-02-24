@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.http.HttpResponseException;

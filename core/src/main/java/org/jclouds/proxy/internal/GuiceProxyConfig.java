@@ -29,8 +29,8 @@ import static org.jclouds.Constants.PROPERTY_PROXY_ENABLE_SSL_PROXY;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.proxy.ProxyConfig;

@@ -23,7 +23,7 @@ import java.lang.reflect.Type;
 import java.net.UnknownHostException;
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.gogrid.domain.IpState;

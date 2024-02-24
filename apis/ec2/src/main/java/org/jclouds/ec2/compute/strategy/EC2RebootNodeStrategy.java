@@ -16,8 +16,8 @@
  */
 package org.jclouds.ec2.compute.strategy;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.util.AWSUtils;
 import org.jclouds.compute.domain.NodeMetadata;

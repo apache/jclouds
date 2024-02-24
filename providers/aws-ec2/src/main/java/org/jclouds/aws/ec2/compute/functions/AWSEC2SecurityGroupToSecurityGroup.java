@@ -18,7 +18,7 @@ package org.jclouds.aws.ec2.compute.functions;
 
 import java.util.Set;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.collect.Memoized;
 import org.jclouds.domain.Location;

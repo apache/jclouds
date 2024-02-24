@@ -18,7 +18,7 @@ package org.jclouds.openstack.neutron.v2.domain;
 
 import java.beans.ConstructorProperties;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.javax.annotation.Nullable;
 

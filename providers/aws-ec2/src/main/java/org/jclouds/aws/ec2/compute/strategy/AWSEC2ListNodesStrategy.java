@@ -25,8 +25,8 @@ import static com.google.common.collect.Iterables.transform;
 
 import java.util.Set;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.Constants;
 import org.jclouds.aws.ec2.AWSEC2Api;

@@ -19,9 +19,9 @@ package org.jclouds.chef.functions;
 import static com.google.common.base.Preconditions.checkState;
 import static org.jclouds.chef.config.ChefProperties.CHEF_BOOTSTRAP_DATABAG;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.chef.ChefApi;
 import org.jclouds.chef.domain.BootstrapConfig;

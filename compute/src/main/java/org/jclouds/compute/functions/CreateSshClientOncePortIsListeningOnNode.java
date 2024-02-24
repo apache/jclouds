@@ -23,8 +23,8 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.concurrent.TimeUnit;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.NodeMetadata;
 import org.jclouds.compute.reference.ComputeServiceConstants;

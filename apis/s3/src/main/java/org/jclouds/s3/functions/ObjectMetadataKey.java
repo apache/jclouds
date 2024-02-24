@@ -16,7 +16,7 @@
  */
 package org.jclouds.s3.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.s3.domain.ObjectMetadata;
 

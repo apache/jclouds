@@ -19,8 +19,8 @@ package org.jclouds.compute.extensions.internal;
 import java.util.Map;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.compute.config.ComputeServiceAdapterContextModule.AddDefaultCredentialsToImage;
 import org.jclouds.compute.domain.CloneImageTemplate;

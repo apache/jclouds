@@ -16,8 +16,8 @@
  */
 package org.jclouds.azureblob.blobstore.functions;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azureblob.domain.ContainerProperties;
 import org.jclouds.blobstore.domain.MutableStorageMetadata;

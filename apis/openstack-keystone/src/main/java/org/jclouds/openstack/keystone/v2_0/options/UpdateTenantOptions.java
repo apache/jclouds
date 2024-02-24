@@ -20,7 +20,7 @@ import static com.google.common.base.Objects.equal;
 
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.MapBinder;

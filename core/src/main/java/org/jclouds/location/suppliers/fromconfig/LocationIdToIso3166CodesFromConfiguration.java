@@ -24,8 +24,8 @@ import static org.jclouds.location.reference.LocationConstants.PROPERTY_ZONE;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.location.Iso3166;
 import org.jclouds.location.suppliers.LocationIdToIso3166CodesSupplier;

@@ -18,8 +18,8 @@ package org.jclouds.elasticstack.functions;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.elasticstack.domain.ServerInfo;
 import org.jclouds.http.HttpResponse;

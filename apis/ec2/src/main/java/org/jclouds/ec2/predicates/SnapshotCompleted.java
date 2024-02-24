@@ -19,7 +19,7 @@ package org.jclouds.ec2.predicates;
 import static org.jclouds.ec2.options.DescribeSnapshotsOptions.Builder.snapshotIds;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.ec2.domain.Snapshot;
 import org.jclouds.ec2.features.ElasticBlockStoreApi;

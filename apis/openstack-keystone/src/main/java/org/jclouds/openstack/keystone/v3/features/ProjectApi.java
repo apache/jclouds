@@ -19,7 +19,7 @@ package org.jclouds.openstack.keystone.v3.features;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;

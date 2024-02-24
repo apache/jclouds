@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.azureblob.domain.AccessTier;
 import org.jclouds.azureblob.domain.BlobProperties;

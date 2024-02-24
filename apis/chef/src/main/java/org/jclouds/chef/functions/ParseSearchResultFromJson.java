@@ -18,8 +18,8 @@ package org.jclouds.chef.functions;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.chef.domain.SearchResult;
 import org.jclouds.http.HttpResponse;

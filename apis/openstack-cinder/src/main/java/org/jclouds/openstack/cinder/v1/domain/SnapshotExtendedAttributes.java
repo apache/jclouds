@@ -21,7 +21,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.jclouds.javax.annotation.Nullable;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import java.beans.ConstructorProperties;
 
 /**

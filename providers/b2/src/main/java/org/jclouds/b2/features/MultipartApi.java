@@ -23,7 +23,7 @@ import static org.jclouds.blobstore.attr.BlobScopes.CONTAINER;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;

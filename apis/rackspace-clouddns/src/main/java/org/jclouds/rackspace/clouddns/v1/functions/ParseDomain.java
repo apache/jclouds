@@ -24,8 +24,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.http.functions.ParseJson;

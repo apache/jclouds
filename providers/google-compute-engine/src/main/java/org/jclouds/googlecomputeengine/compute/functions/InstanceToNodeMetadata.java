@@ -34,7 +34,7 @@ import org.jclouds.domain.Location;
 import org.jclouds.googlecomputeengine.domain.Image;
 import org.jclouds.googlecomputeengine.domain.Instance;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;

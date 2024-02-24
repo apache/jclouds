@@ -16,7 +16,7 @@
  */
 package org.jclouds.cloudstack.predicates;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.cloudstack.domain.Template;
 

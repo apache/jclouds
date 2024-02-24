@@ -19,7 +19,7 @@ package org.jclouds.ec2.xml;
 import static org.jclouds.util.SaxUtils.currentOrNull;
 import static org.jclouds.util.SaxUtils.equalsOrSuffix;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.ec2.domain.Subnet;
 import org.jclouds.http.functions.ParseSax;

@@ -18,7 +18,7 @@ package org.jclouds.rackspace.cloudloadbalancers.v1.features;
 
 import java.util.Map;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;

@@ -29,9 +29,9 @@ import java.net.URI;
 import java.security.InvalidKeyException;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.crypto.Crypto;
 import org.jclouds.date.TimeStamp;
@@ -55,7 +55,7 @@ public class ShareUrl implements Function<String, URI> {
 
    private final Supplier<Credentials> creds;
    private final Supplier<URI> provider;
-   private final javax.inject.Provider<Long> timeStampProvider;
+   private final jakarta.inject.Provider<Long> timeStampProvider;
    private final Crypto crypto;
 
    @Resource
@@ -67,7 +67,7 @@ public class ShareUrl implements Function<String, URI> {
 
    @Inject
    public ShareUrl(@Provider Supplier<Credentials> creds, @Provider Supplier<URI> provider,
-         @TimeStamp javax.inject.Provider<Long> timeStampProvider, Crypto crypto) {
+         @TimeStamp jakarta.inject.Provider<Long> timeStampProvider, Crypto crypto) {
       this.creds = creds;
       this.provider = provider;
       this.timeStampProvider = timeStampProvider;

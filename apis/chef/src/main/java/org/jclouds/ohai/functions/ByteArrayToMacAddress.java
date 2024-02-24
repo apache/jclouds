@@ -24,7 +24,7 @@ import static com.google.common.primitives.Bytes.toArray;
 
 import java.util.List;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;

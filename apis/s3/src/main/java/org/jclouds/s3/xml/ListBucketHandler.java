@@ -23,7 +23,7 @@ import static org.jclouds.util.SaxUtils.currentOrNull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.date.DateService;
 import org.jclouds.http.functions.ParseSax;

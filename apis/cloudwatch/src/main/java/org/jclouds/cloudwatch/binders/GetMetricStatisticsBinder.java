@@ -18,7 +18,7 @@ package org.jclouds.cloudwatch.binders;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.cloudwatch.domain.Dimension;
 import org.jclouds.cloudwatch.domain.GetMetricStatistics;

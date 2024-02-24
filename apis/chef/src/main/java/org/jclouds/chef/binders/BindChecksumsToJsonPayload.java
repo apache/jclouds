@@ -24,7 +24,7 @@ import static com.google.common.primitives.Bytes.toArray;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.http.HttpRequest;

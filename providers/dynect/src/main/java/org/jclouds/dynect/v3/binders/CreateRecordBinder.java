@@ -21,7 +21,7 @@ import static org.jclouds.http.Uris.uriBuilder;
 
 import java.net.URI;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.dynect.v3.domain.CreateRecord;
 import org.jclouds.http.HttpRequest;

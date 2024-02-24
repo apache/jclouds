@@ -24,7 +24,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import java.util.concurrent.Callable;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpCommandExecutorService;

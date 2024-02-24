@@ -16,7 +16,7 @@
  */
 package org.jclouds.predicates;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.google.common.net.HostAndPort;
 

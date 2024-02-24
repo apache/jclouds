@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.beans.ConstructorProperties;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.dynect.v3.domain.Zone.SerialStyle;
 import org.jclouds.dynect.v3.domain.rdata.SOAData;

@@ -16,8 +16,8 @@
  */
 package org.jclouds.ec2.compute.internal;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.Context;
 import org.jclouds.compute.Utils;

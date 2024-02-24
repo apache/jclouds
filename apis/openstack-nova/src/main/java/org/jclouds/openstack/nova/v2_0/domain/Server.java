@@ -22,7 +22,7 @@ import java.beans.ConstructorProperties;
 import java.util.Date;
 import java.util.Map;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.openstack.v2_0.domain.Link;

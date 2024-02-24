@@ -46,8 +46,8 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Map.Entry;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.HttpMethod;
 
 import org.jclouds.Constants;

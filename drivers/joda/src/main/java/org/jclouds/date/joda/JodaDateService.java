@@ -23,7 +23,7 @@ import static org.jclouds.date.internal.DateUtils.trimToMillis;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.date.DateService;
 import org.joda.time.DateTime;

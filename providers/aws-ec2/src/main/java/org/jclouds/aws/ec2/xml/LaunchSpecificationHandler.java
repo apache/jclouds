@@ -19,7 +19,7 @@ package org.jclouds.aws.ec2.xml;
 import static org.jclouds.util.SaxUtils.equalsOrSuffix;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.aws.ec2.domain.LaunchSpecification;
 import org.jclouds.aws.ec2.domain.LaunchSpecification.Builder;

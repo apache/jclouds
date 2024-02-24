@@ -16,7 +16,7 @@
  */
 package org.jclouds.azureblob.predicates.validators;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.predicates.validators.DnsNameValidator;
 

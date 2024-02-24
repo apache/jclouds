@@ -16,7 +16,7 @@
  */
 package org.jclouds.googlecomputeengine.binders;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * Binder used for adding and deleting instances from a target pool.

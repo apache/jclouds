@@ -25,9 +25,9 @@ import static org.jclouds.blobstore.util.BlobStoreUtils.getNameFor;
 import java.net.URI;
 import java.util.Map.Entry;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
 
 import org.jclouds.blobstore.domain.MutableBlobMetadata;
 import org.jclouds.date.DateService;

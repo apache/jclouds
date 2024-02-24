@@ -18,7 +18,7 @@ package org.jclouds.openstack.neutron.v2.functions.lbaas.v1;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.collect.IterableWithMarker;
 import org.jclouds.collect.internal.Arg0ToPagedIterable;

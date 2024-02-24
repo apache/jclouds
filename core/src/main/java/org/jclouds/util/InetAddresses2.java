@@ -18,7 +18,7 @@ package org.jclouds.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;

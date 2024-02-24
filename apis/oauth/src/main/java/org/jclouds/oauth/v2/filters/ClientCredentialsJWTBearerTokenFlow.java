@@ -21,8 +21,8 @@ import static org.jclouds.Constants.PROPERTY_SESSION_INTERVAL;
 
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.http.HttpException;

@@ -19,7 +19,7 @@ package org.jclouds.gogrid.config;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.gogrid.domain.IpState;
 import org.jclouds.gogrid.domain.JobState;

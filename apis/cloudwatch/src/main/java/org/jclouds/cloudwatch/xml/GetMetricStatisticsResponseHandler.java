@@ -18,7 +18,7 @@ package org.jclouds.cloudwatch.xml;
 
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.cloudwatch.domain.Datapoint;
 import org.jclouds.http.functions.ParseSax;

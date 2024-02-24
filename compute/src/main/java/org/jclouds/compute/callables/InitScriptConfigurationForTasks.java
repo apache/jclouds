@@ -21,8 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Supplier;
 import com.google.inject.Inject;

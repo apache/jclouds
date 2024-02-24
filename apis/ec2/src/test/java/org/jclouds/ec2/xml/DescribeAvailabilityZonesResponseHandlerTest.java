@@ -21,7 +21,7 @@ import static org.testng.Assert.assertEquals;
 import java.io.InputStream;
 import java.util.Set;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.ec2.domain.AvailabilityZoneInfo;
 import org.jclouds.http.functions.BaseHandlerTest;

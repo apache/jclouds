@@ -21,7 +21,7 @@ import static com.google.common.base.Throwables.propagate;
 import static org.jclouds.s3.util.S3Utils.getBucketName;
 import static org.jclouds.util.Throwables2.getFirstThrowableOfType;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.Fallback;
 import org.jclouds.aws.AWSResponseException;

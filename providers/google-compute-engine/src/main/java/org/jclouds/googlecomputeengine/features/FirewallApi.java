@@ -21,8 +21,8 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.net.URI;
 import java.util.Iterator;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;

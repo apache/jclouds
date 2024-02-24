@@ -18,7 +18,7 @@ package org.jclouds.openstack.keystone.v1_1.suppliers;
 
 import static org.testng.Assert.assertEquals;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.location.Provider;
 import org.jclouds.location.suppliers.ImplicitRegionIdSupplier;

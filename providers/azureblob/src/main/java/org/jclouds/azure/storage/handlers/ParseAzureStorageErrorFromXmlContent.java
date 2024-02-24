@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.azure.storage.AzureStorageResponseException;
 import org.jclouds.azure.storage.domain.AzureStorageError;

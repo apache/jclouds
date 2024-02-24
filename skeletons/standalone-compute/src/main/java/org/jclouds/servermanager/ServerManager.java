@@ -19,7 +19,7 @@ package org.jclouds.servermanager;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;

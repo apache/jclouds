@@ -35,7 +35,7 @@ import java.util.Map;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.aws.domain.SessionCredentials;
 import org.jclouds.date.TimeStamp;
@@ -91,11 +91,11 @@ public final class FormSignerV4 implements FormSigner {
 
    private final String apiVersion;
    private final Supplier<Credentials> creds;
-   private final javax.inject.Provider<String> iso8601Timestamp;
+   private final jakarta.inject.Provider<String> iso8601Timestamp;
    private final ServiceAndRegion serviceAndRegion;
 
    @Inject FormSignerV4(@ApiVersion String apiVersion, @Provider Supplier<Credentials> creds,
-         @TimeStamp javax.inject.Provider<String> iso8601Timestamp, ServiceAndRegion serviceAndRegion) {
+         @TimeStamp jakarta.inject.Provider<String> iso8601Timestamp, ServiceAndRegion serviceAndRegion) {
       this.apiVersion = apiVersion;
       this.creds = creds;
       this.iso8601Timestamp = iso8601Timestamp;

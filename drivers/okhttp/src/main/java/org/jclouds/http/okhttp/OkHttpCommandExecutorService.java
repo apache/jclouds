@@ -29,7 +29,7 @@ import java.net.Proxy;
 import java.net.URI;
 import java.util.Map;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import javax.net.ssl.SSLSocketFactory;
 
 import okhttp3.Authenticator;

@@ -16,8 +16,8 @@
  */
 package org.jclouds.rackspace.cloudidentity.v2_0.functions;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.openstack.keystone.auth.config.CredentialType;
 import org.jclouds.openstack.keystone.auth.domain.AuthInfo;

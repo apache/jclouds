@@ -21,8 +21,8 @@ import static org.jclouds.http.Uris.uriBuilder;
 
 import java.net.URI;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.domain.AWSError;
 import org.jclouds.aws.util.AWSUtils;

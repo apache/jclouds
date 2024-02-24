@@ -17,7 +17,7 @@
 package org.jclouds.ec2.predicates;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.ec2.domain.Volume;
 import org.jclouds.ec2.features.ElasticBlockStoreApi;

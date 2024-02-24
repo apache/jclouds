@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.aws.ec2.compute.config.ClusterCompute;
 import org.jclouds.aws.ec2.compute.config.ImageQuery;

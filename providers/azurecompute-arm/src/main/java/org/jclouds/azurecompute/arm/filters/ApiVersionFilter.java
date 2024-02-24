@@ -23,7 +23,7 @@ import static org.jclouds.util.Predicates2.startsWith;
 
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.http.HttpException;
 import org.jclouds.http.HttpRequest;

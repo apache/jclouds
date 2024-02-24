@@ -23,7 +23,7 @@ import java.security.PrivateKey;
 import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.crypto.Crypto;
 import org.jclouds.crypto.Pems;

@@ -16,8 +16,8 @@
  */
 package org.jclouds.s3.config;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.jclouds.blobstore.config.BlobStoreObjectModule;
 import org.jclouds.s3.domain.MutableObjectMetadata;

@@ -20,7 +20,7 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.find;
 import static com.google.common.collect.Iterables.transform;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.cim.CIMPredicates;
 import org.jclouds.cim.ResourceAllocationSettingData;

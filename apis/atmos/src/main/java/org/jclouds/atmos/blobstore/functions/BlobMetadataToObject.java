@@ -18,8 +18,8 @@ package org.jclouds.atmos.blobstore.functions;
 
 import java.util.Map.Entry;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.atmos.domain.AtmosObject;
 import org.jclouds.atmos.domain.UserMetadata;

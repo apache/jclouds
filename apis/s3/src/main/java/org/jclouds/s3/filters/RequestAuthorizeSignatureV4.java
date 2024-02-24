@@ -24,7 +24,7 @@ import org.jclouds.io.Payload;
 import org.jclouds.rest.internal.GeneratedHttpRequest;
 import org.jclouds.s3.S3Client;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @Singleton
 public class RequestAuthorizeSignatureV4 implements RequestAuthorizeSignature {

@@ -16,7 +16,7 @@
  */
 package org.jclouds.scriptbuilder.functions;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.scriptbuilder.domain.AdminAccessVisitor;
 import org.jclouds.scriptbuilder.statements.login.AdminAccess;

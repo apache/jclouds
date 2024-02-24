@@ -19,7 +19,7 @@ package org.jclouds.openstack.keystone.auth.handlers;
 import java.util.concurrent.TimeUnit;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.domain.Credentials;

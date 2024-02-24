@@ -18,7 +18,7 @@ package org.jclouds.openstack.functions;
 
 import java.net.URI;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.openstack.domain.AuthenticationResponse;
 

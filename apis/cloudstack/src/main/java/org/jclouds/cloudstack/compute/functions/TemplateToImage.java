@@ -21,8 +21,8 @@ import static org.jclouds.location.predicates.LocationPredicates.idEquals;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.cloudstack.domain.Template;
 import org.jclouds.collect.Memoized;

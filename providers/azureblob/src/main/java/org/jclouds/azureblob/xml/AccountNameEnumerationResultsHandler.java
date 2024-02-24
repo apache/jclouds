@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.SortedSet;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.azure.storage.domain.BoundedSet;
 import org.jclouds.azure.storage.domain.internal.BoundedHashSet;

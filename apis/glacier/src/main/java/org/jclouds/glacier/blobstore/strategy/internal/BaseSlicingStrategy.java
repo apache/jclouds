@@ -19,7 +19,7 @@ package org.jclouds.glacier.blobstore.strategy.internal;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.Math.sqrt;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.glacier.blobstore.strategy.PayloadSlice;
 import org.jclouds.glacier.blobstore.strategy.SlicingStrategy;

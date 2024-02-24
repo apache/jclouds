@@ -18,7 +18,7 @@ package org.jclouds.ssh.jsch.config;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.domain.LoginCredentials;

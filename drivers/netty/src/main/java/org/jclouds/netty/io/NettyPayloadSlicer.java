@@ -18,7 +18,7 @@ package org.jclouds.netty.io;
 
 import java.io.File;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.io.Payload;
 import org.jclouds.io.Payloads;

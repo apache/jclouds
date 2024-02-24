@@ -22,8 +22,8 @@ import static org.jclouds.util.Suppliers2.getLastValueInMap;
 import java.net.URI;
 import java.util.NoSuchElementException;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.location.Provider;
 import org.jclouds.openstack.keystone.catalog.suppliers.RegionIdToAdminURIFromServiceEndpointsForTypeAndVersion;

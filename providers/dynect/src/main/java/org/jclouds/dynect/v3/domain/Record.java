@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.beans.ConstructorProperties;
 import java.util.Map;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import com.google.common.base.MoreObjects.ToStringHelper;
 

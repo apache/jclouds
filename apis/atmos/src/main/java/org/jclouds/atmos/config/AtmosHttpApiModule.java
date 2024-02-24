@@ -19,7 +19,7 @@ package org.jclouds.atmos.config;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.atmos.AtmosClient;

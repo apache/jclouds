@@ -30,7 +30,7 @@ import static org.jclouds.openstack.nova.v2_0.predicates.SecurityGroupPredicates
 
 import java.util.Set;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import com.google.inject.Inject;
 import org.jclouds.Constants;

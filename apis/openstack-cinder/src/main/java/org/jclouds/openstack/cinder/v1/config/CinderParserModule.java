@@ -31,7 +31,7 @@ import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.domain.SnapshotExtendedAttributes;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.beans.ConstructorProperties;
 import java.lang.reflect.Type;
 import java.util.Date;

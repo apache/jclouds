@@ -18,7 +18,7 @@ package org.jclouds.openstack.nova.ec2.xml;
 
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.ec2.domain.Image;
 import org.jclouds.ec2.domain.Image.ImageType;

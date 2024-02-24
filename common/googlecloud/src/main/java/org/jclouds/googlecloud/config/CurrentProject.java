@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.inject.Qualifier;
+import jakarta.inject.Qualifier;
 
 /** Associated bindings with the current <a href="https://cloud.google.com/compute/docs/projects">project</a>. */
 @Retention(value = RetentionPolicy.RUNTIME)

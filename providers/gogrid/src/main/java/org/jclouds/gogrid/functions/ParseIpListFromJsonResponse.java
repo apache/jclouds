@@ -18,7 +18,7 @@ package org.jclouds.gogrid.functions;
 
 import java.util.SortedSet;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.gogrid.domain.Ip;
 import org.jclouds.http.HttpResponse;

@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;

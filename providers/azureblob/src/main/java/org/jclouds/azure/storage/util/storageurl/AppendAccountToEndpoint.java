@@ -21,8 +21,8 @@ import com.google.common.base.Supplier;
 import org.jclouds.domain.Credentials;
 import org.jclouds.location.Provider;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import static org.jclouds.azure.storage.util.storageurl.TrailingSlashUtil.ensureTrailingSlash;
 import java.net.URI;

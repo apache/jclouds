@@ -16,8 +16,8 @@
  */
 package org.jclouds.blobstore.strategy.internal;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.blobstore.options.ListContainerOptions;
 import org.jclouds.blobstore.strategy.CountListStrategy;

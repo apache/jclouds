@@ -19,7 +19,7 @@ package org.jclouds.sqs.features;
 import static org.jclouds.sqs.reference.SQSParameters.ACTION;
 import static org.jclouds.sqs.reference.SQSParameters.VERSION;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;

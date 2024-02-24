@@ -18,9 +18,9 @@ package org.jclouds.openstack.nova.ec2.loaders;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.AWSResponseException;
 import org.jclouds.ec2.EC2Api;
