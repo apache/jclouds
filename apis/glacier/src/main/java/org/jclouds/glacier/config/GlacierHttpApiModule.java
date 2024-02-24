@@ -18,7 +18,7 @@ package org.jclouds.glacier.config;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.date.DateService;

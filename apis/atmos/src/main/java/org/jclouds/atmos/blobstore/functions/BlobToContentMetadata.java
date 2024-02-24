@@ -16,7 +16,7 @@
  */
 package org.jclouds.atmos.blobstore.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.atmos.domain.MutableContentMetadata;
 import org.jclouds.atmos.domain.internal.DelegatingMutableContentMetadata;

@@ -22,9 +22,9 @@ import static com.google.common.base.Preconditions.checkState;
 import static org.jclouds.ssh.SshKeys.fingerprintPrivateKey;
 import static org.jclouds.ssh.SshKeys.sha1PrivateKey;
 
-import javax.inject.Named;
-import javax.inject.Provider;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
@@ -186,7 +186,7 @@ public class CreateKeyPairAndSecurityGroupsAsNeededAndReturnRunOptions {
 
    // allows us to mock this method
    @VisibleForTesting
-   public javax.inject.Provider<RunInstancesOptions> getOptionsProvider() {
+   public jakarta.inject.Provider<RunInstancesOptions> getOptionsProvider() {
       return optionsProvider;
    }
 }

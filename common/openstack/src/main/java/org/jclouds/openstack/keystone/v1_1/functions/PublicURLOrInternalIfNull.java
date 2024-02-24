@@ -18,7 +18,7 @@ package org.jclouds.openstack.keystone.v1_1.functions;
 
 import java.net.URI;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.openstack.keystone.v1_1.domain.Endpoint;
 

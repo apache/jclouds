@@ -19,8 +19,8 @@ package org.jclouds.chef.functions;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.chef.domain.CookbookDefinition;
 import org.jclouds.chef.domain.CookbookDefinition.Version;

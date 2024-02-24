@@ -25,7 +25,7 @@ import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 import org.jclouds.openstack.neutron.v2.features.FloatingIPApi;
 import org.jclouds.openstack.v2_0.options.PaginationOptions;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

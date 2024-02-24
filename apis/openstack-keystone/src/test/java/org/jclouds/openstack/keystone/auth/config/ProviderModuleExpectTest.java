@@ -30,8 +30,8 @@ import java.lang.annotation.Target;
 import java.net.URI;
 import java.util.Properties;
 
-import javax.inject.Qualifier;
-import javax.inject.Singleton;
+import jakarta.inject.Qualifier;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.HEAD;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;

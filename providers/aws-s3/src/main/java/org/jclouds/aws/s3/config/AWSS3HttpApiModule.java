@@ -18,7 +18,7 @@ package org.jclouds.aws.s3.config;
 
 import static org.jclouds.aws.domain.Region.US_STANDARD;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.s3.AWSS3Client;
 import org.jclouds.aws.s3.filters.AWSRequestAuthorizeSignatureV4;

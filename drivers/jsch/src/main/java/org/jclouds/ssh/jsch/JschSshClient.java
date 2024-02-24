@@ -39,7 +39,7 @@ import java.net.ConnectException;
 
 import jakarta.annotation.PreDestroy;
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.compute.domain.ExecChannel;
 import org.jclouds.compute.domain.ExecResponse;

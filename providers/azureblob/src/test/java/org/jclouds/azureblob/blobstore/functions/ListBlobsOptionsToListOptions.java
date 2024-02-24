@@ -16,7 +16,7 @@
  */
 package org.jclouds.azureblob.blobstore.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azureblob.options.ListBlobsOptions;
 import org.jclouds.blobstore.options.ListContainerOptions;

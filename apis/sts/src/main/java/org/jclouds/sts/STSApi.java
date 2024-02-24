@@ -18,7 +18,7 @@ package org.jclouds.sts;
 
 import java.io.Closeable;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;

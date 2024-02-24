@@ -16,7 +16,7 @@
  */
 package org.jclouds.cloudstack.compute.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.cloudstack.domain.ServiceOffering;
 import org.jclouds.compute.domain.Hardware;

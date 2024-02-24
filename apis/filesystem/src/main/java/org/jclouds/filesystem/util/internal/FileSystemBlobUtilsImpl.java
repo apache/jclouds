@@ -18,7 +18,7 @@ package org.jclouds.filesystem.util.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.blobstore.LocalStorageStrategy;
 import org.jclouds.blobstore.domain.BlobBuilder;

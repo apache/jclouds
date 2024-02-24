@@ -21,7 +21,7 @@ import static org.jclouds.cloudstack.options.ListProjectsOptions.Builder.account
 
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.cloudstack.CloudStackApi;
 import org.jclouds.cloudstack.domain.Project;

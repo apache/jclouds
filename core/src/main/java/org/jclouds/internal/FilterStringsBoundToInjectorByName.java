@@ -22,8 +22,8 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -57,7 +57,7 @@ public class FilterStringsBoundToInjectorByName implements Function<Predicate<St
             Annotation annotation = input.getKey().getAnnotation();
             if (annotation == null)
                return false;
-            return (annotation instanceof javax.inject.Named) || (annotation instanceof com.google.inject.name.Named);
+            return (annotation instanceof jakarta.inject.Named) || (annotation instanceof com.google.inject.name.Named);
          }
 
       });
@@ -68,7 +68,7 @@ public class FilterStringsBoundToInjectorByName implements Function<Predicate<St
                @Override
                public String apply(Binding<String> input) {
                   Annotation annotation = input.getKey().getAnnotation();
-                  return (annotation instanceof javax.inject.Named) ? javax.inject.Named.class.cast(annotation)
+                  return (annotation instanceof jakarta.inject.Named) ? jakarta.inject.Named.class.cast(annotation)
                         .value() : com.google.inject.name.Named.class.cast(annotation).value();
                }
 

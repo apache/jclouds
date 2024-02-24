@@ -18,8 +18,8 @@ package org.jclouds.sqs.handlers;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.domain.AWSError;
 import org.jclouds.aws.handlers.ParseAWSErrorFromXmlContent;

@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import com.google.common.collect.ImmutableList;
 import org.jclouds.javax.annotation.Nullable;

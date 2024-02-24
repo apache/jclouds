@@ -18,7 +18,7 @@ package org.jclouds.openstack.keystone.catalog.suppliers;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.location.suppliers.RegionIdToURISupplier;

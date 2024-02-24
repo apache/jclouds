@@ -25,7 +25,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.testng.Assert.assertEquals;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
@@ -84,7 +84,7 @@ public class CreateKeyPairAndSecurityGroupsAsNeededAndReturnRunOptionsTest {
          .sha1OfPrivateKey("13:36:74:b9:56:bb:07:96:c0:19:ab:00:7f:9f:06:d2:16:a0:45:32")
          .fingerprint("60:15:d1:f1:d9:e2:3c:e2:ee:a9:64:6a:42:a7:34:0c").keyMaterial(CREDENTIALS.credential).build();
 
-   private static final Provider<RunInstancesOptions> OPTIONS_PROVIDER = new javax.inject.Provider<RunInstancesOptions>() {
+   private static final Provider<RunInstancesOptions> OPTIONS_PROVIDER = new jakarta.inject.Provider<RunInstancesOptions>() {
 
       @Override
       public RunInstancesOptions get() {

@@ -29,9 +29,9 @@ import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.chef.ChefApi;
 import org.jclouds.chef.domain.BootstrapConfig;

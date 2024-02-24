@@ -19,7 +19,7 @@ package org.jclouds.glesys.config;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.glesys.domain.GleSYSBoolean;
 import org.jclouds.glesys.domain.Server;

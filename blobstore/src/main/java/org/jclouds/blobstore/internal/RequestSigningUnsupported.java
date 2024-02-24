@@ -16,7 +16,7 @@
  */
 package org.jclouds.blobstore.internal;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.blobstore.BlobRequestSigner;
 import org.jclouds.blobstore.domain.Blob;

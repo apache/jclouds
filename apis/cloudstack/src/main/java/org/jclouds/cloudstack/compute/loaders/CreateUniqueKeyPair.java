@@ -19,8 +19,8 @@ package org.jclouds.cloudstack.compute.loaders;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.reference.ComputeServiceConstants;
 import org.jclouds.logging.Logger;

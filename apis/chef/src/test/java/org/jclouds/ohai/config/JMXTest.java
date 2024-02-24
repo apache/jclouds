@@ -24,7 +24,7 @@ import static org.testng.Assert.assertEquals;
 import java.lang.management.RuntimeMXBean;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.chef.ChefApiMetadata;
 import org.jclouds.chef.config.ChefParserModule;

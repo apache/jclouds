@@ -21,7 +21,7 @@ import static org.jclouds.util.SaxUtils.currentOrNull;
 import java.util.Date;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.date.DateService;
 import org.jclouds.http.functions.ParseSax;

@@ -20,8 +20,8 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.util.Iterator;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

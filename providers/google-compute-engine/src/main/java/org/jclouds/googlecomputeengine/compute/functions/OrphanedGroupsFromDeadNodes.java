@@ -18,7 +18,7 @@ package org.jclouds.googlecomputeengine.compute.functions;
 
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.compute.domain.NodeMetadata;
 

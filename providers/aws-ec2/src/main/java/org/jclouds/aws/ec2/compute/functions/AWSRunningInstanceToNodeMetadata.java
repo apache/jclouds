@@ -19,8 +19,8 @@ package org.jclouds.aws.ec2.compute.functions;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.ec2.domain.AWSRunningInstance;
 import org.jclouds.collect.Memoized;

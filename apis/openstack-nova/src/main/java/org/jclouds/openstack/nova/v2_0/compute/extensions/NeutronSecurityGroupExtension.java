@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Context;
 import org.jclouds.compute.domain.SecurityGroup;

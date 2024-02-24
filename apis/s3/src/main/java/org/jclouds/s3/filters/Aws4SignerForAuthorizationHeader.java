@@ -36,7 +36,7 @@ import org.jclouds.io.Payload;
 import org.jclouds.location.Provider;
 import org.jclouds.util.Closeables2;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TimeZone;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;

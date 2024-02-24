@@ -24,8 +24,8 @@ import org.jclouds.domain.Credentials;
 import org.jclouds.http.config.SSLModule;
 import org.jclouds.location.Provider;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import javax.net.ssl.SSLContext;
 
 import java.io.File;

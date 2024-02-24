@@ -18,8 +18,8 @@ package org.jclouds.rest.config;
 
 import java.lang.reflect.Proxy;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.reflect.Invocation;
 import org.jclouds.rest.internal.DelegatesToInvocationFunction;

@@ -18,7 +18,7 @@ package org.jclouds.s3.blobstore.internal;
 
 import static com.google.common.base.Throwables.propagate;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.rest.ResourceNotFoundException;
 import org.jclouds.s3.S3Client;

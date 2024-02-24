@@ -19,8 +19,8 @@ package org.jclouds.azurecompute.arm.compute.functions;
 import static com.google.common.collect.Iterables.transform;
 import static org.jclouds.azurecompute.arm.domain.IdReference.extractResourceGroup;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azurecompute.arm.AzureComputeApi;
 import org.jclouds.azurecompute.arm.compute.functions.VirtualMachineToStatus.StatusAndBackendStatus;

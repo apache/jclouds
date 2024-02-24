@@ -19,7 +19,7 @@ package org.jclouds.openstack.nova.v2_0.compute.functions;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import com.google.common.base.Supplier;
 import com.google.inject.Inject;

@@ -16,8 +16,8 @@
  */
 package org.jclouds.openstack.keystone.auth.filters;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpException;
 import org.jclouds.http.HttpRequest;

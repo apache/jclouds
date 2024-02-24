@@ -20,7 +20,7 @@ import static org.testng.Assert.assertEquals;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.compute.RunNodesException;
 import org.jclouds.compute.domain.ExecResponse;

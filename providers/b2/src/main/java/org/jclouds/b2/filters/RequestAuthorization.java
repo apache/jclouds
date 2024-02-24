@@ -18,8 +18,8 @@ package org.jclouds.b2.filters;
 
 import java.net.URI;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.collect.Memoized;
 import org.jclouds.http.HttpException;

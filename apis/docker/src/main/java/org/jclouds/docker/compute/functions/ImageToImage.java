@@ -19,7 +19,7 @@ package org.jclouds.docker.compute.functions;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.compute.domain.Image;
 import org.jclouds.compute.domain.ImageBuilder;

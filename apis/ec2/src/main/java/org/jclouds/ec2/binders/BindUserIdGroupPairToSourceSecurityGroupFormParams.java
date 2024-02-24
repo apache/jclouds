@@ -19,7 +19,7 @@ package org.jclouds.ec2.binders;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.ec2.domain.UserIdGroupPair;
 import org.jclouds.http.HttpRequest;

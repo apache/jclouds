@@ -16,7 +16,7 @@
  */
 package org.jclouds.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Function;
 

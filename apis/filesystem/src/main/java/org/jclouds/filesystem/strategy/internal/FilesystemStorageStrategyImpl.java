@@ -58,9 +58,9 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
 
 import com.google.common.base.Strings;
 import org.jclouds.blobstore.ContainerNotFoundException;

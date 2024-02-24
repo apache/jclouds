@@ -18,7 +18,7 @@ package org.jclouds.oauth.v2.filters;
 
 import static java.lang.String.format;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.http.HttpException;

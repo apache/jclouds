@@ -18,7 +18,7 @@ package org.jclouds.logging.config;
 
 import static com.google.inject.matcher.Matchers.any;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.logging.Logger;
 

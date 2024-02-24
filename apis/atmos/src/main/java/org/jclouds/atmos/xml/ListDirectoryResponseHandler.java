@@ -19,7 +19,7 @@ package org.jclouds.atmos.xml;
 import java.util.Date;
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.atmos.domain.DirectoryEntry;
 import org.jclouds.atmos.domain.FileType;

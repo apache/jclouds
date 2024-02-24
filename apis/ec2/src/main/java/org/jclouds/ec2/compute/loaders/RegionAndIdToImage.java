@@ -21,8 +21,8 @@ import static org.jclouds.ec2.options.DescribeImagesOptions.Builder.imageIds;
 import java.util.concurrent.ExecutionException;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.Image;
 import org.jclouds.ec2.EC2Api;

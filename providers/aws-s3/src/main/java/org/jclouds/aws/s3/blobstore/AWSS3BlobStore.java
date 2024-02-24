@@ -20,8 +20,8 @@ import static org.jclouds.s3.domain.ObjectMetadata.StorageClass.REDUCED_REDUNDAN
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.jclouds.aws.domain.Region;
 import org.jclouds.aws.s3.AWSS3Client;

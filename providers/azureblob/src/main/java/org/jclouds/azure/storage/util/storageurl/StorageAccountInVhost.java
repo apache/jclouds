@@ -21,9 +21,9 @@ import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.domain.Credentials;
 import org.jclouds.location.Provider;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import java.net.URI;
 import static org.jclouds.azure.storage.config.AzureStorageProperties.ACCOUNT;
 import static org.jclouds.azure.storage.util.storageurl.TrailingSlashUtil.ensureTrailingSlash;

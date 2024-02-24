@@ -24,8 +24,8 @@ import static org.jclouds.http.HttpUtils.filterOutContentHeaders;
 import java.io.IOException;
 import java.net.URI;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.apache.http.Header;
 import org.apache.http.HttpHeaders;

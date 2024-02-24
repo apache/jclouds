@@ -19,7 +19,7 @@ package org.jclouds.googlecomputeengine.binders;
 import java.net.URI;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.googlecomputeengine.options.FirewallOptions;
 import org.jclouds.http.HttpRequest;

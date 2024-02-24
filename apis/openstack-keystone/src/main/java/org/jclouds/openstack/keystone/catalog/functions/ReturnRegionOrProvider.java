@@ -16,8 +16,8 @@
  */
 package org.jclouds.openstack.keystone.catalog.functions;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.location.Provider;
 import org.jclouds.openstack.keystone.catalog.ServiceEndpoint;

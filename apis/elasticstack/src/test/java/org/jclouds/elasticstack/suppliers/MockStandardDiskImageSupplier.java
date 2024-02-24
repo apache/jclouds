@@ -23,8 +23,8 @@ import static org.jclouds.util.Strings2.toStringAndClose;
 import java.io.IOException;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.elasticstack.domain.StandardDrive;
 import org.jclouds.elasticstack.domain.WellKnownImage;

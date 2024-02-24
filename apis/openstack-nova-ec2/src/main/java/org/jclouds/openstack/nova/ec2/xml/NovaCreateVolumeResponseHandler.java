@@ -19,7 +19,7 @@ package org.jclouds.openstack.nova.ec2.xml;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.date.DateService;
 import org.jclouds.ec2.domain.Attachment;

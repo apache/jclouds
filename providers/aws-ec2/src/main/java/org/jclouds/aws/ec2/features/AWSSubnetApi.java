@@ -18,7 +18,7 @@ package org.jclouds.aws.ec2.features;
 
 import static org.jclouds.aws.reference.FormParameters.ACTION;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;

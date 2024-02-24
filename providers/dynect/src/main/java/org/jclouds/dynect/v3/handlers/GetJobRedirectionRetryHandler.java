@@ -19,8 +19,8 @@ import static com.google.common.net.HttpHeaders.LOCATION;
 import static jakarta.ws.rs.HttpMethod.GET;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpRequest;

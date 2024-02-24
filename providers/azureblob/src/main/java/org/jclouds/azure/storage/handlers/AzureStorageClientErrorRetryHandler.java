@@ -19,7 +19,7 @@ package org.jclouds.azure.storage.handlers;
 import java.io.ByteArrayInputStream;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.azure.storage.domain.AzureStorageError;

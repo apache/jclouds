@@ -24,7 +24,7 @@ import static org.jclouds.ec2.compute.domain.EC2HardwareBuilder.m1_xlarge;
 
 import java.util.Set;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.Hardware;
 

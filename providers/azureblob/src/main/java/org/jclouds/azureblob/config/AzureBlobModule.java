@@ -16,9 +16,9 @@
  */
 package org.jclouds.azureblob.config;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
 
 import org.jclouds.azure.storage.config.AuthType;
 import org.jclouds.azureblob.domain.AzureBlob;

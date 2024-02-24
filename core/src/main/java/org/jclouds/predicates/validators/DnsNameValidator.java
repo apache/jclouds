@@ -19,8 +19,8 @@ package org.jclouds.predicates.validators;
 import static com.google.common.base.CharMatcher.inRange;
 import static com.google.common.base.CharMatcher.is;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.predicates.Validator;
 

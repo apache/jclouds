@@ -19,7 +19,7 @@ package org.jclouds.config;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.inject.name.Names.named;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.google.common.base.Function;
 import com.google.inject.ConfigurationException;

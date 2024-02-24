@@ -28,9 +28,9 @@ import org.jclouds.compute.options.TemplateOptions;
 import org.jclouds.compute.util.AutomaticHardwareIdSpec;
 import org.jclouds.domain.Location;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
 import java.util.NoSuchElementException;
 import java.util.Set;
 

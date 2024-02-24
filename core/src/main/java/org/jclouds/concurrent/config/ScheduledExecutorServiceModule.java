@@ -26,8 +26,8 @@ import static org.jclouds.concurrent.config.ExecutorServiceModule.shutdownOnClos
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.lifecycle.Closer;
 

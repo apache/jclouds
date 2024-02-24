@@ -18,7 +18,7 @@ package org.jclouds.rackspace.cloudloadbalancers.v1.domain;
 
 import java.beans.ConstructorProperties;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;

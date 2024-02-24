@@ -16,7 +16,7 @@
  */
 package org.jclouds.digitalocean2.handlers;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpResponse;

@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.jclouds.gogrid.options.GetJobListOptions.Builder.latestJobForObjectByName;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.gogrid.domain.Job;
 import org.jclouds.gogrid.domain.JobState;

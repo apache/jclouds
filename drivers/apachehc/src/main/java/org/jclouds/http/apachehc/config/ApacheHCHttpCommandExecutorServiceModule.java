@@ -22,8 +22,8 @@ import java.net.ProxySelector;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.HttpVersion;

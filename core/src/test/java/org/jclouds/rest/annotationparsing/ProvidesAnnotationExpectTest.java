@@ -22,7 +22,7 @@ import java.io.Closeable;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.http.HttpResponse;

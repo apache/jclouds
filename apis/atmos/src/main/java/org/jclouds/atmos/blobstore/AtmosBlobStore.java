@@ -23,9 +23,9 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 import org.jclouds.atmos.AtmosClient;
 import org.jclouds.atmos.blobstore.functions.BlobStoreListOptionsToListOptions;

@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.openstack.keystone.v2_0.config.NamespaceAliases;
 import org.jclouds.openstack.v2_0.domain.Extension;

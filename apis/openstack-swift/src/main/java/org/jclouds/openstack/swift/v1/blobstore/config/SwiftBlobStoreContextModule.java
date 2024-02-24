@@ -16,7 +16,7 @@
  */
 package org.jclouds.openstack.swift.v1.blobstore.config;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.BlobStoreContext;

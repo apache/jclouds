@@ -21,8 +21,8 @@ import org.jclouds.http.functions.ParseJson;
 import org.jclouds.json.Json;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIPs;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 /**
  * Used by jclouds to provide more specific collections and fallbacks.

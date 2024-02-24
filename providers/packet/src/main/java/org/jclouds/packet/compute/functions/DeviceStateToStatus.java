@@ -16,7 +16,7 @@
  */
 package org.jclouds.packet.compute.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.NodeMetadata.Status;
 import org.jclouds.packet.domain.Device;

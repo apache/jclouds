@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import com.google.common.util.concurrent.Futures;
 import org.jclouds.Constants;

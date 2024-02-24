@@ -18,8 +18,8 @@ package org.jclouds.blobstore.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.Context;
 import org.jclouds.blobstore.BlobRequestSigner;

@@ -27,8 +27,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.json.SerializedNames;
 import com.google.gson.ReflectionAccessFilter;
@@ -101,7 +101,7 @@ public final class DeserializationConstructorAndReflectiveTypeAdapterFactoryTest
       }
    }
 
-   @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = ".* parameter 0 failed to be named by AnnotationBasedNamingStrategy requiring one of javax.inject.Named")
+   @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = ".* parameter 0 failed to be named by AnnotationBasedNamingStrategy requiring one of jakarta.inject.Named")
    public void testSerializedNameRequiredOnAllParameters() {
       parameterizedCtorFactory
             .create(gson, TypeToken.get(WithDeserializationConstructorButWithoutSerializedName.class));

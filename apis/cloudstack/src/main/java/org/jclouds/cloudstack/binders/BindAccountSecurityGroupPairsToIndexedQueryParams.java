@@ -24,7 +24,7 @@ import static org.jclouds.http.utils.Queries.queryParser;
 import java.net.URI;
 import java.util.Map.Entry;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.Binder;

@@ -18,8 +18,8 @@ package org.jclouds.s3.blobstore.functions;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.blobstore.domain.Blob;
 import org.jclouds.s3.domain.S3Object;

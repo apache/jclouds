@@ -18,8 +18,8 @@ package org.jclouds.location.suppliers.fromconfig;
 
 import static org.jclouds.location.reference.LocationConstants.PROPERTY_ZONES;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.config.ValueOfConfigurationKeyOrNull;
 import org.jclouds.location.Provider;

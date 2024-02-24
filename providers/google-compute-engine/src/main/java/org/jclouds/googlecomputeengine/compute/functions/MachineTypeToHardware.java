@@ -19,7 +19,7 @@ package org.jclouds.googlecomputeengine.compute.functions;
 import java.net.URI;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.collect.Memoized;
 import org.jclouds.compute.domain.Hardware;

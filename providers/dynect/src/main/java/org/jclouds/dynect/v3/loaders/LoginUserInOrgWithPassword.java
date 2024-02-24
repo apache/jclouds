@@ -16,8 +16,8 @@
  */
 package org.jclouds.dynect.v3.loaders;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.dynect.v3.domain.Session;
 import org.jclouds.dynect.v3.domain.SessionCredentials;

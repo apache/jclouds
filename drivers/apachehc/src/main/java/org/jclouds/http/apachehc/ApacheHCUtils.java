@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.HttpMethod;
 
 import org.apache.http.HttpEntity;

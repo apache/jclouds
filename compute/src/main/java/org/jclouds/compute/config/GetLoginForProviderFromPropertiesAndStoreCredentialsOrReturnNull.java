@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.config.ValueOfConfigurationKeyOrNull;
 import org.jclouds.domain.Credentials;
@@ -33,7 +33,7 @@ import com.google.inject.Inject;
 
 @Singleton
 public class GetLoginForProviderFromPropertiesAndStoreCredentialsOrReturnNull implements
-      javax.inject.Provider<LoginCredentials> {
+      jakarta.inject.Provider<LoginCredentials> {
    private final ValueOfConfigurationKeyOrNull config;
    private final String provider;
    private final Map<String, Credentials> credentialStore;

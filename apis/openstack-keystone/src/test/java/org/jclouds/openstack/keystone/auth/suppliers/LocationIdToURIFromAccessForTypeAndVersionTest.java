@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.location.Provider;
 import org.jclouds.openstack.keystone.auth.domain.AuthInfo;

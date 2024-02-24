@@ -18,7 +18,7 @@ package org.jclouds.ec2.xml;
 
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.aws.util.AWSUtils;
 import org.jclouds.ec2.domain.InstanceState;

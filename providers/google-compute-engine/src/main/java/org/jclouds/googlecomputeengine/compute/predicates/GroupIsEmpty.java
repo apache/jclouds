@@ -21,7 +21,7 @@ import static com.google.common.collect.Sets.filter;
 import static org.jclouds.compute.predicates.NodePredicates.all;
 import static org.jclouds.compute.predicates.NodePredicates.inGroup;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.compute.ComputeService;
 

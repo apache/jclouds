@@ -21,8 +21,8 @@ import static org.jclouds.location.reference.LocationConstants.PROPERTY_REGION;
 import java.net.URI;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.config.ValueOfConfigurationKeyOrNull;
 import org.jclouds.location.Provider;

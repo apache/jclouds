@@ -19,8 +19,8 @@ package org.jclouds.location.suppliers.implicit;
 import java.net.URI;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.location.Provider;
 import org.jclouds.location.Region;

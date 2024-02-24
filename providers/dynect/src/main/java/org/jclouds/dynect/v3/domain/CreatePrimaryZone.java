@@ -20,7 +20,7 @@ import static com.google.common.base.Objects.equal;
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.dynect.v3.domain.Zone.SerialStyle;
 

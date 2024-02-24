@@ -18,8 +18,8 @@ package org.jclouds.docker.config;
 
 import java.io.File;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;

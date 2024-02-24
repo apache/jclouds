@@ -21,7 +21,7 @@ import static org.jclouds.oauth.v2.config.OAuthProperties.RESOURCE;
 
 import java.util.List;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.javax.annotation.Nullable;

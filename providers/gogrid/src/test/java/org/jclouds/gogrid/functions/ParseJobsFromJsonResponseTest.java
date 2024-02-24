@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.SortedSet;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.gogrid.domain.Job;
 import org.jclouds.gogrid.domain.JobProperties;

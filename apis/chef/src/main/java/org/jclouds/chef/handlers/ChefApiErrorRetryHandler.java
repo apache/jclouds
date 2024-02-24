@@ -19,7 +19,7 @@ package org.jclouds.chef.handlers;
 import static org.jclouds.http.HttpUtils.closeClientButKeepContentStream;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.http.HttpCommand;

@@ -19,8 +19,8 @@ package org.jclouds.rest.functions;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.jclouds.util.Optionals2.unwrapIfOptional;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.reflect.InvocationSuccess;
 import org.jclouds.rest.annotations.ApiVersion;

@@ -19,7 +19,7 @@ package org.jclouds.ohai.config;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.JsonBall;
 import org.jclouds.ohai.suppliers.UptimeSecondsSupplier;

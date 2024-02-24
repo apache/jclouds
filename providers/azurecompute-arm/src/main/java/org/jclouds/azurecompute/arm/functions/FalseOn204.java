@@ -18,7 +18,7 @@ package org.jclouds.azurecompute.arm.functions;
 import com.google.common.base.Function;
 import org.jclouds.http.HttpResponse;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import static org.jclouds.http.HttpUtils.releasePayload;
 /**

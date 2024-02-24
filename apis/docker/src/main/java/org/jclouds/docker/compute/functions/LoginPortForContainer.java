@@ -16,7 +16,7 @@
  */
 package org.jclouds.docker.compute.functions;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.docker.compute.functions.LoginPortForContainer.LoginPortLookupChain;
 import org.jclouds.docker.domain.Container;

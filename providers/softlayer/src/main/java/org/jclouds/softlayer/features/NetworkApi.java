@@ -26,7 +26,7 @@ import org.jclouds.rest.annotations.WrapWith;
 import org.jclouds.softlayer.domain.Network;
 import org.jclouds.softlayer.domain.Subnet;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;

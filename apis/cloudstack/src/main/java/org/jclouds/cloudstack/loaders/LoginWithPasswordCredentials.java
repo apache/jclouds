@@ -20,8 +20,8 @@ import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.hash.Hashing.md5;
 import static com.google.common.io.BaseEncoding.base16;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.cloudstack.domain.LoginResponse;
 import org.jclouds.cloudstack.features.SessionApi;

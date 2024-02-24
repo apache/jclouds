@@ -18,8 +18,8 @@ package org.jclouds.openstack.filters;
 
 import java.util.Date;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.date.TimeStamp;
 import org.jclouds.http.HttpException;

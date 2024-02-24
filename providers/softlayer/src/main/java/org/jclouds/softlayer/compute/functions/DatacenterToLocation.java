@@ -19,8 +19,8 @@ package org.jclouds.softlayer.compute.functions;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.nullToEmpty;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Location;
 import org.jclouds.domain.LocationBuilder;

@@ -19,8 +19,8 @@ package org.jclouds.ec2.compute.functions;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.ImmutableMultimap.of;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.util.AWSUtils;
 import org.jclouds.ec2.EC2Api;

@@ -16,8 +16,8 @@
  */
 package org.jclouds.azurecompute.arm.handlers;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpResponse;

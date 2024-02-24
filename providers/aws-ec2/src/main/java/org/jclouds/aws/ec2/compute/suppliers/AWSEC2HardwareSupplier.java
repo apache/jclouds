@@ -119,8 +119,8 @@ import static org.jclouds.ec2.compute.domain.EC2HardwareBuilder.x1_32xlarge;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.ec2.compute.config.ClusterCompute;
 import org.jclouds.compute.domain.Hardware;

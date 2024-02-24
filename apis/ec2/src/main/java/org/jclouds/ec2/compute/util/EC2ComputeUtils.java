@@ -16,7 +16,7 @@
  */
 package org.jclouds.ec2.compute.util;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Location;
 import org.jclouds.domain.LocationScope;

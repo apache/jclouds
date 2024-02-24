@@ -18,7 +18,7 @@ package org.jclouds.route53.features;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_XML;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;

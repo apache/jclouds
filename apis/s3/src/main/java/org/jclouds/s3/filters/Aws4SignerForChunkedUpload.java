@@ -42,7 +42,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.util.Date;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.aws.domain.SessionCredentials;
 import org.jclouds.crypto.Crypto;

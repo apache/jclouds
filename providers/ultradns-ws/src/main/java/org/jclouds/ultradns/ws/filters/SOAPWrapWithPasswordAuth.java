@@ -19,7 +19,7 @@ package org.jclouds.ultradns.ws.filters;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.http.HttpRequest;

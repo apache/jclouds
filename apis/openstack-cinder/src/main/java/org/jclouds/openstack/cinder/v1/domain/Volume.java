@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.javax.annotation.Nullable;
 

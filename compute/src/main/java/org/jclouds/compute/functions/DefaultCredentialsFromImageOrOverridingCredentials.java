@@ -16,7 +16,7 @@
  */
 package org.jclouds.compute.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.Template;
 import org.jclouds.compute.options.RunScriptOptions;

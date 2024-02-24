@@ -25,8 +25,8 @@ import static com.google.common.collect.Maps.filterKeys;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.byon.Node;
 import org.jclouds.byon.functions.NodeToNodeMetadata;

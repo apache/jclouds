@@ -19,7 +19,7 @@ package org.jclouds.http.functions;
 import static org.jclouds.http.HttpUtils.releasePayload;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.logging.Logger;

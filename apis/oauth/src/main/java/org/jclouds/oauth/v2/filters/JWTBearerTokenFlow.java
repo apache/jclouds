@@ -19,8 +19,8 @@ package org.jclouds.oauth.v2.filters;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.jclouds.Constants.PROPERTY_SESSION_INTERVAL;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.http.HttpException;

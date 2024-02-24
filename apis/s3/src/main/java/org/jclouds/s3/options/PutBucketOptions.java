@@ -22,8 +22,8 @@ import static org.jclouds.aws.reference.AWSConstants.PROPERTY_HEADER_TAG;
 
 import java.util.Map.Entry;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.http.options.BaseHttpRequestOptions;
 import org.jclouds.s3.domain.CannedAccessPolicy;

@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.beans.ConstructorProperties;
 import java.util.Date;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.javax.annotation.Nullable;
 

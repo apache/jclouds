@@ -18,7 +18,7 @@ package org.jclouds.googlecloudstorage.handlers;
 
 import static org.jclouds.http.HttpUtils.closeClientButKeepContentStream;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpCommand;
 import org.jclouds.http.HttpErrorHandler;

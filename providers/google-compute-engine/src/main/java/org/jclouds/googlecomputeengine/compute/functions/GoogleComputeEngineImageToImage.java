@@ -16,7 +16,7 @@
  */
 package org.jclouds.googlecomputeengine.compute.functions;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.compute.domain.Image.Status;
 import org.jclouds.compute.domain.ImageBuilder;

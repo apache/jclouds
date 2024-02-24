@@ -19,10 +19,10 @@ package org.jclouds.glacier.filters;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 import org.jclouds.Constants;
 import org.jclouds.crypto.Crypto;

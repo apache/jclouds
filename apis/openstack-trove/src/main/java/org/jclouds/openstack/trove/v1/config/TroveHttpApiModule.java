@@ -18,7 +18,7 @@ package org.jclouds.openstack.trove.v1.config;
 
 import java.net.URI;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpErrorHandler;
 import org.jclouds.http.annotation.ClientError;

@@ -18,7 +18,7 @@ package org.jclouds.azureblob.blobstore.functions;
 
 import java.util.Map.Entry;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azureblob.domain.MutableBlobProperties;
 import org.jclouds.azureblob.domain.internal.MutableBlobPropertiesImpl;

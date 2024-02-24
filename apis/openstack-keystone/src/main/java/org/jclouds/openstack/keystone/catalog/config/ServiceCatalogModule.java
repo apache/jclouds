@@ -22,8 +22,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.location.Provider;
 import org.jclouds.location.suppliers.ImplicitLocationSupplier;
@@ -74,7 +74,7 @@ public class ServiceCatalogModule extends AbstractModule {
     * <ol>
     * <li>add this module to your {@link org.jclouds.apis.ApiMetadata#getDefaultModules()}</li>
     * <li>create a service-specific annotation, such as {@code @CloudDNS}, and make sure that has the meta-annotation
-    * {@link javax.inject.Qualifier}</li>
+    * {@link jakarta.inject.Qualifier}</li>
     * <li>add the above annotation to any {@code Api} classes by placing it on the type. ex.
     * {@code @Endpoint(CloudDNS.class)}</li>
     * <li>add the following to your {@link org.jclouds.rest.config.RestClientModule}</li>

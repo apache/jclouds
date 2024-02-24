@@ -19,7 +19,7 @@ package org.jclouds.aws.filters;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.aws.domain.SessionCredentials;
 import org.jclouds.aws.filters.FormSignerV4.ServiceAndRegion;

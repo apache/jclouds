@@ -16,7 +16,7 @@
  */
 package org.jclouds.gogrid.functions;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.gogrid.domain.LoadBalancer;
 import org.jclouds.http.HttpResponse;

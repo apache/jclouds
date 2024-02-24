@@ -33,8 +33,8 @@ import static org.testng.Assert.fail;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;

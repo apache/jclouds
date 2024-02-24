@@ -19,7 +19,7 @@ package org.jclouds.ec2.xml;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.ec2.domain.AvailabilityZoneInfo;
 import org.jclouds.http.functions.ParseSax;

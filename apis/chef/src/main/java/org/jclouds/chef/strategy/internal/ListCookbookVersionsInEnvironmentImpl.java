@@ -19,8 +19,8 @@ package org.jclouds.chef.strategy.internal;
 import static com.google.common.collect.Iterables.transform;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Function;
 import com.google.common.util.concurrent.ListeningExecutorService;

@@ -21,7 +21,7 @@ import static org.jclouds.rackspace.clouddns.v1.functions.ParseRecord.toRecordDe
 
 import java.beans.ConstructorProperties;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.http.functions.ParseJson;

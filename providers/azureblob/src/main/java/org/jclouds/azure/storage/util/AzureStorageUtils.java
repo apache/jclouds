@@ -18,8 +18,8 @@ package org.jclouds.azure.storage.util;
 
 import java.io.InputStream;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.jclouds.azure.storage.domain.AzureStorageError;
 import org.jclouds.azure.storage.filters.SharedKeyLiteAuthentication;

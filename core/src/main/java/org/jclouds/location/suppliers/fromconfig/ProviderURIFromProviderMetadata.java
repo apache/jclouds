@@ -16,8 +16,8 @@
  */
 package org.jclouds.location.suppliers.fromconfig;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.location.suppliers.ProviderURISupplier;
 import org.jclouds.providers.ProviderMetadata;

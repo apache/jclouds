@@ -16,7 +16,7 @@
  */
 package org.jclouds.s3.blobstore.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.blobstore.options.ListContainerOptions;
 import org.jclouds.s3.options.ListBucketOptions;

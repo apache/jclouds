@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.collect.Memoized;
 import org.jclouds.compute.domain.Hardware;

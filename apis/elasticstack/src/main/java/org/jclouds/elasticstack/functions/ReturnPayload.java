@@ -16,7 +16,7 @@
  */
 package org.jclouds.elasticstack.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.io.Payload;

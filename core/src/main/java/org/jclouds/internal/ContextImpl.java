@@ -27,7 +27,7 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.Context;
 import org.jclouds.annotations.Name;

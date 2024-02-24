@@ -19,8 +19,8 @@ package org.jclouds.b2.config;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.Constants;
 import org.jclouds.collect.Memoized;

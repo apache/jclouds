@@ -18,7 +18,7 @@ package org.jclouds.googlecloudstorage.blobstore.functions;
 
 import java.util.SortedSet;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.blobstore.domain.MutableStorageMetadata;
 import org.jclouds.blobstore.domain.PageSet;

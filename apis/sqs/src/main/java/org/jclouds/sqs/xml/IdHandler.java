@@ -18,7 +18,7 @@ package org.jclouds.sqs.xml;
 
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;

@@ -16,8 +16,8 @@
  */
 package org.jclouds.azureblob.functions;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azureblob.domain.AzureBlob;
 import org.jclouds.azureblob.domain.MutableBlobProperties;

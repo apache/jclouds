@@ -94,7 +94,7 @@ public class CloudStackHttpApiModule extends HttpApiModule<CloudStackApi> {
    }
 
    @Singleton
-   static class CredentialTypeFromPropertyOrDefault implements javax.inject.Provider<CredentialType> {
+   static class CredentialTypeFromPropertyOrDefault implements jakarta.inject.Provider<CredentialType> {
       /**
        * use optional injection to supply a default value for credential type. so that we don't have
        * to set a default property.

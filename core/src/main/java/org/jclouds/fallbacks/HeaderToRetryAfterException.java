@@ -21,7 +21,7 @@ import static com.google.common.base.Throwables.propagate;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.date.DateCodec;
 import org.jclouds.date.DateCodecFactory;

@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.apis.BaseApiLiveTest;
 import org.jclouds.aws.domain.SessionCredentials;

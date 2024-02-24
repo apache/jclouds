@@ -18,7 +18,7 @@ package org.jclouds.docker.features;
 
 import java.io.InputStream;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;

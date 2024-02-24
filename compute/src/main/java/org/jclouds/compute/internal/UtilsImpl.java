@@ -18,7 +18,7 @@ package org.jclouds.compute.internal;
 
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.Utils;
 import org.jclouds.compute.domain.NodeMetadata;

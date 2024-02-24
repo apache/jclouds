@@ -18,7 +18,7 @@ package org.jclouds.azureblob.functions;
 
 import static org.jclouds.http.HttpUtils.releasePayload;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azureblob.domain.PublicAccess;
 import org.jclouds.http.HttpResponse;

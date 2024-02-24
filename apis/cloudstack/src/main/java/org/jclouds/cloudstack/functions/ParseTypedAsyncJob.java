@@ -22,8 +22,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.cloudstack.domain.Account;
 import org.jclouds.cloudstack.domain.AsyncJob;

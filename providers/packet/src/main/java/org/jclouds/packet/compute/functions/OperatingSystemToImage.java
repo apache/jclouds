@@ -22,7 +22,7 @@ import static org.jclouds.compute.domain.OperatingSystem.builder;
 
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.Image;
 import org.jclouds.compute.domain.ImageBuilder;

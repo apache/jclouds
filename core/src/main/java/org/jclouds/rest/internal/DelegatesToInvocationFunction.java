@@ -38,8 +38,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Qualifier;
+import jakarta.inject.Inject;
+import jakarta.inject.Qualifier;
 
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.lifecycle.Closer;

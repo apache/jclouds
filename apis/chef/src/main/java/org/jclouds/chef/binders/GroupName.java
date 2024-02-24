@@ -18,7 +18,7 @@ package org.jclouds.chef.binders;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.chef.domain.Group;
 

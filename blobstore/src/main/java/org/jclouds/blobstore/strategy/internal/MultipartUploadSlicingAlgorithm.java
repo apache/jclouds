@@ -20,7 +20,7 @@ package org.jclouds.blobstore.strategy.internal;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.blobstore.reference.BlobStoreConstants;
 import org.jclouds.logging.Logger;

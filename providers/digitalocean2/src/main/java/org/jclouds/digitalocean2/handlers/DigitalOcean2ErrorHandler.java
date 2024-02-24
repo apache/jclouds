@@ -18,7 +18,7 @@ package org.jclouds.digitalocean2.handlers;
 
 import static org.jclouds.http.HttpUtils.closeClientButKeepContentStream;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.digitalocean2.exceptions.DigitalOcean2RateLimitExceededException;
 import org.jclouds.http.HttpCommand;

@@ -16,7 +16,7 @@
  */
 package org.jclouds.googlecloudstorage.handlers;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.core.Response.Status;
 
 import org.jclouds.http.HttpCommand;

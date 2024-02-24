@@ -20,7 +20,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.net.URI;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.location.Provider;
 import org.jclouds.location.suppliers.RegionIdToURISupplier;

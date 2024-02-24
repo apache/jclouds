@@ -16,8 +16,8 @@
  */
 package org.jclouds.openstack.nova.v2_0.compute.loaders;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Function;
 import org.jclouds.openstack.nova.v2_0.NovaApi;

@@ -16,7 +16,7 @@
  */
 package org.jclouds.openstack.nova.v2_0.extensions;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;

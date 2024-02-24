@@ -23,8 +23,8 @@ import static org.testng.Assert.fail;
 
 import java.beans.ConstructorProperties;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.jclouds.json.internal.NamingStrategies.AnnotationConstructorNamingStrategy;
 import org.jclouds.json.internal.NamingStrategies.AnnotationFieldNamingStrategy;

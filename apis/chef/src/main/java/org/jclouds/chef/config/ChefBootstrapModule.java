@@ -22,8 +22,8 @@ import static org.jclouds.chef.config.ChefProperties.CHEF_UPDATE_GEM_SYSTEM;
 import static org.jclouds.chef.config.ChefProperties.CHEF_USE_OMNIBUS;
 import static org.jclouds.chef.config.ChefProperties.CHEF_VERSION;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.scriptbuilder.domain.Statement;
 import org.jclouds.scriptbuilder.domain.StatementList;

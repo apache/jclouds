@@ -27,8 +27,8 @@ import java.net.URI;
 import java.security.PrivateKey;
 import java.util.Map;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.oauth.v2.AuthorizationApi;
 import org.jclouds.oauth.v2.domain.CertificateFingerprint;
@@ -59,7 +59,7 @@ public final class OAuthModule extends AbstractModule {
 
    @Provides
    @Authorization
-   protected Supplier<URI> oauthEndpoint(@javax.inject.Named("oauth.endpoint") String endpoint) {
+   protected Supplier<URI> oauthEndpoint(@jakarta.inject.Named("oauth.endpoint") String endpoint) {
       return Suppliers.ofInstance(URI.create(endpoint));
    }
 

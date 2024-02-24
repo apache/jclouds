@@ -16,7 +16,7 @@
  */
 package org.jclouds.openstack.nova.v2_0.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpResponse;
 

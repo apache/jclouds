@@ -23,7 +23,7 @@ import static org.jclouds.openstack.swift.v1.reference.SwiftHeaders.OBJECT_COPY_
 
 import java.util.Map;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;

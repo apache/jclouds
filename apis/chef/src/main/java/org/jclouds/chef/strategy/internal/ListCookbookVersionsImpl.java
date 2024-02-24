@@ -26,8 +26,8 @@ import org.jclouds.chef.strategy.ListCookbookVersions;
 import org.jclouds.logging.Logger;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import java.util.concurrent.ExecutorService;
 
 @Singleton

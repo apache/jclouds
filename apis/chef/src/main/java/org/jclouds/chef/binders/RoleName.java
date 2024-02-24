@@ -16,7 +16,7 @@
  */
 package org.jclouds.chef.binders;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.chef.domain.Role;
 

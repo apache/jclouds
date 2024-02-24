@@ -20,7 +20,7 @@ import static org.jclouds.util.SaxUtils.equalsOrSuffix;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.aws.ec2.domain.RouteTable;
 import org.jclouds.http.functions.ParseSax;

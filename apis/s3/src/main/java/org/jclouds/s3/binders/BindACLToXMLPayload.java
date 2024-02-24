@@ -22,7 +22,7 @@ import static org.jclouds.s3.binders.XMLHelper.createDocument;
 import static org.jclouds.s3.binders.XMLHelper.elem;
 import static org.jclouds.s3.binders.XMLHelper.elemWithText;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.core.MediaType;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;

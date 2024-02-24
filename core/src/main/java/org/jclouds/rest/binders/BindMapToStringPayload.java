@@ -23,7 +23,7 @@ import static org.jclouds.util.Strings2.urlDecode;
 
 import java.util.Map;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.MapBinder;

@@ -21,8 +21,8 @@ import static org.jclouds.concurrent.FutureIterables.transformParallel;
 import java.util.concurrent.Callable;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.Constants;
 import org.jclouds.blobstore.BlobStore;

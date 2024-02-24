@@ -19,7 +19,7 @@ package org.jclouds.azureblob.binders;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimaps;

@@ -18,8 +18,8 @@ package org.jclouds.azureblob.blobstore.functions;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azureblob.domain.AccessTier;
 import org.jclouds.azureblob.domain.BlobProperties;

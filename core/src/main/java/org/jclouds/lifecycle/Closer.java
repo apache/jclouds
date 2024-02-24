@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Atomics;

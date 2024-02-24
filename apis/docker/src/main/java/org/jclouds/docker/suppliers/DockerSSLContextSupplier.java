@@ -23,9 +23,9 @@ import org.jclouds.docker.DockerApiMetadata;
 import org.jclouds.domain.Credentials;
 import org.jclouds.location.Provider;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import javax.net.ssl.SSLContext;
 
 import java.io.IOException;

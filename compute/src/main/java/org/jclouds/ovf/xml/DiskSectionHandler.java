@@ -23,8 +23,8 @@ import java.net.URI;
 import java.util.Map;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.jclouds.logging.Logger;
 import org.jclouds.ovf.Disk;

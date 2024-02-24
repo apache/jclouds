@@ -16,8 +16,8 @@
  */
 package org.jclouds.compute.predicates;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.NodeMetadata.Status;
 import org.jclouds.compute.predicates.internal.RefreshNodeAndDoubleCheckOnFailUnlessStatusInvalid;

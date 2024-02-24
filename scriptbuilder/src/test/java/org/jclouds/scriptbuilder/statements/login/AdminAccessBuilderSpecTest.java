@@ -25,7 +25,7 @@ import static org.testng.Assert.fail;
 import java.io.File;
 import java.lang.reflect.Field;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.json.Json;
 import org.jclouds.json.config.GsonModule;

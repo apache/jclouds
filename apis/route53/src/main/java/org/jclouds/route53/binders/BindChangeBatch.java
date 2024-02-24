@@ -18,7 +18,7 @@ package org.jclouds.route53.binders;
 
 import static org.jclouds.io.Payloads.newStringPayload;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.io.Payload;

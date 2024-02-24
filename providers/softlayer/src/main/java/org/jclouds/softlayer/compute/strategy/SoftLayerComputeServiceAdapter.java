@@ -37,9 +37,9 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.collect.Memoized;
 import org.jclouds.compute.ComputeServiceAdapter;

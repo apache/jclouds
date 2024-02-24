@@ -16,8 +16,8 @@
  */
 package org.jclouds.packet.compute.functions;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Location;
 import org.jclouds.domain.LocationBuilder;

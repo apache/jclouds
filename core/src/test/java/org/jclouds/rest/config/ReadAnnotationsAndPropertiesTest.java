@@ -21,7 +21,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Properties;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Fallbacks.FalseOnNotFoundOr404;
 import org.jclouds.Fallbacks.NullOnNotFoundOr404;

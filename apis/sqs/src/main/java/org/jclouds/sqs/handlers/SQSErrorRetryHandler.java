@@ -22,7 +22,7 @@ import static org.jclouds.sqs.config.SQSProperties.CREATE_QUEUE_RETRY_INTERVAL;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.aws.domain.AWSError;
 import org.jclouds.aws.handlers.AWSClientErrorRetryHandler;

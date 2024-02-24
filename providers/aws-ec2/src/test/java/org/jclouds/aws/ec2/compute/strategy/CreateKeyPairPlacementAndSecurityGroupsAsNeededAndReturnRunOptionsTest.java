@@ -32,7 +32,7 @@ import static org.testng.Assert.assertEquals;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.aws.domain.Region;
 import org.jclouds.aws.ec2.AWSEC2Api;
@@ -64,7 +64,7 @@ import com.google.common.collect.ImmutableSet;
 
 @Test(groups = "unit", singleThreaded = true, testName = "CreateKeyPairPlacementAndSecurityGroupsAsNeededAndReturnRunOptionsTest")
 public class CreateKeyPairPlacementAndSecurityGroupsAsNeededAndReturnRunOptionsTest {
-   private static final Provider<RunInstancesOptions> OPTIONS_PROVIDER = new javax.inject.Provider<RunInstancesOptions>() {
+   private static final Provider<RunInstancesOptions> OPTIONS_PROVIDER = new jakarta.inject.Provider<RunInstancesOptions>() {
 
       @Override
       public RunInstancesOptions get() {

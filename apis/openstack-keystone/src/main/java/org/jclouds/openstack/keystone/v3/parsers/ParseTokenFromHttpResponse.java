@@ -18,7 +18,7 @@ package org.jclouds.openstack.keystone.v3.parsers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpResponse;
 import org.jclouds.http.functions.ParseFirstJsonValueNamed;

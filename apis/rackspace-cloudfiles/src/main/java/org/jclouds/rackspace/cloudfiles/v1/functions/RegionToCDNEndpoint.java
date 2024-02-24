@@ -22,8 +22,8 @@ import static com.google.common.base.Preconditions.checkState;
 import java.net.URI;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.location.suppliers.RegionIdToURISupplier;

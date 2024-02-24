@@ -16,7 +16,7 @@
  */
 package org.jclouds.googlecloudstorage.blobstore.functions;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.blobstore.domain.MutableStorageMetadata;
 import org.jclouds.blobstore.domain.StorageMetadata;

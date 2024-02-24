@@ -16,8 +16,8 @@
  */
 package org.jclouds.packet.filters;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.http.HttpException;

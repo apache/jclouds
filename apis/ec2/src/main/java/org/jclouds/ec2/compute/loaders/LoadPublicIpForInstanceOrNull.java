@@ -18,8 +18,8 @@ package org.jclouds.ec2.compute.loaders;
 
 import java.util.NoSuchElementException;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.ec2.EC2Api;
 import org.jclouds.ec2.compute.domain.RegionAndName;

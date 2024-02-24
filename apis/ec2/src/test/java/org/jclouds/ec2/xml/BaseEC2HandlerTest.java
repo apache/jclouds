@@ -19,7 +19,7 @@ package org.jclouds.ec2.xml;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.domain.Region;
 import org.jclouds.http.functions.BaseHandlerTest;

@@ -22,8 +22,8 @@ import static org.jclouds.digitalocean2.compute.internal.ImageInRegion.encodeId;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.collect.Memoized;
 import org.jclouds.compute.domain.Image;

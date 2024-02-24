@@ -18,7 +18,7 @@ package org.jclouds.s3.blobstore.functions;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.blobstore.options.ListContainerOptions;
 import org.jclouds.s3.options.ListBucketOptions;

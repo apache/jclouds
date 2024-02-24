@@ -24,8 +24,8 @@ import static org.jclouds.http.Uris.uriBuilder;
 import java.net.URI;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.Constants;
 import org.jclouds.http.HttpCommand;

@@ -21,7 +21,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Date;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.ContextBuilder;

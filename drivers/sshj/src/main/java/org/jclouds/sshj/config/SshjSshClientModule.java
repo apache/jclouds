@@ -16,7 +16,7 @@
  */
 package org.jclouds.sshj.config;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.jclouds.Constants;
 import org.jclouds.domain.LoginCredentials;

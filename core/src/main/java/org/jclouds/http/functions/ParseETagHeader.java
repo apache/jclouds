@@ -19,7 +19,7 @@ package org.jclouds.http.functions;
 import static com.google.common.net.HttpHeaders.ETAG;
 import static org.jclouds.http.HttpUtils.releasePayload;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpException;
 import org.jclouds.http.HttpResponse;

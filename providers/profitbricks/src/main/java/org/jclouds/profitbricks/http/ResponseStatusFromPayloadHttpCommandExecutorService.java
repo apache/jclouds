@@ -29,8 +29,8 @@ import java.net.Proxy;
 import java.net.URI;
 import java.util.regex.Pattern;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 

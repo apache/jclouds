@@ -18,7 +18,7 @@ package org.jclouds.cloudstack.binders;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.cloudstack.domain.SnapshotPolicySchedule;
 import org.jclouds.http.HttpRequest;

@@ -16,7 +16,7 @@
  */
 package org.jclouds.rest.binders;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.rest.Binder;

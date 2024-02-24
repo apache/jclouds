@@ -18,7 +18,7 @@ package org.jclouds.blobstore.functions;
 
 import static org.testng.Assert.assertEquals;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 import jakarta.ws.rs.core.MediaType;
 
 import org.jclouds.blobstore.domain.BlobMetadata;

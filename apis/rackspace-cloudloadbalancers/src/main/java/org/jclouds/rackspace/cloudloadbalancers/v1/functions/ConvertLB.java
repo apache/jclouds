@@ -19,7 +19,7 @@ package org.jclouds.rackspace.cloudloadbalancers.v1.functions;
 import java.net.URI;
 
 import jakarta.annotation.Resource;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.logging.Logger;
 import org.jclouds.rackspace.cloudloadbalancers.v1.domain.AccessRuleWithId;

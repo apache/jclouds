@@ -18,7 +18,7 @@ package org.jclouds.route53.config;
 
 import java.util.Date;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.aws.config.AWSHttpApiModule;
 import org.jclouds.date.DateService;

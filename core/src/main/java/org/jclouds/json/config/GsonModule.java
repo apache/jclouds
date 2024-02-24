@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 import org.jclouds.date.DateService;
 import org.jclouds.domain.Credentials;

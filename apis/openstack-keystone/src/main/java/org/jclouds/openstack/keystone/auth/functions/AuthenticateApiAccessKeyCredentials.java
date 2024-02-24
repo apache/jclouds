@@ -18,8 +18,8 @@ package org.jclouds.openstack.keystone.auth.functions;
 
 import static org.jclouds.openstack.keystone.auth.config.CredentialTypes.API_ACCESS_KEY_CREDENTIALS;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.openstack.keystone.auth.AuthenticationApi;
 import org.jclouds.openstack.keystone.auth.config.CredentialType;

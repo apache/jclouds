@@ -19,7 +19,7 @@ package org.jclouds.glesys.features;
 import java.util.Map;
 import java.util.SortedMap;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;

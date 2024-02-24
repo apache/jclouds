@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import jakarta.annotation.Resource;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;

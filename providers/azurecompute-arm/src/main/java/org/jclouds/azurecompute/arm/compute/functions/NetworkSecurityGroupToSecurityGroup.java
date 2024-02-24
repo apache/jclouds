@@ -25,7 +25,7 @@ import static org.jclouds.azurecompute.arm.domain.IdReference.extractResourceGro
 
 import java.util.Set;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.azurecompute.arm.domain.NetworkSecurityGroup;
 import org.jclouds.azurecompute.arm.domain.NetworkSecurityRule;

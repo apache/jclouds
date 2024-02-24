@@ -20,7 +20,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.jclouds.apis.ApiMetadata;
 import org.jclouds.blobstore.config.LocalBlobStore;

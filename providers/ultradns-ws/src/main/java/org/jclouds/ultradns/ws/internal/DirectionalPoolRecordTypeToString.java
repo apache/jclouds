@@ -18,7 +18,7 @@ package org.jclouds.ultradns.ws.internal;
 
 import java.util.EnumSet;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.ultradns.ws.domain.DirectionalPool.RecordType;
 

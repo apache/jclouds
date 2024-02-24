@@ -18,7 +18,7 @@ package org.jclouds.location.predicates;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Location;
 import org.jclouds.domain.LocationScope;

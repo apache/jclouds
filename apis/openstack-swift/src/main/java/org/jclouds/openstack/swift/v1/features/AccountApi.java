@@ -21,7 +21,7 @@ import static org.jclouds.openstack.swift.v1.reference.SwiftHeaders.ACCOUNT_TEMP
 
 import java.util.Map;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.HEAD;
 import jakarta.ws.rs.HeaderParam;

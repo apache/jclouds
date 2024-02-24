@@ -26,9 +26,9 @@ import static org.jclouds.util.Predicates2.startsWith;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 import org.jclouds.reflect.Invocation;
 import org.jclouds.rest.annotations.Fallback;

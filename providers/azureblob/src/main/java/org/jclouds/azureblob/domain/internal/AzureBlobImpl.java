@@ -18,7 +18,7 @@ package org.jclouds.azureblob.domain.internal;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jclouds.azureblob.domain.AzureBlob;
 import org.jclouds.azureblob.domain.MutableBlobProperties;

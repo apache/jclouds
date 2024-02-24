@@ -19,8 +19,8 @@ package org.jclouds.openstack.internal;
 import java.net.URI;
 import java.util.Date;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import org.jclouds.domain.Credentials;
 import org.jclouds.openstack.config.OpenStackAuthenticationModule;

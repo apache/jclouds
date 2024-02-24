@@ -16,7 +16,7 @@
  */
 package org.jclouds.docker.compute.functions;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import org.jclouds.compute.domain.NodeMetadata.Status;
 import org.jclouds.docker.domain.State;
