@@ -1036,5 +1036,13 @@ public final class LocalBlobStore implements BlobStore {
             return result;
          }
       }
+
+      @Override
+      public void close() throws IOException {
+          if (current != null) {
+              current.close();
+              current = null;
+          }
+      }
    }
 }
