@@ -55,4 +55,11 @@ public class UriTemplatesTest {
    public void testJson() {
       assertEquals(expand("{\"key\":\"{variable}\"}", ImmutableMap.of("variable", "value")), "{\"key\":\"value\"}");
    }
+
+   public void testExpandWithOpenedCurveBracket() {
+      assertEquals(expand("/repos/folder with { brackets in a key", ImmutableMap.of()),
+              "/repos/folder with { brackets in a key");
+      assertEquals(expand("/repos/folder with {foo", ImmutableMap.of("foo", "var")),
+              "/repos/folder with {foo");
+   }
 }

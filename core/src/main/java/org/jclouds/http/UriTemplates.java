@@ -38,6 +38,11 @@ public class UriTemplates {
          return template.toString(); // skip expansion if there's no valid variables set. ex. {a} is the first valid
       checkNotNull(variables, "variables for %s", template);
 
+      // if no variables provided - return template as is
+      if (variables.isEmpty()) {
+         return template;
+      }
+
       boolean inVar = false;
       StringBuilder var = new StringBuilder();
       StringBuilder builder = new StringBuilder();
@@ -72,6 +77,12 @@ public class UriTemplates {
                builder.append(c);
          }
       }
+
+      // if variables provided but, curve bracket is not closed - append remaining to the result
+      if (inVar) {
+         builder.append('{').append(var);
+      }
+
       return builder.toString();
    }
 }
