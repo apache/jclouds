@@ -53,7 +53,8 @@ public class AWSRequestAuthorizeSignatureV4 extends RequestAuthorizeSignatureV4 
       * with expiration.
       */
 
-      Multimap<String, String> queryMap = queryParser().apply(request.getEndpoint().getQuery());
+      // Do not replace URI.getRawQuery() with URI.getQuery() see: JCLOUDS-1631
+      Multimap<String, String> queryMap = queryParser().apply(request.getEndpoint().getRawQuery());
       if (queryMap.containsKey(AMZ_SIGNATURE_PARAM) || queryMap.containsKey(TEMPORARY_SIGNATURE_PARAM)) {
          return request;
       }

@@ -89,7 +89,7 @@ public class RequestAuthorizeSignatureV4Test {
          + "SignedHeaders=host;x-amz-content-sha256;x-amz-date, "
          + "Signature=6cc5d0758e2599be7cb172fd57cefab2828201a2b4d372972a83dc304de93958";
 
-   private static final String BUCKET_NAME = "test-bucket";
+   protected static final String BUCKET_NAME = "test-bucket";
    private static final String OBJECT_NAME = "ExampleObject.txt";
 
    @ConfiguresHttpApi
@@ -116,11 +116,11 @@ public class RequestAuthorizeSignatureV4Test {
             .buildInjector();
    }
 
-   public static RequestAuthorizeSignatureV4 filter(Credentials creds) {
+   public RequestAuthorizeSignatureV4 filter(Credentials creds) {
       return injector(creds).getInstance(RequestAuthorizeSignatureV4.class);
    }
 
-   Credentials temporaryCredentials = new Credentials.Builder()
+   protected Credentials temporaryCredentials = new Credentials.Builder()
          .identity(IDENTITY)
          .credential(CREDENTIAL)
          .build();
