@@ -50,7 +50,7 @@ public class MultipartForm extends BasePayload<Iterable<? extends Part>> {
          if (!part.isRepeatable())
             isRepeatable = false;
          contentLength += part.getContentMetadata().getContentLength()
-            + createHeaders(boundaryrn, part).length()
+            + createHeaders(boundaryrn, part).getBytes().length
             + createRn().length();
       }
       contentLength += createFooter(boundary).length();
