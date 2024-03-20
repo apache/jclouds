@@ -41,15 +41,29 @@ public class MultipartFormTest {
    public void testSinglePart() throws IOException {
 
       StringBuilder builder = new StringBuilder();
-      addData(boundary, "hello", builder);
+      addData(boundary, "file", "hello", builder);
       builder.append("--").append(boundary).append("--").append("\r\n");
       String expects = builder.toString();
       assertEquals(expects.length(), 199);
 
-      MultipartForm multipartForm = new MultipartForm(boundary, newPart("hello"));
+      MultipartForm multipartForm = new MultipartForm(boundary, newPart("file", "hello"));
 
       assertEquals(Strings2.toStringAndClose(multipartForm.openStream()), expects);
       assertEquals(multipartForm.getContentMetadata().getContentLength(), Long.valueOf(199));
+   }
+
+   public void testLengthIsCorrectPerUTF8() throws IOException {
+
+      StringBuilder builder = new StringBuilder();
+      addData(boundary, "unic₪de", "hello", builder);
+      builder.append("--").append(boundary).append("--").append("\r\n");
+      String expects = builder.toString();
+      assertEquals(expects.getBytes().length, 204);
+
+      MultipartForm multipartForm = new MultipartForm(boundary, newPart("unic₪de", "hello"));
+
+      assertEquals(Strings2.toStringAndClose(multipartForm.openStream()), expects);
+      assertEquals(multipartForm.getContentMetadata().getContentLength(), Long.valueOf(204));
    }
 
    public static class MockFilePayload extends FilePayload {
@@ -81,14 +95,14 @@ public class MultipartFormTest {
       }
    }
 
-   private Part newPart(String data) {
-      return Part.create("file", new MockFilePayload(data),
+   private Part newPart(String name, String data) {
+      return Part.create(name, new MockFilePayload(data),
             new PartOptions().contentType(PLAIN_TEXT_UTF_8.withoutParameters().toString()));
    }
 
-   private void addData(String boundary, String data, StringBuilder builder) {
+   private void addData(String boundary, String name, String data, StringBuilder builder) {
       builder.append("--").append(boundary).append("\r\n");
-      builder.append("Content-Disposition").append(": ").append("form-data; name=\"file\"; filename=\"testfile.txt\"")
+      builder.append("Content-Disposition").append(": ").append("form-data; name=\"").append(name).append("\"; filename=\"testfile.txt\"")
                .append("\r\n");
       builder.append("Content-Type").append(": ").append("text/plain").append("\r\n");
       builder.append("\r\n");
@@ -98,15 +112,15 @@ public class MultipartFormTest {
    public void testMultipleParts() throws IOException {
 
       StringBuilder builder = new StringBuilder();
-      addData(boundary, "hello", builder);
-      addData(boundary, "goodbye", builder);
+      addData(boundary, "file", "hello", builder);
+      addData(boundary, "file", "goodbye", builder);
 
       builder.append("--").append(boundary).append("--").append("\r\n");
       String expects = builder.toString();
 
       assertEquals(expects.length(), 352);
 
-      MultipartForm multipartForm = new MultipartForm(boundary, newPart("hello"), newPart("goodbye"));
+      MultipartForm multipartForm = new MultipartForm(boundary, newPart("file", "hello"), newPart("file", "goodbye"));
 
       assertEquals(Strings2.toStringAndClose(multipartForm.openStream()), expects);
 
