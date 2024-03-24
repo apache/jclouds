@@ -41,7 +41,7 @@ public class LoadPublicIpForInstanceOrNullTest {
 
       expect(client.getElasticIPAddressApi()).andReturn((Optional) Optional.of(ipClient)).atLeastOnce();
       expect(ipClient.describeAddressesInRegion("region")).andReturn(
-            ImmutableSet.<PublicIpInstanceIdPair> of(new PublicIpInstanceIdPair("region", "1.1.1.1", "i-blah", null)))
+            ImmutableSet.<PublicIpInstanceIdPair> of(new PublicIpInstanceIdPair("region", "1.1.1.1", "i-blah", null, null)))
             .atLeastOnce();
 
       replay(client);
@@ -85,7 +85,7 @@ public class LoadPublicIpForInstanceOrNullTest {
       expect(client.getElasticIPAddressApi()).andReturn((Optional) Optional.of(ipClient)).atLeastOnce();
 
       expect(ipClient.describeAddressesInRegion("region")).andReturn(
-            ImmutableSet.<PublicIpInstanceIdPair> of(new PublicIpInstanceIdPair("region", "1.1.1.1", null, null)))
+            ImmutableSet.<PublicIpInstanceIdPair> of(new PublicIpInstanceIdPair("region", "1.1.1.1", null, null, null)))
                .atLeastOnce();
 
       replay(client);
