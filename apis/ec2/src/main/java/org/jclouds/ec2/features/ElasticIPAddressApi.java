@@ -145,6 +145,28 @@ public interface ElasticIPAddressApi {
             @FormParam("PublicIp") String publicIp);
 
    /**
+    * Releases an elastic IP address associated with your identity.
+    *
+    * @param region
+    *           Elastic IP addresses are tied to a Region and cannot be mapped across Regions.
+    * @param allocationId
+    *           The Allocation ID (e.g., eipalloc-0ca038968f2a2c986) of the IP address that you are releasing from your identity.
+    *
+    * @see #allocateAddress
+    * @see #describeAddresses
+    * @see #associateAddress
+    * @see #disassociateAddress
+    * @see <a href="http://docs.amazonwebservices.com/AWSEC2/latest/APIReference/index.html?ApiReference-query-ReleaseAddress.html"
+    */
+   @Named("ReleaseAddress")
+   @POST
+   @Path("/")
+   @FormParams(keys = ACTION, values = "ReleaseAddress")
+   void releaseAddressInRegionByAllocationId(
+           @EndpointParam(parser = RegionToEndpointOrProviderIfNull.class) @Nullable String region,
+           @FormParam("AllocationId") String allocationId);
+
+   /**
     * Lists elastic IP addresses assigned to your identity or provides information about a specific
     * address.
     * 

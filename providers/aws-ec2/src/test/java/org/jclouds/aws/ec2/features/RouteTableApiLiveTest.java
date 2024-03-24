@@ -48,6 +48,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.ImmutableMultimap;
 
 /**
  * Tests behavior of {@link RouteTableApi}
@@ -106,6 +107,22 @@ public class RouteTableApiLiveTest extends BaseApiLiveTest<AWSEC2Api> {
          }
       });
       assertTrue(vpcRT.isPresent(), "Could not find VPC " + vpc.id() + " in described route tables");
+
+      //Now test the Find by Filter version of the describeRouteTables
+      final FluentIterable<RouteTable> routeTablesByFilter = routeTableApi.describeRouteTablesWithFilter(TEST_REGION,
+              ImmutableMultimap.<String, String>builder()
+                      .put("vpc-id", vpc.id())
+                      .build()
+      );
+      assertNotNull(routeTablesByFilter, "Failed to return list of routeTablesByFilter");
+      Optional<RouteTable> vpcRTByFilter = Iterables.tryFind(routeTablesByFilter, new Predicate<RouteTable>() {
+         @Override public boolean apply(RouteTable input) {
+            return vpc.id().equals(input.vpcId());
+         }
+      });
+      assertTrue(vpcRTByFilter.isPresent(), "Could not find VPC " + vpc.id() + " in described route tables");
+
+
       RouteTable rt = vpcRT.get();
       assertEquals(rt.associationSet().size(), 1,
          "Route for test VPC has wrong number of associations, should be 1: " + rt.associationSet());
