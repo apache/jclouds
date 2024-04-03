@@ -38,6 +38,8 @@ public class FilesystemContainerNameValidatorImpl extends FilesystemContainerNam
         //container name cannot contains / (or \ in Windows) character
         if (name.contains("\\") || name.contains("/"))
             throw new IllegalArgumentException("Container name '" + name + "' cannot contain \\ or /");
+        if (name.equals(".") || name.equals(".."))
+            throw new IllegalArgumentException("Container name cannot be . or ..");
     }
 
 }

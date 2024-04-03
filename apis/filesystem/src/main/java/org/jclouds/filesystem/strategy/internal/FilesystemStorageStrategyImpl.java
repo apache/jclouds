@@ -187,6 +187,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
    @Override
    public ContainerAccess getContainerAccess(String container) {
+      filesystemContainerNameValidator.validate(container);
       File file = new File(buildPathStartingFromBaseDir(container));
       if (!file.exists()) {
          throw new ContainerNotFoundException(container, "in getContainerAccess");
@@ -217,6 +218,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
    @Override
    public void setContainerAccess(String container, ContainerAccess access) {
+      filesystemContainerNameValidator.validate(container);
       Path path = new File(buildPathStartingFromBaseDir(container)).toPath();
 
       if ( isWindows() ) {
@@ -310,6 +312,7 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
    @Override
    public StorageMetadata getContainerMetadata(String container) {
+      filesystemContainerNameValidator.validate(container);
       MutableStorageMetadata metadata = new MutableStorageMetadataImpl();
       metadata.setName(container);
       metadata.setType(StorageType.CONTAINER);
@@ -378,6 +381,8 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
    @Override
    public Blob getBlob(final String container, final String key) {
+      filesystemContainerNameValidator.validate(container);
+      filesystemBlobKeyValidator.validate(key);
       BlobBuilder builder = blobBuilders.get();
       builder.name(key);
       File file = getFileForBlobKey(container, key);
@@ -658,6 +663,8 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
    @Override
    public BlobAccess getBlobAccess(String containerName, String blobName) {
+      filesystemContainerNameValidator.validate(containerName);
+      filesystemBlobKeyValidator.validate(blobName);
       if (!new File(buildPathStartingFromBaseDir(containerName)).exists()) {
          throw new ContainerNotFoundException(containerName, "in getBlobAccess");
       }
@@ -691,6 +698,8 @@ public class FilesystemStorageStrategyImpl implements LocalStorageStrategy {
 
    @Override
    public void setBlobAccess(String container, String name, BlobAccess access) {
+      filesystemContainerNameValidator.validate(container);
+      filesystemBlobKeyValidator.validate(name);
       Path path = new File(buildPathStartingFromBaseDir(container, name)).toPath();
       if ( isWindows() ) {
          try {
