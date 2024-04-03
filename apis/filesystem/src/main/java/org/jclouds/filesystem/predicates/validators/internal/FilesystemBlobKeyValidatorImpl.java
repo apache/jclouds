@@ -38,6 +38,8 @@ public class FilesystemBlobKeyValidatorImpl extends FilesystemBlobKeyValidator {
         //blobkey cannot start with / (or \ in Windows) character
         if (name.startsWith("\\") || name.startsWith("/"))
             throw new IllegalArgumentException("Blob key '" + name + "' cannot start with \\ or /");
+        if (name.contains("../"))
+            throw new IllegalArgumentException("Blob key '" + name + "' cannot contains ../");
     }
 
 }
