@@ -24,8 +24,8 @@ import com.google.common.base.CaseFormat;
 
 public enum AccessTier {
    HOT(Tier.STANDARD),
-   COOL(Tier.INFREQUENT),
-   COLD(Tier.INFREQUENT),
+   COOL(Tier.COOL),
+   COLD(Tier.COLD),
    ARCHIVE(Tier.ARCHIVE);
 
    private final Tier tier;
@@ -52,6 +52,8 @@ public enum AccessTier {
       switch (tier) {
       case STANDARD: return AccessTier.HOT;
       case INFREQUENT: return AccessTier.COOL;
+      case COOL: return AccessTier.COOL;
+      case COLD: return AccessTier.COLD;
       case ARCHIVE: return AccessTier.ARCHIVE;
       }
       throw new IllegalArgumentException("invalid tier: " + tier);

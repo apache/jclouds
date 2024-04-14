@@ -105,11 +105,11 @@ public final class DomainResourceReferences {
 
    public enum StorageClass {
       ARCHIVE(Tier.ARCHIVE),
-      COLDLINE(Tier.ARCHIVE),
+      COLDLINE(Tier.COLD),
       DURABLE_REDUCED_AVAILABILITY(Tier.STANDARD),
       MULTI_REGIONAL(Tier.STANDARD),
       REGIONAL(Tier.STANDARD),
-      NEARLINE(Tier.INFREQUENT),
+      NEARLINE(Tier.COOL),
       STANDARD(Tier.STANDARD);
 
       private final Tier tier;
@@ -122,6 +122,8 @@ public final class DomainResourceReferences {
          switch (tier) {
          case STANDARD: return StorageClass.STANDARD;
          case INFREQUENT: return StorageClass.NEARLINE;
+         case COOL: return StorageClass.NEARLINE;
+         case COLD: return StorageClass.COLDLINE;
          case ARCHIVE: return StorageClass.ARCHIVE;
          }
          throw new IllegalArgumentException("invalid tier: " + tier);

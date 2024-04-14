@@ -24,8 +24,12 @@ package org.jclouds.blobstore.domain;
 public enum Tier {
    /** Optimize for access speed. */
    STANDARD,
-   /** Balance access speed against storage cost. */
-   INFREQUENT,
+   /** @deprecated see COOL. */
+   @Deprecated INFREQUENT,
+   /** Slower access speed and reduced storage costs. */
+   COOL,
+   /** Even slower access speed and further reduced storage costs. */
+   COLD,
    /**
     * Optimize for storage cost.  Some providers may require a separate call to
     * set the blob to STANDARD tier before access.

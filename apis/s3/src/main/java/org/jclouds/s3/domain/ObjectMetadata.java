@@ -35,12 +35,12 @@ public interface ObjectMetadata extends Comparable<ObjectMetadata> {
 
    public enum StorageClass {
       STANDARD(Tier.STANDARD),
-      STANDARD_IA(Tier.INFREQUENT),
-      ONEZONE_IA(Tier.INFREQUENT),
+      STANDARD_IA(Tier.COOL),
+      ONEZONE_IA(Tier.COOL),
       INTELLIGENT_TIERING(Tier.STANDARD),
       REDUCED_REDUNDANCY(Tier.STANDARD),
       GLACIER(Tier.ARCHIVE),
-      GLACIER_IR(Tier.ARCHIVE),
+      GLACIER_IR(Tier.COLD),
       DEEP_ARCHIVE(Tier.ARCHIVE);
 
       private final Tier tier;
@@ -53,6 +53,8 @@ public interface ObjectMetadata extends Comparable<ObjectMetadata> {
          switch (tier) {
          case STANDARD: return StorageClass.STANDARD;
          case INFREQUENT: return StorageClass.STANDARD_IA;
+         case COOL: return StorageClass.STANDARD_IA;
+         case COLD: return StorageClass.GLACIER_IR;
          case ARCHIVE: return StorageClass.DEEP_ARCHIVE;
          }
          throw new IllegalArgumentException("invalid tier: " + tier);
