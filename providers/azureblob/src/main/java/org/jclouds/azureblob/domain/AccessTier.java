@@ -25,6 +25,7 @@ import com.google.common.base.CaseFormat;
 public enum AccessTier {
    HOT(Tier.STANDARD),
    COOL(Tier.INFREQUENT),
+   COLD(Tier.INFREQUENT),
    ARCHIVE(Tier.ARCHIVE);
 
    private final Tier tier;
