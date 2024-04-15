@@ -36,6 +36,7 @@ public class FilesystemBlobKeyValidatorTest {
 
         validator.validate("all.img");
         validator.validate("all" + File.separator + "is" + File.separator + "" + "ok");
+        validator.validate("all" + File.separator + "is" + File.separator + ".." + "ok");
     }
 
     @Test
@@ -49,6 +50,11 @@ public class FilesystemBlobKeyValidatorTest {
 
         try {
             validator.validate(File.separator + "is" + File.separator + "" + "ok");
+            fail("Blob key value incorrect, but was not recognized");
+        } catch (IllegalArgumentException e) {}
+
+        try {
+            validator.validate("all" + File.separator + ".." + File.separator + "ok");
             fail("Blob key value incorrect, but was not recognized");
         } catch (IllegalArgumentException e) {}
     }
