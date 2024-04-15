@@ -20,6 +20,9 @@ import org.jclouds.filesystem.predicates.validators.FilesystemBlobKeyValidator;
 
 import com.google.inject.Singleton;
 
+import java.io.File;
+import java.util.Arrays;
+
 /**
  * Validates name for filesystem container blob keys implementation
  *
@@ -38,7 +41,7 @@ public class FilesystemBlobKeyValidatorImpl extends FilesystemBlobKeyValidator {
         //blobkey cannot start with / (or \ in Windows) character
         if (name.startsWith("\\") || name.startsWith("/"))
             throw new IllegalArgumentException("Blob key '" + name + "' cannot start with \\ or /");
-        if (name.contains("../"))
+        if (Arrays.asList(name.split(File.separator.equals("\\") ? "\\\\" : File.separator)).contains(".."))
             throw new IllegalArgumentException("Blob key '" + name + "' cannot contain ../");
     }
 
