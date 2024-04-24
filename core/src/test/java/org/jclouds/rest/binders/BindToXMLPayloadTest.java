@@ -19,7 +19,7 @@ package org.jclouds.rest.binders;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.jclouds.http.HttpRequest;
 import org.jclouds.xml.XMLParser;
