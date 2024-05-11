@@ -210,7 +210,7 @@
   </developers>
 
   <properties>
-    <jdk.version>1.8</jdk.version>
+    <jdk.version>11</jdk.version>
     <maven.compile.source>${jdk.version}</maven.compile.source>
     <maven.compile.target>${jdk.version}</maven.compile.target>
     <maven.compile.deprecation>true</maven.compile.deprecation>
