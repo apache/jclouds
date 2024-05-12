@@ -131,7 +131,7 @@ public final class GoogleCloudStorageBlobRequestSigner implements BlobRequestSig
          request.addHeader(entry.getKey(), entry.getValue());
       }
 
-      return (HttpRequest) request
+      return request
             .addQueryParam("Expires", String.valueOf(expires))
             .addQueryParam("GoogleAccessId", creds.get().identity)
             .addQueryParam("Signature", signature)
