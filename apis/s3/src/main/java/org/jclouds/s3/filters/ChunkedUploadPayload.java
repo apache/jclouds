@@ -18,6 +18,7 @@ package org.jclouds.s3.filters;
 
 import com.google.common.io.ByteProcessor;
 import com.google.common.io.ByteStreams;
+import org.gaul.modernizer_maven_annotations.SuppressModernizer;
 import org.jclouds.http.HttpException;
 import org.jclouds.io.MutableContentMetadata;
 import org.jclouds.io.Payload;
@@ -171,6 +172,7 @@ public class ChunkedUploadPayload extends BasePayload<Payload> {
       return new SequenceInputStream(new ChunkedInputStreamEnumeration(this.payload.openStream(), chunkedBlockSize));
    }
 
+   @SuppressModernizer  // for Enumeration
    private class ChunkedInputStreamEnumeration implements Enumeration<InputStream> {
       private final InputStream inputStream;
       private boolean lastChunked;

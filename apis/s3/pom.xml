@@ -98,6 +98,11 @@
       <artifactId>auto-value</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.gaul</groupId>
+      <artifactId>modernizer-maven-annotations</artifactId>
+      <optional>true</optional>
+    </dependency>
   </dependencies>
 
   <profiles>
