@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 public class AwsHostNameUtils {
 
-   private static final Pattern S3_ENDPOINT_PATTERN = Pattern.compile("^(?:.+\\.)?s3[.-]([a-z0-9-]+)$");
+   private static final Pattern S3_ENDPOINT_PATTERN = Pattern.compile("^(?:.+\\.)?s3[.\\-]([a-z0-9-]+)(?>\\.[a-z0-9-]+)*$");
 
    private static final Pattern STANDARD_CLOUDSEARCH_ENDPOINT_PATTERN = Pattern.compile("^(?:.+\\.)?([a-z0-9-]+)\\.cloudsearch$");
 
@@ -107,7 +107,7 @@ public class AwsHostNameUtils {
 
       Matcher matcher = S3_ENDPOINT_PATTERN.matcher(fragment);
       if (matcher.matches()) {
-         // host was 'bucket.s3-[region].amazonaws.com'.
+         // host was '[whatever].s3[.|-]-[region].[whatever].amazonaws.com
          return matcher.group(1);
       }
 
