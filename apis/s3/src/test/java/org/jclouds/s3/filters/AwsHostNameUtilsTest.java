@@ -52,9 +52,19 @@ public class AwsHostNameUtilsTest {
          "s3"
       );
 
-
       Assert.assertEquals(
          AwsHostNameUtils.parseServiceName(URI.create("https://test-bucket.s3.cn-north-1.amazonaws.com.cn")),
+         "s3"
+      );
+   }
+
+   @Test
+   // test s3 virtual private cloud URL
+   public void testVpcUrl() {
+      Assert.assertEquals(
+         AwsHostNameUtils.parseServiceName(
+              URI.create("https://bucket.vpce-0037af66cf9b0cc5e-zop31d9j.s3.us-east-1.vpce.amazonaws.com")
+         ),
          "s3"
       );
    }
