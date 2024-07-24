@@ -53,7 +53,7 @@ public class S3RedirectionRetryHandler extends RedirectionRetryHandler {
          command.incrementRedirectCount();
          closeClientButKeepContentStream(response);
          AWSError error = utils.parseAWSErrorFromContent(command.getCurrentRequest(), response);
-         String host = error.getDetails().get("Endpoint");
+         String host = error == null ? null : error.getDetails().get("Endpoint");
          if (host != null) {
             if (host.equals(command.getCurrentRequest().getEndpoint().getHost())) {
                // must be an amazon error related to
