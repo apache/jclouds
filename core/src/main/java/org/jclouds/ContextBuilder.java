@@ -74,6 +74,7 @@ import org.jclouds.providers.Providers;
 import org.jclouds.providers.config.BindProviderMetadataContextAndCredentials;
 import org.jclouds.providers.internal.UpdateProviderMetadataFromProperties;
 import org.jclouds.reflect.Invocation;
+import org.jclouds.rest.ApiContext;
 import org.jclouds.rest.ConfiguresCredentialStore;
 import org.jclouds.rest.ConfiguresHttpApi;
 import org.jclouds.rest.HttpApiMetadata;
@@ -364,10 +365,16 @@ public class ContextBuilder {
       defaults.setProperty(PROPERTY_API, apiMetadata.getName());
       defaults.setProperty(PROPERTY_API_VERSION, apiVersion);
       defaults.setProperty(PROPERTY_BUILD_VERSION, buildVersion);
-      if (identity.isPresent())
-         defaults.setProperty(PROPERTY_IDENTITY, identity.get());
-      if (credential != null)
-         defaults.setProperty(PROPERTY_CREDENTIAL, credential);
+      if (credentialsSupplierOption.isPresent()) {
+         Credentials credentials = credentialsSupplierOption.get().get();
+         defaults.setProperty(PROPERTY_IDENTITY, credentials.identity);
+         defaults.setProperty(PROPERTY_CREDENTIAL, credentials.credential);
+      } else {
+         if (identity.isPresent())
+            defaults.setProperty(PROPERTY_IDENTITY, identity.get());
+         if (credential != null)
+            defaults.setProperty(PROPERTY_CREDENTIAL, credential);
+      }
       if (overrides.isPresent())
          putAllAsString(overrides.get(), defaults);
       putAllAsString(propertiesPrefixedWithJcloudsApiOrProviderId(getSystemProperties(), apiMetadata.getId(), providerId), defaults);
