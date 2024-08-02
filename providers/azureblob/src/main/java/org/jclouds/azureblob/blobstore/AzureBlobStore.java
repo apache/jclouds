@@ -440,9 +440,10 @@ public class AzureBlobStore extends BaseBlobStore {
       return sync.putBlockList(mpu.containerName(), azureBlob, blocks.build());
    }
 
-   static String makeBlockId(int partNumber) {
-       return BaseEncoding.base64Url().encode(Ints.toByteArray(partNumber));
-   }
+  static String makeBlockId(int partNumber) {
+      // Azure expects a base64-encoded string ONLY. It does not support base64url encoding. 
+     return BaseEncoding.base64().encode(Ints.toByteArray(partNumber));
+  }
    
    @Override
    public MultipartPart uploadMultipartPart(MultipartUpload mpu, int partNumber, Payload payload) {
