@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 @Test(groups = "unit", testName = "AzureBlobStore")
 public class AzureBlobStoreTest {
     
-    private static final Pattern VALIDATION_PATTERN = Pattern.compile("[a-zA-Z0-9\\-_=]*");
+    private static final Pattern VALIDATION_PATTERN = Pattern.compile("^[a-zA-Z0-9+/=]*$");
 
     public void testMakeBlockId() {
        // how can i achieve something like a junit5 parametrized test in testng?
