@@ -42,6 +42,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 
 import jakarta.annotation.Resource;
+import jakarta.ws.rs.core.Response.Status;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -640,29 +641,39 @@ public final class LocalBlobStore implements BlobStore {
          if (eTag != null) {
             eTag = maybeQuoteETag(eTag);
             if (options.getIfMatch() != null) {
-               if (!eTag.equals(maybeQuoteETag(options.getIfMatch())))
-                  throw returnResponseException(412);
+               if (!eTag.equals(maybeQuoteETag(options.getIfMatch()))) {
+                  HttpResponse response = HttpResponse.builder().statusCode(Status.PRECONDITION_FAILED.getStatusCode()).addHeader(HttpHeaders.ETAG, eTag).build();
+                  throw new HttpResponseException(new HttpCommand(HttpRequest.builder().method("GET").endpoint("http://stub").build()), response);
+               }
             }
             if (options.getIfNoneMatch() != null) {
-               if (eTag.equals(maybeQuoteETag(options.getIfNoneMatch())))
-                  throw returnResponseException(304);
+               if (eTag.equals(maybeQuoteETag(options.getIfNoneMatch()))) {
+                  HttpResponse response = HttpResponse.builder().statusCode(Status.NOT_MODIFIED.getStatusCode()).addHeader(HttpHeaders.ETAG, eTag).build();
+                  throw new HttpResponseException(new HttpCommand(HttpRequest.builder().method("GET").endpoint("http://stub").build()), response);
+               }
             }
          }
          if (options.getIfModifiedSince() != null) {
             Date modifiedSince = options.getIfModifiedSince();
             if (blob.getMetadata().getLastModified().before(modifiedSince)) {
-               HttpResponse response = HttpResponse.builder().statusCode(304).build();
+               HttpResponse.Builder response = HttpResponse.builder().statusCode(Status.NOT_MODIFIED.getStatusCode());
+               if (eTag != null) {
+                  response.addHeader(HttpHeaders.ETAG, eTag);
+               }
                throw new HttpResponseException(String.format("%1$s is before %2$s", blob
-                     .getMetadata().getLastModified(), modifiedSince), null, response);
+                     .getMetadata().getLastModified(), modifiedSince), null, response.build());
             }
 
          }
          if (options.getIfUnmodifiedSince() != null) {
             Date unmodifiedSince = options.getIfUnmodifiedSince();
             if (blob.getMetadata().getLastModified().after(unmodifiedSince)) {
-               HttpResponse response = HttpResponse.builder().statusCode(412).build();
+               HttpResponse.Builder response = HttpResponse.builder().statusCode(Status.PRECONDITION_FAILED.getStatusCode());
+               if (eTag != null) {
+                  response.addHeader(HttpHeaders.ETAG, eTag);
+               }
                throw new HttpResponseException(String.format("%1$s is after %2$s", blob
-                     .getMetadata().getLastModified(), unmodifiedSince), null, response);
+                     .getMetadata().getLastModified(), unmodifiedSince), null, response.build());
             }
          }
          blob = copyBlob(blob);
