@@ -33,6 +33,7 @@ import org.jclouds.aws.ec2.xml.CreateRouteTableResponseHandler;
 import org.jclouds.aws.ec2.xml.DescribeRouteTablesResponseHandler;
 import org.jclouds.aws.ec2.xml.ReturnValueHandler;
 import org.jclouds.aws.filters.FormSigner;
+import org.jclouds.ec2.binders.BindFiltersToIndexedFormParams;
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.location.functions.RegionToEndpointOrProviderIfNull;
 import org.jclouds.rest.annotations.BinderParam;
@@ -44,6 +45,7 @@ import org.jclouds.rest.annotations.VirtualHost;
 import org.jclouds.rest.annotations.XMLResponseParser;
 
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Multimap;
 
 /**
  * Provides access to AWS Route Table services.
@@ -267,6 +269,10 @@ public interface RouteTableApi {
    /**
     * Describes route tables.
     * @param region The region to search for route tables.
+    * @param routeTableIds One or more identifiers for existing RouteTable instances
+    *
+    * @return a set of RouteTable objects that matched the routeTableIds passed
+    *
     */
    @Named("DescribeRouteTables")
    @POST
@@ -276,4 +282,21 @@ public interface RouteTableApi {
    FluentIterable<RouteTable> describeRouteTables(
       @EndpointParam(parser = RegionToEndpointOrProviderIfNull.class) @Nullable String region,
       @BinderParam(BindRouteTableIdsToIndexedFormParams.class) String... routeTableIds);
+
+   /**
+    * Describes route tables.
+    * @param region The region to search for route tables.
+    * @param filter One or more filters utilized to search for RouteTable instances
+    *
+    * @link <a href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeRouteTables.html">...</a>
+    */
+   @Named("DescribeRouteTables")
+   @POST
+   @FormParams(keys = ACTION, values = "DescribeRouteTables")
+   @XMLResponseParser(DescribeRouteTablesResponseHandler.class)
+   @Fallback(Fallbacks.EmptyFluentIterableOnNotFoundOr404.class)
+   FluentIterable<RouteTable> describeRouteTablesWithFilter(
+           @EndpointParam(parser = RegionToEndpointOrProviderIfNull.class) @Nullable String region,
+           @BinderParam(BindFiltersToIndexedFormParams.class) Multimap<String, String> filter);
+
 }
