@@ -41,7 +41,7 @@ public class LoadPublicIpForInstanceOrNullTest {
 
       expect(client.getElasticIPAddressApi()).andReturn((Optional) Optional.of(ipClient)).atLeastOnce();
       expect(ipClient.describeAddressesInRegion("region")).andReturn(
-            ImmutableSet.<PublicIpInstanceIdPair> of(new PublicIpInstanceIdPair("region", "1.1.1.1", "i-blah", null)))
+            ImmutableSet.<PublicIpInstanceIdPair> of(new PublicIpInstanceIdPair("region", "1.1.1.1", "i-blah", null, null)))
             .atLeastOnce();
 
       replay(client);
@@ -50,6 +50,27 @@ public class LoadPublicIpForInstanceOrNullTest {
       LoadPublicIpForInstanceOrNull parser = new LoadPublicIpForInstanceOrNull(client);
 
       assertEquals(parser.load(new RegionAndName("region", "i-blah")), "1.1.1.1");
+
+      verify(client);
+      verify(ipClient);
+   }
+
+   @Test
+   public void testReturnsPublicIpAndAllocIdOnMatch() throws Exception {
+      EC2Api client = createMock(EC2Api.class);
+      ElasticIPAddressApi ipClient = createMock(ElasticIPAddressApi.class);
+
+      expect(client.getElasticIPAddressApi()).andReturn((Optional) Optional.of(ipClient)).atLeastOnce();
+      expect(ipClient.describeAddressesInRegion("region")).andReturn(
+                      ImmutableSet.<PublicIpInstanceIdPair> of(new PublicIpInstanceIdPair("region", "1.1.1.1", "i-blah", "a-foobar", null)))
+              .atLeastOnce();
+
+      replay(client);
+      replay(ipClient);
+
+      LoadAllocationIdForInstanceOrNull parser = new LoadAllocationIdForInstanceOrNull(client);
+
+      assertEquals(parser.load(new RegionAndName("region", "i-blah")), "a-foobar");
 
       verify(client);
       verify(ipClient);
@@ -85,7 +106,7 @@ public class LoadPublicIpForInstanceOrNullTest {
       expect(client.getElasticIPAddressApi()).andReturn((Optional) Optional.of(ipClient)).atLeastOnce();
 
       expect(ipClient.describeAddressesInRegion("region")).andReturn(
-            ImmutableSet.<PublicIpInstanceIdPair> of(new PublicIpInstanceIdPair("region", "1.1.1.1", null, null)))
+            ImmutableSet.<PublicIpInstanceIdPair> of(new PublicIpInstanceIdPair("region", "1.1.1.1", null, null, null)))
                .atLeastOnce();
 
       replay(client);

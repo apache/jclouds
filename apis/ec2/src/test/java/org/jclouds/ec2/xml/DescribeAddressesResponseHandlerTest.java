@@ -47,7 +47,7 @@ public class DescribeAddressesResponseHandlerTest extends BaseEC2HandlerTest {
       Set<PublicIpInstanceIdPair> result = factory.create(handler).parse(is);
       
       assertEquals(result, ImmutableSet.of(new PublicIpInstanceIdPair(defaultRegion, "67.202.55.255", "i-f15ebb98",
-            Collections.<String, String> emptyMap()), new PublicIpInstanceIdPair(defaultRegion, "67.202.55.233", null,
+            null, Collections.<String, String> emptyMap()), new PublicIpInstanceIdPair(defaultRegion, "67.202.55.233", null, null,
             Collections.<String, String> emptyMap())));
    }
    
@@ -62,9 +62,9 @@ public class DescribeAddressesResponseHandlerTest extends BaseEC2HandlerTest {
 
       assertEquals(result.size(), 3);
       assertEquals(result, ImmutableSet.of(new PublicIpInstanceIdPair(defaultRegion, "67.202.55.255", "i-f15ebb98",
-            Collections.<String, String> emptyMap()), new PublicIpInstanceIdPair(defaultRegion, "67.202.55.233", null,
-            Collections.<String, String> emptyMap()), new PublicIpInstanceIdPair(defaultRegion, "54.76.27.192", null,
-            ImmutableMap.of("Name", "value-fa97d19c", "Empty", ""))));
+            null, Collections.<String, String> emptyMap()), new PublicIpInstanceIdPair(defaultRegion, "67.202.55.233", null,
+            null, Collections.<String, String> emptyMap()), new PublicIpInstanceIdPair(defaultRegion, "54.76.27.192", null,
+            null, ImmutableMap.of("Name", "value-fa97d19c", "Empty", ""))));
    }
 
    private void addDefaultRegionToHandler(final ParseSax.HandlerWithResult<?> handler) {
