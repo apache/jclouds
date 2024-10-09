@@ -143,7 +143,16 @@ public class Reflection2Test {
          .add("last")
          .add("subSet")
          .add("tailSet")
+         // Java 21 methods
+         .add("getFirst")
+         .add("getLast")
+         .add("addFirst")
+         .add("addLast")
+         .add("removeFirst")
+         .add("removeLast")
+         .add("reversed")
          .build();
+
 
    public void testMethods() {
       Set<String> methodNames = FluentIterable.from(methods(Set.class)).transform(invokableToName)
