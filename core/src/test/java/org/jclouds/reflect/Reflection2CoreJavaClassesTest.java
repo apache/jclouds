@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ReflectPermission;
 
 import org.easymock.IAnswer;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -70,7 +71,12 @@ public class Reflection2CoreJavaClassesTest {
             }
          });
       replay(mockSecurityManager);
-      System.setSecurityManager(mockSecurityManager);
+      try {
+         System.setSecurityManager(mockSecurityManager);
+      } catch (UnsupportedOperationException uoe) {
+         throw new SkipException("Not compatible with Java 21", uoe);
+      }
+
       securityManagerOverridden = true;
       methods(Enum.class);
    }
