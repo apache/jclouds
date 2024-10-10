@@ -44,6 +44,7 @@ public class DescribeAddressesResponseHandler extends HandlerForGeneratedRequest
    @Inject
    @Region
    Supplier<String> defaultRegion;
+   private String allocationId;
    private String instanceId;
    private final TagSetHandler tagSetHandler;
    private boolean inTagSet;
@@ -80,14 +81,17 @@ public class DescribeAddressesResponseHandler extends HandlerForGeneratedRequest
          ipAddress = currentOrNull();
       } else if (qName.equals("instanceId")) {
          instanceId = currentOrNull();
+      } else if (qName.equals("allocationId")) {
+         allocationId = currentOrNull();
       } else if (qName.equals("item")) {
          String region = AWSUtils.findRegionInArgsOrNull(getRequest());
          if (region == null)
             region = defaultRegion.get();
 
-         pairs.add(new PublicIpInstanceIdPair(region, ipAddress, instanceId, tagResults));
+         pairs.add(new PublicIpInstanceIdPair(region, ipAddress, instanceId, allocationId, tagResults));
          ipAddress = null;
          instanceId = null;
+         allocationId = null;
          tagResults = null;
       }
 

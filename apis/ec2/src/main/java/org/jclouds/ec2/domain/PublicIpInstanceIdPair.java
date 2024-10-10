@@ -34,13 +34,15 @@ public class PublicIpInstanceIdPair implements Comparable<PublicIpInstanceIdPair
    private final String region;
    @Nullable
    private final String instanceId;
+   private final String allocationId;
    private final String publicIp;
    private final Map<String, String> tags;
 
    public PublicIpInstanceIdPair(final String region, final String publicIp, @Nullable final String instanceId,
-         @Nullable final Map<String, String> tags) {
+         @Nullable final String allocationId, @Nullable final Map<String, String> tags) {
       this.region = checkNotNull(region, "region");
       this.instanceId = instanceId;
+      this.allocationId = allocationId;
       this.publicIp = checkNotNull(publicIp, "publicIp");
       this.tags = tags == null ? ImmutableMap.<String, String> of() : ImmutableMap.copyOf(tags);
    }
@@ -72,6 +74,13 @@ public class PublicIpInstanceIdPair implements Comparable<PublicIpInstanceIdPair
    }
 
    /**
+    * The ID of the IP allocation (e.g., eipalloc-0ca038968f2a2c986).
+    */
+   public String getAllocationId() {
+      return allocationId;
+   }
+
+   /**
     * The public IP address.
     */
    public String getPublicIp() {
@@ -87,6 +96,7 @@ public class PublicIpInstanceIdPair implements Comparable<PublicIpInstanceIdPair
       final int prime = 31;
       int result = 1;
       result = prime * result + ((instanceId == null) ? 0 : instanceId.hashCode());
+      result = prime * result + ((allocationId == null) ? 0 : allocationId.hashCode());
       result = prime * result + ((publicIp == null) ? 0 : publicIp.hashCode());
       result = prime * result + ((region == null) ? 0 : region.hashCode());
       result = prime * result + ((tags == null) ? 0 : tags.hashCode());
@@ -106,6 +116,11 @@ public class PublicIpInstanceIdPair implements Comparable<PublicIpInstanceIdPair
          if (other.instanceId != null)
             return false;
       } else if (!instanceId.equals(other.instanceId))
+         return false;
+      if (allocationId == null) {
+         if (other.allocationId != null)
+            return false;
+      } else if (!allocationId.equals(other.allocationId))
          return false;
       if (publicIp == null) {
          if (other.publicIp != null)
