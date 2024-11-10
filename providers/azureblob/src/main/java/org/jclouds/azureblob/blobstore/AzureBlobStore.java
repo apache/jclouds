@@ -458,7 +458,7 @@ public class AzureBlobStore extends BaseBlobStore {
    public List<MultipartPart> listMultipartUpload(MultipartUpload mpu) {
       ListBlobBlocksResponse response;
       try {
-         response = sync.getBlockList(mpu.containerName(), mpu.blobName());
+         response = sync.getBlockList(mpu.containerName(), mpu.blobName(), "uncommitted");
       } catch (KeyNotFoundException knfe) {
          return ImmutableList.<MultipartPart>of();
       }

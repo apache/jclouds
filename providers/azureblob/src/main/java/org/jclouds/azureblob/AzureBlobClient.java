@@ -394,6 +394,7 @@ public interface AzureBlobClient extends Closeable {
          @PathParam("name") @ParamParser(BlobName.class) @BinderParam(BindAzureBlobMetadataToMultipartRequest.class) AzureBlob object,
          @BinderParam(BindAzureBlocksToRequest.class) List<String> blockIdList);
 
+   @Deprecated
    @Named("GetBlockList")
    @GET
    @Path("{container}/{name}")
@@ -403,6 +404,16 @@ public interface AzureBlobClient extends Closeable {
          @PathParam("container") @ParamValidators(ContainerNameValidator.class) String container,
          @PathParam("name") String name);
 
+   @Named("GetBlockList")
+   @GET
+   @Path("{container}/{name}")
+   @XMLResponseParser(BlobBlocksResultsHandler.class)
+   @QueryParams(keys = { "comp" }, values = { "blocklist" })
+   ListBlobBlocksResponse getBlockList(
+         @PathParam("container") @ParamValidators(ContainerNameValidator.class) String container,
+         @PathParam("name") String name,
+         // valid values are committed, uncommitted, or all
+         @QueryParam("blocklisttype") String blockListType);
 
    /**
     * The Get Blob Properties operation returns all user-defined metadata, standard HTTP properties,
