@@ -803,7 +803,7 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
 
    @Test(groups = { "integration", "live" })
    public void testPutBlobTierInfrequent() throws Exception {
-      testPutBlobTierHelper(Tier.INFREQUENT, new PutOptions());
+      testPutBlobTierHelper(Tier.COOL, new PutOptions());
    }
 
    @Test(groups = { "integration", "live" })
@@ -818,7 +818,7 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
 
    @Test(groups = { "integration", "live" })
    public void testPutBlobTierInfrequentMultipart() throws Exception {
-      testPutBlobTierHelper(Tier.INFREQUENT, new PutOptions().multipart(true));
+      testPutBlobTierHelper(Tier.COOL, new PutOptions().multipart(true));
    }
 
    @Test(groups = { "integration", "live" })
