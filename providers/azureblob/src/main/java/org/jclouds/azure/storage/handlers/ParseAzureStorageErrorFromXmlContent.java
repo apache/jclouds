@@ -97,6 +97,11 @@ public class ParseAzureStorageErrorFromXmlContent implements HttpErrorHandler {
    protected Exception refineException(HttpCommand command, HttpResponse response, Exception exception,
             AzureStorageError error, String message) {
       switch (response.getStatusCode()) {
+         case 400:
+            if (error.getCode().equals("InvalidQueryParameterValue")) {
+                exception = new IllegalArgumentException(message, exception);
+            }
+            break;
          case 401:
             exception = new AuthorizationException(message, exception);
             break;
