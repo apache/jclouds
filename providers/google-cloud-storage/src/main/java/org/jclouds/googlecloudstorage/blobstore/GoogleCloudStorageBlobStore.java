@@ -250,10 +250,12 @@ public final class GoogleCloudStorageBlobStore extends BaseBlobStore {
       org.jclouds.http.options.GetOptions httpOptions = blob2ObjectGetOptions.apply(options);
       MutableBlobMetadata metadata = objectToBlobMetadata.apply(gcsObject);
       Blob blob = new BlobImpl(metadata);
-      // TODO: Does getObject not get the payload?!
       Payload payload = api.getObjectApi().download(container, Strings2.urlEncode(name), httpOptions).getPayload();
+      long contentLength = payload.getContentMetadata().getContentLength();
       payload.setContentMetadata(metadata.getContentMetadata()); // Doing this first retains it on setPayload.
       blob.setPayload(payload);
+      // getObject() returns the full object length but download() could be smaller due to range requests.
+      payload.getContentMetadata().setContentLength(contentLength);
       return blob;
    }
 
