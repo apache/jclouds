@@ -45,7 +45,7 @@ import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.oauth.v2.filters.OAuthFilter;
 import org.jclouds.rest.annotations.BinderParam;
 import org.jclouds.rest.annotations.Fallback;
-import org.jclouds.rest.annotations.PATCH;
+import org.jclouds.rest.annotations.Headers;
 import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SkipEncoding;
 import org.jclouds.rest.binders.BindToJsonPayload;
@@ -250,7 +250,8 @@ public interface BucketApi {
     * @return If successful, this method returns the updated {@link Bucket} resource.
     */
    @Named("Bucket:patch")
-   @PATCH
+   @POST
+   @Headers(keys = "X-HTTP-Method-Override", values = "PATCH")
    @Produces(APPLICATION_JSON)
    @Path("/b/{bucket}")
    @Fallback(NullOnNotFoundOr404.class)
@@ -272,7 +273,8 @@ public interface BucketApi {
     * @return If successful, this method returns the updated {@link Bucket} resource.
     */
    @Named("Bucket:patch")
-   @PATCH
+   @POST
+   @Headers(keys = "X-HTTP-Method-Override", values = "PATCH")
    @Produces(APPLICATION_JSON)
    @Path("/b/{bucket}")
    @Fallback(NullOnNotFoundOr404.class)

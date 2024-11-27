@@ -39,7 +39,7 @@ import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.oauth.v2.filters.OAuthFilter;
 import org.jclouds.rest.annotations.BinderParam;
 import org.jclouds.rest.annotations.Fallback;
-import org.jclouds.rest.annotations.PATCH;
+import org.jclouds.rest.annotations.Headers;
 import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;
 import org.jclouds.rest.binders.BindToJsonPayload;
@@ -282,7 +282,8 @@ public interface ObjectAccessControlsApi {
     * @return an {@link ObjectAccessControls }
     */
    @Named("ObjectAccessControls:patch")
-   @PATCH
+   @POST
+   @Headers(keys = "X-HTTP-Method-Override", values = "PATCH")
    @Produces(APPLICATION_JSON)
    @Path("/b/{bucket}/o/{object}/acl/{entity}")
    ObjectAccessControls patchObjectAccessControls(@PathParam("bucket") String bucketName,
@@ -307,7 +308,8 @@ public interface ObjectAccessControlsApi {
     * @return {@link ObjectAccessControls }
     */
    @Named("ObjectAccessControls:patch")
-   @PATCH
+   @POST
+   @Headers(keys = "X-HTTP-Method-Override", values = "PATCH")
    @Produces(APPLICATION_JSON)
    @Path("/b/{bucket}/o/{object}/acl/{entity}")
    ObjectAccessControls patchObjectAccessControls(@PathParam("bucket") String bucketName,

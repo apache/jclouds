@@ -167,10 +167,11 @@ public class BucketAccessControlsApiExpectTest extends BaseGoogleCloudStorageApi
    public void testPatchBucketAclResponseIs2xx() throws Exception {
       HttpRequest patchRequest = HttpRequest
                .builder()
-               .method("PATCH")
+               .method("POST")
                .endpoint("https://www.googleapis.com/storage/v1/b/jcloudstestbucket/acl/allUsers")
                .addHeader("Accept", "application/json")
                .addHeader("Authorization", "Bearer " + TOKEN)
+               .addHeader("X-HTTP-Method-Override", "PATCH")
                .payload(payloadFromResourceWithContentType("/bucket_acl_update_initial.json",
                         MediaType.APPLICATION_JSON)).build();
 

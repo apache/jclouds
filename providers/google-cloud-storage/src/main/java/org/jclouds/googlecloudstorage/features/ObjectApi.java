@@ -54,8 +54,8 @@ import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.oauth.v2.filters.OAuthFilter;
 import org.jclouds.rest.annotations.BinderParam;
 import org.jclouds.rest.annotations.Fallback;
+import org.jclouds.rest.annotations.Headers;
 import org.jclouds.rest.annotations.MapBinder;
-import org.jclouds.rest.annotations.PATCH;
 import org.jclouds.rest.annotations.PayloadParam;
 import org.jclouds.rest.annotations.QueryParams;
 import org.jclouds.rest.annotations.RequestFilters;
@@ -310,7 +310,8 @@ public interface ObjectApi {
     * @return  a {@link GoogleCloudStorageObject}
     */
    @Named("Object:patch")
-   @PATCH
+   @POST
+   @Headers(keys = "X-HTTP-Method-Override", values = "PATCH")
    @Consumes(APPLICATION_JSON)
    @Produces(APPLICATION_JSON)
    @Path("storage/v1/b/{bucket}/o/{object}")
@@ -334,7 +335,8 @@ public interface ObjectApi {
     * @return a {@link GoogleCloudStorageObject}
     */
    @Named("Object:patch")
-   @PUT
+   @POST
+   @Headers(keys = "X-HTTP-Method-Override", values = "PATCH")
    @Consumes(APPLICATION_JSON)
    @Produces(APPLICATION_JSON)
    @Path("storage/v1/b/{bucket}/o/{object}")

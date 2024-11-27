@@ -40,7 +40,7 @@ import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.oauth.v2.filters.OAuthFilter;
 import org.jclouds.rest.annotations.BinderParam;
 import org.jclouds.rest.annotations.Fallback;
-import org.jclouds.rest.annotations.PATCH;
+import org.jclouds.rest.annotations.Headers;
 import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;
 import org.jclouds.rest.annotations.SkipEncoding;
@@ -170,7 +170,8 @@ public interface DefaultObjectAccessControlsApi {
     *           Name of the bucket which contains the object
     */
    @Named("DefaultObjectAccessControls:patch")
-   @PATCH
+   @POST
+   @Headers(keys = "X-HTTP-Method-Override", values = "PATCH")
    @Produces(APPLICATION_JSON)
    @Path("/b/{bucket}/defaultObjectAcl/{entity}")
    @Fallback(NullOnNotFoundOr404.class)

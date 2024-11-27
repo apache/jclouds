@@ -47,6 +47,8 @@ import com.google.common.collect.ImmutableList;
          return fullControlScopes();
       } else if (input.getMethod().equalsIgnoreCase("PUT") || input.getMethod().equalsIgnoreCase("PATCH")) {
          return fullControlScopes();
+      } else if ("PATCH".equalsIgnoreCase(input.getFirstHeaderOrNull("X-HTTP-Method-Override"))) {
+         return fullControlScopes();
       }
       return readOrWriteScopes().forRequest(input);
    }
