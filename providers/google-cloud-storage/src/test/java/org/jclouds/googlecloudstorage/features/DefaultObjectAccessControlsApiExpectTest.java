@@ -198,10 +198,11 @@ public class DefaultObjectAccessControlsApiExpectTest extends BaseGoogleCloudSto
    public void testPatchDefaultObjectAclWithNoOptionsResponseIs2xx() throws Exception {
       HttpRequest update = HttpRequest
                .builder()
-               .method("PATCH")
+               .method("POST")
                .endpoint("https://www.googleapis.com/storage/v1/b/jcloudstestbucket/defaultObjectAcl/allUsers")
                .addHeader("Accept", "application/json")
                .addHeader("Authorization", "Bearer " + TOKEN)
+               .addHeader("X-HTTP-Method-Override", "PATCH")
                .payload(payloadFromResourceWithContentType("/default_object_acl_update_request_payload.json",
                         MediaType.APPLICATION_JSON)).build();
 

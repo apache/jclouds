@@ -212,10 +212,11 @@ public class BucketApiExpectTest extends BaseGoogleCloudStorageApiExpectTest {
 
       HttpRequest patchRequest = HttpRequest
                .builder()
-               .method("PATCH")
+               .method("POST")
                .endpoint("https://www.googleapis.com/storage/v1/b/" + EXPECTED_TEST_BUCKET)
                .addHeader("Accept", "application/json")
                .addHeader("Authorization", "Bearer " + TOKEN)
+               .addHeader("X-HTTP-Method-Override", "PATCH")
                .payload(payloadFromResourceWithContentType("/bucket_update_request_payload.json",
                         MediaType.APPLICATION_JSON)).build();
 

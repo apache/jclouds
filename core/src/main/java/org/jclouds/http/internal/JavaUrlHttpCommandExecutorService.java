@@ -242,6 +242,8 @@ public class JavaUrlHttpCommandExecutorService extends BaseHttpCommandExecutorSe
          try {
             // SSL connections may have the HttpURLConnection wrapped inside
             delegateField = connectionClass.getDeclaredField("delegate");
+            // TODO: Fails on modern Java versions:
+            // Unable to make field private final sun.net.www.protocol.https.DelegateHttpsURLConnection sun.net.www.protocol.https.HttpsURLConnectionImpl.delegate accessible: module java.base does not "opens sun.net.www.protocol.https" to unnamed module @1ed4004b connecting to PATCH
             delegateField.setAccessible(true);
             HttpURLConnection delegateConnection = (HttpURLConnection) delegateField.get(httpURLConnection);
             setRequestMethodBypassingJREMethodLimitation(delegateConnection, method);

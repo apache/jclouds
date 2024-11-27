@@ -182,7 +182,7 @@ public class ObjectApiMockTest extends BaseGoogleCloudStorageApiMockTest {
 
       assertEquals(objectApi().patchObject("test", "file_name", template),
             new ParseGoogleCloudStorageObject().expected());
-      assertSent(server, "PATCH", "/storage/v1/b/test/o/file_name", APPLICATION_JSON,
+      assertSent(server, "POST", "/storage/v1/b/test/o/file_name", APPLICATION_JSON,
             "{" +
             "  \"name\": \"file_name\"," +
             "  \"size\": 1000," +

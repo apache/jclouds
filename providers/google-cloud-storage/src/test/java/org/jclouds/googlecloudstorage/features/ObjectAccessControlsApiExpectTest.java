@@ -231,10 +231,11 @@ public class ObjectAccessControlsApiExpectTest extends BaseGoogleCloudStorageApi
    public void testPatchObjectaclWithNoOptionsResponseIs2xx() throws Exception {
       HttpRequest patchRequest = HttpRequest
                .builder()
-               .method("PATCH")
+               .method("POST")
                .endpoint("https://www.googleapis.com/storage/v1/b/jcloudstestbucket/o/foo.txt/acl/allUsers")
                .addHeader("Accept", "application/json")
                .addHeader("Authorization", "Bearer " + TOKEN)
+               .addHeader("X-HTTP-Method-Override", "PATCH")
                .payload(payloadFromResourceWithContentType("/object_acl_request_payload.json",
                         MediaType.APPLICATION_JSON)).build();
 
@@ -253,11 +254,12 @@ public class ObjectAccessControlsApiExpectTest extends BaseGoogleCloudStorageApi
    public void testPatchObjectaclWithOptionsResponseIs2xx() throws Exception {
       HttpRequest patchRequest = HttpRequest
                .builder()
-               .method("PATCH")
+               .method("POST")
                .endpoint("https://www.googleapis.com/storage/v1/b/jcloudstestbucket/o/foo.txt/acl/allUsers")
                .addQueryParam("generation", "100")
                .addHeader("Accept", "application/json")
                .addHeader("Authorization", "Bearer " + TOKEN)
+               .addHeader("X-HTTP-Method-Override", "PATCH")
                .payload(payloadFromResourceWithContentType("/object_acl_request_payload.json",
                         MediaType.APPLICATION_JSON)).build();
 
