@@ -26,9 +26,9 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class Warning {
 
-   public abstract String code();
+   @Nullable public abstract String code();
    @Nullable public abstract String message();
-   public abstract List<KeyValuePair> data();
+   @Nullable public abstract List<KeyValuePair> data();
 
    @SerializedNames({"code", "message", "data"})
    public static Warning create(String code, String message, List<KeyValuePair> data){
