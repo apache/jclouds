@@ -253,7 +253,7 @@ public class RequestAuthorizeSignatureV2 implements RequestAuthorizeSignature, R
       // ...however, there are a few exceptions that must be included in the
       // signed URI.
       if (request.getEndpoint().getQuery() != null) {
-         Multimap<String, String> params = queryParser().apply(request.getEndpoint().getQuery());
+         Multimap<String, String> params = queryParser().apply(request.getEndpoint().getRawQuery());
          char separator = '?';
          for (String paramName : Ordering.natural().sortedCopy(params.keySet())) {
             // Skip any parameters that aren't part of the canonical signed string
