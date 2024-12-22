@@ -96,7 +96,8 @@ public final class ListMultipartUploadsHandler extends ParseSax.HandlerWithResul
       } else if (qName.equals("UploadId")) {
          uploadId = currentOrNull(currentText);
       } else if (qName.equals("StorageClass")) {
-         storageClass = ObjectMetadata.StorageClass.valueOf(currentOrNull(currentText));
+         String currentValue = currentOrNull(currentText);
+         storageClass = currentValue != null ? ObjectMetadata.StorageClass.valueOf(currentValue) : ObjectMetadata.StorageClass.STANDARD;
       } else if (qName.equals("Initiated")) {
          initiated = dateParser.iso8601DateOrSecondsDateParse(currentOrNull(currentText));
       } else if (qName.equals("Upload")) {
