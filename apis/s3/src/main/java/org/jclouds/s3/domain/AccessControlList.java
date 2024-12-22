@@ -209,8 +209,9 @@ public class AccessControlList {
     */
    protected Collection<Grant> findGrantsForGrantee(final String granteeId) {
       return Collections2.filter(grants, new Predicate<Grant>() {
+         @Override
          public boolean apply(Grant g) {
-            return g.getGrantee().getIdentifier().equals(granteeId);
+            return granteeId.equals(g.getGrantee().getIdentifier());
          }
       });
    }
