@@ -36,7 +36,6 @@ import org.jclouds.s3.domain.ObjectMetadata.StorageClass;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
-import com.google.common.net.HttpHeaders;
 
 /** This parses {@ link MutableObjectMetadata} from HTTP headers. */
 public class ParseObjectMetadataFromHeaders implements Function<HttpResponse, MutableObjectMetadata>,
@@ -75,7 +74,7 @@ public class ParseObjectMetadataFromHeaders implements Function<HttpResponse, Mu
       }
       // amz has an etag, but matches syntax for usermetadata
       to.getUserMetadata().remove("object-etag");
-      to.setCacheControl(from.getFirstHeaderOrNull(HttpHeaders.CACHE_CONTROL));
+      to.setCacheControl(from.getPayload().getContentMetadata().getCacheControl());
       String storageClass = from.getFirstHeaderOrNull("x-amz-storage-class");
       if (storageClass != null) {
          to.setStorageClass(StorageClass.valueOf(storageClass));
