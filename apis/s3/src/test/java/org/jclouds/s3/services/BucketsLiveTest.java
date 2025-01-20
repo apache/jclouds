@@ -25,14 +25,12 @@ import static org.jclouds.s3.domain.AccessControlList.Permission.READ;
 import static org.jclouds.s3.domain.AccessControlList.Permission.READ_ACP;
 import static org.jclouds.s3.domain.AccessControlList.Permission.WRITE;
 import static org.jclouds.s3.domain.AccessControlList.Permission.WRITE_ACP;
-import static org.jclouds.s3.domain.CannedAccessPolicy.PUBLIC_READ;
 import static org.jclouds.s3.domain.Payer.BUCKET_OWNER;
 import static org.jclouds.s3.domain.Payer.REQUESTER;
 import static org.jclouds.s3.options.ListBucketOptions.Builder.afterMarker;
 import static org.jclouds.s3.options.ListBucketOptions.Builder.delimiter;
 import static org.jclouds.s3.options.ListBucketOptions.Builder.maxResults;
 import static org.jclouds.s3.options.ListBucketOptions.Builder.withPrefix;
-import static org.jclouds.s3.options.PutBucketOptions.Builder.withBucketAcl;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
@@ -53,6 +51,7 @@ import org.jclouds.s3.domain.AccessControlList.EmailAddressGrantee;
 import org.jclouds.s3.domain.AccessControlList.Grant;
 import org.jclouds.s3.domain.BucketLogging;
 import org.jclouds.s3.domain.BucketMetadata;
+import org.jclouds.s3.domain.CannedAccessPolicy;
 import org.jclouds.s3.domain.ListBucketResponse;
 import org.jclouds.s3.domain.S3Object;
 import org.jclouds.util.Strings2;
@@ -154,7 +153,9 @@ public class BucketsLiveTest extends BaseBlobStoreIntegrationTest {
    public void testPublicReadAccessPolicy() throws Exception {
       String bucketName = getScratchContainerName();
       try {
-         getApi().putBucketInRegion(null, bucketName, withBucketAcl(PUBLIC_READ));
+         getApi().putBucketInRegion(/*region=*/ null, bucketName);
+         allowPublicReadable(bucketName);
+         getApi().updateBucketCannedACL(bucketName, CannedAccessPolicy.PUBLIC_READ);
          AccessControlList acl = getApi().getBucketACL(bucketName);
          assertTrue(acl.hasPermission(ALL_USERS, READ), acl.toString());
          // TODO: I believe that the following should work based on the above acl assertion passing.
@@ -209,11 +210,15 @@ public class BucketsLiveTest extends BaseBlobStoreIntegrationTest {
       }
    }
 
+   protected void allowPublicReadable(String containerName) {
+   }
+
    @Test(groups = {"fails-on-s3proxy"})
    public void testBucketLogging() throws Exception {
       final String bucketName = getContainerName();
       final String targetBucket = getContainerName();
       try {
+         allowPublicReadable(targetBucket);
          assertNull(getApi().getBucketLogging(bucketName));
 
          setupAclForBucketLoggingTarget(targetBucket);

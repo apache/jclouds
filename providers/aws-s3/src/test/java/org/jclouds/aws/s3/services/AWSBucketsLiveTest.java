@@ -16,7 +16,6 @@
  */
 package org.jclouds.aws.s3.services;
 
-import static org.jclouds.s3.options.PutBucketOptions.Builder.withBucketAcl;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -25,6 +24,7 @@ import org.jclouds.s3.domain.AccessControlList;
 import org.jclouds.s3.domain.AccessControlList.GroupGranteeURI;
 import org.jclouds.s3.domain.AccessControlList.Permission;
 import org.jclouds.s3.domain.CannedAccessPolicy;
+import org.jclouds.s3.domain.PublicAccessBlockConfiguration;
 import org.jclouds.s3.services.BucketsLiveTest;
 import org.testng.annotations.Test;
 
@@ -34,6 +34,13 @@ import com.google.common.base.Throwables;
 public class AWSBucketsLiveTest extends BucketsLiveTest {
    public AWSBucketsLiveTest() {
       provider = "aws-s3";
+   }
+
+   @Override
+   protected void allowPublicReadable(String containerName) {
+      getApi().putBucketOwnershipControls(containerName, "ObjectWriter");
+      getApi().putPublicAccessBlock(containerName, PublicAccessBlockConfiguration.create(
+            /*blockPublicAcls=*/ false, /*ignorePublicAcls=*/ false, /*blockPublicPolicy=*/ false, /*restrictPublicBuckets=*/ false));
    }
 
    public void testDefaultBucketLocation() throws Exception {
@@ -53,7 +60,9 @@ public class AWSBucketsLiveTest extends BucketsLiveTest {
    public void testEu() throws Exception {
       final String bucketName = getScratchContainerName();
       try {
-         getApi().putBucketInRegion(Region.EU_WEST_1, bucketName + "eu", withBucketAcl(CannedAccessPolicy.PUBLIC_READ));
+         getApi().putBucketInRegion(Region.EU_WEST_1, bucketName);
+         allowPublicReadable(bucketName);
+         getApi().updateBucketCannedACL(bucketName, CannedAccessPolicy.PUBLIC_READ);
          assertConsistencyAware(new Runnable() {
             public void run() {
                try {

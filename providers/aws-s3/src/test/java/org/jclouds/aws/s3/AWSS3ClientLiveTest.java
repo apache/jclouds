@@ -37,6 +37,7 @@ import org.jclouds.s3.S3ClientLiveTest;
 import org.jclouds.s3.domain.ListBucketResponse;
 import org.jclouds.s3.domain.ObjectMetadata;
 import org.jclouds.s3.domain.ObjectMetadata.StorageClass;
+import org.jclouds.s3.domain.PublicAccessBlockConfiguration;
 import org.jclouds.s3.domain.S3Object;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeClass;
@@ -54,6 +55,13 @@ public class AWSS3ClientLiveTest extends S3ClientLiveTest {
    @Override
    public AWSS3Client getApi() {
       return view.unwrapApi(AWSS3Client.class);
+   }
+
+   @Override
+   protected void allowPublicReadable(String containerName) {
+      getApi().putBucketOwnershipControls(containerName, "ObjectWriter");
+      getApi().putPublicAccessBlock(containerName, PublicAccessBlockConfiguration.create(
+            /*blockPublicAcls=*/ false, /*ignorePublicAcls=*/ false, /*blockPublicPolicy=*/ false, /*restrictPublicBuckets=*/ false));
    }
 
    @BeforeClass(groups = { "integration", "live" })

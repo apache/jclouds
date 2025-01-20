@@ -163,11 +163,16 @@ public class S3ClientLiveTest extends BaseBlobStoreIntegrationTest {
 
    }
 
+   protected void allowPublicReadable(String containerName) {
+   }
+
    @Test(groups = {"fails-on-s3proxy"})
    public void testCopyCannedAccessPolicyPublic() throws Exception {
       String containerName = getContainerName();
       String destinationContainer = getContainerName();
       try {
+         allowPublicReadable(destinationContainer);
+
          addBlobToContainer(containerName, sourceKey);
          validateContent(containerName, sourceKey);
 
@@ -193,6 +198,7 @@ public class S3ClientLiveTest extends BaseBlobStoreIntegrationTest {
       final String publicReadWriteObjectKey = "public-read-write-acl";
       final String containerName = getContainerName();
       try {
+         allowPublicReadable(containerName);
          S3Object object = getApi().newS3Object();
          object.getMetadata().setKey(publicReadWriteObjectKey);
          object.setPayload("");
@@ -295,6 +301,7 @@ public class S3ClientLiveTest extends BaseBlobStoreIntegrationTest {
       final String publicReadObjectKey = "public-read-acl";
       final String containerName = getContainerName();
       try {
+         allowPublicReadable(containerName);
          S3Object object = getApi().newS3Object();
          object.getMetadata().setKey(publicReadObjectKey);
          object.setPayload("");
@@ -715,6 +722,7 @@ public class S3ClientLiveTest extends BaseBlobStoreIntegrationTest {
    public void testUpdateBucketCannedACL() throws Exception {
       String containerName = getContainerName();
       try {
+         allowPublicReadable(containerName);
          getApi().updateBucketCannedACL(containerName, CannedAccessPolicy.PUBLIC_READ);
          AccessControlList acl = getApi().getBucketACL(containerName);
          assertThat(acl.hasPermission(GroupGranteeURI.ALL_USERS, Permission.READ)).isTrue();
@@ -730,6 +738,7 @@ public class S3ClientLiveTest extends BaseBlobStoreIntegrationTest {
    public void testUpdateObjectCannedACL() throws Exception {
       String containerName = getContainerName();
       try {
+         allowPublicReadable(containerName);
          String key = "testUpdateObjectCannedACL";
          S3Object object = getApi().newS3Object();
          object.getMetadata().setKey(key);
