@@ -29,6 +29,7 @@ import org.jclouds.aws.s3.blobstore.options.AWSS3PutObjectOptions;
 import org.jclouds.aws.s3.blobstore.options.AWSS3PutOptions;
 import org.jclouds.blobstore.BlobStoreContext;
 import org.jclouds.blobstore.domain.Blob;
+import org.jclouds.blobstore.domain.ContainerAccess;
 import org.jclouds.blobstore.domain.PageSet;
 import org.jclouds.blobstore.domain.StorageMetadata;
 import org.jclouds.blobstore.functions.BlobToHttpGetOptions;
@@ -47,7 +48,9 @@ import org.jclouds.s3.blobstore.functions.ContainerToBucketListOptions;
 import org.jclouds.s3.blobstore.functions.ObjectToBlob;
 import org.jclouds.s3.blobstore.functions.ObjectToBlobMetadata;
 import org.jclouds.s3.domain.BucketMetadata;
+import org.jclouds.s3.domain.CannedAccessPolicy;
 import org.jclouds.s3.domain.ObjectMetadata;
+import org.jclouds.s3.domain.PublicAccessBlockConfiguration;
 
 import com.google.common.base.Function;
 import com.google.common.base.Supplier;
@@ -58,6 +61,7 @@ import com.google.common.base.Supplier;
 public class AWSS3BlobStore extends S3BlobStore {
 
    private final BlobToObject blob2Object;
+   private final AWSS3Client awsSync;
 
    @Inject
    AWSS3BlobStore(BlobStoreContext context, BlobUtils blobUtils, Supplier<Location> defaultLocation,
@@ -70,6 +74,7 @@ public class AWSS3BlobStore extends S3BlobStore {
       super(context, blobUtils, defaultLocation, locations, slicer, sync, convertBucketsToStorageMetadata,
                container2BucketListOptions, bucket2ResourceList, object2Blob, blob2ObjectGetOptions, blob2Object,
                blob2ObjectMetadata, object2BlobMd, fetchBlobMetadataProvider);
+      this.awsSync = sync;
       this.blob2Object = blob2Object;
    }
 
@@ -102,6 +107,30 @@ public class AWSS3BlobStore extends S3BlobStore {
          // JCLOUDS-334 for details.
          return false;
       }
+      // AWS blocks creating buckets with public-read canned ACL by default since 25 April 2023.  Instead create a bucket, override the block, and set the ACL.
+      if (options.isPublicRead()) {
+         boolean created = super.createContainerInLocation(location, container, new CreateContainerOptions());
+         if (!created) {
+            return false;
+         }
+         awsSync.putBucketOwnershipControls(container, "ObjectWriter");
+         awsSync.putPublicAccessBlock(container, PublicAccessBlockConfiguration.create(
+               /*blockPublicAcls=*/ false, /*ignorePublicAcls=*/ false, /*blockPublicPolicy=*/ false, /*restrictPublicBuckets=*/ false));
+         awsSync.updateBucketCannedACL(container, CannedAccessPolicy.PUBLIC_READ);
+         return true;
+      }
       return super.createContainerInLocation(location, container, options);
+   }
+
+   @Override
+   public void setContainerAccess(String container, ContainerAccess access) {
+      CannedAccessPolicy acl = CannedAccessPolicy.PRIVATE;
+      if (access == ContainerAccess.PUBLIC_READ) {
+         acl = CannedAccessPolicy.PUBLIC_READ;
+         awsSync.putBucketOwnershipControls(container, "ObjectWriter");
+         awsSync.putPublicAccessBlock(container, PublicAccessBlockConfiguration.create(
+               /*blockPublicAcls=*/ false, /*ignorePublicAcls=*/ false, /*blockPublicPolicy=*/ false, /*restrictPublicBuckets=*/ false));
+      }
+      awsSync.updateBucketCannedACL(container, acl);
    }
 }

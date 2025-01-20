@@ -16,7 +16,9 @@
  */
 package org.jclouds.aws.s3.blobstore.integration;
 
+import org.jclouds.s3.S3Client;
 import org.jclouds.s3.blobstore.integration.S3BlobIntegrationLiveTest;
+import org.jclouds.s3.domain.PublicAccessBlockConfiguration;
 import org.testng.annotations.Test;
 import org.testng.SkipException;
 
@@ -24,6 +26,14 @@ import org.testng.SkipException;
 public class AWSS3BlobIntegrationLiveTest extends S3BlobIntegrationLiveTest {
    public AWSS3BlobIntegrationLiveTest() {
       provider = "aws-s3";
+   }
+
+   @Override
+   protected void allowPublicReadable(String containerName) {
+      S3Client client = view.unwrapApi(S3Client.class);
+      client.putBucketOwnershipControls(containerName, "ObjectWriter");
+      client.putPublicAccessBlock(containerName, PublicAccessBlockConfiguration.create(
+            /*blockPublicAcls=*/ false, /*ignorePublicAcls=*/ false, /*blockPublicPolicy=*/ false, /*restrictPublicBuckets=*/ false));
    }
 
    @Override

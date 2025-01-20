@@ -729,12 +729,16 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
       testPut(payload, null, new ByteSourcePayload(byteSource), length, new PutOptions().multipart(true));
    }
 
+   protected void allowPublicReadable(String containerName) {
+   }
+
    @Test(groups = { "integration", "live" })
    public void testSetBlobAccess() throws Exception {
       BlobStore blobStore = view.getBlobStore();
       String containerName = getContainerName();
       String blobName = "set-access-blob-name";
       try {
+         allowPublicReadable(containerName);
          addBlobToContainer(containerName, blobName, blobName, MediaType.TEXT_PLAIN);
 
          assertThat(blobStore.getBlobAccess(containerName, blobName)).isEqualTo(BlobAccess.PRIVATE);
@@ -778,6 +782,7 @@ public class BaseBlobIntegrationTest extends BaseBlobStoreIntegrationTest {
    public void testPutBlobAccessMultipart() throws Exception {
       BlobStore blobStore = view.getBlobStore();
       String containerName = getContainerName();
+      allowPublicReadable(containerName);
       ByteSource byteSource = TestUtils.randomByteSource().slice(0, getMinimumMultipartBlobSize());
       Payload payload = Payloads.newByteSourcePayload(byteSource);
       payload.getContentMetadata().setContentLength(byteSource.size());

@@ -66,8 +66,10 @@ import org.jclouds.s3.binders.BindCannedAclToRequest;
 import org.jclouds.s3.binders.BindIterableAsPayloadToDeleteRequest;
 import org.jclouds.s3.binders.BindNoBucketLoggingToXmlPayload;
 import org.jclouds.s3.binders.BindObjectMetadataToRequest;
+import org.jclouds.s3.binders.BindOwnershipControlsToXMLPayload;
 import org.jclouds.s3.binders.BindPartIdsAndETagsToRequest;
 import org.jclouds.s3.binders.BindPayerToXmlPayload;
+import org.jclouds.s3.binders.BindPublicAccessBlockConfigurationToXMLPayload;
 import org.jclouds.s3.binders.BindS3ObjectMetadataToRequest;
 import org.jclouds.s3.domain.AccessControlList;
 import org.jclouds.s3.domain.BucketLogging;
@@ -79,6 +81,7 @@ import org.jclouds.s3.domain.ListMultipartUploadResponse;
 import org.jclouds.s3.domain.ListMultipartUploadsResponse;
 import org.jclouds.s3.domain.ObjectMetadata;
 import org.jclouds.s3.domain.Payer;
+import org.jclouds.s3.domain.PublicAccessBlockConfiguration;
 import org.jclouds.s3.domain.S3Object;
 import org.jclouds.s3.fallbacks.FalseIfBucketAlreadyOwnedByYouOrOperationAbortedWhenBucketExists;
 import org.jclouds.s3.filters.RequestAuthorizeSignature;
@@ -813,4 +816,19 @@ public interface S3Client extends Closeable {
          @QueryParam("delimiter") @Nullable String delimiter, @QueryParam("max-uploads") @Nullable Integer maxUploads,
          @QueryParam("key-marker") @Nullable String keyMarker, @QueryParam("prefix") @Nullable String prefix,
          @QueryParam("upload-id-marker") @Nullable String uploadIdMarker);
+
+   @Named("PutBucketOwnershipControls")
+   @PUT
+   @Path("/")
+   @QueryParams(keys = "ownershipControls")
+   void putBucketOwnershipControls(@Bucket @EndpointParam(parser = AssignCorrectHostnameForBucket.class) @BinderParam(BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName,
+         // BucketOwnerPreferred | ObjectWriter | BucketOwnerEnforced
+         @BinderParam(BindOwnershipControlsToXMLPayload.class) String objectOwnership);
+
+   @Named("PutPublicAccessBlock")
+   @PUT
+   @Path("/")
+   @QueryParams(keys = "publicAccessBlock")
+   void putPublicAccessBlock(@Bucket @EndpointParam(parser = AssignCorrectHostnameForBucket.class) @BinderParam(BindAsHostPrefixIfConfigured.class) @ParamValidators(BucketNameValidator.class) String bucketName,
+         @BinderParam(BindPublicAccessBlockConfigurationToXMLPayload.class) PublicAccessBlockConfiguration configuration);
 }
