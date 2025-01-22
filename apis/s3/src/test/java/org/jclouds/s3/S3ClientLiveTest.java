@@ -147,6 +147,8 @@ public class S3ClientLiveTest extends BaseBlobStoreIntegrationTest {
    public void testPutCannedAccessPolicyPublic() throws Exception {
       String containerName = getContainerName();
       try {
+         allowPublicReadable(containerName);
+
          String key = "hello";
          S3Object object = getApi().newS3Object();
          object.getMetadata().setKey(key);
@@ -236,6 +238,8 @@ public class S3ClientLiveTest extends BaseBlobStoreIntegrationTest {
    public void testUpdateObjectACL() throws InterruptedException, ExecutionException, TimeoutException, IOException {
       String containerName = getContainerName();
       try {
+         allowPublicReadable(containerName);
+
          String objectKey = "private-acl";
 
          // Private object

@@ -118,6 +118,7 @@ public class BucketsLiveTest extends BaseBlobStoreIntegrationTest {
          assertEquals(acl.getGrants().size(), 1);
          assertTrue(acl.hasPermission(ownerId, FULL_CONTROL));
 
+         allowPublicReadable(bucketName);
          addGrantsToACL(acl);
          assertEquals(acl.getGrants().size(), 4);
          assertTrue(getApi().putBucketACL(bucketName, acl));
