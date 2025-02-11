@@ -107,7 +107,7 @@ public interface ActionApi extends Closeable {
    @Path("/{id}")
    @Fallback(NullOnNotFoundOr404.class)
    @Nullable
-   Action get(@PathParam("id") int id);
+   Action get(@PathParam("id") long id);
    
 }
 

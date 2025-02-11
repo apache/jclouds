@@ -123,7 +123,7 @@ public class DigitalOcean2ComputeServiceContextModule extends
 
    @Provides
    @Named(TIMEOUT_IMAGE_AVAILABLE)
-   protected Predicate<Integer> provideImageAvailablePredicate(final DigitalOcean2Api api, Timeouts timeouts,
+   protected Predicate<Long> provideImageAvailablePredicate(final DigitalOcean2Api api, Timeouts timeouts,
          PollPeriod pollPeriod) {
       return retry(new ActionDonePredicate(api), timeouts.imageAvailable, pollPeriod.pollInitialPeriod,
             pollPeriod.pollMaxPeriod);
@@ -138,14 +138,14 @@ public class DigitalOcean2ComputeServiceContextModule extends
    }
 
    @Provides
-   protected Predicate<Integer> provideActionCompletedPredicate(final DigitalOcean2Api api, Timeouts timeouts,
+   protected Predicate<Long> provideActionCompletedPredicate(final DigitalOcean2Api api, Timeouts timeouts,
          PollPeriod pollPeriod) {
       return retry(new ActionDonePredicate(api), timeouts.imageAvailable, pollPeriod.pollInitialPeriod,
             pollPeriod.pollMaxPeriod);
    }
 
    @VisibleForTesting
-   static class ActionDonePredicate implements Predicate<Integer> {
+   static class ActionDonePredicate implements Predicate<Long> {
 
       private final DigitalOcean2Api api;
 
@@ -154,7 +154,7 @@ public class DigitalOcean2ComputeServiceContextModule extends
       }
 
       @Override
-      public boolean apply(Integer input) {
+      public boolean apply(Long input) {
          checkNotNull(input, "action id cannot be null");
          Action current = api.actionApi().get(input);
          switch (current.status()) {
