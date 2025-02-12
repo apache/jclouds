@@ -45,7 +45,7 @@ import com.google.inject.name.Names;
 
 public class BaseDigitalOcean2ApiLiveTest extends BaseApiLiveTest<DigitalOcean2Api> {
 
-   private Predicate<Integer> actionCompleted;
+   private Predicate<Long> actionCompleted;
    private Predicate<Integer> nodeTerminated;
    private Predicate<Integer> nodeStopped;
    private Predicate<Integer> nodeRunning;
@@ -64,7 +64,7 @@ public class BaseDigitalOcean2ApiLiveTest extends BaseApiLiveTest<DigitalOcean2A
 
    @Override protected DigitalOcean2Api create(Properties props, Iterable<Module> modules) {
       Injector injector = newBuilder().modules(modules).overrides(props).buildInjector();
-      actionCompleted = injector.getInstance(Key.get(new TypeLiteral<Predicate<Integer>>(){}));
+      actionCompleted = injector.getInstance(Key.get(new TypeLiteral<Predicate<Long>>(){}));
       nodeTerminated = injector.getInstance(Key.get(new TypeLiteral<Predicate<Integer>>(){},
             Names.named(TIMEOUT_NODE_TERMINATED)));
       nodeStopped = injector.getInstance(Key.get(new TypeLiteral<Predicate<Integer>>(){},
@@ -79,7 +79,7 @@ public class BaseDigitalOcean2ApiLiveTest extends BaseApiLiveTest<DigitalOcean2A
             .build();
    }
 
-   protected void assertActionCompleted(int actionId) {
+   protected void assertActionCompleted(long actionId) {
       assertTrue(actionCompleted.apply(actionId), String.format("Action %s did not complete in the configured timeout", actionId));
    }
 

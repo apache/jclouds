@@ -35,12 +35,12 @@ public abstract class DropletCreate {
       
       @AutoValue
       public abstract static class ActionLink {
-         public abstract int id();
+         public abstract long id();
          public abstract String rel();
          public abstract URI href();
          
          @SerializedNames({"id", "rel", "href"})
-         public static ActionLink create(int id, String rel, URI href) {
+         public static ActionLink create(long id, String rel, URI href) {
             return new AutoValue_DropletCreate_Links_ActionLink(id, rel, href);
          }
          

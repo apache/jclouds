@@ -46,8 +46,8 @@ public class ActionDonePredicateTest {
       replay(actionApi, api);
 
       ActionDonePredicate predicate = new ActionDonePredicate(api);
-      assertTrue(predicate.apply(1));
-      assertFalse(predicate.apply(2));
+      assertTrue(predicate.apply(1L));
+      assertFalse(predicate.apply(2L));
    }
 
    public void testActionStatusError() {
@@ -61,7 +61,7 @@ public class ActionDonePredicateTest {
       ActionDonePredicate predicate = new ActionDonePredicate(api);
 
       try {
-         predicate.apply(1);
+         predicate.apply(1L);
          fail("Method should have thrown an IllegalStateException");
       } catch (IllegalStateException ex) {
          assertEquals(ex.getMessage(), "Resource is in invalid status: ERRORED");

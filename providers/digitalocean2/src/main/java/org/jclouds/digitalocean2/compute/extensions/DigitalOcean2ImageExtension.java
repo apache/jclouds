@@ -60,13 +60,13 @@ public class DigitalOcean2ImageExtension implements ImageExtension {
    protected Logger logger = Logger.NULL;
 
    private final DigitalOcean2Api api;
-   private final Predicate<Integer> imageAvailablePredicate;
+   private final Predicate<Long> imageAvailablePredicate;
    private final Predicate<Integer> nodeRunningPredicate;
    private final Function<ImageInRegion, Image> imageTransformer;
    private final ListeningExecutorService userExecutor;
 
    @Inject DigitalOcean2ImageExtension(DigitalOcean2Api api,
-         @Named(TIMEOUT_IMAGE_AVAILABLE) Predicate<Integer> imageAvailablePredicate,
+         @Named(TIMEOUT_IMAGE_AVAILABLE) Predicate<Long> imageAvailablePredicate,
          @Named(TIMEOUT_NODE_RUNNING) Predicate<Integer> nodeRunningPredicate,
          Function<ImageInRegion, Image> imageTransformer,
          @Named(Constants.PROPERTY_USER_THREADS) ListeningExecutorService userExecutor) {
